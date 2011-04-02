@@ -41,7 +41,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString &newServer = wxT(""), const wxString &newDescription = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
+	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
 	~pgServer();
 	int GetIconId();
 
@@ -75,6 +75,10 @@ public:
 	wxString GetVersionString();
 	wxString GetVersionNumber();
 	OID GetLastSystemOID();
+	wxString GetHostAddr() const
+	{
+		return hostaddr;
+	}
 	wxString GetDatabaseName() const
 	{
 		return database;
@@ -222,6 +226,10 @@ public:
 	void iSetDescription(const wxString &s)
 	{
 		description = s;
+	}
+	void iSetHostAddr(const wxString &s)
+	{
+		hostaddr = s;
 	}
 
 	wxString GetDbRestriction() const
@@ -417,7 +425,7 @@ private:
 	pgConn *conn;
 	long serverIndex;
 	bool connected, passwordValid, autovacuumRunning;
-	wxString database, username, password, rolename, ver, error;
+	wxString hostaddr, database, username, password, rolename, ver, error;
 	wxString lastDatabase, lastSchema, description, serviceId, discoveryId;
 	wxDateTime upSince;
 	int port, ssl;

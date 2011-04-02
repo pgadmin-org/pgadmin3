@@ -1108,6 +1108,7 @@ void frmMain::StoreServers()
 
 					key.Printf(wxT("Servers/%d/"), numServers);
 					settings->Write(key + wxT("Server"), server->GetName());
+					settings->Write(key + wxT("HostAddr"), server->GetHostAddr());
 					settings->Write(key + wxT("Description"), server->GetDescription());
 					settings->Write(key + wxT("ServiceID"), server->GetServiceID());
 					settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());

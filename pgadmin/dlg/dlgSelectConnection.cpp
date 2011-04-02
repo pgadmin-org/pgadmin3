@@ -265,7 +265,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString &applicationname, bool &created
 pgConn *dlgSelectConnection::CreateConn(wxString &server, wxString &dbname, wxString &username, int port, wxString &rolename, int sslmode, wxString &applicationname, bool writeMRU)
 {
 	pgConn *newconn;
-	newconn = new pgConn(server, dbname, username, wxT(""), port, rolename, sslmode, 0, applicationname);
+	newconn = new pgConn(server, wxEmptyString, dbname, username, wxT(""), port, rolename, sslmode, 0, applicationname);
 	if (newconn->GetStatus() != PGCONN_OK &&
 	        newconn->GetLastError().Cmp(wxString(PQnoPasswordSupplied, wxConvUTF8)) == 0)
 	{
@@ -279,7 +279,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString &server, wxString &dbname, wxSt
 		if (dlg.Go() != wxID_OK)
 			return NULL;
 
-		newconn = new pgConn(server, dbname, username, dlg.GetPassword(), port, rolename, sslmode, 0, applicationname);
+		newconn = new pgConn(server, wxEmptyString, dbname, username, dlg.GetPassword(), port, rolename, sslmode, 0, applicationname);
 	}
 
 	if (newconn)

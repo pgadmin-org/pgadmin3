@@ -434,6 +434,7 @@ void pgRole::ReassignDropOwnedTo(frmMain *form)
 	{
 		pgConn *conn;
 		conn = new pgConn(GetConnection()->GetHost(),
+		                  GetConnection()->GetHostAddr(),
 		                  rdo.GetDatabase(),
 		                  GetConnection()->GetUser(),
 		                  GetConnection()->GetPassword(),

@@ -49,13 +49,14 @@ static void pgNoticeProcessor(void *arg, const char *message)
 	((pgConn *)arg)->Notice(message);
 }
 
-pgConn::pgConn(const wxString &server, const wxString &database, const wxString &username, const wxString &password,
+pgConn::pgConn(const wxString &server, const wxString &hostaddr, const wxString &database, const wxString &username, const wxString &password,
                int port, const wxString &rolename, int sslmode, OID oid, const wxString &applicationname,
                const wxString &sslcert, const wxString &sslkey, const wxString &sslrootcert, const wxString &sslcrl)
 {
 	wxString msg;
 
 	save_server = server;
+	save_hostaddr = hostaddr;
 	save_database = database;
 	save_username = username;
 	save_password = password;
@@ -86,6 +87,11 @@ pgConn::pgConn(const wxString &server, const wxString &database, const wxString 
 	{
 		connstr.Append(wxT(" host="));
 		connstr.Append(qtConnString(server));
+	}
+	if (!hostaddr.IsEmpty())
+	{
+		connstr.Append(wxT(" hostaddr="));
+		connstr.Append(qtConnString(hostaddr));
 	}
 	if (!database.IsEmpty())
 	{
@@ -330,7 +336,7 @@ bool pgConn::Reconnect()
 
 pgConn *pgConn::Duplicate()
 {
-	return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password),
+	return new pgConn(wxString(save_server), wxString(save_hostaddr), wxString(save_database), wxString(save_username), wxString(save_password),
 	                  save_port, save_rolename, save_sslmode, save_oid,
 	                  save_applicationname, save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl);
 }
