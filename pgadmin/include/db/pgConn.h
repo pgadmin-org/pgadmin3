@@ -83,7 +83,8 @@ typedef struct pgError
 class pgConn
 {
 public:
-	pgConn(const wxString &server = wxT(""), const wxString &hostaddr = wxT(""), const wxString &database = wxT(""), const wxString &username = wxT(""), const wxString &password = wxT(""),
+	pgConn(const wxString &server = wxT(""), const wxString &service = wxT(""), const wxString &hostaddr = wxT(""),
+	       const wxString &database = wxT(""), const wxString &username = wxT(""), const wxString &password = wxT(""),
 	       int port = 5432, const wxString &rolename = wxT(""), int sslmode = 0, OID oid = 0,
 	       const wxString &applicationname = wxT("pgAdmin"),
 	       const wxString &sslcert = wxT(""), const wxString &sslkey = wxT(""), const wxString &sslrootcert = wxT(""), const wxString &sslcrl = wxT(""));
@@ -128,6 +129,10 @@ public:
 	wxString GetHostAddr() const
 	{
 		return save_hostaddr;
+	}
+	wxString GetService() const
+	{
+		return save_service;
 	}
 	wxString GetUser() const
 	{
@@ -272,7 +277,7 @@ private:
 	wxString reservedNamespaces;
 	wxString connstr;
 
-	wxString save_server, save_hostaddr, save_database, save_username, save_password, save_rolename, save_applicationname;
+	wxString save_server, save_service, save_hostaddr, save_database, save_username, save_password, save_rolename, save_applicationname;
 	wxString save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl;
 	int save_port, save_sslmode;
 	OID save_oid;

@@ -41,7 +41,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
+	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newService = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
 	~pgServer();
 	int GetIconId();
 
@@ -78,6 +78,10 @@ public:
 	wxString GetHostAddr() const
 	{
 		return hostaddr;
+	}
+	wxString GetService() const
+	{
+		return service;
 	}
 	wxString GetDatabaseName() const
 	{
@@ -263,6 +267,10 @@ public:
 	{
 		return connected;
 	}
+	void iSetService(const wxString &newVal)
+	{
+		service = newVal;
+	}
 	void iSetDatabase(const wxString &newVal)
 	{
 		database = newVal;
@@ -425,7 +433,7 @@ private:
 	pgConn *conn;
 	long serverIndex;
 	bool connected, passwordValid, autovacuumRunning;
-	wxString hostaddr, database, username, password, rolename, ver, error;
+	wxString service, hostaddr, database, username, password, rolename, ver, error;
 	wxString lastDatabase, lastSchema, description, serviceId, discoveryId;
 	wxDateTime upSince;
 	int port, ssl;

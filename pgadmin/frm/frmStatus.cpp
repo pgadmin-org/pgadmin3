@@ -480,7 +480,7 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
 		delete locks_connection;
 	}
 
-	locks_connection = new pgConn(connection->GetHostName(), connection->GetHostAddr(), cbDatabase->GetValue(),
+	locks_connection = new pgConn(connection->GetHostName(), connection->GetService(), connection->GetHostAddr(), cbDatabase->GetValue(),
 	                              connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetRole(), connection->GetSslMode(),
 	                              0, connection->GetApplicationName(), connection->GetSSLCert(), connection->GetSSLKey(), connection->GetSSLRootCert(), connection->GetSSLCrl());
 
@@ -989,7 +989,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent &ev)
 	if (text.Length() > 0 && dbname.Length() > 0
 	        && text.Trim() != wxT("<IDLE>") && text.Trim() != wxT("<IDLE in transaction>"))
 	{
-		pgConn *conn = new pgConn(connection->GetHostName(), connection->GetHostAddr(), dbname,
+		pgConn *conn = new pgConn(connection->GetHostName(), connection->GetService(), connection->GetHostAddr(), dbname,
 		                          connection->GetUser(), connection->GetPassword(),
 		                          connection->GetPort(), connection->GetRole(), connection->GetSslMode(), connection->GetDbOid(),
 		                          connection->GetApplicationName(),
@@ -2597,6 +2597,7 @@ void frmStatus::OnCommit(wxCommandEvent &event)
 		if (connection->GetDbname() != xactList->GetText(item, 4))
 		{
 			pgConn *tmpConn = new pgConn(connection->GetHost(),
+			                             connection->GetService(),
 			                             connection->GetHostAddr(),
 			                             xactList->GetText(item, 4),
 			                             connection->GetUser(),
@@ -2653,6 +2654,7 @@ void frmStatus::OnRollback(wxCommandEvent &event)
 		if (connection->GetDbname() != xactList->GetText(item, 4))
 		{
 			pgConn *tmpConn = new pgConn(connection->GetHost(),
+			                             connection->GetService(),
 			                             connection->GetHostAddr(),
 			                             xactList->GetText(item, 4),
 			                             connection->GetUser(),

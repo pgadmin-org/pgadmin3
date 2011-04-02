@@ -19,7 +19,7 @@
 
 pgsApplication::pgsApplication(const wxString &host, const wxString &database,
                                const wxString &user, const wxString &password, int port) :
-	m_mutex(1, 1), m_stream(1, 1), m_connection(pnew pgConn(host, wxEmptyString, database, user,
+	m_mutex(1, 1), m_stream(1, 1), m_connection(pnew pgConn(host, wxEmptyString, wxEmptyString, database, user,
 	        password, port)), m_defined_conn(true), m_thread(0), m_caller(0)
 {
 	if (m_connection->GetStatus() != PGCONN_OK)

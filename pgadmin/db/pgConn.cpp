@@ -49,7 +49,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 	((pgConn *)arg)->Notice(message);
 }
 
-pgConn::pgConn(const wxString &server, const wxString &hostaddr, const wxString &database, const wxString &username, const wxString &password,
+pgConn::pgConn(const wxString &server, const wxString &service, const wxString &hostaddr, const wxString &database, const wxString &username, const wxString &password,
                int port, const wxString &rolename, int sslmode, OID oid, const wxString &applicationname,
                const wxString &sslcert, const wxString &sslkey, const wxString &sslrootcert, const wxString &sslcrl)
 {
@@ -57,6 +57,7 @@ pgConn::pgConn(const wxString &server, const wxString &hostaddr, const wxString 
 
 	save_server = server;
 	save_hostaddr = hostaddr;
+	save_service = service;
 	save_database = database;
 	save_username = username;
 	save_password = password;
@@ -92,6 +93,11 @@ pgConn::pgConn(const wxString &server, const wxString &hostaddr, const wxString 
 	{
 		connstr.Append(wxT(" hostaddr="));
 		connstr.Append(qtConnString(hostaddr));
+	}
+	if (!service.IsEmpty())
+	{
+		connstr.Append(wxT(" service="));
+		connstr.Append(qtConnString(service));
 	}
 	if (!database.IsEmpty())
 	{
@@ -336,7 +342,7 @@ bool pgConn::Reconnect()
 
 pgConn *pgConn::Duplicate()
 {
-	return new pgConn(wxString(save_server), wxString(save_hostaddr), wxString(save_database), wxString(save_username), wxString(save_password),
+	return new pgConn(wxString(save_server), wxString(save_service), wxString(save_hostaddr), wxString(save_database), wxString(save_username), wxString(save_password),
 	                  save_port, save_rolename, save_sslmode, save_oid,
 	                  save_applicationname, save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl);
 }
@@ -588,10 +594,16 @@ void pgConn::ExamineLibpqVersion()
 wxString pgConn::GetName() const
 {
 	wxString str;
-	if (dbHost.IsEmpty())
-		str.Printf(_("%s on local socket"), save_database.c_str());
+	if (save_service.IsEmpty())
+	{
+		if (dbHost.IsEmpty())
+			str.Printf(_("%s on local socket"), save_database.c_str());
+		else
+			str.Printf(_("%s on %s@%s:%d"), save_database.c_str(), GetUser().c_str(), dbHost.c_str(), GetPort());
+	}
 	else
-		str.Printf(_("%s on %s@%s:%d"), save_database.c_str(), GetUser().c_str(), dbHost.c_str(), GetPort());
+		str.Printf(_("service %s"), save_service.c_str());
+
 
 	if (!GetRole().IsEmpty())
 		str += wxT(" ~") + GetRole();

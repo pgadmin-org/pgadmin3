@@ -1110,6 +1110,7 @@ void frmMain::StoreServers()
 					settings->Write(key + wxT("Server"), server->GetName());
 					settings->Write(key + wxT("HostAddr"), server->GetHostAddr());
 					settings->Write(key + wxT("Description"), server->GetDescription());
+					settings->Write(key + wxT("Service"), server->GetService());
 					settings->Write(key + wxT("ServiceID"), server->GetServiceID());
 					settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
 					settings->WriteInt(key + wxT("Port"), server->GetPort());
