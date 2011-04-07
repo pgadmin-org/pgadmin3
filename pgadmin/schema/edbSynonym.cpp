@@ -41,7 +41,7 @@ wxString edbSynonym::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop synonym \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop synonym \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

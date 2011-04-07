@@ -48,7 +48,7 @@ wxString gpExtTable::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop external table \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop external table \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

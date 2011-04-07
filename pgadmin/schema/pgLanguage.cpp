@@ -42,7 +42,7 @@ wxString pgLanguage::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop language \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop language \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

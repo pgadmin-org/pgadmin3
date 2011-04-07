@@ -52,7 +52,7 @@ wxString pgView::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop view \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop view \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

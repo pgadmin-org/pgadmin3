@@ -46,7 +46,7 @@ wxString pgTextSearchConfiguration::GetTranslatedMessage(int kindOfMessage) cons
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop FTS configuration \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop FTS configuration \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

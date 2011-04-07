@@ -63,7 +63,7 @@ wxString pgFunction::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop function \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop function \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:
@@ -124,7 +124,7 @@ wxString pgTriggerFunction::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop trigger function \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop trigger function \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:
@@ -185,7 +185,7 @@ wxString pgProcedure::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop procedure \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop procedure \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

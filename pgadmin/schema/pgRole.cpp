@@ -61,7 +61,7 @@ wxString pgLoginRole::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop login role \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop login role \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:
@@ -123,7 +123,7 @@ wxString pgGroupRole::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop group role \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop group role \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:

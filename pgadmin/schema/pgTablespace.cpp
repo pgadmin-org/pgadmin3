@@ -46,7 +46,7 @@ wxString pgTablespace::GetTranslatedMessage(int kindOfMessage) const
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPEXCLUDINGDEPS:
-			message = wxString::Format(_("Are you sure you wish to drop tablespace \"%s?\""),
+			message = wxString::Format(_("Are you sure you wish to drop tablespace \"%s\"?"),
 			                           GetFullIdentifier().c_str());
 			break;
 		case DROPCASCADETITLE:
