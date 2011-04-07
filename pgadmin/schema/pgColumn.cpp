@@ -176,7 +176,10 @@ wxString pgColumn::GetSql(ctlTree *browser)
 
 				      + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
 				      + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ")
-				      + GetQuotedTypename() + wxT(";\n");
+				      + GetQuotedTypename();
+                if (!GetCollation().IsEmpty())
+                    sql += wxT(" COLLATE ") + GetCollation();
+                sql += wxT(";\n");
 
 				sql += GetStorageSql();
 
@@ -298,6 +301,9 @@ wxString pgColumn::GetDefinition()
 
 	if (table->GetOfTypeOid() == 0)
 		sql += GetQuotedTypename();
+    
+    if (!GetCollation().IsEmpty())
+        sql += wxT(" COLLATE ") + GetCollation();
 
 	if (GetDatabase()->BackendMinimumVersion(8, 1))
 	{
@@ -395,6 +401,10 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("Position"), GetColNumber());
 		properties->AppendItem(_("Data type"), GetVarTypename());
+        if (GetDatabase()->BackendMinimumVersion(9, 1))
+		{
+			properties->AppendItem(_("Collation"), GetCollation());
+		}
 		if (GetTable()->GetMetaType() != PGM_CATALOGOBJECT)
 		{
 			properties->AppendItem(_("Default"), GetDefault());
@@ -484,10 +494,10 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	    wxT("       ELSE NULL\n")
 	    wxT("  END AS inhrelname");
 
-	if (database->BackendMinimumVersion(8, 5))
-		sql +=
-		    wxT(",\n")
-		    wxT("  attoptions");
+	if (database->BackendMinimumVersion(9, 1))
+        sql += wxT(",\n  coll.collname, nspc.nspname as collnspname");
+    if (database->BackendMinimumVersion(8, 5))
+		sql += wxT(",\n  attoptions");
 	if (database->BackendMinimumVersion(7, 4))
 		sql +=
 		    wxT(",\n")
@@ -506,8 +516,11 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=att.attrelid AND des.objsubid=att.attnum\n")
 	       wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=att.attrelid AND refobjsubid=att.attnum\n")
 	       wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
-	       wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=att.attrelid AND indisprimary\n")
-	       wxT(" WHERE att.attrelid = ") + collection->GetOidStr()
+	       wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=att.attrelid AND indisprimary\n");
+    if (database->BackendMinimumVersion(9, 1))
+        sql += wxT("  LEFT OUTER JOIN pg_collation coll ON att.attcollation=coll.oid\n")
+                 wxT("  LEFT OUTER JOIN pg_namespace nspc ON coll.collnamespace=nspc.oid\n");
+    sql += wxT(" WHERE att.attrelid = ") + collection->GetOidStr()
 	       + restriction + systemRestriction + wxT("\n")
 	       wxT("   AND att.attisdropped IS FALSE\n")
 	       wxT(" ORDER BY att.attnum");
@@ -578,6 +591,13 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 			}
 			if (database->BackendMinimumVersion(8, 4))
 				column->iSetAcl(columns->GetVal(wxT("attacl")));
+            if (database->BackendMinimumVersion(9, 1))
+            {
+                wxString coll = wxEmptyString;
+                if (!columns->GetVal(wxT("collname")).IsEmpty())
+                    coll = qtIdent(columns->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(columns->GetVal(wxT("collname")));
+                column->iSetCollation(coll);
+            }
 
 			if (browser)
 			{

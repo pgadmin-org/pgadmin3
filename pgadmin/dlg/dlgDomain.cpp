@@ -27,6 +27,7 @@
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define txtCheck            CTRL_TEXT("txtCheck")
+#define cbCollation         CTRL_COMBOBOX("cbCollation")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
@@ -83,6 +84,9 @@ int dlgDomain::Go(bool modal)
 		txtName->Disable();
 		cbDatatype->Disable();
 		txtCheck->Disable();
+        
+        cbCollation->SetValue(domain->GetQuotedCollation());
+        cbCollation->Disable();
 
 		if (!connection->BackendMinimumVersion(7, 4))
 		{
@@ -97,6 +101,29 @@ int dlgDomain::Go(bool modal)
 		if (!connection->BackendMinimumVersion(7, 4))
 			txtCheck->Disable();
 		FillDatatype(cbDatatype, false);
+
+        cbCollation->Enable(connection->BackendMinimumVersion(9, 1));
+        if (connection->BackendMinimumVersion(9, 1))
+        {
+            // fill collation combobox
+            cbCollation->Append(wxEmptyString);
+            pgSet *set = connection->ExecuteSet(
+                             wxT("SELECT nspname, collname\n")
+                             wxT("  FROM pg_collation c, pg_namespace n\n")
+                             wxT("  WHERE c.collnamespace=n.oid\n")
+                             wxT("  ORDER BY nspname, collname"));
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
+                    cbCollation->Append(name);
+                    set->MoveNext();
+                }
+                delete set;
+            }
+            cbCollation->SetSelection(0);
+        }
 	}
 
 	return dlgProperty::Go(modal);
@@ -191,6 +218,9 @@ wxString dlgDomain::GetSql()
 		// create mode
 		sql = wxT("CREATE DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
 		      + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
+        
+        if (!cbCollation->GetValue().IsEmpty())
+            sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
 		if (chkNotNull->GetValue())

@@ -15,6 +15,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgCast.cpp \
 	$(srcdir)/dlg/dlgClasses.cpp \
 	$(srcdir)/dlg/dlgCheck.cpp \
+	$(srcdir)/dlg/dlgCollation.cpp \
 	$(srcdir)/dlg/dlgColumn.cpp \
 	$(srcdir)/dlg/dlgConnect.cpp \
 	$(srcdir)/dlg/dlgConversion.cpp \

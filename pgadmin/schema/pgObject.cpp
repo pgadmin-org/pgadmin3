@@ -58,6 +58,7 @@
 #include "schema/pgIndexConstraint.h"
 #include "schema/edbPackage.h"
 #include "schema/edbSynonym.h"
+#include "schema/pgCollation.h"
 #include "utils/pgDefs.h"
 #include "schema/gpExtTable.h"
 #include "schema/gpResQueue.h"
@@ -110,6 +111,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgCatalogObject *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Check"))
 		message = ((pgCheck *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Collation"))
+		message = ((pgCollation *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Column"))
 		message = ((pgColumn *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Conversion"))
@@ -209,6 +212,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((pgCatalogObjectCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Checks"))
 			message = ((pgCheckCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("Collations"))
+			message = ((pgCollationCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Columns"))
 			message = ((pgColumnCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Conversions"))

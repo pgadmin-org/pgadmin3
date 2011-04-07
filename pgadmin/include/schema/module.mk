@@ -19,6 +19,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgCatalogObject.h \
 	$(srcdir)/include/schema/pgCast.h \
 	$(srcdir)/include/schema/pgCheck.h \
+	$(srcdir)/include/schema/pgCollation.h \
 	$(srcdir)/include/schema/pgCollection.h \
 	$(srcdir)/include/schema/pgColumn.h \
 	$(srcdir)/include/schema/pgConstraints.h \

@@ -54,6 +54,8 @@
 #define pnlDefinitionExtern     CTRL_PANEL("pnlDefinitionExtern")
 #define pnlDefinitionComposite  CTRL_PANEL("pnlDefinitionComposite")
 #define pnlDefinitionEnum       CTRL_PANEL("pnlDefinitionEnum")
+#define chkCollatable           CTRL_CHECKBOX("chkCollatable")
+#define cbCollation             CTRL_COMBOBOX("cbCollation")
 
 
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
@@ -93,7 +95,7 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 {
 	type = node;
 	schema = sch;
-	lstMembers->CreateColumns(0, _("Member"), _("Data type"), -1);
+	lstMembers->CreateColumns(0, _("Member"), _("Data type"), _("Collation"), -1);
 	lstLabels->InsertColumn(0, _("Label"), wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
 
 	cbStorage->Append(wxT("PLAIN"));
@@ -162,7 +164,29 @@ int dlgType::Go(bool modal)
 
 	FillDatatype(cbDatatype, cbElement);
 
-	if (type)
+    if (connection->BackendMinimumVersion(9, 1))
+    {
+        // fill collation combobox
+        cbCollation->Append(wxEmptyString);
+        set = connection->ExecuteSet(
+                         wxT("SELECT nspname, collname\n")
+                         wxT("  FROM pg_collation c, pg_namespace n\n")
+                         wxT("  WHERE c.collnamespace=n.oid\n")
+                         wxT("  ORDER BY nspname, collname"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
+                cbCollation->Append(name);
+                set->MoveNext();
+            }
+            delete set;
+        }
+        cbCollation->SetSelection(0);
+    }
+
+    if (type)
 	{
 		// Edit Mode
 		txtName->Disable();
@@ -208,9 +232,12 @@ int dlgType::Go(bool modal)
 		cbAlignment->Disable();
 		cbStorage->SetValue(type->GetStorage());
 		cbStorage->Disable();
+		chkCollatable->SetValue(type->GetCollatable());
+		chkCollatable->Disable();
 
 		bool changeok = connection->BackendMinimumVersion(9, 1);
 		txtMembername->Enable(changeok);
+        cbCollation->Enable(changeok);
 		btnAddMember->Enable(changeok);
 		btnChangeMember->Enable(false);
 		btnRemoveMember->Enable(false);
@@ -224,9 +251,9 @@ int dlgType::Go(bool modal)
 		wxString fullType, typeName, typeLength, typePrecision;
 		size_t pos;
 		size_t i;
-		for (i = 0 ; i < elements.GetCount() ; i += 2)
+		for (i = 0 ; i < elements.GetCount() ; i += 3)
 		{
-			lstMembers->AppendItem(0, elements.Item(i), elements.Item(i + 1));
+			lstMembers->AppendItem(0, elements.Item(i), elements.Item(i + 1), elements.Item(i + 2));
 
 			fullType = elements.Item(i + 1);
 			typeName = fullType;
@@ -246,8 +273,8 @@ int dlgType::Go(bool modal)
 				else
 					typeLength = fullType.AfterFirst('(').BeforeFirst(')');
 			}
-
-			for (pos = 0; pos < cbDatatype->GetCount() - 1; pos++)
+            
+            for (pos = 0; pos < cbDatatype->GetCount() - 1; pos++)
 			{
 				if (cbDatatype->GetString(pos) == typeName)
 				{
@@ -257,6 +284,7 @@ int dlgType::Go(bool modal)
 			}
 			memberLengths.Add(typeLength);
 			memberPrecisions.Add(typePrecision);
+			memberCollations.Add(elements.Item(i + 2));
 		}
 
 		cbDatatype->Enable(changeok);
@@ -303,6 +331,9 @@ int dlgType::Go(bool modal)
 
 		if (!connection->BackendMinimumVersion(8, 3))
 			rdbType->Enable(TYPE_ENUM, false);
+
+        chkCollatable->Enable(connection->BackendMinimumVersion(9, 1));
+        cbCollation->Enable(connection->BackendMinimumVersion(9, 1));
 
 		set = connection->ExecuteSet(
 		          wxT("SELECT proname, nspname\n")
@@ -394,6 +425,7 @@ void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 	txtLength->SetValue(wxEmptyString);
 	txtPrecision->SetValue(wxEmptyString);
 	cbDatatype->GuessSelection(ev);
+    cbCollation->SetValue(wxEmptyString);
 	OnSelChangeTypOrLen(ev);
 }
 
@@ -405,6 +437,7 @@ void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
 		CheckLenEnable();
 		txtLength->Enable(isVarLen);
 		txtPrecision->Enable(isVarPrec);
+		cbCollation->Enable(connection->BackendMinimumVersion(9, 1));
 		CheckChange();
 		OnChangeMember(ev);
 	}
@@ -459,6 +492,8 @@ void dlgType::OnMemberSelChange(wxListEvent &ev)
 		txtLength->Enable(((type && connection->BackendMinimumVersion(9, 1)) || !type) && !txtLength->GetValue().IsEmpty());
 		txtPrecision->SetValue(memberPrecisions.Item(pos));
 		txtPrecision->Enable(((type && connection->BackendMinimumVersion(9, 1)) || !type) && !txtPrecision->GetValue().IsEmpty());
+		cbCollation->SetValue(memberCollations.Item(pos));
+		cbCollation->Enable(connection->BackendMinimumVersion(9, 1));
 		btnChangeMember->Enable((type && connection->BackendMinimumVersion(9, 1)) || !type);
 		btnRemoveMember->Enable((type && connection->BackendMinimumVersion(9, 1)) || !type);
 	}
@@ -471,11 +506,14 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
 	wxString type = cbDatatype->GetValue();
 	wxString length = wxEmptyString;
 	wxString precision = wxEmptyString;
+    wxString collation = wxEmptyString;
 
 	if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
 		length = txtLength->GetValue();
 	if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
 		precision = txtPrecision->GetValue();
+	if (cbCollation->GetValue() != wxT("") && cbCollation->IsEnabled())
+		collation = cbCollation->GetValue();
 
 	if (!length.IsEmpty())
 	{
@@ -490,9 +528,11 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
 		size_t pos = lstMembers->GetItemCount();
 		lstMembers->InsertItem(pos, name, 0);
 		lstMembers->SetItem(pos, 1, type);
+		lstMembers->SetItem(pos, 2, collation);
 		memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
 		memberLengths.Add(length);
 		memberPrecisions.Add(precision);
+		memberCollations.Add(collation);
 	}
 
 	CheckChange();
@@ -505,11 +545,14 @@ void dlgType::OnMemberChange(wxCommandEvent &ev)
 	wxString type = cbDatatype->GetValue();
 	wxString length = wxEmptyString;
 	wxString precision = wxEmptyString;
+    wxString collation = wxEmptyString;
 
 	if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
 		length = txtLength->GetValue();
 	if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
 		precision = txtPrecision->GetValue();
+	if (cbCollation->GetValue() != wxT("") && cbCollation->IsEnabled())
+		collation = cbCollation->GetValue();
 
 	if (!length.IsEmpty())
 	{
@@ -526,12 +569,15 @@ void dlgType::OnMemberChange(wxCommandEvent &ev)
 		{
 			lstMembers->SetItem(pos, 0, name);
 			lstMembers->SetItem(pos, 1, type);
+			lstMembers->SetItem(pos, 2, collation);
 			memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
 			memberLengths.Insert(length, pos);
 			memberPrecisions.Insert(precision, pos);
+            memberCollations.Insert(collation, pos);
 			memberTypes.RemoveAt(pos + 1);
 			memberLengths.RemoveAt(pos + 1);
 			memberPrecisions.RemoveAt(pos + 1);
+			memberCollations.RemoveAt(pos + 1);
 		}
 	}
 
@@ -549,6 +595,7 @@ void dlgType::OnMemberRemove(wxCommandEvent &ev)
 		memberTypes.RemoveAt(pos);
 		memberLengths.RemoveAt(pos);
 		memberPrecisions.RemoveAt(pos);
+		memberCollations.RemoveAt(pos);
 	}
 	CheckChange();
 }
@@ -764,6 +811,8 @@ wxString dlgType::GetSql()
 				sql += wxT(",\n    PASSEDBYVALUE");
 			AppendIfFilled(sql, wxT(",\n    ALIGNMENT="), cbAlignment->GetValue());
 			AppendIfFilled(sql, wxT(",\n    STORAGE="), cbStorage->GetValue());
+            if (connection->BackendMinimumVersion(9, 1) && chkCollatable->GetValue())
+                sql += wxT(",\n    COLLATABLE=true");
 		}
 
 		sql += wxT(");\n");
@@ -784,6 +833,8 @@ wxString dlgType::GetFullTypeName(int type)
 			typname += wxT(",") + memberPrecisions.Item(type);
 		typname += wxT(")");
 	}
+    if (!memberPrecisions.Item(type).IsEmpty())
+        typname += wxT(" COLLATE ") + memberCollations.Item(type);
 
 	return typname;
 }
@@ -791,28 +842,32 @@ wxString dlgType::GetFullTypeName(int type)
 wxString dlgType::GetSqlForTypes()
 {
 	wxString sql = wxEmptyString;
-	wxString old_name, old_type, new_name, new_type;
+	wxString old_name, old_type, old_collation, new_name, new_type, new_collation;
 	wxArrayString elements = type->GetTypesArray();
-	bool modified = lstMembers->GetItemCount() * 2 != (int)elements.GetCount();
+	bool modified = lstMembers->GetItemCount() * 3 != (int)elements.GetCount();
 	size_t i;
 
 	// Check if there is a change
 	for (int i = 0 ; i < lstMembers->GetItemCount() && !modified; i++)
 	{
-		old_name = elements.Item(i * 2);
-		old_type = elements.Item(i * 2 + 1);
+		old_name = elements.Item(i * 3);
+		old_type = elements.Item(i * 3 + 1);
+		old_collation = elements.Item(i * 3 + 2);
 		new_name = lstMembers->GetItemText(i);
 		new_type = GetFullTypeName(i);
-		modified = modified || old_name != new_name || old_type != new_type;
+        new_collation = memberCollations.Item(i);
+		modified = modified || old_name != new_name
+                            || old_type != new_type
+                            || old_collation != new_collation;
 	}
 
 	if (modified)
 	{
 		// Drop all old attributes
-		for (i = 0 ; i < elements.GetCount() ; i += 2)
+		for (i = 0 ; i < elements.GetCount() ; i += 3)
 		{
 			old_name = elements.Item(i);
-			sql += wxT("ALTER TYPE type DROP ATTRIBUTE ") + old_name + wxT(";\n");
+			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" DROP ATTRIBUTE ") + old_name + wxT(";\n");
 		}
 
 		// Add all new attributes
@@ -820,8 +875,12 @@ wxString dlgType::GetSqlForTypes()
 		{
 			new_name = lstMembers->GetItemText(i);
 			new_type = GetFullTypeName(i);
-			sql += wxT("ALTER TYPE type ADD ATTRIBUTE ")
-			       + new_name + wxT(" ") + new_type + wxT(";\n");
+            new_collation = memberCollations.Item(i);
+			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" ADD ATTRIBUTE ")
+			       + new_name + wxT(" ") + new_type;
+            if (!new_collation.IsEmpty())
+                sql += wxT(" COLLATE ") + new_collation;
+            sql += wxT(";\n");
 		}
 	}
 

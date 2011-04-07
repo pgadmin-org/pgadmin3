@@ -20,6 +20,7 @@
 #include "frm/frmMain.h"
 #include "schema/pgCatalogObject.h"
 #include "schema/edbPackage.h"
+#include "schema/pgCollation.h"
 #include "schema/pgDomain.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgConversion.h"
@@ -197,6 +198,8 @@ wxMenu *pgSchemaBase::GetNewMenu()
 	{
 		if (settings->GetDisplayOption(_("Aggregates")))
 			aggregateFactory.AppendMenu(menu);
+		if (settings->GetDisplayOption(_("Collations")) && GetConnection()->BackendMinimumVersion(9, 1))
+			collationFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Conversions")))
 			conversionFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Domains")))
@@ -319,6 +322,8 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		{
 			if (settings->GetDisplayOption(_("Aggregates")))
 				browser->AppendCollection(this, aggregateFactory);
+			if (settings->GetDisplayOption(_("Collations")) && GetConnection()->BackendMinimumVersion(9, 1))
+				browser->AppendCollection(this, collationFactory);
 			if (settings->GetDisplayOption(_("Conversions")))
 				browser->AppendCollection(this, conversionFactory);
 			if (settings->GetDisplayOption(_("Domains")))

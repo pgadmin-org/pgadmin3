@@ -172,6 +172,14 @@ public:
 	{
 		isRecordType = b;
 	}
+	bool GetCollatable() const
+	{
+		return collatable;
+	}
+	void iSetCollatable(const bool b)
+	{
+		collatable = b;
+	}
 	void iSetRelOid(const OID d)
 	{
 		relOid = d;
@@ -179,6 +187,10 @@ public:
 	const wxArrayString &GetTypesArray()
 	{
 		return typesArray;
+	}
+	const wxArrayString &GetCollationsArray()
+	{
+		return collationsArray;
 	}
 	const wxArrayString &GetLabelArray()
 	{
@@ -226,10 +238,10 @@ private:
 	wxString alias, inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
 	         typesList, quotedTypesList, labelList, quotedLabelList, sendFunction, receiveFunction,
 	         typmodinFunction, typmodoutFunction;
-	wxArrayString typesArray, labelArray;
+	wxArrayString typesArray, labelArray, collationsArray;
 	long internalLength;
 	int typeClass;
-	bool passedByValue, isRecordType;
+	bool passedByValue, isRecordType, collatable;
 	OID relOid;
 };
 

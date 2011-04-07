@@ -106,6 +106,8 @@ wxString pgDomain::GetSql(ctlTree *browser)
 		      + wxT("-- DROP DOMAIN ") + GetQuotedFullIdentifier() + wxT(";")
 		      + wxT("\n\nCREATE DOMAIN ") + GetQuotedFullIdentifier()
 		      + wxT("\n  AS ") + GetQuotedBasetype();
+        if (GetCollationOid() > 0)
+            sql += wxT("\n  COLLATE ") + GetQuotedCollation();
 		AppendIfFilled(sql, wxT("\n  DEFAULT "), GetDefault());
 		// CONSTRAINT Name Dont know where it's stored, may be omitted anyway
 		if (notNull)
@@ -160,6 +162,8 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		properties->AppendItem(_("Base type"), GetBasetype());
 		if (GetDimensions())
 			properties->AppendItem(_("Dimensions"), GetDimensions());
+        if (GetCollationOid() > 0)
+            properties->AppendItem(_("Collation"), GetQuotedCollation());
 		properties->AppendItem(_("Default"), GetDefault());
 		properties->AppendItem(_("Check"), GetCheck());
 		properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
@@ -188,22 +192,28 @@ pgObject *pgDomain::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
+    wxString sql;
 	pgDomain *domain = 0;
 
 	pgDatabase *db = collection->GetDatabase();
 
-	pgSet *domains = db->ExecuteSet(
-	                     wxT("SELECT d.oid, d.typname as domname, d.typbasetype, format_type(b.oid,NULL) as basetype, pg_get_userbyid(d.typowner) as domainowner, \n")
-	                     wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim, bn.nspname as basensp,\n")
-	                     wxT("       description, (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname=d.typname) > 1 AS domisdup,\n")
-	                     wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup\n")
-	                     wxT("  FROM pg_type d\n")
-	                     wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
-	                     wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
-	                     wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n")
-	                     wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
-	                     + restriction +
-	                     wxT(" ORDER BY d.typname"));
+    sql = wxT("SELECT d.oid, d.typname as domname, d.typbasetype, format_type(b.oid,NULL) as basetype, pg_get_userbyid(d.typowner) as domainowner, \n");
+    if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+        sql += wxT("c.oid AS colloid, c.collname, cn.nspname as collnspname, \n");
+    sql += wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim, bn.nspname as basensp,\n")
+         wxT("       description, (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname=d.typname) > 1 AS domisdup,\n")
+         wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup\n")
+         wxT("  FROM pg_type d\n")
+         wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
+         wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
+         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n");
+    if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+        sql += wxT("  LEFT OUTER JOIN pg_collation c ON d.typcollation=c.oid\n")
+               wxT("  LEFT OUTER JOIN pg_namespace cn ON c.collnamespace=cn.oid\n");
+    sql += wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
+         + restriction +
+         wxT(" ORDER BY d.typname");
+	pgSet *domains = db->ExecuteSet(sql);
 
 	if (domains)
 	{
@@ -232,6 +242,14 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 			domain->iSetDimensions(domains->GetLong(wxT("typndims")));
 			domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
 			domain->iSetIsDup(domains->GetBool(wxT("domisdup")));
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+            {
+                domain->iSetCollation(domains->GetVal(wxT("collname")));
+                domain->iSetQuotedCollation(qtIdent(domains->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(domains->GetVal(wxT("collname"))));
+                domain->iSetCollationOid(domains->GetOid(wxT("colloid")));
+            }
+            else
+                domain->iSetCollationOid(0);
 
 			if (browser)
 			{

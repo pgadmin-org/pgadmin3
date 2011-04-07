@@ -33,6 +33,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/clip_paste.png \
 	$(srcdir)/include/images/closeddatabase-sm.png \
 	$(srcdir)/include/images/closeddatabase.png \
+	$(srcdir)/include/images/collation-sm.png \
+	$(srcdir)/include/images/collation.png \
+	$(srcdir)/include/images/collations.png \
 	$(srcdir)/include/images/column-sm.png \
 	$(srcdir)/include/images/column.png \
 	$(srcdir)/include/images/columns.png \

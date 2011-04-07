@@ -55,6 +55,22 @@ public:
 	{
 		quotedBasetype = s;
 	}
+	wxString GetCollation() const
+	{
+		return collation;
+	}
+	void iSetCollation(const wxString &s)
+	{
+		collation = s;
+	}
+	wxString GetQuotedCollation() const
+	{
+		return quotedCollation;
+	}
+	void iSetQuotedCollation(const wxString &s)
+	{
+		quotedCollation = s;
+	}
 	void iSetIsDup(bool b)
 	{
 		isDup = b;
@@ -123,6 +139,14 @@ public:
 	{
 		basetypeOid = d;
 	}
+	OID GetCollationOid() const
+	{
+		return collationOid;
+	}
+	void iSetCollationOid(OID d)
+	{
+		collationOid = d;
+	}
 	long GetTyplen() const
 	{
 		return typlen;
@@ -158,11 +182,11 @@ public:
 	}
 
 private:
-	wxString basetype, quotedBasetype, defaultVal, delimiter, check;
+	wxString basetype, quotedBasetype, defaultVal, delimiter, check, collation, quotedCollation;
 	long length, precision, dimensions;
 	long typlen, typmod;
 	bool notNull, isDup;
-	OID basetypeOid;
+	OID basetypeOid, collationOid;
 };
 
 class pgDomainCollection : public pgSchemaObjCollection

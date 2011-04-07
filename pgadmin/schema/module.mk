@@ -21,6 +21,7 @@ pgadmin3_SOURCES += \
         $(subdir)/pgCast.cpp \
         $(subdir)/pgCatalogObject.cpp \
         $(subdir)/pgCheck.cpp \
+        $(subdir)/pgCollation.cpp \
         $(subdir)/pgCollection.cpp \
         $(subdir)/pgColumn.cpp \
         $(subdir)/pgConstraints.cpp \

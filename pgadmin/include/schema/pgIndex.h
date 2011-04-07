@@ -216,6 +216,11 @@ public:
 	{
 		procArgTypeList = s;
 	}
+    
+	const wxArrayString &GetCollationsArray()
+	{
+		return collationsArray;
+	}
 
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	wxString GetCreate();
@@ -259,7 +264,7 @@ private:
 	wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint, tablespace;
 	wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
 	long columnCount;
-	wxArrayString columnList;
+	wxArrayString columnList, collationsArray;
 	bool isUnique, isPrimary, isExclude, isClustered;
 	bool deferrable, deferred, showExtendedStatistics;
 	OID relTableOid, tablespaceOid;

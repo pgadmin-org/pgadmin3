@@ -333,6 +333,7 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Schemas"));
 	lstDisplay->Append(_("Slony-I Clusters"));
 	lstDisplay->Append(_("Aggregates"));
+	lstDisplay->Append(_("Collations"));
 	lstDisplay->Append(_("Conversions"));
 	lstDisplay->Append(_("Domains"));
 	lstDisplay->Append(_("Extensions"));

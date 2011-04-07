@@ -17,6 +17,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgAggregate.xrc \
 	$(srcdir)/ui/dlgCast.xrc \
 	$(srcdir)/ui/dlgCheck.xrc \
+	$(srcdir)/ui/dlgCollation.xrc \
 	$(srcdir)/ui/dlgColumn.xrc \
 	$(srcdir)/ui/dlgConnect.xrc \
 	$(srcdir)/ui/dlgConversion.xrc \

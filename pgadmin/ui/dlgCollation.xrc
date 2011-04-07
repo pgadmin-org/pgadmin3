@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resource>
-  <object class="wxDialog" name="dlgDomain">
+  <object class="wxDialog" name="dlgCollation">
     <title></title>
     <size>220,280d</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER</style>
@@ -17,10 +17,9 @@
             <object class="wxPanel" name="pnlProperties">
               <object class="wxFlexGridSizer">
                 <cols>2</cols>
-                <rows>12</rows>
                 <vgap>5</vgap>
                 <hgap>5</hgap>
-                <growablerows>10</growablerows>
+                <growablerows>3</growablerows>
                 <growablecols>1</growablecols>
                 <object class="sizeritem">
                   <object class="wxStaticText" name="stName">
@@ -64,103 +63,6 @@
                   <border>4</border>
                 </object>
                 <object class="sizeritem">
-                  <object class="wxStaticText" name="stDatatype">
-                    <label>Base type</label>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxComboBox" name="cbDatatype">
-                    <content/>
-                    <style>wxCB_DROPDOWN</style>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stDefault">
-                    <label>Default</label>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtDefault">
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stCheck">
-                    <label>Check</label>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtCheck">
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stLength">
-                    <label>Length</label>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtLength">
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stPrecision">
-                    <label>Precision</label>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtPrecision">
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stNotNull">
-                    <label>Not NULL</label>
-                    <pos>5,112d</pos>
-                  </object>
-                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxCheckBox" name="chkNotNull">
-                    <label></label>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stCollation">
-                    <label>Collation</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="ctlComboBox" name="cbCollation">
-                    <content/>
-                    <style>wxCB_DROPDOWN</style>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
                   <object class="wxStaticText" name="stComment">
                     <label>Comment</label>
                   </object>
@@ -187,6 +89,71 @@
                     <style>wxCB_READONLY|wxCB_DROPDOWN</style>
                   </object>
                   <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Definition</label>
+            <object class="wxPanel" name="pnlDefinition">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stLocale">
+                    <label>Locale</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtLocale">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stLcCollate">
+                    <label>LC_COLLATE</label>
+                  </object>
+                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtLcCollate">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stLcCtype">
+                    <label>LC_CTYPE</label>
+                  </object>
+                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtLcCtype">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stCollation">
+                    <label>Copy collation</label>
+                  </object>
+                  <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="ctlComboBox" name="cbCollation">
+                    <content/>
+                    <style>wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
                   <border>4</border>
                 </object>
               </object>

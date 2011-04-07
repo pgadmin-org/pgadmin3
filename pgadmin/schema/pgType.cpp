@@ -140,6 +140,10 @@ wxString pgType::GetSql(ctlTree *browser)
 				else if (GetTypmodoutFunction() != wxEmptyString)
 					sql += wxT(",\n       TYPMOD_OUT=") + GetTypmodoutFunction();
 			}
+            if (GetConnection()->BackendMinimumVersion(9, 1) && GetCollatable())
+			{
+				sql += wxT(",\n       COLLATABLE=true");
+			}
 		}
 		sql += wxT(");\n")
 		       + GetOwnerSql(8, 0)
@@ -153,20 +157,28 @@ wxString pgType::GetSql(ctlTree *browser)
 
 void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-	if (!expandedKids)
+	wxString query;
+    wxString collation;
+    
+    if (!expandedKids)
 	{
 		expandedKids = true;
 		if (GetTypeClass() == TYPE_COMPOSITE)
 		{
-			pgSet *set = ExecuteSet(
-			                 wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nspname,\n")
-			                 wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup\n")
-			                 wxT("  FROM pg_attribute att\n")
+            query = wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nsp.nspname,\n")
+			                 wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup");
+            if (GetConnection()->BackendMinimumVersion(9, 1))
+                query += wxT(",\n       collname, nspc.nspname as collnspname");
+            query += wxT("\n  FROM pg_attribute att\n")
 			                 wxT("  JOIN pg_type t ON t.oid=atttypid\n")
 			                 wxT("  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n")
-			                 wxT("  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n")
-			                 wxT(" WHERE att.attrelid=") + NumToStr(relOid) + wxT("\n")
-			                 wxT(" ORDER by attnum"));
+			                 wxT("  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n");
+            if (GetConnection()->BackendMinimumVersion(9, 1))
+                query += wxT("  LEFT OUTER JOIN pg_collation c ON att.attcollation=c.oid\n")
+                         wxT("  LEFT OUTER JOIN pg_namespace nspc ON c.collnamespace=nspc.oid\n");
+            query += wxT(" WHERE att.attrelid=") + NumToStr(relOid) + wxT("\n")
+			                 wxT(" ORDER by attnum");
+			pgSet *set = ExecuteSet(query);
 			if (set)
 			{
 				int anzvar = 0;
@@ -190,6 +202,19 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 					typesList += dt.GetSchemaPrefix(GetDatabase()) + dt.FullName();
 					typesArray.Add(dt.GetSchemaPrefix(GetDatabase()) + dt.FullName());
 					quotedTypesList += dt.GetQuotedSchemaPrefix(GetDatabase()) + dt.QuotedFullName();
+                    
+                    if (GetConnection()->BackendMinimumVersion(9, 1))
+                    {
+                        if (set->GetVal(wxT("collname")).IsEmpty())
+                            collation = wxEmptyString;
+                        else
+                        {
+                            collation = qtIdent(set->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
+                            quotedTypesList += wxT(" COLLATE ") + collation;
+                        }
+                        collationsArray.Add(collation);
+                    }
+                    typesArray.Add(collation);
 
 					set->MoveNext();
 				}
@@ -198,7 +223,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		}
 		else if (GetTypeClass() == TYPE_ENUM)
 		{
-			wxString query = wxT("SELECT enumlabel\n")
+			query = wxT("SELECT enumlabel\n")
 			                 wxT("  FROM pg_enum\n")
 			                 wxT(" WHERE enumtypid=") + GetOidStr() + wxT("\n");
 			if (GetConnection()->BackendMinimumVersion(9, 1))
@@ -270,6 +295,8 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 					properties->AppendItem(_("Typmod out function"), GetTypmodoutFunction());
 			}
 			properties->AppendItem(_("Storage"), GetStorage());
+            if (GetConnection()->BackendMinimumVersion(9, 1))
+                properties->AppendItem(_("Collatable?"), BoolToYesNo(GetCollatable()));
 		}
 		properties->AppendYesNoItem(_("System type?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -387,6 +414,8 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			    storage == wxT("e") ? wxT("EXTERNAL") :
 			    storage == wxT("m") ? wxT("MAIN") :
 			    storage == wxT("x") ? wxT("EXTENDED") : wxT("unknown"));
+            if (collection->GetConnection()->BackendMinimumVersion(9, 1))
+                type->iSetCollatable(types->GetLong(wxT("typcollation")) == 100);
 
 			if (browser)
 			{

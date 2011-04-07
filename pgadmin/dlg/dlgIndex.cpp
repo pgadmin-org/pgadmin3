@@ -30,10 +30,10 @@
 #define txtWhere        CTRL_TEXT("txtWhere")
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
 #define cbOpClass       CTRL_COMBOBOX("cbOpClass")
-
 #define chkDesc         CTRL_CHECKBOX("chkDesc")
 #define rdbNullsFirst   CTRL_RADIOBUTTON("rdbNullsFirst")
 #define rdbNullsLast    CTRL_RADIOBUTTON("rdbNullsLast")
+#define cbCollation     CTRL_COMBOBOX("cbCollation")
 
 
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
@@ -195,6 +195,7 @@ dlgIndex::dlgIndex(pgaFactory *f, frmMain *frame, pgIndex *index, pgTable *paren
 	lstColumns->AddColumn(_("Order"), 40);
 	lstColumns->AddColumn(_("NULLs order"), 50);
 	lstColumns->AddColumn(_("Op. class"), 40);
+	lstColumns->AddColumn(_("Collation"), 40);
 }
 
 
@@ -292,6 +293,13 @@ wxString dlgIndex::GetColumns()
 			sql += wxT(", ");
 
 		sql += qtIdent(lstColumns->GetItemText(pos));
+        
+		if (this->database->BackendMinimumVersion(9, 1))
+		{
+			wxString collation = lstColumns->GetText(pos, 4);
+			if (!collation.IsEmpty())
+				sql += wxT(" COLLATE ") + collation;
+		}
 
 		wxString opclass = lstColumns->GetText(pos, 3);
 		if (!opclass.IsEmpty())
@@ -324,7 +332,8 @@ int dlgIndex::Go(bool modal)
 		// We only display the column options (ASC/DESC, NULLS FIRST/LAST)
 		// on PostgreSQL 8.3+, for btree indexes.
 		wxArrayString colsArr = index->GetColumnList();
-		wxString colDef, colRest, colName, descDef, nullsDef, opclassDef;
+        wxArrayString collationsArray = index->GetCollationsArray();
+        wxString colDef, colRest, colName, descDef, nullsDef, opclassDef, collation;
 		const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
 		if (this->database->BackendMinimumVersion(8, 3) && index->GetIndexType() == wxT("btree"))
 		{
@@ -372,6 +381,7 @@ int dlgIndex::Go(bool modal)
 				lstColumns->SetItem(colIdx, 1, descDef);
 				lstColumns->SetItem(colIdx, 2, nullsDef);
 				lstColumns->SetItem(colIdx, 3, opclassDef);
+                lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
 			}
 		}
 		else
@@ -390,6 +400,7 @@ int dlgIndex::Go(bool modal)
 
 				lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
 				lstColumns->SetItem(colIdx, 3, cbOpClass->GetValue());
+                lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
 			}
 		}
 
@@ -407,6 +418,7 @@ int dlgIndex::Go(bool modal)
 		chkDesc->Disable();
 		rdbNullsFirst->Disable();
 		rdbNullsLast->Disable();
+        cbCollation->Disable();
 	}
 	else
 	{
@@ -424,6 +436,30 @@ int dlgIndex::Go(bool modal)
 			}
 			delete set;
 		}
+
+        if (connection->BackendMinimumVersion(9, 1))
+        {
+            // fill collation combobox
+            cbCollation->Append(wxEmptyString);
+            set = connection->ExecuteSet(
+                             wxT("SELECT nspname, collname\n")
+                             wxT("  FROM pg_collation c, pg_namespace n\n")
+                             wxT("  WHERE c.collnamespace=n.oid\n")
+                             wxT("  ORDER BY nspname, collname"));
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
+                    cbCollation->Append(name);
+                    set->MoveNext();
+                }
+                delete set;
+            }
+            cbCollation->SetSelection(0);
+        }
+        else
+            cbCollation->Disable();
 
 		if (!this->database->BackendMinimumVersion(8, 2))
 			chkConcurrent->Disable();
@@ -500,6 +536,7 @@ void dlgIndex::OnAddCol(wxCommandEvent &ev)
 			}
 
 			lstColumns->SetItem(colIndex, 3, cbOpClass->GetValue());
+            lstColumns->SetItem(colIndex, 4, cbCollation->GetValue());
 		}
 
 		cbColumns->Delete(cbColumns->GetCurrentSelection());

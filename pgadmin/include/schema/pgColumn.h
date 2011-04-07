@@ -246,6 +246,14 @@ public:
 	{
 		return variables;
 	}
+	wxString GetCollation() const
+	{
+		return collation;
+	}
+	void iSetCollation(const wxString &s)
+	{
+		collation = s;
+	}
 
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	bool GetSystemObject() const
@@ -287,7 +295,7 @@ public:
 
 private:
 	wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, defaultStorage, storage, rawTypename;
-	wxString serialSequence, serialSchema, pkCols, inheritedTableName;
+	wxString serialSequence, serialSchema, pkCols, inheritedTableName, collation;
 	long colNumber, length, precision, statistics, attstattarget;
 	long typlen, typmod, inheritedCount;
 	bool isPK, isFK, notNull, isArray, isLocal;
