@@ -2,7 +2,7 @@
 <resource>
   <object class="wxDialog" name="dlgFunction">
     <title></title>
-    <size>300,280d</size>
+    <size>350,265d</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER</style>
     <object class="wxFlexGridSizer">
       <cols>1</cols>
@@ -10,17 +10,17 @@
       <growablerows>0</growablerows>
       <object class="sizeritem">
         <object class="wxNotebook" name="nbNotebook">
-          <size>296,255d</size>
+          <size>346,240d</size>
           <selected>0</selected>
           <object class="notebookpage">
             <label>Properties</label>
             <object class="wxPanel" name="pnlProperties">
               <object class="wxFlexGridSizer">
                 <cols>2</cols>
-                <rows>8</rows>
+                <rows>5</rows>
                 <vgap>5</vgap>
                 <hgap>5</hgap>
-                <growablerows>6</growablerows>
+                <growablerows>3</growablerows>
                 <growablecols>1</growablecols>
                 <object class="sizeritem">
                   <object class="wxStaticText" name="stName">
@@ -49,18 +49,6 @@
                   <border>4</border>
                 </object>
                 <object class="sizeritem">
-                  <object class="wxStaticText" name="stArguments">
-                    <label>Arguments</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtArguments"/>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
                   <object class="wxStaticText" name="stOID">
                     <label>OID</label>
                   </object>
@@ -69,6 +57,59 @@
                 </object>
                 <object class="sizeritem">
                   <object class="wxTextCtrl" name="txtOID"/>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stComment">
+                    <label>Comment</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtComment">
+                    <style>wxTE_MULTILINE</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stClusterSet">
+                    <label>Use replication</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbClusterSet">
+                    <content/>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Definition</label>
+            <object class="wxPanel" name="pnlDefinition">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <rows>3</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stArguments">
+                    <label>Arguments</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtArguments"/>
                   <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
                   <border>4</border>
                 </object>
@@ -100,35 +141,6 @@
                     <style>wxCB_READONLY|wxCB_DROPDOWN</style>
                   </object>
                   <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stComment">
-                    <label>Comment</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtComment">
-                    <style>wxTE_MULTILINE</style>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stClusterSet">
-                    <label>Use replication</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxComboBox" name="cbClusterSet">
-                    <content/>
-                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
                   <border>4</border>
                 </object>
               </object>
@@ -378,8 +390,8 @@
             </object>
           </object>
           <object class="notebookpage">
-            <label>Definition</label>
-            <object class="wxPanel" name="pnlDefinition">
+            <label>Code</label>
+            <object class="wxPanel" name="pnlCode">
               <object class="wxFlexGridSizer">
                 <cols>1</cols>
                 <rows>2</rows>

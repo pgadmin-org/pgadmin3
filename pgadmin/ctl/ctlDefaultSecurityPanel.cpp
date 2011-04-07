@@ -42,7 +42,7 @@ ctlDefaultSecurityPanel::ctlDefaultSecurityPanel(pgConn *conn, wxNotebook *nb, w
 	mainSizer->AddGrowableCol(0);
 	mainSizer->AddGrowableRow(0);
 
-	nbNotebook = new wxNotebook(this, -1, wxDefaultPosition, wxSize(220, 470), 0, _("Default ACLs"));
+	nbNotebook = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize, 0, _("Default ACLs"));
 
 	m_defPrivOnTablesPanel = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivTables, imgList);
 	m_defPrivOnSeqsPanel   = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivSequences, imgList);

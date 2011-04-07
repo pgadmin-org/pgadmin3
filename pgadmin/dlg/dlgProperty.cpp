@@ -1659,8 +1659,9 @@ dlgSecurityProperty::~dlgSecurityProperty()
 #ifdef __WXMAC__
 void dlgSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 {
-	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
-	                                    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
+	if (securityPage)
+		securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+		                                    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
 	if (GetAutoLayout())
 	{
 		Layout();
