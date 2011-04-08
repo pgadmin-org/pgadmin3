@@ -1199,7 +1199,7 @@ wxWindow *reportBaseFactory::StartDialog(frmMain *form, pgObject *obj)
 reportObjectPropertiesFactory::reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Properties report"), _("Generate a properties report for this object."));
+	mnu->Append(id, _("&Properties Report"), _("Generate a Properties report for this object."));
 }
 
 bool reportObjectPropertiesFactory::CheckEnable(pgObject *obj)
@@ -1234,7 +1234,7 @@ void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *
 reportObjectDdlFactory::reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&DDL report"), _("Generate a DDL report for this object."));
+	mnu->Append(id, _("&DDL Report"), _("Generate a DDL report for this object."));
 }
 
 bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
@@ -1264,7 +1264,7 @@ void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
 reportObjectDataDictionaryFactory::reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Data dictionary report"), _("Generate a data dictionary report for this object."));
+	mnu->Append(id, _("&Data Dictionary Report"), _("Generate a Data Dictionary report for this object."));
 }
 
 bool reportObjectDataDictionaryFactory::CheckEnable(pgObject *obj)
@@ -1388,7 +1388,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 reportObjectStatisticsFactory::reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Statistics report"), _("Generate a statistics report for this object."));
+	mnu->Append(id, _("&Statistics Report"), _("Generate a Statistics report for this object."));
 }
 
 bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
@@ -1447,7 +1447,7 @@ void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *
 reportObjectDependenciesFactory::reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Dependencies report"), _("Generate a dependencies report for this object."));
+	mnu->Append(id, _("&Dependencies Report"), _("Generate a Dependencies report for this object."));
 }
 
 bool reportObjectDependenciesFactory::CheckEnable(pgObject *obj)
@@ -1480,7 +1480,7 @@ void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject
 reportObjectDependentsFactory::reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Dependents report"), _("Generate a dependents report for this object."));
+	mnu->Append(id, _("&Dependents Report"), _("Generate a Dependents report for this object."));
 }
 
 bool reportObjectDependentsFactory::CheckEnable(pgObject *obj)
@@ -1513,7 +1513,7 @@ void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *
 reportObjectListFactory::reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 	: reportBaseFactory(list)
 {
-	mnu->Append(id, _("&Object list report"), _("Generate an object list report for this collection."));
+	mnu->Append(id, _("&Object List Report"), _("Generate an Object List report for this collection."));
 }
 
 bool reportObjectListFactory::CheckEnable(pgObject *obj)
