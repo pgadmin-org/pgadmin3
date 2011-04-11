@@ -1446,7 +1446,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 				svcKey->QueryValue(wxT("Port"), &tmpport);
 
 				// Add the Server node
-				server = new pgServer(servername, description, database, username, (long)tmpport, false, wxEmptyString, false);
+				server = new pgServer(servername, wxEmptyString, description, wxEmptyString, database, username, (long)tmpport, false, wxEmptyString, false);
 				server->iSetDiscoveryID(svcName);
 				server->iSetDiscovered(true);
 				server->iSetServiceID(svcName);
