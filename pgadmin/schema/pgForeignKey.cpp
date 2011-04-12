@@ -366,7 +366,7 @@ wxString pgForeignKeyCollection::GetTranslatedMessage(int kindOfMessage) const
 	switch (kindOfMessage)
 	{
 		case RETRIEVINGDETAILS:
-			message = _("Retrieving details on foreign keyrs");
+			message = _("Retrieving details on foreign keys");
 			break;
 		case REFRESHINGDETAILS:
 			message = _("Refreshing foreign keys");
