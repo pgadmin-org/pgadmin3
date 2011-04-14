@@ -216,7 +216,7 @@ public:
 	{
 		procArgTypeList = s;
 	}
-    
+
 	const wxArrayString &GetCollationsArray()
 	{
 		return collationsArray;

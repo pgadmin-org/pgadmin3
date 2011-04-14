@@ -114,8 +114,8 @@ wxString pgCollation::GetSql(ctlTree *browser)
 		      + wxT("-- DROP COLLATION ") + GetQuotedFullIdentifier() + wxT(";")
 		      + wxT("\n\nCREATE COLLATION ") + GetQuotedFullIdentifier()
 		      + wxT("\n  (LC_COLLATE=") + qtDbString(GetLcCollate())
-              + wxT(", LC_CTYPE=") + qtDbString(GetLcCtype())
-              + wxT(");\n");
+		      + wxT(", LC_CTYPE=") + qtDbString(GetLcCtype())
+		      + wxT(");\n");
 
 		sql += GetOwnerSql(9, 1)
 		       + GetCommentSql();
@@ -165,14 +165,14 @@ pgObject *pgCollationFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	pgDatabase *db = collection->GetDatabase();
 
 	pgSet *collations = db->ExecuteSet(
-	                     wxT("SELECT c.oid, c.collname, c.collcollate, c.collctype, \n")
-	                     wxT("       pg_get_userbyid(c.collowner) as cowner, description\n")
-	                     wxT("  FROM pg_collation c\n")
-	                     wxT("  JOIN pg_namespace n ON n.oid=c.collnamespace\n")
-	                     wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
-	                     wxT(" WHERE c.collnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
-	                     + restriction +
-	                     wxT(" ORDER BY c.collname"));
+	                        wxT("SELECT c.oid, c.collname, c.collcollate, c.collctype, \n")
+	                        wxT("       pg_get_userbyid(c.collowner) as cowner, description\n")
+	                        wxT("  FROM pg_collation c\n")
+	                        wxT("  JOIN pg_namespace n ON n.oid=c.collnamespace\n")
+	                        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	                        wxT(" WHERE c.collnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
+	                        + restriction +
+	                        wxT(" ORDER BY c.collname"));
 
 	if (collations)
 	{

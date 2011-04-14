@@ -68,19 +68,19 @@ int dlgCollation::Go(bool modal)
 		txtLcCtype->SetValue(collation->GetLcCtype());
 
 		txtLocale->Disable();
-        txtLcCollate->Disable();
-        txtLcCtype->Disable();
-        cbCollation->Disable();
+		txtLcCollate->Disable();
+		txtLcCtype->Disable();
+		cbCollation->Disable();
 	}
 	else
 	{
 		// create mode
 		// fill collation combobox
-        cbCollation->Append(wxEmptyString);
-        pgSet *set = connection->ExecuteSet(
+		cbCollation->Append(wxEmptyString);
+		pgSet *set = connection->ExecuteSet(
 		                 wxT("SELECT nspname, collname\n")
 		                 wxT("  FROM pg_collation c, pg_namespace n\n")
-                         wxT("  WHERE c.collnamespace=n.oid\n")
+		                 wxT("  WHERE c.collnamespace=n.oid\n")
 		                 wxT("  ORDER BY nspname, collname"));
 		if (set)
 		{
@@ -123,16 +123,16 @@ void dlgCollation::CheckChange()
 	{
 		bool enable = true;
 		CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
-        CheckValid(enable,
-            !txtLocale->GetValue().IsEmpty() ||
-            !(txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty()) ||
-            !cbCollation->GetValue().IsEmpty(),
-            _("Please specify a locale, or LC_COLLATE and LC_CTYPE, or a collation"));
+		CheckValid(enable,
+		           !txtLocale->GetValue().IsEmpty() ||
+		           !(txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty()) ||
+		           !cbCollation->GetValue().IsEmpty(),
+		           _("Please specify a locale, or LC_COLLATE and LC_CTYPE, or a collation"));
 
-        txtLocale->Enable(cbCollation->GetValue().IsEmpty() && txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty());
-        txtLcCollate->Enable(cbCollation->GetValue().IsEmpty() && txtLocale->GetValue().IsEmpty());
-        txtLcCtype->Enable(cbCollation->GetValue().IsEmpty() && txtLocale->GetValue().IsEmpty());
-        cbCollation->Enable(txtLocale->GetValue().IsEmpty() && txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty());
+		txtLocale->Enable(cbCollation->GetValue().IsEmpty() && txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty());
+		txtLcCollate->Enable(cbCollation->GetValue().IsEmpty() && txtLocale->GetValue().IsEmpty());
+		txtLcCtype->Enable(cbCollation->GetValue().IsEmpty() && txtLocale->GetValue().IsEmpty());
+		cbCollation->Enable(txtLocale->GetValue().IsEmpty() && txtLcCollate->GetValue().IsEmpty() && txtLcCtype->GetValue().IsEmpty());
 
 		EnableOK(enable);
 	}
@@ -148,31 +148,31 @@ wxString dlgCollation::GetSql()
 	{
 		// edit mode
 		AppendNameChange(sql, wxT("COLLATION ") + collation->GetQuotedFullIdentifier());
-        AppendOwnerChange(sql, wxT("COLLATION ") + collation->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("COLLATION ") + collation->GetQuotedFullIdentifier());
 	}
 	else
 	{
 		// create mode
-        sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name);
-        if (cbCollation->GetValue().IsEmpty())
-        {
-            if (txtLocale->GetValue().IsEmpty())
-            {
-                sql += wxT("(LC_COLLATE=") + qtDbString(txtLcCollate->GetValue())
-                    +  wxT(", LC_CTYPE=") + qtDbString(txtLcCtype->GetValue())
-                    +  wxT(")");
-            }
-            else
-            {
-                sql += wxT("(LOCALE=") + qtDbString(txtLocale->GetValue()) + wxT(")");
-            }
-        }
-        else
-        {
-            sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name)
-                + wxT(" FROM ") + cbCollation->GetValue();
-        }
-        sql += wxT(";\n");
+		sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name);
+		if (cbCollation->GetValue().IsEmpty())
+		{
+			if (txtLocale->GetValue().IsEmpty())
+			{
+				sql += wxT("(LC_COLLATE=") + qtDbString(txtLcCollate->GetValue())
+				       +  wxT(", LC_CTYPE=") + qtDbString(txtLcCtype->GetValue())
+				       +  wxT(")");
+			}
+			else
+			{
+				sql += wxT("(LOCALE=") + qtDbString(txtLocale->GetValue()) + wxT(")");
+			}
+		}
+		else
+		{
+			sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name)
+			      + wxT(" FROM ") + cbCollation->GetValue();
+		}
+		sql += wxT(";\n");
 
 		AppendOwnerNew(sql, wxT("COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name));
 	}

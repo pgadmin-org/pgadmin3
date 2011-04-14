@@ -236,29 +236,29 @@ int dlgColumn::Go(bool modal)
 
 	cbStorage->Enable(true);
 
-    if (connection->BackendMinimumVersion(9, 1))
-    {
-        // fill collation combobox
-        cbCollation->Append(wxEmptyString);
-        pgSet *set = connection->ExecuteSet(
-                         wxT("SELECT nspname, collname\n")
-                         wxT("  FROM pg_collation c, pg_namespace n\n")
-                         wxT("  WHERE c.collnamespace=n.oid\n")
-                         wxT("  ORDER BY nspname, collname"));
-        if (set)
-        {
-            while (!set->Eof())
-            {
-                wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
-                cbCollation->Append(name);
-                set->MoveNext();
-            }
-            delete set;
-        }
-        cbCollation->SetSelection(0);
-    }
-    else
-        cbCollation->Disable();
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		// fill collation combobox
+		cbCollation->Append(wxEmptyString);
+		pgSet *set = connection->ExecuteSet(
+		                 wxT("SELECT nspname, collname\n")
+		                 wxT("  FROM pg_collation c, pg_namespace n\n")
+		                 wxT("  WHERE c.collnamespace=n.oid\n")
+		                 wxT("  ORDER BY nspname, collname"));
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
+				cbCollation->Append(name);
+				set->MoveNext();
+			}
+			delete set;
+		}
+		cbCollation->SetSelection(0);
+	}
+	else
+		cbCollation->Disable();
 
 	if (column)
 	{
@@ -318,7 +318,7 @@ int dlgColumn::Go(bool modal)
 			cbDatatype->Disable();
 			txtAttstattarget->Disable();
 			cbStorage->Disable();
-            cbCollation->Disable();
+			cbCollation->Disable();
 		}
 		else if (column->GetTable()->GetMetaType() == PGM_VIEW) // Disable controls not valid for view columns
 		{
@@ -328,7 +328,7 @@ int dlgColumn::Go(bool modal)
 			cbDatatype->Disable();
 			txtAttstattarget->Disable();
 			cbStorage->Disable();
-            cbCollation->Disable();
+			cbCollation->Disable();
 		}
 		else if (column->GetTable()->GetMetaType() == GP_EXTTABLE) // Disable controls not valid for external table columns
 		{
@@ -339,7 +339,7 @@ int dlgColumn::Go(bool modal)
 			txtAttstattarget->Disable();
 			txtDefault->Disable();
 			cbStorage->Disable();
-            cbCollation->Disable();
+			cbCollation->Disable();
 		}
 		else if (table->GetOfTypeOid() > 0)
 		{
@@ -350,11 +350,11 @@ int dlgColumn::Go(bool modal)
 			txtAttstattarget->Enable();
 			txtDefault->Enable();
 			cbStorage->Enable();
-            cbCollation->Disable();
+			cbCollation->Disable();
 		}
 
 		cbStorage->SetValue(column->GetStorage());
-        cbCollation->SetValue(column->GetCollation());
+		cbCollation->SetValue(column->GetCollation());
 
 		size_t i;
 		for (i = 0 ; i < column->GetVariables().GetCount() ; i++)
@@ -422,8 +422,8 @@ wxString dlgColumn::GetSql()
 					sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 					       +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
 					       +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
-                    if (!cbCollation->GetValue().IsEmpty())
-                        sql += wxT(" COLLATE ") + cbCollation->GetValue();
+					if (!cbCollation->GetValue().IsEmpty())
+						sql += wxT(" COLLATE ") + cbCollation->GetValue();
 					sql += wxT(";\n");
 				}
 			}
@@ -543,8 +543,8 @@ wxString dlgColumn::GetSql()
 			      + wxT("\n   ADD COLUMN ") + qtIdent(name)
 			      + wxT(" ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
 
-            if (!cbCollation->GetValue().IsEmpty())
-                sql += wxT(" COLLATE ") + cbCollation->GetValue();
+			if (!cbCollation->GetValue().IsEmpty())
+				sql += wxT(" COLLATE ") + cbCollation->GetValue();
 
 			if (chkNotNull->GetValue())
 				sql += wxT(" NOT NULL");
@@ -585,8 +585,8 @@ wxString dlgColumn::GetDefinition()
 {
 	wxString sql, col;
 	sql = GetQuotedTypename(cbDatatype->GetGuessedSelection());
-    if (!cbCollation->GetValue().IsEmpty())
-        sql += wxT(" COLLATE ") + cbCollation->GetValue();
+	if (!cbCollation->GetValue().IsEmpty())
+		sql += wxT(" COLLATE ") + cbCollation->GetValue();
 	if (chkNotNull->GetValue())
 		sql += wxT(" NOT NULL");
 

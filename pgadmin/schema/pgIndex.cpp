@@ -192,44 +192,44 @@ void pgIndexBase::ReadColumnDetails()
 					options = wxT("  i.indoption[") + NumToStr((long)(i - 1)) + wxT("] AS options,\n");
 
 				pgSet *res;
-                wxString query;
+				wxString query;
 
 				if (GetConnection()->BackendMinimumVersion(9, 0))
 				{
 					query = wxT("SELECT\n") + options +
-					          wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
-					          wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
-					          wxT("  ELSE\n") +
-					          wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-					          wxT("  END AS coldef,\n") +
-					          wxT("  op.oprname\n");
-                    if (GetConnection()->BackendMinimumVersion(9, 1))
-                        query += wxT(",\n  coll.collname, nspc.nspname as collnspname\n");
+					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
+					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
+					        wxT("  ELSE\n") +
+					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
+					        wxT("  END AS coldef,\n") +
+					        wxT("  op.oprname\n");
+					if (GetConnection()->BackendMinimumVersion(9, 1))
+						query += wxT(",\n  coll.collname, nspc.nspname as collnspname\n");
 					query += wxT("FROM pg_index i\n")
-					          wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
-					          wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i - 1)) + wxT("])\n") +
-					          wxT("LEFT OUTER JOIN pg_constraint c ON (c.conindid = i.indexrelid) ")
-					          wxT("LEFT OUTER JOIN pg_operator op ON (op.oid = c.conexclop[") + NumToStr(i) + wxT("])\n");
-                    if (GetConnection()->BackendMinimumVersion(9, 1))
-                        query += wxT("LEFT OUTER JOIN pg_collation coll ON a.attcollation=coll.oid\n")
-                                 wxT("LEFT OUTER JOIN pg_namespace nspc ON coll.collnamespace=nspc.oid\n");
+					         wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
+					         wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i - 1)) + wxT("])\n") +
+					         wxT("LEFT OUTER JOIN pg_constraint c ON (c.conindid = i.indexrelid) ")
+					         wxT("LEFT OUTER JOIN pg_operator op ON (op.oid = c.conexclop[") + NumToStr(i) + wxT("])\n");
+					if (GetConnection()->BackendMinimumVersion(9, 1))
+						query += wxT("LEFT OUTER JOIN pg_collation coll ON a.attcollation=coll.oid\n")
+						         wxT("LEFT OUTER JOIN pg_namespace nspc ON coll.collnamespace=nspc.oid\n");
 					query += wxT("WHERE i.indexrelid = ") + GetOidStr();
 				}
 				else
 				{
 					query = wxT("SELECT\n") + options +
-					          wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
-					          wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
-					          wxT("  ELSE\n") +
-					          wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-					          wxT("  END AS coldef\n") +
-					          wxT("FROM pg_index i\n") +
-					          wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
-					          wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i - 1)) + wxT("])\n") +
-					          wxT("WHERE i.indexrelid = ") + GetOidStr();
+					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
+					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
+					        wxT("  ELSE\n") +
+					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
+					        wxT("  END AS coldef\n") +
+					        wxT("FROM pg_index i\n") +
+					        wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
+					        wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i - 1)) + wxT("])\n") +
+					        wxT("WHERE i.indexrelid = ") + GetOidStr();
 				}
-                
-                res = ExecuteSet(query);
+
+				res = ExecuteSet(query);
 
 				if (res->NumRows() > 0)
 				{
@@ -262,18 +262,18 @@ void pgIndexBase::ReadColumnDetails()
 
 				columns += coldef;
 				quotedColumns += coldef;
-                columnList.Add(coldef);
+				columnList.Add(coldef);
 
-                if (GetConnection()->BackendMinimumVersion(9, 1))
-                {
-                    wxString collation = wxEmptyString;
-                    if (!res->GetVal(wxT("collname")).IsEmpty())
-                    {
-                        collation = qtIdent(res->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(res->GetVal(wxT("collname")));
-                        quotedColumns += wxT(" COLLATE ") + collation;
-                    }
-                    collationsArray.Add(collation);
-                }
+				if (GetConnection()->BackendMinimumVersion(9, 1))
+				{
+					wxString collation = wxEmptyString;
+					if (!res->GetVal(wxT("collname")).IsEmpty())
+					{
+						collation = qtIdent(res->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(res->GetVal(wxT("collname")));
+						quotedColumns += wxT(" COLLATE ") + collation;
+					}
+					collationsArray.Add(collation);
+				}
 			}
 		}
 		else
