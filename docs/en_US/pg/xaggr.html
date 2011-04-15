@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
 <link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="prev" href="xfunc-c.html" title="33.9. C-Language Functions">
 <link rel="next" href="xtypes.html" title="33.11. User-Defined Types">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="33.10. User-Defined Aggregates">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="xaggr">33.10. User-Defined Aggregates</h2></div></div></div>
-<a name="id2743894"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
+<a name="id2743842"></a><p>   Aggregate functions  in <span class="productname">PostgreSQL</span> 
    are expressed in terms of <em class="firstterm">state values</em>
    and <em class="firstterm">state transition functions</em>.
    That is, an aggregate operates using a state value that is updated
@@ -68,7 +68,7 @@ SELECT sum(a) FROM test_complex;
    expects <code class="function">sum</code> to behave that way.  We can do this simply by
    omitting the <code class="literal">initcond</code> phrase, so that the initial state
    condition is null.  Ordinarily this would mean that the <code class="literal">sfunc</code>
-   would need to check for a null state-condition input, but for
+   would need to check for a null state-condition input.  But for
    <code class="function">sum</code> and some other simple aggregates like
    <code class="function">max</code> and <code class="function">min</code>,
    it is sufficient to insert the first nonnull input value into
@@ -89,8 +89,8 @@ SELECT sum(a) FROM test_complex;
    It requires
    two pieces of running state: the sum of the inputs and the count
    of the number of inputs.  The final result is obtained by dividing
-   these quantities.  Average is typically implemented by using a
-   two-element array as the state value.  For example,
+   these quantities.  Average is typically implemented by using an
+   array as the state value.  For example,
    the built-in implementation of <code class="function">avg(float8)</code>
    looks like:
 
@@ -103,6 +103,11 @@ SELECT sum(a) FROM test_complex;
     initcond = '{0,0}'
 );</pre>
 <p>
+
+   (<code class="function">float8_accum</code> requires a three-element array, not just
+   two elements, because it accumulates the sum of squares as well as
+   the sum and count of the inputs.  This is so that it can be used for
+   some other aggregates besides <code class="function">avg</code>.)
   </p>
 <p>   Aggregate functions may use polymorphic
    state transition functions or final functions, so that the same functions

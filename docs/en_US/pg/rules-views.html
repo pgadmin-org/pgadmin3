@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
 <link rel="up" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="prev" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="next" href="rules-update.html" title="35.3. Rules on INSERT, UPDATE, and DELETE">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="35.2. Views and the Rule System">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-views">35.2. Views and the Rule System</h2></div></div></div>
-<a name="id2749158"></a><a name="id2749170"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
+<a name="id2749159"></a><a name="id2749171"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
     using the rule system. In fact, there is essentially no difference
     between
 
@@ -341,7 +341,7 @@ SELECT * FROM shoelace;
    </p>
 </div>
 <div class="sect2" title="35.2.2. View Rules in Non-SELECT Statements">
-<div class="titlepage"><div><div><h3 class="title" id="id2749910">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2749898">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
 <p>    Two details of the query tree aren't touched in the description of
     view rules above. These are the command type and the result relation.
     In fact, view rules don't need this information.</p>
@@ -407,7 +407,7 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
 <p>    To resolve this problem, another entry is added to the target list
     in <code class="command">UPDATE</code> (and also in
     <code class="command">DELETE</code>) statements: the current tuple ID
-    (<acronym class="acronym">CTID</acronym>).<a name="id2750129"></a>
+    (<acronym class="acronym">CTID</acronym>).<a name="id2750117"></a>
     This is a system column containing the
     file block number and position in the block for the row. Knowing
     the table, the <acronym class="acronym">CTID</acronym> can be used to retrieve the
@@ -431,7 +431,7 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
     the same way to any command. There is no difference.</p>
 </div>
 <div class="sect2" title="35.2.3. The Power of Views in PostgreSQL">
-<div class="titlepage"><div><div><h3 class="title" id="id2750209">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2750197">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
 <p>    The above demonstrates how the rule system incorporates view
     definitions into the original query tree. In the second example, a
     simple <code class="command">SELECT</code> from one view created a final

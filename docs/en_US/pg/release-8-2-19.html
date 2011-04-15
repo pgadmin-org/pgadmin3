@@ -1,0 +1,166 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.3. Release 8.2.19</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-2-20.html" title="E.2. Release 8.2.20">
+<link rel="next" href="release-8-2-18.html" title="E.4. Release 8.2.18">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.3. Release 8.2.19">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-19">E.3. Release 8.2.19</h2></div></div></div>
+<div class="note" title="Release Date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release Date</h3>
+<p>2010-12-16</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.18.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.22. Release 8.2">Section E.22, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" title="E.3.1. Migration to Version 8.2.19">
+<div class="titlepage"><div><div><h3 class="title" id="id2889240">E.3.1. Migration to Version 8.2.19</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.14,
+    see the release notes for 8.2.14.
+   </p>
+</div>
+<div class="sect2" title="E.3.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2889249">E.3.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Force the default
+      <a class="link" href="runtime-config-wal.html#guc-wal-sync-method"><code class="varname">wal_sync_method</code></a>
+      to be <code class="literal">fdatasync</code> on Linux (Tom Lane, Marti Raudsepp)
+     </p>
+<p>      The default on Linux has actually been <code class="literal">fdatasync</code> for many
+      years, but recent kernel changes caused <span class="productname">PostgreSQL</span> to
+      choose <code class="literal">open_datasync</code> instead.  This choice did not result
+      in any performance improvement, and caused outright failures on
+      certain filesystems, notably <code class="literal">ext4</code> with the
+      <code class="literal">data=journal</code> mount option.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix assorted bugs in WAL replay logic for GIN indexes (Tom Lane)
+     </p>
+<p>      This could result in <span class="quote">&#8220;<span class="quote">bad buffer id: 0</span>&#8221;</span> failures or
+      corruption of index contents during replication.
+     </p>
+</li>
+<li class="listitem"><p>      Fix recovery from base backup when the starting checkpoint WAL record
+      is not in the same WAL segment as its redo point (Jeff Davis)
+     </p></li>
+<li class="listitem">
+<p>      Add support for detecting register-stack overrun on <code class="literal">IA64</code>
+      (Tom Lane)
+     </p>
+<p>      The <code class="literal">IA64</code> architecture has two hardware stacks.  Full
+      prevention of stack-overrun failures requires checking both.
+     </p>
+</li>
+<li class="listitem">
+<p>      Add a check for stack overflow in <code class="function">copyObject()</code> (Tom Lane)
+     </p>
+<p>      Certain code paths could crash due to stack overflow given a
+      sufficiently complex query.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix detection of page splits in temporary GiST indexes (Heikki
+      Linnakangas)
+     </p>
+<p>      It is possible to have a <span class="quote">&#8220;<span class="quote">concurrent</span>&#8221;</span> page split in a
+      temporary index, if for example there is an open cursor scanning the
+      index when an insertion is done.  GiST failed to detect this case and
+      hence could deliver wrong results when execution of the cursor
+      continued.
+     </p>
+</li>
+<li class="listitem"><p>      Avoid memory leakage while <code class="command">ANALYZE</code>'ing complex index
+      expressions (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Ensure an index that uses a whole-row Var still depends on its table
+      (Tom Lane)
+     </p>
+<p>      An index declared like <code class="literal">create index i on t (foo(t.*))</code>
+      would not automatically get dropped when its table was dropped.
+     </p>
+</li>
+<li class="listitem">
+<p>      Do not <span class="quote">&#8220;<span class="quote">inline</span>&#8221;</span> a SQL function with multiple <code class="literal">OUT</code>
+      parameters (Tom Lane)
+     </p>
+<p>      This avoids a possible crash due to loss of information about the
+      expected result rowtype.
+     </p>
+</li>
+<li class="listitem"><p>      Behave correctly if <code class="literal">ORDER BY</code>, <code class="literal">LIMIT</code>,
+      <code class="literal">FOR UPDATE</code>, or <code class="literal">WITH</code> is attached to the
+      <code class="literal">VALUES</code> part of <code class="literal">INSERT ... VALUES</code> (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix constant-folding of <code class="literal">COALESCE()</code> expressions (Tom Lane)
+     </p>
+<p>      The planner would sometimes attempt to evaluate sub-expressions that
+      in fact could never be reached, possibly leading to unexpected errors.
+     </p>
+</li>
+<li class="listitem">
+<p>      Add print functionality for <code class="structname">InhRelation</code> nodes (Tom Lane)
+     </p>
+<p>      This avoids a failure when <code class="varname">debug_print_parse</code> is enabled
+      and certain types of query are executed.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix incorrect calculation of distance from a point to a horizontal
+      line segment (Tom Lane)
+     </p>
+<p>      This bug affected several different geometric distance-measurement
+      operators.
+     </p>
+</li>
+<li class="listitem"><p>      Fix <span class="application">PL/pgSQL</span>'s handling of <span class="quote">&#8220;<span class="quote">simple</span>&#8221;</span>
+      expressions to not fail in recursion or error-recovery cases (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix <span class="application">PL/Python</span>'s handling of set-returning functions
+      (Jan Urbanski)
+     </p>
+<p>      Attempts to call SPI functions within the iterator generating a set
+      result would fail.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix bug in <code class="filename">contrib/cube</code>'s GiST picksplit algorithm
+      (Alexander Korotkov)
+     </p>
+<p>      This could result in considerable inefficiency, though not actually
+      incorrect answers, in a GiST index on a <code class="type">cube</code> column.
+      If you have such an index, consider <code class="command">REINDEX</code>ing it after
+      installing this update.
+     </p>
+</li>
+<li class="listitem"><p>      Don't emit <span class="quote">&#8220;<span class="quote">identifier will be truncated</span>&#8221;</span> notices in
+      <code class="filename">contrib/dblink</code> except when creating new connections
+      (Itagaki Takahiro)
+     </p></li>
+<li class="listitem"><p>      Fix potential coredump on missing public key in
+      <code class="filename">contrib/pgcrypto</code> (Marti Raudsepp)
+     </p></li>
+<li class="listitem"><p>      Fix memory leak in <code class="filename">contrib/xml2</code>'s XPath query functions
+      (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2010o
+      for DST law changes in Fiji and Samoa;
+      also historical corrections for Hong Kong.
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

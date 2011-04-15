@@ -1,0 +1,106 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.20</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2-19.html" title="E.3. Release 8.2.19">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.2. Release 8.2.20">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-20">E.2. Release 8.2.20</h2></div></div></div>
+<div class="note" title="Release Date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release Date</h3>
+<p>2011-01-31</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.19.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.22. Release 8.2">Section E.22, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" title="E.2.1. Migration to Version 8.2.20">
+<div class="titlepage"><div><div><h3 class="title" id="id2889014">E.2.1. Migration to Version 8.2.20</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.14,
+    see the release notes for 8.2.14.
+   </p>
+</div>
+<div class="sect2" title="E.2.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2889023">E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Avoid failures when <code class="command">EXPLAIN</code> tries to display a simple-form
+      <code class="literal">CASE</code> expression (Tom Lane)
+     </p>
+<p>      If the <code class="literal">CASE</code>'s test expression was a constant, the planner
+      could simplify the <code class="literal">CASE</code> into a form that confused the
+      expression-display code, resulting in <span class="quote">&#8220;<span class="quote">unexpected CASE WHEN
+      clause</span>&#8221;</span> errors.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix assignment to an array slice that is before the existing range
+      of subscripts (Tom Lane)
+     </p>
+<p>      If there was a gap between the newly added subscripts and the first
+      pre-existing subscript, the code miscalculated how many entries needed
+      to be copied from the old array's null bitmap, potentially leading to
+      data corruption or crash.
+     </p>
+</li>
+<li class="listitem">
+<p>      Avoid unexpected conversion overflow in planner for very distant date
+      values (Tom Lane)
+     </p>
+<p>      The <code class="type">date</code> type supports a wider range of dates than can be
+      represented by the <code class="type">timestamp</code> types, but the planner assumed it
+      could always convert a date to timestamp with impunity.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix <span class="application">pg_restore</span>'s text output for large objects (BLOBs)
+      when <code class="varname">standard_conforming_strings</code> is on (Tom Lane)
+     </p>
+<p>      Although restoring directly to a database worked correctly, string
+      escaping was incorrect if <span class="application">pg_restore</span> was asked for
+      SQL text output and <code class="varname">standard_conforming_strings</code> had been
+      enabled in the source database.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix erroneous parsing of <code class="type">tsquery</code> values containing
+      <code class="literal">... &amp; !(subexpression) | ...</code> (Tom Lane)
+     </p>
+<p>      Queries containing this combination of operators were not executed
+      correctly.  The same error existed in <code class="filename">contrib/intarray</code>'s
+      <code class="type">query_int</code> type and <code class="filename">contrib/ltree</code>'s
+      <code class="type">ltxtquery</code> type.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix buffer overrun in <code class="filename">contrib/intarray</code>'s input function
+      for the <code class="type">query_int</code> type (Apple)
+     </p>
+<p>      This bug is a security risk since the function's return address could
+      be overwritten.  Thanks to Apple Inc's security team for reporting this
+      issue and supplying the fix.  (CVE-2010-4015)
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix bug in <code class="filename">contrib/seg</code>'s GiST picksplit algorithm
+      (Alexander Korotkov)
+     </p>
+<p>      This could result in considerable inefficiency, though not actually
+      incorrect answers, in a GiST index on a <code class="type">seg</code> column.
+      If you have such an index, consider <code class="command">REINDEX</code>ing it after
+      installing this update.  (This is identical to the bug that was fixed in
+      <code class="filename">contrib/cube</code> in the previous update.)
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>
