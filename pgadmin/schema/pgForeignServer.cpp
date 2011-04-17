@@ -54,6 +54,41 @@ wxString pgForeignServer::GetTranslatedMessage(int kindOfMessage) const
 		case DROPTITLE:
 			message = _("Drop foreign server?");
 			break;
+		case PROPERTIESREPORT:
+			message = _("Foreign server properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Foreign server properties");
+			break;
+		case DDLREPORT:
+			message = _("Foreign server DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Foreign server DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("Foreign server statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("Foreign server statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Foreign server dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Foreign server dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Foreign server dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Foreign server dependents");
+			break;
 	}
 
 	return message;
@@ -241,6 +276,9 @@ wxString pgForeignServerObjCollection::GetTranslatedMessage(int kindOfMessage) c
 			break;
 		case REFRESHINGDETAILS:
 			message = _("Refreshing foreign servers");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Foreign servers list report");
 			break;
 	}
 

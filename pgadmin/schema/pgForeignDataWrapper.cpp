@@ -53,6 +53,41 @@ wxString pgForeignDataWrapper::GetTranslatedMessage(int kindOfMessage) const
 		case DROPTITLE:
 			message = _("Drop foreign data wrapper?");
 			break;
+		case PROPERTIESREPORT:
+			message = _("Foreign data wrapper properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Foreign data wrapper properties");
+			break;
+		case DDLREPORT:
+			message = _("Foreign data wrapper DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Foreign data wrapper DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("Foreign data wrapper statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("Foreign data wrapper statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Foreign data wrapper dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Foreign data wrapper dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Foreign data wrapper dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Foreign data wrapper dependents");
+			break;
 	}
 
 	return message;
@@ -275,6 +310,9 @@ wxString pgForeignDataWrapperObjCollection::GetTranslatedMessage(int kindOfMessa
 			break;
 		case REFRESHINGDETAILS:
 			message = _("Refreshing foreign data wrappers");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Foreign data wrappers list report");
 			break;
 	}
 

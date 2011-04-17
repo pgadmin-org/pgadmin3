@@ -56,6 +56,7 @@
 #include "schema/pgOperatorFamily.h"
 #include "schema/pgSchema.h"
 #include "schema/pgIndexConstraint.h"
+#include "schema/pgExtension.h"
 #include "schema/edbPackage.h"
 #include "schema/edbSynonym.h"
 #include "schema/pgCollation.h"
@@ -119,6 +120,10 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgConversion *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Database"))
 		message = ((pgDatabase *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Exclude"))
+		message = ((pgExclude *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Extension"))
+		message = ((pgExtension *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Domain"))
 		message = ((pgDomain *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("External Table"))
@@ -147,8 +152,6 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgGroupRole *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Index"))
 		message = ((pgIndexBase *)this)->GetTranslatedMessage(kindOfMessage);
-	else if (type == wxT("Index Constraint"))
-		message = ((pgIndexConstraint *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Language"))
 		message = ((pgLanguage *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Login Role"))
@@ -167,6 +170,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgaSchedule *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("pgAgent Step"))
 		message = ((pgaStep *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Primary Key"))
+		message = ((pgPrimaryKey *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Procedure"))
 		message = ((pgProcedure *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Resource Queue"))
@@ -192,6 +197,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgTriggerFunction *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Type"))
 		message = ((pgType *)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Unique"))
+        message = ((pgUnique *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("User"))
 		message = ((pgUser *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("User Mapping"))
@@ -222,6 +229,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((pgDatabaseCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Domains"))
 			message = ((pgDomainCollection *)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Extensions"))
+            message = ((pgExtensionCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("External Tables"))
 			message = ((gpExtTableCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("ForeignKeys"))
@@ -248,8 +257,6 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((pgGroupRoleCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Indexes"))
 			message = ((pgIndexBaseCollection *)this)->GetTranslatedMessage(kindOfMessage);
-		//else if (type == wxT("Index Constraints"))
-		//    message = ((pgIndexConstraintCollection*)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Languages"))
 			message = ((pgLanguageCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Login Roles"))

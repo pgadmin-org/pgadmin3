@@ -198,6 +198,79 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
 	}
 }
 
+wxString pgPrimaryKey::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on primary key");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing primary key");
+			message += wxT(" ") + GetName();
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for primary key");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop primary key \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop primary key \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop primary key cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop primary key?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Primary key properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Primary key properties");
+			break;
+		case DDLREPORT:
+			message = _("Primary key DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Primary key DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("Primary key statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("Primary key statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Primary key dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Primary key dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Primary key dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Primary key dependents");
+			break;
+	}
+
+	return message;
+}
+
+
 pgObject *pgPrimaryKey::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
 	pgObject *index = 0;
@@ -208,6 +281,79 @@ pgObject *pgPrimaryKey::Refresh(ctlTree *browser, const wxTreeItemId item)
 	return index;
 }
 
+wxString pgUnique::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on unique constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing unique constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for unique constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop unique constraint \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop unique constraint \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop unique constraint cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop unique constraint?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Unique constraint properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Unique constraint properties");
+			break;
+		case DDLREPORT:
+			message = _("Unique constraint DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Unique constraint DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("Unique constraint statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("Unique constraint statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Unique constraint dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Unique constraint dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Unique constraint dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Unique constraint dependents");
+			break;
+	}
+
+	return message;
+}
+
+
 pgObject *pgUnique::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
 	pgObject *index = 0;
@@ -217,6 +363,79 @@ pgObject *pgUnique::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 	return index;
 }
+
+wxString pgExclude::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on exclusion constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing exclusion constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for exclusion constraint");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop exclusion constraint \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop exclusion constraint \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop exclusion constraint cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop exclusion constraint?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Exclusion constraint properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Exclusion constraint properties");
+			break;
+		case DDLREPORT:
+			message = _("Exclusion constraint DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Exclusion constraint DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("Exclusion constraint statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("Exclusion constraint statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Exclusion constraint dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Exclusion constraint dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Exclusion constraint dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Exclusion constraint dependents");
+			break;
+	}
+
+	return message;
+}
+
 
 pgObject *pgExclude::Refresh(ctlTree *browser, const wxTreeItemId item)
 {

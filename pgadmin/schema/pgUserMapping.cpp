@@ -54,6 +54,41 @@ wxString pgUserMapping::GetTranslatedMessage(int kindOfMessage) const
 		case DROPTITLE:
 			message = _("Drop user mapping?");
 			break;
+		case PROPERTIESREPORT:
+			message = _("User mapping properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("User mapping properties");
+			break;
+		case DDLREPORT:
+			message = _("User mapping DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("User mapping DDL");
+			break;
+		case STATISTICSREPORT:
+			message = _("User mapping statistics report");
+			message += wxT(" - ") + GetName();
+			break;
+		case OBJSTATISTICS:
+			message = _("User mapping statistics");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("User mapping dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("User mapping dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("User mapping dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("User mapping dependents");
+			break;
 	}
 
 	return message;
@@ -208,6 +243,9 @@ wxString pgUserMappingCollection::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case REFRESHINGDETAILS:
 			message = _("Refreshing user mappings");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("User mappings list report");
 			break;
 	}
 

@@ -61,6 +61,7 @@ public:
 	pgPrimaryKey(pgTable *newTable, const wxString &newName = wxT(""))
 		: pgIndexConstraint(newTable, primaryKeyFactory, newName) {}
 
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 	bool CanCreate()
 	{
@@ -84,6 +85,7 @@ public:
 	pgUnique(pgTable *newTable, const wxString &newName = wxT(""))
 		: pgIndexConstraint(newTable, uniqueFactory, newName) {}
 
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 };
 
@@ -103,6 +105,7 @@ public:
 	pgExclude(pgTable *newTable, const wxString &newName = wxT(""))
 		: pgIndexConstraint(newTable, excludeFactory, newName) {}
 
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 };
 
