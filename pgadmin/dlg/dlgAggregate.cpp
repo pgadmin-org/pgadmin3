@@ -344,9 +344,12 @@ wxString dlgAggregate::GetSql()
 				sql += wxT(",\n   INITCOND=") + qtDbString(initial);
 		}
 
-		wxString opr = cbSortOp->GetStringKey();
-		if (!opr.IsEmpty())
-			sql += wxT(",\n   SORTOP=") + opr;
+		if (!cbSortOp->GetValue().IsEmpty())
+        {
+            wxString opr = cbSortOp->GetStringKey();
+            if (!opr.IsEmpty())
+                sql += wxT(",\n   SORTOP=") + opr;
+        }
 
 		sql += wxT("\n);\n");
 
