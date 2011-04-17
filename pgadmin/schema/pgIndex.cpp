@@ -522,7 +522,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	         + projoin +
 	         wxT("  JOIN pg_namespace n ON n.oid=tab.relnamespace\n")
 	         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
-	         wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.deptype='i')\n")
+	         wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.refclassid=(SELECT oid FROM pg_class WHERE relname='pg_constraint') AND dep.deptype='i')\n")
 	         wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
 	         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
 	         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
@@ -693,7 +693,7 @@ void pgIndexBaseCollection::ShowStatistics(frmMain *form, ctlListView *statistic
 	sql += wxT("\n")
 	       wxT("  FROM pg_stat_all_indexes stat\n")
 	       wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
-	       wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0')\n")
+	       wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.refclassid=(SELECT oid FROM pg_class WHERE relname='pg_constraint'))\n")
 	       wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
 	       wxT("  WHERE schemaname = ") + qtDbString(GetTable()->GetSchema()->GetName())
 	       + wxT(" AND stat.relname = ") + qtDbString(GetTable()->GetName())
