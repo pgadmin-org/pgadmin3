@@ -256,17 +256,24 @@ int dlgIndexConstraint::Go(bool modal)
 		}
 
 		// Add the indexes
-		cbIndex->Append(wxT(""));
-		set = connection->ExecuteSet(
-		          wxT("SELECT relname FROM pg_class, pg_index WHERE pg_class.oid=indexrelid AND indrelid=") + table->GetOidStr());
-		if (set)
+		if (table)
 		{
-			while (!set->Eof())
+			cbIndex->Append(wxT(""));
+			set = connection->ExecuteSet(
+			          wxT("SELECT relname FROM pg_class, pg_index WHERE pg_class.oid=indexrelid AND indrelid=") + table->GetOidStr());
+			if (set)
 			{
-				cbIndex->Append(set->GetVal(0));
-				set->MoveNext();
+				while (!set->Eof())
+				{
+					cbIndex->Append(set->GetVal(0));
+					set->MoveNext();
+				}
+				delete set;
 			}
-			delete set;
+		}
+		else
+		{
+			cbIndex->Disable();
 		}
 
 		// Add the default tablespace
