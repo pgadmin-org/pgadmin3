@@ -205,7 +205,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 					if (GetConnection()->BackendMinimumVersion(9, 1))
 					{
-						if (set->GetVal(wxT("collname")).IsEmpty())
+						if (set->GetVal(wxT("collname")).IsEmpty() || (set->GetVal(wxT("collname")) == wxT("default") && set->GetVal(wxT("collnspname")) == wxT("pg_catalog")))
 							collation = wxEmptyString;
 						else
 						{

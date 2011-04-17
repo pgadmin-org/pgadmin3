@@ -219,7 +219,7 @@ wxString dlgDomain::GetSql()
 		sql = wxT("CREATE DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
 		      + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
 
-		if (!cbCollation->GetValue().IsEmpty())
+		if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 			sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());

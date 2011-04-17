@@ -297,7 +297,7 @@ wxString dlgIndex::GetColumns()
 		if (this->database->BackendMinimumVersion(9, 1))
 		{
 			wxString collation = lstColumns->GetText(pos, 4);
-			if (!collation.IsEmpty())
+			if (!collation.IsEmpty() && collation != wxT("pg_catalog.\"default\""))
 				sql += wxT(" COLLATE ") + collation;
 		}
 

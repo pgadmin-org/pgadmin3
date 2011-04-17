@@ -177,7 +177,7 @@ wxString pgColumn::GetSql(ctlTree *browser)
 				      + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
 				      + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ")
 				      + GetQuotedTypename();
-				if (!GetCollation().IsEmpty())
+				if (!GetCollation().IsEmpty() && GetCollation() != wxT("pg_catalog.\"default\""))
 					sql += wxT(" COLLATE ") + GetCollation();
 				sql += wxT(";\n");
 
@@ -302,7 +302,7 @@ wxString pgColumn::GetDefinition()
 	if (table->GetOfTypeOid() == 0)
 		sql += GetQuotedTypename();
 
-	if (!GetCollation().IsEmpty())
+	if (!GetCollation().IsEmpty() && GetCollation() != wxT("pg_catalog.\"default\""))
 		sql += wxT(" COLLATE ") + GetCollation();
 
 	if (GetDatabase()->BackendMinimumVersion(8, 1))

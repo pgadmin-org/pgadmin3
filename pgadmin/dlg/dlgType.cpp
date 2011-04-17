@@ -833,7 +833,7 @@ wxString dlgType::GetFullTypeName(int type)
 			typname += wxT(",") + memberPrecisions.Item(type);
 		typname += wxT(")");
 	}
-	if (!memberPrecisions.Item(type).IsEmpty())
+	if (!memberPrecisions.Item(type).IsEmpty() && memberPrecisions.Item(type) != wxT("pg_catalog.\"default\""))
 		typname += wxT(" COLLATE ") + memberCollations.Item(type);
 
 	return typname;
@@ -878,7 +878,7 @@ wxString dlgType::GetSqlForTypes()
 			new_collation = memberCollations.Item(i);
 			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" ADD ATTRIBUTE ")
 			       + new_name + wxT(" ") + new_type;
-			if (!new_collation.IsEmpty())
+			if (!new_collation.IsEmpty() && new_collation != wxT("pg_catalog.\"default\""))
 				sql += wxT(" COLLATE ") + new_collation;
 			sql += wxT(";\n");
 		}

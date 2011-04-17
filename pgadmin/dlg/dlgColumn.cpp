@@ -422,7 +422,7 @@ wxString dlgColumn::GetSql()
 					sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 					       +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
 					       +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
-					if (!cbCollation->GetValue().IsEmpty())
+					if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 						sql += wxT(" COLLATE ") + cbCollation->GetValue();
 					sql += wxT(";\n");
 				}
@@ -543,7 +543,7 @@ wxString dlgColumn::GetSql()
 			      + wxT("\n   ADD COLUMN ") + qtIdent(name)
 			      + wxT(" ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
 
-			if (!cbCollation->GetValue().IsEmpty())
+			if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 				sql += wxT(" COLLATE ") + cbCollation->GetValue();
 
 			if (chkNotNull->GetValue())
@@ -585,7 +585,7 @@ wxString dlgColumn::GetDefinition()
 {
 	wxString sql, col;
 	sql = GetQuotedTypename(cbDatatype->GetGuessedSelection());
-	if (!cbCollation->GetValue().IsEmpty())
+	if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 		sql += wxT(" COLLATE ") + cbCollation->GetValue();
 	if (chkNotNull->GetValue())
 		sql += wxT(" NOT NULL");
