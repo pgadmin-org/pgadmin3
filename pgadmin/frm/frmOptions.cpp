@@ -328,6 +328,9 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Catalogs"));
 	lstDisplay->Append(_("Casts"));
 	lstDisplay->Append(_("Foreign Data Wrappers"));
+	lstDisplay->Append(_("Foreign Servers"));
+	lstDisplay->Append(_("User Mappings"));
+	lstDisplay->Append(_("Foreign Tables"));
 	lstDisplay->Append(_("Languages"));
 	lstDisplay->Append(_("Synonyms"));
 	lstDisplay->Append(_("Schemas"));

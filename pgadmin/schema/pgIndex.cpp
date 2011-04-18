@@ -171,7 +171,7 @@ void pgIndexBase::ReadColumnDetails()
 	if (!expandedKids)
 	{
 		expandedKids = true;
-        bool indexconstraint = GetMetaType() == PGM_PRIMARYKEY || GetMetaType() == PGM_UNIQUE || GetMetaType() == PGM_EXCLUDE;
+		bool indexconstraint = GetMetaType() == PGM_PRIMARYKEY || GetMetaType() == PGM_UNIQUE || GetMetaType() == PGM_EXCLUDE;
 
 		// Allocate memory to store column def
 		if (columnCount > 0) columnList.Alloc(columnCount);

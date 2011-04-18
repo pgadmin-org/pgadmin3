@@ -197,8 +197,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgTriggerFunction *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("Type"))
 		message = ((pgType *)this)->GetTranslatedMessage(kindOfMessage);
-    else if (type == wxT("Unique"))
-        message = ((pgUnique *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Unique"))
+		message = ((pgUnique *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("User"))
 		message = ((pgUser *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("User Mapping"))
@@ -229,8 +229,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((pgDatabaseCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Domains"))
 			message = ((pgDomainCollection *)this)->GetTranslatedMessage(kindOfMessage);
-        else if (type == wxT("Extensions"))
-            message = ((pgExtensionCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("Extensions"))
+			message = ((pgExtensionCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("External Tables"))
 			message = ((gpExtTableCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("ForeignKeys"))

@@ -141,7 +141,8 @@ void pgForeignServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 		// Log
 		wxLogInfo(wxT("Adding child object to foreign server %s"), GetIdentifier().c_str());
 
-		browser->AppendCollection(this, userMappingFactory);
+		if (settings->GetDisplayOption(_("User Mappings")))
+			browser->AppendCollection(this, userMappingFactory);
 	}
 
 	if (properties)

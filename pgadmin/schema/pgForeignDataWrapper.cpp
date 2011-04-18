@@ -137,7 +137,8 @@ void pgForeignDataWrapper::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlLi
 		// Log
 		wxLogInfo(wxT("Adding child object to foreign data wrapper %s"), GetIdentifier().c_str());
 
-		browser->AppendCollection(this, foreignServerFactory);
+		if (settings->GetDisplayOption(_("Foreign Servers")))
+			browser->AppendCollection(this, foreignServerFactory);
 	}
 
 	if (properties)

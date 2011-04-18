@@ -345,11 +345,11 @@ wxString dlgAggregate::GetSql()
 		}
 
 		if (!cbSortOp->GetValue().IsEmpty())
-        {
-            wxString opr = cbSortOp->GetStringKey();
-            if (!opr.IsEmpty())
-                sql += wxT(",\n   SORTOP=") + opr;
-        }
+		{
+			wxString opr = cbSortOp->GetStringKey();
+			if (!opr.IsEmpty())
+				sql += wxT(",\n   SORTOP=") + opr;
+		}
 
 		sql += wxT("\n);\n");
 
