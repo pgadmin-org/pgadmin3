@@ -171,6 +171,7 @@ void pgIndexBase::ReadColumnDetails()
 	if (!expandedKids)
 	{
 		expandedKids = true;
+        bool indexconstraint = GetMetaType() == PGM_PRIMARYKEY || GetMetaType() == PGM_UNIQUE || GetMetaType() == PGM_EXCLUDE;
 
 		// Allocate memory to store column def
 		if (columnCount > 0) columnList.Alloc(columnCount);
@@ -264,7 +265,7 @@ void pgIndexBase::ReadColumnDetails()
 				quotedColumns += coldef;
 				columnList.Add(coldef);
 
-				if (GetConnection()->BackendMinimumVersion(9, 1))
+				if (GetConnection()->BackendMinimumVersion(9, 1) && !indexconstraint)
 				{
 					wxString collation = wxEmptyString;
 					if (!res->GetVal(wxT("collname")).IsEmpty())
