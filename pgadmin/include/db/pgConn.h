@@ -91,7 +91,7 @@ public:
 	~pgConn();
 
 	bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
-	bool HasFeature(int feature = 0);
+	bool HasFeature(int feature = 0, bool forceCheck = false);
 	bool BackendMinimumVersion(int major, int minor);
 	bool BackendMinimumVersion(int major, int minor, int patch);
 	bool EdbMinimumVersion(int major, int minor);

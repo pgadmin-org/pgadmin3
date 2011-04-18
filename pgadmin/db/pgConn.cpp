@@ -469,9 +469,9 @@ bool pgConn::EdbMinimumVersion(int major, int minor)
 }
 
 
-bool pgConn::HasFeature(int featureNo)
+bool pgConn::HasFeature(int featureNo, bool forceCheck)
 {
-	if (!features[FEATURE_INITIALIZED])
+	if (!features[FEATURE_INITIALIZED] || forceCheck)
 	{
 		features[FEATURE_INITIALIZED] = true;
 

@@ -53,10 +53,10 @@
 
 
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
-	EVT_MENU(MNU_EXIT,                               frmStatus::OnExit)
+	EVT_MENU(MNU_EXIT,                            frmStatus::OnExit)
 
-	EVT_MENU(MNU_COPY,                               frmStatus::OnCopy)
-	EVT_MENU(MNU_COPY_QUERY,                               frmStatus::OnCopyQuery)
+	EVT_MENU(MNU_COPY,                            frmStatus::OnCopy)
+	EVT_MENU(MNU_COPY_QUERY,                      frmStatus::OnCopyQuery)
 
 	EVT_MENU(MNU_HELP,                            frmStatus::OnHelp)
 	EVT_MENU(MNU_STATUSPAGE,                      frmStatus::OnToggleStatusPane)
@@ -785,6 +785,8 @@ void frmStatus::AddXactPane()
 
 void frmStatus::AddLogPane()
 {
+	bool forceCheck = false;
+
 	// Create panel
 	wxPanel *pnlLog = new wxPanel(this);
 
@@ -821,9 +823,29 @@ void frmStatus::AddLogPane()
 	logList = (ctlListView *)lstLog;
 
 	// We don't need this report (but we need the pane)
+	// if the server release is 9.1 or more and the server has no adminpack
+	if (connection->BackendMinimumVersion(9, 1) &&
+	        !connection->HasFeature(FEATURE_FILEREAD))
+	{
+		// Search the adminpack extension
+		pgSet *set = connection->ExecuteSet(wxT("SELECT 1 FROM pg_available_extensions WHERE name='adminpack'"));
+		if (set->NumRows() == 1)
+		{
+			int answer = wxMessageBox(_("You don't have the adminpack extension, required to read log files. Do you want pgAdmin to install it?"),
+			                          _("Install adminpack extension?"),
+			                          wxYES_NO, this);
+			if (answer == wxYES)
+			{
+				connection->ExecuteScalar(wxT("CREATE EXTENSION adminpack"));
+				forceCheck = true;
+			}
+		}
+		delete set;
+	}
+
 	// if server release is less than 8.0 or if server has no adminpack
 	if (!(connection->BackendMinimumVersion(8, 0) &&
-	        connection->HasFeature(FEATURE_FILEREAD)))
+	        connection->HasFeature(FEATURE_FILEREAD, forceCheck)))
 	{
 		if (connection->BackendMinimumVersion(8, 0))
 			frmHint::ShowHint(this, HINT_INSTRUMENTATION);
