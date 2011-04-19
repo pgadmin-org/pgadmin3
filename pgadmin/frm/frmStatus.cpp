@@ -831,7 +831,7 @@ void frmStatus::AddLogPane()
 		pgSet *set = connection->ExecuteSet(wxT("SELECT 1 FROM pg_available_extensions WHERE name='adminpack'"));
 		if (set->NumRows() == 1)
 		{
-			int answer = wxMessageBox(_("You don't have the adminpack extension, required to read log files. Do you want pgAdmin to install it?"),
+			int answer = wxMessageBox(_("The adminpack extension is required to view log files, but is not currently installed. Would you like to install it, if available?"),
 			                          _("Install adminpack extension?"),
 			                          wxYES_NO, this);
 			if (answer == wxYES)
