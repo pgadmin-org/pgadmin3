@@ -244,6 +244,7 @@ bool pgDatabase::GetCanHint()
 void pgDatabase::ShowHint(frmMain *form, bool force)
 {
 	wxArrayString hints;
+	int rc = -1;
 
 	if (encoding == wxT("SQL_ASCII"))
 		hints.Add(HINT_ENCODING_ASCII);
@@ -257,10 +258,28 @@ void pgDatabase::ShowHint(frmMain *form, bool force)
 	if (GetServer()->GetConnection() == GetConnection() &&
 	        GetConnection()->BackendMinimumVersion(8, 0) &&
 	        !GetConnection()->HasFeature(FEATURE_FILEREAD))
-		hints.Add(HINT_INSTRUMENTATION);
+	{
+		// if the server release is 9.1 or more and the server has no adminpack
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+		{
+			// Search the adminpack extension
+			pgSet *set = GetConnection()->ExecuteSet(wxT("SELECT 1 FROM pg_available_extensions WHERE name='adminpack'"));
+			if (set->NumRows() == 1)
+				hints.Add(HINT_INSTRUMENTATION_91_WITH);
+			else
+				hints.Add(HINT_INSTRUMENTATION_91_WITHOUT);
+			delete set;
+		}
+		else
+			hints.Add(HINT_INSTRUMENTATION);
+	}
 
 	if (force || !hintShown)
-		frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
+	{
+		rc = frmHint::ShowHint(form, hints, GetFullIdentifier(), force);
+		if (rc == HINT_RC_FIX)
+			GetConnection()->ExecuteVoid(wxT("CREATE EXTENSION adminpack"), true);
+	}
 	hintShown = true;
 }
 

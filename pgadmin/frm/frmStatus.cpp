@@ -785,7 +785,8 @@ void frmStatus::AddXactPane()
 
 void frmStatus::AddLogPane()
 {
-	bool forceCheck = false;
+	int rc = -1;
+	wxString hint = HINT_INSTRUMENTATION;
 
 	// Create panel
 	wxPanel *pnlLog = new wxPanel(this);
@@ -823,39 +824,37 @@ void frmStatus::AddLogPane()
 	logList = (ctlListView *)lstLog;
 
 	// We don't need this report (but we need the pane)
-	// if the server release is 9.1 or more and the server has no adminpack
-	if (connection->BackendMinimumVersion(9, 1) &&
-	        !connection->HasFeature(FEATURE_FILEREAD))
-	{
-		// Search the adminpack extension
-		pgSet *set = connection->ExecuteSet(wxT("SELECT 1 FROM pg_available_extensions WHERE name='adminpack'"));
-		if (set->NumRows() == 1)
-		{
-			int answer = wxMessageBox(_("The adminpack extension is required to view log files, but is not currently installed. Would you like to install it, if available?"),
-			                          _("Install adminpack extension?"),
-			                          wxYES_NO, this);
-			if (answer == wxYES)
-			{
-				connection->ExecuteScalar(wxT("CREATE EXTENSION adminpack"));
-				forceCheck = true;
-			}
-		}
-		delete set;
-	}
-
 	// if server release is less than 8.0 or if server has no adminpack
 	if (!(connection->BackendMinimumVersion(8, 0) &&
-	        connection->HasFeature(FEATURE_FILEREAD, forceCheck)))
+	        connection->HasFeature(FEATURE_FILEREAD)))
 	{
-		if (connection->BackendMinimumVersion(8, 0))
-			frmHint::ShowHint(this, HINT_INSTRUMENTATION);
+		// if the server release is 9.1 or more and the server has no adminpack
+		if (connection->BackendMinimumVersion(9, 1))
+		{
+			// Search the adminpack extension
+			pgSet *set = connection->ExecuteSet(wxT("SELECT 1 FROM pg_available_extensions WHERE name='adminpack'"));
+			if (set->NumRows() == 1)
+				hint = HINT_INSTRUMENTATION_91_WITH;
+			else
+				hint = HINT_INSTRUMENTATION_91_WITHOUT;
+			delete set;
+		}
 
-		logList->InsertColumn(logList->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
-		logList->InsertItem(logList->GetItemCount(), _("Logs are not available for this server."), -1);
-		logList->Enable(false);
-		logTimer = NULL;
-		// We're done
-		return;
+		if (connection->BackendMinimumVersion(8, 0))
+			rc = frmHint::ShowHint(this, hint);
+
+		if (rc == HINT_RC_FIX)
+			connection->ExecuteVoid(wxT("CREATE EXTENSION adminpack"), true);
+
+		if (!connection->HasFeature(FEATURE_FILEREAD, true))
+		{
+			logList->InsertColumn(logList->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
+			logList->InsertItem(logList->GetItemCount(), _("Logs are not available for this server."), -1);
+			logList->Enable(false);
+			logTimer = NULL;
+			// We're done
+			return;
+		}
 	}
 
 	// Add each column to the list control

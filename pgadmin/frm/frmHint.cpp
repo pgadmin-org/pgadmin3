@@ -114,6 +114,20 @@ hintArray[] =
 		HINT_CANSUPPRESS
 	},
 	{
+		HINT_INSTRUMENTATION_91_WITH,
+		__("Server instrumentation not installed"),
+		0,
+		wxT("instrumentation91_with"),
+		HINT_CANSUPPRESS | HINT_CANFIX
+	},
+	{
+		HINT_INSTRUMENTATION_91_WITHOUT,
+		__("Server instrumentation not installed"),
+		0,
+		wxT("instrumentation91_without"),
+		HINT_CANSUPPRESS
+	},
+	{
 		HINT_ENCODING_UNICODE,
 		__("Database encoding is Unicode"),
 		0,
