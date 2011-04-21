@@ -59,6 +59,7 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
 	EVT_MENU(MNU_COPY_QUERY,                      frmStatus::OnCopyQuery)
 
 	EVT_MENU(MNU_HELP,                            frmStatus::OnHelp)
+	EVT_MENU(MNU_CONTENTS,						  frmStatus::OnContents)
 	EVT_MENU(MNU_STATUSPAGE,                      frmStatus::OnToggleStatusPane)
 	EVT_MENU(MNU_LOCKPAGE,                        frmStatus::OnToggleLockPane)
 	EVT_MENU(MNU_XACTPAGE,                        frmStatus::OnToggleXactPane)
@@ -244,7 +245,8 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	menuBar->Append(viewMenu, _("&View"));
 
 	wxMenu *helpMenu = new wxMenu();
-	helpMenu->Append(MNU_CONTENTS, _("&Help"), _("Open the helpfile."));
+	helpMenu->Append(MNU_CONTENTS, _("&Help contents"), _("Open the helpfile."));
+	helpMenu->Append(MNU_HELP, _("&Server status help"), _("Display help on this window."));
 
 	menuBar->Append(helpMenu, _("&Help"));
 
@@ -1181,18 +1183,16 @@ void frmStatus::OnHighlightStatus(wxCommandEvent &event)
 }
 
 
-void frmStatus::OnHelp(wxCommandEvent &event)
+void frmStatus::OnHelp(wxCommandEvent &ev)
 {
-	wxString page;
-	if (page.IsEmpty())
-		page = wxT("sql-commands");
-
-	if (connection->GetIsEdb())
-		DisplayHelp(page, HELP_ENTERPRISEDB);
-	else
-		DisplayHelp(page, HELP_POSTGRESQL);
+	DisplayHelp(wxT("status"), HELP_PGADMIN);
 }
 
+
+void frmStatus::OnContents(wxCommandEvent &ev)
+{
+	DisplayHelp(wxT("index"), HELP_PGADMIN);
+}
 
 void frmStatus::OnRateChange(wxCommandEvent &event)
 {

@@ -156,6 +156,7 @@ private:
 	void AddLogPane();
 
 	void OnHelp(wxCommandEvent &ev);
+	void OnContents(wxCommandEvent &ev);
 	void OnExit(wxCommandEvent &event);
 
 	void OnCopy(wxCommandEvent &ev);
