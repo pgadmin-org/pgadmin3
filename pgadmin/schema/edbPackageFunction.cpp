@@ -189,7 +189,10 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 	wxString sql, argDefsCol;
 
 	if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
-		argDefsCol = wxT("proargdefvals, ");
+	{
+		argDefsCol = obj->GetConnection()->EdbMinimumVersion(8, 4) ? wxT("proargdefaults") : wxT("proargdefvals");
+		argDefsCol += wxT(" AS argdefaults, ");
+	}
 
 	if (obj->GetConnection()->EdbMinimumVersion(8, 2))
 	{
@@ -259,7 +262,8 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 			// Function defaults
 			if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
 			{
-				tmp = packageFunctions->GetVal(wxT("proargdefvals"));
+				tmp = packageFunctions->GetVal(wxT("argdefaults"));
+
 				if (!tmp.IsEmpty())
 					argDefsTkz.SetString(tmp.Mid(1, tmp.Length() - 2), wxT(","));
 			}
