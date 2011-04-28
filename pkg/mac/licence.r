@@ -31,7 +31,7 @@ resource 'STR#' (5000, "English buttons") {
 data 'TEXT' (5000, "English") {
     "pgAdmin III\n"
     "\n"
-    "Copyright (c) 2002 - 2009, The pgAdmin Development Team\n"
+    "Copyright (c) 2002 - 2011, The pgAdmin Development Team\n"
     "\n"
     "Permission to use, copy, modify, and distribute this software and its documentation for any purpose, without fee, and without a written agreement is hereby granted, provided that the above copyright notice and this paragraph and the following two paragraphs appear in all copies.\n"
     "\n"
