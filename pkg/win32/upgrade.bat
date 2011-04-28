@@ -2,7 +2,7 @@
 cls
 echo This file will upgrade your pgAdmin III installation.
 echo.
-echo You must have pgAdmin III v1.12.x installed 
+echo You must have pgAdmin III v1.14.x installed 
 echo from the official MSI installation to use this upgrade path.
 echo.
 echo If pgAdmin III or any of its components are in use
