@@ -517,7 +517,9 @@ bool pgConn::HasFeature(int featureNo, bool forceCheck)
 		}
 
 		// Check for EDB function parameter default support
-		wxString hasFuncDefs = ExecuteScalar(wxT("SELECT count(*) FROM pg_attribute WHERE attrelid = 'pg_catalog.pg_proc'::regclass AND attname = 'proargdefvals'"));
+		wxString defCol = EdbMinimumVersion(8, 4) ? wxT("'proargdefaults'") : wxT("'proargdefvals'");
+
+		wxString hasFuncDefs = ExecuteScalar(wxT("SELECT count(*) FROM pg_attribute WHERE attrelid = 'pg_catalog.pg_proc'::regclass AND attname = ") + defCol);
 		if (hasFuncDefs == wxT("1"))
 			features[FEATURE_FUNCTION_DEFAULTS] = true;
 		else
