@@ -44,14 +44,15 @@ public:
 	{
 		foreignserver = s;
 	}
-	wxString GetOptions() const
+	const wxArrayString &GetOptionsArray()
+	{
+		return optionsArray;
+	}
+	wxString GetOptionsList() const
 	{
 		return options;
 	}
-	void iSetOptions(const wxString &s)
-	{
-		options = s;
-	}
+	void iSetOptions(const wxString &s);
 	const wxArrayString &GetTypesArray()
 	{
 		return typesArray;
@@ -90,6 +91,7 @@ public:
 private:
 	wxString foreignserver, options, typesList, quotedTypesList;
 	wxArrayString typesArray;
+    wxArrayString optionsArray;
 };
 
 class pgForeignTableCollection : public pgSchemaObjCollection

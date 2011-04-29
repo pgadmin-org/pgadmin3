@@ -280,6 +280,14 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 		hasOids = false;
 		tableName = view->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + view->GetQuotedIdentifier();
 	}
+	else if (obj->GetMetaType() == PGM_FOREIGNTABLE)
+	{
+		pgForeignTable *foreigntable = (pgForeignTable *)obj;
+
+		relkind = 'f';
+		hasOids = false;
+		tableName = foreigntable->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + foreigntable->GetQuotedIdentifier();
+	}
 	else if (obj->GetMetaType() == GP_EXTTABLE)
 	{
 		gpExtTable *exttable = (gpExtTable *)obj;

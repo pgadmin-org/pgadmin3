@@ -108,8 +108,8 @@ wxString pgForeignTable::GetSql(ctlTree *browser)
 		      + wxT("\n   (") + GetQuotedTypesList()
 		      + wxT(")\n   SERVER ") + GetForeignServer();
 
-		if (!GetOptions().IsEmpty())
-			sql += wxT("\n   OPTIONS (") + GetOptions() + wxT(")");
+		if (!GetOptionsList().IsEmpty())
+			sql += wxT("\n   OPTIONS (") + GetOptionsList() + wxT(")");
 
 		sql += wxT(";\n")
 		       + GetOwnerSql(9, 1)
@@ -180,7 +180,7 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Server"), GetForeignServer());
 		properties->AppendItem(_("Columns"), GetTypesList());
-		properties->AppendItem(_("Options"), GetOptions());
+		properties->AppendItem(_("Options"), GetOptionsList());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
@@ -217,6 +217,89 @@ pgObject *pgForeignTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+void pgForeignTable::iSetOptions(const wxString &tmpoptions)
+{
+    wxString tmp;
+    wxString option;
+    wxString value;
+    wxString currentChar;
+    bool wrappedInQuotes, antislash;
+    
+    options = wxEmptyString;
+    
+    wxLogInfo(tmpoptions);
+    // parse the options string
+    // we start at 1 and stop at length-1 to get rid of the { and } of the array
+    for (int index = 1 ; index < tmpoptions.Length()-1 ; index++)
+    {
+        // get current char
+        currentChar = tmpoptions.Mid(index, 1);
+        
+        wxLogInfo(wxT("current char: >") + currentChar + wxT("<"));
+        
+        // if there is a double quote at the beginning of an option,
+        // the whole option=value will be wrapped in quotes
+        if (currentChar == wxT("\"") && tmp.IsEmpty())
+            wrappedInQuotes = true;
+        else if (currentChar == wxT("\\") && wrappedInQuotes)
+            antislash = true;
+        else
+        {
+            if ((currentChar == wxT(",") && !wrappedInQuotes && !tmp.IsEmpty())
+              || (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty()))
+            {
+                // new options
+                
+                // we need to grab option and value from tmp string
+                option = tmp.BeforeFirst('=');
+                value = tmp.AfterFirst('=');
+                
+                wxLogInfo(wxT("option=") + option);
+                wxLogInfo(wxT("value=") + value);
+                
+                // put them in the array
+                optionsArray.Add(option);
+                optionsArray.Add(value);
+                
+                // build the options string
+                if (options.Length() > 0)
+                    options += wxT(", ");
+                options += option + wxT(" '") + value + wxT("'");
+
+                // reinit tmp
+                tmp = wxEmptyString;
+                wrappedInQuotes = false;
+            }
+            else
+                tmp += currentChar;
+            antislash = false;
+        }
+        
+        wxLogInfo(wxT("tmp: >") + tmp + wxT("<"));
+    }
+
+    // last options
+
+    if (!tmp.IsEmpty())
+    {
+        // we need to grab option and value from tmp string
+        option = tmp.BeforeFirst('=');
+        value = tmp.AfterFirst('=');
+        wxLogInfo(wxT("option=") + option);
+        wxLogInfo(wxT("value=") + value);
+        
+        // put them in the array
+        optionsArray.Add(option);
+        optionsArray.Add(value);
+        
+        // build the options string
+        if (options.Length() > 0)
+            options += wxT(", ");
+        options += option + wxT(" '") + value + wxT("'");
+    }
+}
+
+
 wxString pgForeignTableCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -246,7 +329,7 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 	pgForeignTable *foreigntable = 0;
 
 	wxString sql =	wxT("SELECT c.oid AS ftoid, c.relname AS ftrelname, pg_get_userbyid(relowner) AS ftowner, ")
-	                wxT("array_to_string(ftoptions, ',') AS ftoptions, srvname AS ftsrvname, description\n")
+	                wxT("  ftoptions, srvname AS ftsrvname, description\n")
 	                wxT("  FROM pg_class c\n")
 	                wxT("  JOIN pg_foreign_table ft ON c.oid=ft.ftrelid\n")
 	                wxT("  LEFT OUTER JOIN pg_foreign_server fs ON ft.ftserver=fs.oid\n")
@@ -290,6 +373,7 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 pgForeignTableFactory::pgForeignTableFactory()
 	: pgSchemaObjFactory(__("Foreign Table"), __("New Foreign Table..."), __("Create a new Foreign Table."), foreigntable_png_img)
 {
+    metaType = PGM_FOREIGNTABLE;
 }
 
 

@@ -161,15 +161,13 @@ int dlgForeignTable::Go(bool modal)
 		cbDatatype->Enable();
 		txtLength->Enable();
 
-		wxString options = foreigntable->GetOptions();
-		wxString option, optionname, optionvalue;
-		while (options.Length() > 0)
+		wxArrayString options = foreigntable->GetOptionsArray();
+		wxString optionname, optionvalue;
+		for (int index=0; index<options.Count(); index+=2)
 		{
-			option = options.BeforeFirst(',');
-			optionname = option.BeforeFirst(wxT('=')).Trim(false).Trim();
-			optionvalue = option.AfterFirst(wxT('=')).Trim(false).Trim();
+			optionname = options.Item(index);
+			optionvalue = options.Item(index+1);
 			lstOptions->AppendItem(optionname, optionvalue);
-			options = options.AfterFirst(',');
 		}
 	}
 	else
@@ -294,6 +292,12 @@ void dlgForeignTable::OnMemberAdd(wxCommandEvent &ev)
 		memberPrecisions.Add(precision);
 		memberNotNulls.Add(notnull);
 	}
+    
+    txtMembername->SetValue(wxEmptyString);
+    cbDatatype->SetValue(wxEmptyString);
+    txtLength->SetValue(wxEmptyString);
+    txtPrecision->SetValue(wxEmptyString);
+    chkNotNull->SetValue(false);
 
 	CheckChange();
 }
@@ -430,16 +434,15 @@ void dlgForeignTable::OnRemoveOption(wxCommandEvent &ev)
 
 wxString dlgForeignTable::GetOptionsSql()
 {
-	wxString options = foreigntable->GetOptions();
-	wxString option, optionname, optionvalue, sqloptions;
+    wxArrayString options = foreigntable->GetOptionsArray();
+	wxString optionname, optionvalue, sqloptions;
 	bool found;
 	int pos;
 
-	while (options.Length() > 0)
-	{
-		option = options.BeforeFirst(',');
-		optionname = option.BeforeFirst(wxT('=')).Trim(false).Trim();
-		optionvalue = option.AfterFirst(wxT('=')).Trim(false).Trim();
+    for (int index=0; index<options.Count(); index+=2)
+    {
+        optionname = options.Item(index);
+        optionvalue = options.Item(index+1);
 
 		// check for options
 		found = false;
@@ -464,27 +467,22 @@ wxString dlgForeignTable::GetOptionsSql()
 				sqloptions += wxT(", ");
 			sqloptions += wxT("DROP ") + optionname;
 		}
-
-		options = options.AfterFirst(',');
 	}
 
 	for (pos = 0 ; pos < lstOptions->GetItemCount() ; pos++)
 	{
-		options = foreigntable->GetOptions();
+		options = foreigntable->GetOptionsArray();
 		found = false;
 
-		while (options.Length() > 0 && !found)
-		{
-			option = options.BeforeFirst(',');
-			optionname = option.BeforeFirst(wxT('=')).Trim(false).Trim();
+        for (int index=0; index<options.Count() && !found; index+=2)
+        {
+            optionname = options.Item(index);
+			optionvalue = options.Item(index+1);
 			found = lstOptions->GetText(pos, 0).Cmp(optionname) == 0;
-			options = options.AfterFirst(',');
 		}
 
 		if (!found)
 		{
-			optionvalue = option.AfterFirst(wxT('=')).Trim(false).Trim();
-
 			if (sqloptions.Length() > 0)
 				sqloptions += wxT(", ");
 			sqloptions += wxT("ADD ") + lstOptions->GetText(pos, 0) + wxT(" '") + lstOptions->GetText(pos, 1) + wxT("'");
