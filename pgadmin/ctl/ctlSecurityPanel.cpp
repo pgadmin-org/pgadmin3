@@ -185,7 +185,7 @@ wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &
 		bool privPartiallyAssigned = false;
 		for (i = 0 ; i < tmpAcl.GetCount() ; i++)
 		{
-			if (tmpAcl.Item(i).Left(nameLen) == name)
+            if (tmpAcl.Item(i).Left(nameLen+1) == name+wxT("="))
 			{
 				privPartiallyAssigned = true;
 				if (tmpAcl.Item(i).Mid(nameLen + 1) == value)
