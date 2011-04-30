@@ -419,6 +419,10 @@ int dlgServer::Go(bool modal)
 			txtDbRestriction->Disable();
 			colourPicker->Disable();
 			cbGroup->Disable();
+            pickerSSLCert->Disable();
+            pickerSSLKey->Disable();
+            pickerSSLRootCert->Disable();
+            pickerSSLCrl->Disable();
 			EnableOK(false);
 		}
 	}
