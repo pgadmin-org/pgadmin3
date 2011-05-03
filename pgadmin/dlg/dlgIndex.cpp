@@ -337,7 +337,7 @@ int dlgIndex::Go(bool modal)
 		const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
 		if (this->database->BackendMinimumVersion(8, 3) && index->GetIndexType() == wxT("btree"))
 		{
-			for (int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)
+			for (unsigned int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)
 			{
 				colDef = colsArr.Item(colIdx);
 
@@ -387,7 +387,7 @@ int dlgIndex::Go(bool modal)
 		}
 		else
 		{
-			for (int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)
+			for (unsigned int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)
 			{
 				int pos = colDef.First(wxT(" "));
 				if (pos > 0)

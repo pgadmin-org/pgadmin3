@@ -163,7 +163,7 @@ int dlgForeignTable::Go(bool modal)
 
 		wxArrayString options = foreigntable->GetOptionsArray();
 		wxString optionname, optionvalue;
-		for (int index=0; index<options.Count(); index+=2)
+		for (unsigned int index=0; index<options.Count(); index+=2)
 		{
 			optionname = options.Item(index);
 			optionvalue = options.Item(index+1);
@@ -439,7 +439,7 @@ wxString dlgForeignTable::GetOptionsSql()
 	bool found;
 	int pos;
 
-    for (int index=0; index<options.Count(); index+=2)
+    for (unsigned int index=0; index<options.Count(); index+=2)
     {
         optionname = options.Item(index);
         optionvalue = options.Item(index+1);
@@ -474,7 +474,7 @@ wxString dlgForeignTable::GetOptionsSql()
 		options = foreigntable->GetOptionsArray();
 		found = false;
 
-        for (int index=0; index<options.Count() && !found; index+=2)
+        for (unsigned int index=0; index<options.Count() && !found; index+=2)
         {
             optionname = options.Item(index);
 			optionvalue = options.Item(index+1);

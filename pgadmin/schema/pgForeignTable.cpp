@@ -230,7 +230,7 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
     wxLogInfo(tmpoptions);
     // parse the options string
     // we start at 1 and stop at length-1 to get rid of the { and } of the array
-    for (int index = 1 ; index < tmpoptions.Length()-1 ; index++)
+    for (unsigned int index = 1 ; index < tmpoptions.Length()-1 ; index++)
     {
         // get current char
         currentChar = tmpoptions.Mid(index, 1);
