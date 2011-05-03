@@ -241,6 +241,8 @@ public:
 	pgNotification *GetNotification();
 	int GetTxStatus();
 
+    void Reset();
+
 	bool TableHasColumn(wxString schemaname, wxString tblname, const wxString &colname);
 
 protected:

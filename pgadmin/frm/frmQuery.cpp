@@ -2416,15 +2416,29 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 		}
 		else
 		{
-			pgError err = sqlResult->GetResultError();
-			wxString errMsg = err.formatted_msg;
-			wxLogQuietError(wxT("%s"), conn->GetLastError().Trim().c_str());
-
+            wxString errMsg, errMsg2;
 			long errPos;
-			err.statement_pos.ToLong(&errPos);
+
+            if (sqlResult->RunStatus() != CONNECTION_OK)
+            {
+                if (wxMessageBox(_("Do you want to attempt to reconnect to the database?"),
+                                 wxString::Format(_("Connection to database %s lost."), conn->GetDbname().c_str()),
+                                 wxICON_EXCLAMATION | wxYES_NO) == wxYES)
+                {
+                    conn->Reset();
+                    errMsg2 = _("Connection reset.");
+                }
+            }
+
+            pgError err = sqlResult->GetResultError();
+            errMsg = err.formatted_msg;
+            wxLogQuietError(wxT("%s"), conn->GetLastError().Trim().c_str());
+            err.statement_pos.ToLong(&errPos);
 
 			showMessage(wxString::Format(wxT("********** %s **********\n"), _("Error")));
 			showMessage(errMsg);
+            if (!errMsg2.IsEmpty())
+                showMessage(errMsg2);
 
 			if (errPos > 0)
 			{

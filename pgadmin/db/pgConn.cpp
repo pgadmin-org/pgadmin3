@@ -865,6 +865,12 @@ int pgConn::GetStatus() const
 }
 
 
+void pgConn::Reset()
+{
+	PQreset(conn);
+}
+
+
 wxString pgConn::GetVersionString()
 {
 	return ExecuteScalar(wxT("SELECT version();"));
