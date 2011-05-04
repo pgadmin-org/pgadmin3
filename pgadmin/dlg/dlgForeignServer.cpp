@@ -102,8 +102,6 @@ int dlgForeignServer::Go(bool modal)
 		// create mode
 	}
 
-	txtComment->Disable();
-
 	return dlgSecurityProperty::Go(modal);
 }
 
@@ -327,6 +325,7 @@ wxString dlgForeignServer::GetSql()
 	}
 
 	sql += GetGrant(wxT("U"), wxT("SERVER ") + qtIdent(name));
+	AppendComment(sql, wxT("SERVER"), 0, foreignserver);
 
 	return sql;
 }

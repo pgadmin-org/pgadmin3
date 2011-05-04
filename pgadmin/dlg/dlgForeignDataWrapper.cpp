@@ -123,8 +123,6 @@ int dlgForeignDataWrapper::Go(bool modal)
 		// create mode
 	}
 
-	txtComment->Disable();
-
 	return dlgSecurityProperty::Go(modal);
 }
 
@@ -146,6 +144,7 @@ void dlgForeignDataWrapper::CheckChange()
 	{
 		didChange = name != fdw->GetName()
 		            || cbOwner->GetValue() != fdw->GetOwner()
+		            || txtComment->GetValue() != fdw->GetComment()
 		            || cbValidator->GetValue() != fdw->GetValidatorProc()
 		            || GetOptionsSql().Length() > 0;
 		EnableOK(didChange);
@@ -337,6 +336,7 @@ wxString dlgForeignDataWrapper::GetSql()
 	}
 
 	sql += GetGrant(wxT("U"), wxT("FOREIGN DATA WRAPPER ") + qtIdent(name));
+	AppendComment(sql, wxT("FOREIGN DATA WRAPPER"), 0, fdw);
 
 	return sql;
 }
