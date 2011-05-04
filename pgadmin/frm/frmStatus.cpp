@@ -1315,8 +1315,11 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	if (connection->BackendMinimumVersion(8, 3))
 		q += wxT(",\nxact_start ");
 
-	q +=   wxT(", (SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN ")
-	       wxT("(SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby, ")
+	q +=   wxT(", (SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND (")
+	       wxT("relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)")
+	       wxT(" OR ")
+	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=procpid AND NOT GRANTED)")
+	       wxT(")) AS blockedby, ")
 	       wxT("current_query, ")
 	       wxT("CASE WHEN query_start IS NULL THEN false ELSE query_start + '10 seconds'::interval > now() END AS slowquery ")
 	       wxT("FROM pg_stat_activity ")
