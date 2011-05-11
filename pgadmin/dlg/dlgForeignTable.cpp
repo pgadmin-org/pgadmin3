@@ -163,10 +163,10 @@ int dlgForeignTable::Go(bool modal)
 
 		wxArrayString options = foreigntable->GetOptionsArray();
 		wxString optionname, optionvalue;
-		for (unsigned int index=0; index<options.Count(); index+=2)
+		for (unsigned int index = 0; index < options.Count(); index += 2)
 		{
 			optionname = options.Item(index);
-			optionvalue = options.Item(index+1);
+			optionvalue = options.Item(index + 1);
 			lstOptions->AppendItem(optionname, optionvalue);
 		}
 	}
@@ -292,12 +292,12 @@ void dlgForeignTable::OnMemberAdd(wxCommandEvent &ev)
 		memberPrecisions.Add(precision);
 		memberNotNulls.Add(notnull);
 	}
-    
-    txtMembername->SetValue(wxEmptyString);
-    cbDatatype->SetValue(wxEmptyString);
-    txtLength->SetValue(wxEmptyString);
-    txtPrecision->SetValue(wxEmptyString);
-    chkNotNull->SetValue(false);
+
+	txtMembername->SetValue(wxEmptyString);
+	cbDatatype->SetValue(wxEmptyString);
+	txtLength->SetValue(wxEmptyString);
+	txtPrecision->SetValue(wxEmptyString);
+	chkNotNull->SetValue(false);
 
 	CheckChange();
 }
@@ -434,15 +434,15 @@ void dlgForeignTable::OnRemoveOption(wxCommandEvent &ev)
 
 wxString dlgForeignTable::GetOptionsSql()
 {
-    wxArrayString options = foreigntable->GetOptionsArray();
+	wxArrayString options = foreigntable->GetOptionsArray();
 	wxString optionname, optionvalue, sqloptions;
 	bool found;
 	int pos;
 
-    for (unsigned int index=0; index<options.Count(); index+=2)
-    {
-        optionname = options.Item(index);
-        optionvalue = options.Item(index+1);
+	for (unsigned int index = 0; index < options.Count(); index += 2)
+	{
+		optionname = options.Item(index);
+		optionvalue = options.Item(index + 1);
 
 		// check for options
 		found = false;
@@ -474,10 +474,10 @@ wxString dlgForeignTable::GetOptionsSql()
 		options = foreigntable->GetOptionsArray();
 		found = false;
 
-        for (unsigned int index=0; index<options.Count() && !found; index+=2)
-        {
-            optionname = options.Item(index);
-			optionvalue = options.Item(index+1);
+		for (unsigned int index = 0; index < options.Count() && !found; index += 2)
+		{
+			optionname = options.Item(index);
+			optionvalue = options.Item(index + 1);
 			found = lstOptions->GetText(pos, 0).Cmp(optionname) == 0;
 		}
 

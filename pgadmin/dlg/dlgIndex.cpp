@@ -381,8 +381,8 @@ int dlgIndex::Go(bool modal)
 				lstColumns->SetItem(colIdx, 1, descDef);
 				lstColumns->SetItem(colIdx, 2, nullsDef);
 				lstColumns->SetItem(colIdx, 3, opclassDef);
-                if (colIdx < collationsArray.Count())
-                    lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
+				if (colIdx < collationsArray.Count())
+					lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
 			}
 		}
 		else
@@ -402,7 +402,7 @@ int dlgIndex::Go(bool modal)
 				lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
 				lstColumns->SetItem(colIdx, 3, cbOpClass->GetValue());
 				if (colIdx < collationsArray.Count())
-                    lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
+					lstColumns->SetItem(colIdx, 4, collationsArray.Item(colIdx));
 			}
 		}
 

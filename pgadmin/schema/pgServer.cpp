@@ -1210,12 +1210,12 @@ bool pgServer::ResumeReplay()
 bool pgServer::AddNamedRestorePoint()
 {
 	wxString namedrestorepoint = wxGetTextFromUser(_("Enter the name of the restore point to add"), _("Restore point name"));
-    if (!namedrestorepoint.IsEmpty())
-    {
-	    wxString sql = wxT("select pg_create_restore_point(") + qtDbString(namedrestorepoint) + wxT(")");
-	    return conn->ExecuteVoid(sql);
-    }
-    return false;
+	if (!namedrestorepoint.IsEmpty())
+	{
+		wxString sql = wxT("select pg_create_restore_point(") + qtDbString(namedrestorepoint) + wxT(")");
+		return conn->ExecuteVoid(sql);
+	}
+	return false;
 }
 
 

@@ -91,7 +91,7 @@ public:
 private:
 	wxString foreignserver, options, typesList, quotedTypesList;
 	wxArrayString typesArray;
-    wxArrayString optionsArray;
+	wxArrayString optionsArray;
 };
 
 class pgForeignTableCollection : public pgSchemaObjCollection

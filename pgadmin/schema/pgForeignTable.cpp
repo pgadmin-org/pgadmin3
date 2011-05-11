@@ -219,84 +219,84 @@ pgObject *pgForeignTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 {
-    wxString tmp;
-    wxString option;
-    wxString value;
-    wxString currentChar;
-    bool wrappedInQuotes, antislash;
-    
-    options = wxEmptyString;
-    
-    wxLogInfo(tmpoptions);
-    // parse the options string
-    // we start at 1 and stop at length-1 to get rid of the { and } of the array
-    for (unsigned int index = 1 ; index < tmpoptions.Length()-1 ; index++)
-    {
-        // get current char
-        currentChar = tmpoptions.Mid(index, 1);
-        
-        wxLogInfo(wxT("current char: >") + currentChar + wxT("<"));
-        
-        // if there is a double quote at the beginning of an option,
-        // the whole option=value will be wrapped in quotes
-        if (currentChar == wxT("\"") && tmp.IsEmpty())
-            wrappedInQuotes = true;
-        else if (currentChar == wxT("\\") && wrappedInQuotes)
-            antislash = true;
-        else
-        {
-            if ((currentChar == wxT(",") && !wrappedInQuotes && !tmp.IsEmpty())
-              || (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty()))
-            {
-                // new options
-                
-                // we need to grab option and value from tmp string
-                option = tmp.BeforeFirst('=');
-                value = tmp.AfterFirst('=');
-                
-                wxLogInfo(wxT("option=") + option);
-                wxLogInfo(wxT("value=") + value);
-                
-                // put them in the array
-                optionsArray.Add(option);
-                optionsArray.Add(value);
-                
-                // build the options string
-                if (options.Length() > 0)
-                    options += wxT(", ");
-                options += option + wxT(" '") + value + wxT("'");
+	wxString tmp;
+	wxString option;
+	wxString value;
+	wxString currentChar;
+	bool wrappedInQuotes, antislash;
 
-                // reinit tmp
-                tmp = wxEmptyString;
-                wrappedInQuotes = false;
-            }
-            else
-                tmp += currentChar;
-            antislash = false;
-        }
-        
-        wxLogInfo(wxT("tmp: >") + tmp + wxT("<"));
-    }
+	options = wxEmptyString;
 
-    // last options
+	wxLogInfo(tmpoptions);
+	// parse the options string
+	// we start at 1 and stop at length-1 to get rid of the { and } of the array
+	for (unsigned int index = 1 ; index < tmpoptions.Length() - 1 ; index++)
+	{
+		// get current char
+		currentChar = tmpoptions.Mid(index, 1);
 
-    if (!tmp.IsEmpty())
-    {
-        // we need to grab option and value from tmp string
-        option = tmp.BeforeFirst('=');
-        value = tmp.AfterFirst('=');
-        wxLogInfo(wxT("option=") + option);
-        wxLogInfo(wxT("value=") + value);
-        
-        // put them in the array
-        optionsArray.Add(option);
-        optionsArray.Add(value);
-        
-        // build the options string
-        if (options.Length() > 0)
-            options += wxT(", ");
-        options += option + wxT(" '") + value + wxT("'");
-    }
+		wxLogInfo(wxT("current char: >") + currentChar + wxT("<"));
+
+		// if there is a double quote at the beginning of an option,
+		// the whole option=value will be wrapped in quotes
+		if (currentChar == wxT("\"") && tmp.IsEmpty())
+			wrappedInQuotes = true;
+		else if (currentChar == wxT("\\") && wrappedInQuotes)
+			antislash = true;
+		else
+		{
+			if ((currentChar == wxT(",") && !wrappedInQuotes && !tmp.IsEmpty())
+			        || (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty()))
+			{
+				// new options
+
+				// we need to grab option and value from tmp string
+				option = tmp.BeforeFirst('=');
+				value = tmp.AfterFirst('=');
+
+				wxLogInfo(wxT("option=") + option);
+				wxLogInfo(wxT("value=") + value);
+
+				// put them in the array
+				optionsArray.Add(option);
+				optionsArray.Add(value);
+
+				// build the options string
+				if (options.Length() > 0)
+					options += wxT(", ");
+				options += option + wxT(" '") + value + wxT("'");
+
+				// reinit tmp
+				tmp = wxEmptyString;
+				wrappedInQuotes = false;
+			}
+			else
+				tmp += currentChar;
+			antislash = false;
+		}
+
+		wxLogInfo(wxT("tmp: >") + tmp + wxT("<"));
+	}
+
+	// last options
+
+	if (!tmp.IsEmpty())
+	{
+		// we need to grab option and value from tmp string
+		option = tmp.BeforeFirst('=');
+		value = tmp.AfterFirst('=');
+		wxLogInfo(wxT("option=") + option);
+		wxLogInfo(wxT("value=") + value);
+
+		// put them in the array
+		optionsArray.Add(option);
+		optionsArray.Add(value);
+
+		// build the options string
+		if (options.Length() > 0)
+			options += wxT(", ");
+		options += option + wxT(" '") + value + wxT("'");
+	}
 }
 
 
@@ -373,7 +373,7 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 pgForeignTableFactory::pgForeignTableFactory()
 	: pgSchemaObjFactory(__("Foreign Table"), __("New Foreign Table..."), __("Create a new Foreign Table."), foreigntable_png_img)
 {
-    metaType = PGM_FOREIGNTABLE;
+	metaType = PGM_FOREIGNTABLE;
 }
 
 
