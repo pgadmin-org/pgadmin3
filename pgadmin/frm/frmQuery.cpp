@@ -1634,20 +1634,18 @@ void frmQuery::OnChangeStc(wxStyledTextEvent &event)
 
 void frmQuery::OnPositionStc(wxStyledTextEvent &event)
 {
-	int selFrom, selTo;
+	int selFrom, selTo, selCount;
 	sqlQuery->GetSelection(&selFrom, &selTo);
+	selCount = selTo - selFrom;
 
 	wxString pos;
 	pos.Printf(_("Ln %d, Col %d, Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1);
 	SetStatusText(pos, STATUSPOS_POS);
-	if (selTo - selFrom == 1)
-		pos.Printf(_("%d char"), selTo - selFrom);
-	else if (selTo - selFrom > 1)
-		pos.Printf(_("%d chars"), selTo - selFrom);
-	else
+	if (selCount < 1)
 		pos = wxEmptyString;
+	else
+		pos.Printf(wxPLURAL("%d char", "%d chars", selCount), selCount);
 	SetStatusText(pos, STATUSPOS_SEL);
-
 }
 
 
