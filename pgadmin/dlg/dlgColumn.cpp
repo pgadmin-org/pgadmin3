@@ -381,7 +381,6 @@ int dlgColumn::Go(bool modal)
 
 		txtAttstattarget->Disable();
 		cbStorage->Disable();
-		txtComment->Disable();
 	}
 	return dlgTypeProperty::Go(modal);
 }
