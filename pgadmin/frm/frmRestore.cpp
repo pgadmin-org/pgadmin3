@@ -510,6 +510,10 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 			// Read the next line
 			str = line.GetNextToken();
 
+			// If this is the last line, it contains process information - skip it!
+			if (!line.HasMoreTokens())
+				continue;
+
 			// Skip the few lines of comments
 			if (str.Left(1) == wxT(";") || str.Left(1) == wxT("P"))
 				continue;
