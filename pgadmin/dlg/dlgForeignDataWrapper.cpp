@@ -22,7 +22,8 @@
 
 
 // pointer to controls
-#define cbValidator     CTRL_COMBOBOX("cbValidator")
+#define cbHandler           CTRL_COMBOBOX("cbHandler")
+#define cbValidator         CTRL_COMBOBOX("cbValidator")
 #define lstOptions          CTRL_LISTVIEW("lstOptions")
 #define txtOption           CTRL_TEXT("txtOption")
 #define txtValue            CTRL_TEXT("txtValue")
@@ -37,6 +38,8 @@ dlgProperty *pgForeignDataWrapperFactory::CreateDialog(frmMain *frame, pgObject 
 
 
 BEGIN_EVENT_TABLE(dlgForeignDataWrapper, dlgSecurityProperty)
+	EVT_TEXT(XRCID("cbHandler"),                dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbHandler"),            dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbValidator"),              dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbValidator"),          dlgProperty::OnChange)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"), dlgForeignDataWrapper::OnSelChangeOption)
@@ -61,13 +64,35 @@ pgObject *dlgForeignDataWrapper::GetObject()
 
 int dlgForeignDataWrapper::Go(bool modal)
 {
+    wxString val;
+
 	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
 
+	// Fill handler combobox
+	cbHandler->Append(wxT(""));
+	pgSet *set = connection->ExecuteSet(
+	                 wxT("SELECT nspname, proname\n")
+	                 wxT("  FROM pg_proc p\n")
+	                 wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+	                 wxT(" WHERE pronargs=0")
+	                 wxT(" AND prorettype=") + NumToStr(PGOID_TYPE_HANDLER));
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbHandler->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
+	cbHandler->SetSelection(0);
+
 	// Fill validator combobox
 	cbValidator->Append(wxT(""));
-	pgSet *set = connection->ExecuteSet(
+	set = connection->ExecuteSet(
 	                 wxT("SELECT nspname, proname\n")
 	                 wxT("  FROM pg_proc p\n")
 	                 wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
@@ -97,7 +122,18 @@ int dlgForeignDataWrapper::Go(bool modal)
 	{
 		// edit mode
 		txtName->Disable();
-		wxString val = fdw->GetValidatorProc();
+
+		val = fdw->GetHandlerProc();
+		if (!val.IsEmpty())
+		{
+			for (unsigned int i = 0 ; i < cbHandler->GetCount() ; i++)
+			{
+				if (cbHandler->GetString(i) == val)
+					cbHandler->SetSelection(i);
+			}
+		}
+
+		val = fdw->GetValidatorProc();
 		if (!val.IsEmpty())
 		{
 			for (unsigned int i = 0 ; i < cbValidator->GetCount() ; i++)
@@ -145,6 +181,7 @@ void dlgForeignDataWrapper::CheckChange()
 		didChange = name != fdw->GetName()
 		            || cbOwner->GetValue() != fdw->GetOwner()
 		            || txtComment->GetValue() != fdw->GetComment()
+		            || cbHandler->GetValue() != fdw->GetHandlerProc()
 		            || cbValidator->GetValue() != fdw->GetValidatorProc()
 		            || GetOptionsSql().Length() > 0;
 		EnableOK(didChange);
@@ -294,11 +331,28 @@ wxString dlgForeignDataWrapper::GetSql()
 	if (fdw)
 	{
 		// edit mode
+        sql = wxEmptyString;
+
+		if (cbHandler->GetValue() != fdw->GetHandlerProc())
+		{
+            if (cbHandler->GetValue().IsEmpty())
+			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+			        + wxT("\n   NO HANDLER;\n");
+            else
+			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+			        + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue())
+			        + wxT(";\n");
+		}
+
 		if (cbValidator->GetValue() != fdw->GetValidatorProc())
 		{
-			sql = wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			      + wxT("\n   VALIDATOR ") + qtIdent(cbValidator->GetValue())
-			      + wxT(";\n");
+            if (cbValidator->GetValue().IsEmpty())
+			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+			        + wxT("\n   NO VALIDATOR;\n");
+            else
+			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+			          + wxT("\n   VALIDATOR ") + qtIdent(cbValidator->GetValue())
+			          + wxT(";\n");
 		}
 
 		wxString sqloptions = GetOptionsSql();
@@ -314,6 +368,7 @@ wxString dlgForeignDataWrapper::GetSql()
 	{
 		// create mode
 		sql = wxT("CREATE FOREIGN DATA WRAPPER ") + qtIdent(name);
+		AppendIfFilled(sql, wxT("\n   HANDLER "), qtIdent(cbHandler->GetValue()));
 		AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
 
 		// check for options

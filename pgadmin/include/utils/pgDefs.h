@@ -63,6 +63,7 @@
 #define PGOID_TYPE_VOID                     2278L
 #define PGOID_TYPE_TRIGGER                  2279L
 #define PGOID_TYPE_LANGUAGE_HANDLER         2280L
+#define PGOID_TYPE_HANDLER                  3115L
 
 
 // These constants come from pgsql/src/include/catalog/pg_trigger.h

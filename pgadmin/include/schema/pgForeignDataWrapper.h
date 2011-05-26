@@ -37,6 +37,14 @@ public:
 	}
 	wxMenu *GetNewMenu();
 
+	wxString GetHandlerProc() const
+	{
+		return handlerProc;
+	}
+	void iSetHandlerProc(const wxString &s)
+	{
+		handlerProc = s;
+	}
 	wxString GetValidatorProc() const
 	{
 		return validatorProc;
@@ -73,7 +81,7 @@ public:
 	}
 
 private:
-	wxString validatorProc, options;
+	wxString handlerProc, validatorProc, options;
 };
 
 class pgForeignDataWrapperObjFactory : public pgDatabaseObjFactory
