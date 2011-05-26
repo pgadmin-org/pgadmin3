@@ -59,7 +59,7 @@ bool wxTimeSpinCtrl::Create(wxWindow *parent,
 	wxSize cs = GetClientSize();
 	wxSize ss = m_spn->GetBestSize();
 
-	m_txt = new wxTextCtrl(this, CTRLID_TXT, wxEmptyString, wxPoint(0, 0), wxSize(cs.x - ss.x, cs.y), wxNO_BORDER | wxWANTS_CHARS);
+	m_txt = new wxTextCtrl(this, CTRLID_TXT, wxEmptyString, wxPoint(0, 0), wxSize(cs.x - ss.x, cs.y), wxWANTS_CHARS);
 	m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxTimeSpinCtrl::OnEditKey), 0, this);
 	m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(wxTimeSpinCtrl::OnKillFocus), 0, this);
 
@@ -138,11 +138,6 @@ wxSize wxTimeSpinCtrl::DoGetBestSize() const
 
 bool wxTimeSpinCtrl::Enable(bool enable)
 {
-	if ( !wxControl::Enable(enable) )
-	{
-		return false;
-	}
-
 	m_txt->Enable(enable);
 	m_spn->Enable(enable);
 
