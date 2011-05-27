@@ -562,10 +562,14 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent &event)
 
 
 	// Line numbers
-	// Ensure we don't recurse through any paint handlers
+	// Ensure we don't recurse through any paint handlers on Mac
+#ifdef __WXMAC__
 	Freeze();
+#endif
 	UpdateLineNumber();
+#ifdef __WXMAC__
 	Thaw();
+#endif
 
 	// Clear all highlighting
 	BraceBadLight(wxSTC_INVALID_POSITION);
