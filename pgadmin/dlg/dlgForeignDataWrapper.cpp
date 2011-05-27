@@ -70,6 +70,9 @@ int dlgForeignDataWrapper::Go(bool modal)
 	AddGroups();
 	AddUsers(cbOwner);
 
+	if(!connection->BackendMinimumVersion(9,1))
+		cbHandler->Disable();
+
 	// Fill handler combobox
 	cbHandler->Append(wxT(""));
 	pgSet *set = connection->ExecuteSet(

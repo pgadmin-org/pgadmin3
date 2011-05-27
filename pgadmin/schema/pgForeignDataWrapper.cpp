@@ -188,16 +188,33 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 	wxString sql;
 	pgForeignDataWrapper *fdw = 0;
 
-	sql = wxT("SELECT fdw.oid, fdwname, fdwhandler, fdwvalidator, fdwacl, ")
-          wxT("vh.proname as fdwhan, vp.proname as fdwval, description, ")
-	      wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
-	      wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
-	sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
-	       wxT("  LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler\n")
-	       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
-	       + restriction + wxT("\n")
-	       wxT(" ORDER BY fdwname");
+	bool fdwHandlerSupport = (collection->GetDatabase()->BackendMinimumVersion(9,1));
+	
+	if(fdwHandlerSupport) {
+
+		sql = wxT("SELECT fdw.oid, fdwname, fdwhandler, fdwvalidator, fdwacl, ")
+			  wxT("vh.proname as fdwhan, vp.proname as fdwval, description, ")
+			  wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
+			  wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
+		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
+			   wxT("  LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler\n")
+			   wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
+			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+			   + restriction + wxT("\n")
+			   wxT(" ORDER BY fdwname");
+	}
+	else {
+
+		sql = wxT("SELECT fdw.oid, fdwname, fdwvalidator, fdwacl, ")
+			  wxT("vp.proname as fdwval, description, ")
+			  wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
+			  wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
+		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")			   
+			   wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
+			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+			   + restriction + wxT("\n")
+			   wxT(" ORDER BY fdwname");
+	}
 	pgSet *fdws = collection->GetDatabase()->ExecuteSet(sql);
 
 	if (fdws)
@@ -210,7 +227,8 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 			fdw->iSetOid(fdws->GetOid(wxT("oid")));
 			fdw->iSetOwner(fdws->GetVal(wxT("fdwowner")));
 			fdw->iSetAcl(fdws->GetVal(wxT("fdwacl")));
-			fdw->iSetHandlerProc(fdws->GetVal(wxT("fdwhan")));
+			if(fdwHandlerSupport)
+				fdw->iSetHandlerProc(fdws->GetVal(wxT("fdwhan")));
 			fdw->iSetValidatorProc(fdws->GetVal(wxT("fdwval")));
 			fdw->iSetOptions(fdws->GetVal(wxT("fdwoptions")));
 
