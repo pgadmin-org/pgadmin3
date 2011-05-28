@@ -331,7 +331,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	// View menu
 	viewMenu = new wxMenu();
-	viewMenu->Append(MNU_DATABASEBAR, _("&Database bar\tCtrl-Alt-B"), _("Show or hide the database selection bar."), wxITEM_CHECK);
+	viewMenu->Append(MNU_DATABASEBAR, _("&Connection bar\tCtrl-Alt-B"), _("Show or hide the database selection bar."), wxITEM_CHECK);
 	viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane\tCtrl-Alt-O"), _("Show or hide the output pane."), wxITEM_CHECK);
 	viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad\tCtrl-Alt-S"), _("Show or hide the scratch pad."), wxITEM_CHECK);
 	viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"), _("Show or hide the tool bar."), wxITEM_CHECK);
@@ -511,7 +511,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	// Kickstart wxAUI
 	manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-	manager.AddPane(cbConnection, wxAuiPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+	manager.AddPane(cbConnection, wxAuiPaneInfo().Name(wxT("databaseBar")).Caption(_("Connection bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 	manager.AddPane(outputPane, wxAuiPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(550, 300)));
 	manager.AddPane(scratchPad, wxAuiPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right().MinSize(wxSize(100, 100)).BestSize(wxSize(250, 200)));
 	manager.AddPane(sqlNotebook, wxAuiPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(350, 200)));
@@ -523,7 +523,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	// and reset the captions for the current language
 	manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
-	manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
+	manager.GetPane(wxT("databaseBar")).Caption(_("Connection bar"));
 	manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
 	manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 	manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
@@ -770,7 +770,7 @@ void frmQuery::OnDefaultView(wxCommandEvent &event)
 
 	// Reset the captions for the current language
 	manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
-	manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
+	manager.GetPane(wxT("databaseBar")).Caption(_("Connection bar"));
 	manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
 	manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 	manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));

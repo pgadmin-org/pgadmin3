@@ -607,9 +607,6 @@ wxString pgConn::GetName() const
 		str.Printf(_("service %s"), save_service.c_str());
 
 
-	if (!GetRole().IsEmpty())
-		str += wxT(" ~") + GetRole();
-
 	return str;
 }
 
