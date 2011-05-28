@@ -286,54 +286,56 @@ void pgDatabase::ShowHint(frmMain *form, bool force)
 
 void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-	bool hasSize = connection()->HasFeature(FEATURE_SIZE);
-
-	wxString sql = wxT("SELECT numbackends AS ") + qtIdent(_("Backends")) +
-	               wxT(", xact_commit AS ") + qtIdent(_("Xact Committed")) +
-	               wxT(", xact_rollback AS ") + qtIdent(_("Xact Rolled Back")) +
-	               wxT(", blks_read AS ") + qtIdent(_("Blocks Read")) +
-	               wxT(", blks_hit AS ") + qtIdent(_("Blocks Hit"));
-
-	if (connection()->BackendMinimumVersion(8, 3))
-		sql += wxT(", tup_returned AS ") + qtIdent(_("Tuples Returned")) +
-		       wxT(", tup_fetched AS ") + qtIdent(_("Tuples Fetched")) +
-		       wxT(", tup_inserted AS ") + qtIdent(_("Tuples Inserted")) +
-		       wxT(", tup_updated AS ") + qtIdent(_("Tuples Updated")) +
-		       wxT(", tup_deleted AS ") + qtIdent(_("Tuples Deleted"));
-
-	if (connection()->BackendMinimumVersion(9, 1))
-		sql += wxT(", stats_reset AS ") + qtIdent(_("Last statistics reset")) +
-		       wxT(", slave.confl_tablespace AS ") + qtIdent(_("Tablespace conflicts")) +
-		       wxT(", slave.confl_lock AS ") + qtIdent(_("Lock conflicts")) +
-		       wxT(", slave.confl_snapshot AS ") + qtIdent(_("Snapshot conflicts")) +
-		       wxT(", slave.confl_bufferpin AS ") + qtIdent(_("Bufferpin conflicts")) +
-		       wxT(", slave.confl_deadlock AS ") + qtIdent(_("Deadlock conflicts"));
-
-	if (hasSize)
-		sql += wxT(", pg_size_pretty(pg_database_size(db.datid)) AS ") + qtIdent(_("Size"));
-
-	sql += wxT("\n  FROM pg_stat_database db");
-	if (connection()->BackendMinimumVersion(9, 1))
-		sql += wxT(" JOIN pg_stat_database_conflicts slave ON db.datid=slave.datid");
-	sql += wxT(" WHERE db.datname=") + qtDbString(GetName());
-
-	// DisplayStatistics is not available for this object
-
-	CreateListColumns(statistics, _("Statistic"), _("Value"));
-
-	pgSet *stats = connection()->ExecuteSet(sql);
-
-	if (stats)
+	if (GetConnection())
 	{
-		int col;
-		for (col = 0 ; col < stats->NumCols() ; col++)
-		{
-			if (!stats->ColName(col).IsEmpty())
-				statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
-		}
-		delete stats;
-	}
-
+    	bool hasSize = connection()->HasFeature(FEATURE_SIZE);
+    
+    	wxString sql = wxT("SELECT numbackends AS ") + qtIdent(_("Backends")) +
+    	               wxT(", xact_commit AS ") + qtIdent(_("Xact Committed")) +
+    	               wxT(", xact_rollback AS ") + qtIdent(_("Xact Rolled Back")) +
+    	               wxT(", blks_read AS ") + qtIdent(_("Blocks Read")) +
+    	               wxT(", blks_hit AS ") + qtIdent(_("Blocks Hit"));
+    
+    	if (connection()->BackendMinimumVersion(8, 3))
+    		sql += wxT(", tup_returned AS ") + qtIdent(_("Tuples Returned")) +
+    		       wxT(", tup_fetched AS ") + qtIdent(_("Tuples Fetched")) +
+    		       wxT(", tup_inserted AS ") + qtIdent(_("Tuples Inserted")) +
+    		       wxT(", tup_updated AS ") + qtIdent(_("Tuples Updated")) +
+    		       wxT(", tup_deleted AS ") + qtIdent(_("Tuples Deleted"));
+    
+    	if (connection()->BackendMinimumVersion(9, 1))
+    		sql += wxT(", stats_reset AS ") + qtIdent(_("Last statistics reset")) +
+    		       wxT(", slave.confl_tablespace AS ") + qtIdent(_("Tablespace conflicts")) +
+    		       wxT(", slave.confl_lock AS ") + qtIdent(_("Lock conflicts")) +
+    		       wxT(", slave.confl_snapshot AS ") + qtIdent(_("Snapshot conflicts")) +
+    		       wxT(", slave.confl_bufferpin AS ") + qtIdent(_("Bufferpin conflicts")) +
+    		       wxT(", slave.confl_deadlock AS ") + qtIdent(_("Deadlock conflicts"));
+    
+    	if (hasSize)
+    		sql += wxT(", pg_size_pretty(pg_database_size(db.datid)) AS ") + qtIdent(_("Size"));
+    
+    	sql += wxT("\n  FROM pg_stat_database db");
+    	if (connection()->BackendMinimumVersion(9, 1))
+    		sql += wxT(" JOIN pg_stat_database_conflicts slave ON db.datid=slave.datid");
+    	sql += wxT(" WHERE db.datname=") + qtDbString(GetName());
+    
+    	// DisplayStatistics is not available for this object
+    
+    	CreateListColumns(statistics, _("Statistic"), _("Value"));
+    
+    	pgSet *stats = connection()->ExecuteSet(sql);
+    
+    	if (stats)
+    	{
+    		int col;
+    		for (col = 0 ; col < stats->NumCols() ; col++)
+    		{
+    			if (!stats->ColName(col).IsEmpty())
+    				statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+    		}
+    		delete stats;
+    	}
+    }
 }
 
 
