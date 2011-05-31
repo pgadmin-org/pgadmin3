@@ -1596,7 +1596,10 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 						server = new pgServer(servername, wxEmptyString, description, wxEmptyString, wxT("edb"), username, port, false, rolename, 0);
 						server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
 						server->iSetDiscovered(true);
-						browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
+						groupitem = browser->GetFirstChild(obj->GetId(), groupcookie);
+						if (!groupitem.IsOk())
+							groupitem = browser->AppendItem(obj->GetId(), group, obj->GetIconId());
+						browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
 					}
 				}
 			}
