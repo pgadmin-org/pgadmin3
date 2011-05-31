@@ -545,7 +545,7 @@ wxString dlgForeignTable::GetSql()
 
 		sql += wxT(";\n");
 	}
-	AppendComment(sql, wxT("TYPE"), schema, foreigntable);
+	AppendComment(sql, wxT("FOREIGN TABLE"), schema, foreigntable);
 
 	return sql;
 }
