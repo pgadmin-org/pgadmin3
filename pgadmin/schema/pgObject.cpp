@@ -908,6 +908,9 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
 		while (set.RowsLeft())
 		{
 			wxString refname = set.GetVal(wxT("refname"));
+			if (refname.IsEmpty())
+				continue;
+
 			wxString deptype = set.GetVal(wxT("deptype"));
 			if (deptype == wxT("a"))
 				deptype = _("auto");
