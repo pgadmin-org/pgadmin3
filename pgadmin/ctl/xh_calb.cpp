@@ -21,6 +21,15 @@ IMPLEMENT_DYNAMIC_CLASS(wxCalendarBoxXmlHandler, wxXmlResourceHandler)
 wxCalendarBoxXmlHandler::wxCalendarBoxXmlHandler()
 	: wxXmlResourceHandler()
 {
+	/*
+	 * Only available with the wxDatePickerCtrl
+	 */
+	XRC_ADD_STYLE(wxDP_DEFAULT);
+	XRC_ADD_STYLE(wxDP_SPIN);
+	XRC_ADD_STYLE(wxDP_DROPDOWN);
+	XRC_ADD_STYLE(wxDP_ALLOWNONE);
+	XRC_ADD_STYLE(wxDP_SHOWCENTURY);
+
 	AddWindowStyles();
 }
 
@@ -38,14 +47,24 @@ wxObject *wxCalendarBoxXmlHandler::DoCreateResource()
 	                 wxDefaultValidator,
 	                 GetName());
 
-#else
+#else // pgUSE_WX_CAL
+#if !defined(wxUSE_DATEPICKCTRL) || !wxUSE_DATEPICKCTRL
 	calendar->Create(m_parentAsWindow,
 	                 GetID(),
 	                 wxDefaultDateTime,
 	                 GetPosition(), GetSize(),
 	                 GetStyle(),
 	                 GetName());
-#endif
+#else // !defined(wxUSE_DATEPICKCTRL) || !wxUSE_DATEPICKCTRL
+	calendar->Create(m_parentAsWindow,
+	                 (wxWindowID)GetID(),
+	                 wxDefaultDateTime,
+	                 GetPosition(), GetSize(),
+	                 (long int)GetStyle(),
+	                 wxDefaultValidator,
+	                 GetName());
+#endif // !defined(wxUSE_DATEPICKCTRL) || !wxUSE_DATEPICKCTRL
+#endif // pgUSE_WX_CAL
 
 	SetupWindow(calendar);
 

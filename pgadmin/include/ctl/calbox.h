@@ -13,6 +13,15 @@
 #define _WX_CALBOX_H_
 
 #include "wx/calctrl.h"
+
+#if defined(wxUSE_DATEPICKCTRL) && wxUSE_DATEPICKCTRL
+#include "wx/datectrl.h"
+#if wxUSE_DATEPICKCTRL_GENERIC
+#include "wx/generic/datectrl.h"
+#endif // wxUSE_DATEPICKCTRL_GENERIC
+typedef wxDatePickerCtrl wxCalendarBox;
+#else
+
 // pgCompatCalendarCtrl is a typedef for either wxGenericCalendarCtrl or wxCalendarCtrl
 #if wxCHECK_VERSION(2, 9, 0)
 #include "wx/generic/calctrlg.h"
@@ -120,6 +129,8 @@ private:
 	DECLARE_EVENT_TABLE()
 	DECLARE_NO_COPY_CLASS(wxCalendarBox)
 };
+
+#endif // wxUSE_DATEPICKCTRL
 
 #endif // _WX_CALBOX_H_
 

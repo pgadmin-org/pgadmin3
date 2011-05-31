@@ -15,6 +15,8 @@
 
 #include "ctl/calbox.h"
 
+#if !defined(wxUSE_DATEPICKCTRL) || !wxUSE_DATEPICKCTRL
+
 #if defined(__WXMSW__)
 #define TXTCTRL_FLAGS     wxNO_BORDER
 #define CALBORDER         0
@@ -513,3 +515,5 @@ void wxCalendarBox::OnCalKey(wxKeyEvent &ev)
 	else
 		ev.Skip();
 }
+
+#endif // !defined(wxUSE_DATEPICKCTRL) || !wxUSE_DATEPICKCTRL
