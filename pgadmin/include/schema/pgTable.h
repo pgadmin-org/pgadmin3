@@ -209,6 +209,14 @@ public:
 	{
 		return isReplicated;
 	}
+	void iSetTriggerCount(long l)
+	{
+		triggerCount = l;
+	}
+	int GetTriggerCount() const
+	{
+		return triggerCount;
+	}
 	bool EnableTriggers(const bool b);
 	void UpdateRows();
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
@@ -576,7 +584,7 @@ private:
 	         toast_autovacuum_vacuum_cost_limit, toast_autovacuum_freeze_min_age,
 	         toast_autovacuum_freeze_max_age, toast_autovacuum_freeze_table_age;
 
-	long inheritedTableCount;
+	long inheritedTableCount, triggerCount;
 	wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
 	         primaryKeyName, primaryKeyColNumbers, tablespace,
 	         distributionColNumbers, ofType;

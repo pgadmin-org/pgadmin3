@@ -1405,7 +1405,19 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		        wxT("       EXISTS(select 1 FROM pg_trigger\n")
 		        wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
 		        wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
-		        wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n");
+		        wxT("                     WHERE tgrelid=rel.oid) AS isrepl,\n");
+
+		if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+		{
+			query += wxT("       (select count(*) FROM pg_trigger\n")
+		             wxT("                     WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount\n");
+		}
+		else
+		{
+			query += wxT("       (select count(*) FROM pg_trigger\n")
+					 wxT("                     WHERE tgrelid=rel.oid AND tgisconstraint = FALSE) AS triggercount\n");
+		}
+
 		if (collection->GetConnection()->BackendMinimumVersion(9, 1))
 			query += wxT(", relpersistence \n");
 		if (collection->GetConnection()->BackendMinimumVersion(8, 2))
@@ -1468,6 +1480,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 	{
 		query = wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
 		        wxT("relhassubclass, reltuples, description, conname, conkey,\n")
+		        wxT("       (select count(*) FROM pg_trigger\n")
+		        wxT("                     WHERE tgrelid=rel.oid AND tgisconstraint = FALSE) AS triggercount,\n")
 		        wxT("       EXISTS(select 1 FROM pg_trigger\n")
 		        wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
 		        wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
@@ -1592,6 +1606,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 			table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
 			table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
 			table->iSetIsReplicated(tables->GetBool(wxT("isrepl")));
+			table->iSetTriggerCount(tables->GetLong(wxT("triggercount")));
 			wxString cn = tables->GetVal(wxT("conkey"));
 			cn = cn.Mid(1, cn.Length() - 2);
 			table->iSetPrimaryKeyColNumbers(cn);
@@ -1762,7 +1777,8 @@ bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
 {
 	return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
 	       && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
-	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1)
+		   && ((pgTable *)obj)->GetTriggerCount() > 0;
 }
 
 enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
@@ -1789,7 +1805,8 @@ bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
 {
 	return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
 	       && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
-	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1)
+		   && ((pgTable *)obj)->GetTriggerCount() > 0;
 }
 
 truncateFactory::truncateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)

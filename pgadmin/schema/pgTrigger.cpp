@@ -427,7 +427,11 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 
 			if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 2))
 			{
-				trigger->SetIsConstraint(triggers->GetLong(wxT("tgconstraint")) > 0);
+				if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
+					trigger->SetIsConstraint(triggers->GetLong(wxT("tgisinternal")) > 0);
+				else
+					trigger->SetIsConstraint(triggers->GetLong(wxT("tgisconstraint")) > 0);
+
 				trigger->iSetDeferrable(triggers->GetBool(wxT("tgdeferrable")));
 				trigger->iSetDeferred(triggers->GetBool(wxT("tginitdeferred")));
 			}

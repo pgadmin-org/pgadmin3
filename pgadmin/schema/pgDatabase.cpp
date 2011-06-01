@@ -606,10 +606,11 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			                        wxT("      LEFT JOIN pg_depend dep ON dep.objid=tr.oid AND deptype = 'i'\n")
 			                        wxT("      LEFT JOIN pg_constraint co ON refobjid = co.oid AND contype = 'f'\n")
 			                        wxT("     WHERE \n");
-			if (connection()->BackendMinimumVersion(8, 5))
-				missingFKsql += wxT("tgconstraint <> 0\n");
+			if (connection()->BackendMinimumVersion(9, 0))
+				missingFKsql += wxT("tgisinternal\n");
 			else
 				missingFKsql += wxT("tgisconstraint\n");
+	
 			missingFKsql += wxT("     AND co.oid IS NULL\n")
 			                wxT("     GROUP BY tgargs\n")
 			                wxT("    HAVING count(1) = 3) AS foo");
