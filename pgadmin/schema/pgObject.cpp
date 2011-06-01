@@ -290,6 +290,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		//else if (type == wxT("Slony-I Clusters"))
 		else if (type == wxT("Synonyms"))
 			message = ((edbSynonymCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("Public Synonyms"))
+			message = ((edbSynonymCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Tables"))
 			message = ((pgTableCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Tablespaces"))
