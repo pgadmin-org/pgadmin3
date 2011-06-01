@@ -33,6 +33,7 @@
 #define btnAsc                      CTRL_BUTTON("btnAsc")
 #define btnDesc                     CTRL_BUTTON("btnDesc")
 #define btnRemove                   CTRL_BUTTON("wxID_REMOVE")
+#define btnValidate                 CTRL_BUTTON("btnValidate")
 #define cboColumns                  CTRL_COMBOBOX("cboColumns")
 #define lstSortCols                 CTRL_LISTVIEW("lstSortCols")
 #define pnlSort                     CTRL_PANEL("pnlSort")
@@ -50,6 +51,7 @@ BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
 	EVT_COMBOBOX             (XRCID("cboColumns"),  dlgEditGridOptions::OnCboColumnsChange)
 	EVT_LIST_ITEM_SELECTED   (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange)
 	EVT_LIST_ITEM_DESELECTED (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange)
+	EVT_STC_MODIFIED		 (XRCID("sqlFilter"),   dlgEditGridOptions::OnFilterChange)
 #ifdef __WXMAC__
 	EVT_SIZE(                                       dlgEditGridOptions::OnChangeSize)
 #endif
@@ -174,12 +176,19 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	if (!parent->IsShown())
 		nbOptions->DeletePage(0);
 
+	btnValidate->Disable();
 	filter->SetFocus();
 }
 
 dlgEditGridOptions::~dlgEditGridOptions()
 {
 	SavePosition();
+}
+
+// Enable/disable the validation button
+void dlgEditGridOptions::OnFilterChange(wxStyledTextEvent &ev)
+{
+	btnValidate->Enable(!filter->GetText().Trim().IsEmpty());
 }
 
 void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)

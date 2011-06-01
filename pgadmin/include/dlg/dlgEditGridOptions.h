@@ -47,6 +47,7 @@ private:
 	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+	void OnFilterChange(wxStyledTextEvent &ev);
 	void OnCancel(wxCommandEvent &ev);
 	void OnClose(wxCloseEvent &ev);
 	void OnOK(wxCommandEvent &ev);
