@@ -99,13 +99,18 @@ pgObject *edbPrivateSynonymFactory::CreateObjects(pgCollection *collection, ctlT
 {
 	edbPrivateSynonym *synonym = 0;
 
-	wxString sql = wxT("SELECT s.*, pg_get_userbyid(s.synowner) AS owner,\n")
+	wxString sql = wxT("SELECT *, pg_get_userbyid(synowner) AS owner,\n")
 	               wxT("  COALESCE((SELECT relkind \n")
 	               wxT("  FROM pg_class c, pg_namespace n\n")
 	               wxT("  WHERE c.relnamespace = n.oid\n")
-	               wxT("    AND n.nspname = s.synobjschema\n")
-	               wxT("    AND c.relname = s.synobjname), '') AS targettype\n")
-	               wxT("  FROM pg_synonym s\n")
+	               wxT("    AND n.nspname = synobjschema\n")
+	               wxT("    AND c.relname = synobjname),\n")
+				   wxT("  (SELECT CASE WHEN p.protype = '0' THEN 'f'::\"char\" ELSE 'p'::\"char\" END \n")
+				   wxT("  FROM pg_proc p, pg_namespace n\n")
+				   wxT("    WHERE p.pronamespace = n.oid\n")
+				   wxT("      AND n.nspname = synobjschema\n")
+				   wxT("      AND p.proname = synobjname LIMIT 1), '') AS targettype\n")
+	               wxT("  FROM pg_synonym s")
 	               wxT("  JOIN pg_namespace ns ON s.synnamespace = ns.oid AND ns.nspname = ")
 	               + qtConnString(collection->GetSchema()->GetName()) + wxT(" \n")
 	               + restriction +
@@ -129,6 +134,10 @@ pgObject *edbPrivateSynonymFactory::CreateObjects(pgCollection *collection, ctlT
 				synonym->iSetTargetType(_("Sequence"));
 			else if (synonyms->GetVal(wxT("targettype")) == wxT("v"))
 				synonym->iSetTargetType(_("View"));
+			else if (synonyms->GetVal(wxT("targettype")) == wxT("f"))
+				synonym->iSetTargetType(_("Function"));
+			else if (synonyms->GetVal(wxT("targettype")) == wxT("p"))
+				synonym->iSetTargetType(_("Procedure"));
 			else
 				synonym->iSetTargetType(_("Synonym"));
 
