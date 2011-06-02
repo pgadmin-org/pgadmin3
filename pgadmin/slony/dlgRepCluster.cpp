@@ -453,18 +453,36 @@ int dlgRepCluster::Go(bool modal)
 
 		}
 
-		treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
-		pgServer *s;
+		// Populate the server combo box
+		ctlTree *browser = mainForm->GetBrowser();
+		wxTreeItemIdValue foldercookie, servercookie;
+		wxTreeItemId folderitem, serveritem;
+		pgObject *object;
+		pgServer *server;
 		int sel = -1;
-		while ((s = (pgServer *)it.GetNextObject()) != 0)
+
+		folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+		while (folderitem)
 		{
-			if (s->IsCreatedBy(serverFactory))
+			if (browser->ItemHasChildren(folderitem))
 			{
-				if (s == database->GetServer())
-					sel = cbServer->GetCount();
-				cbServer->Append(mainForm->GetBrowser()->GetItemText(s->GetId()), (void *)s);
+				serveritem = browser->GetFirstChild(folderitem, servercookie);
+				while (serveritem)
+				{
+					object = browser->GetObject(serveritem);
+					if (object->IsCreatedBy(serverFactory))
+					{
+						server = (pgServer *)object;
+						if (server == database->GetServer())
+							sel = cbServer->GetCount();
+						cbServer->Append(browser->GetItemText(server->GetId()), (void *)server);
+					}
+					serveritem = browser->GetNextChild(folderitem, servercookie);
+				}
 			}
+			folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
 		}
+
 		if (sel >= 0)
 			cbServer->SetSelection(sel);
 	}
@@ -488,6 +506,7 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
 	txtAdminNodeID->Show(!joinCluster && !cluster);
 	txtAdminNodeName->Show(!joinCluster && !cluster);
 	cbAdminNode->Show(joinCluster || cluster);
+	cbAdminNode->Move(txtAdminNodeID->GetPosition());
 
 	// Force the dialogue to resize to prevent a drawing issue on GTK
 #ifdef __WXGTK__

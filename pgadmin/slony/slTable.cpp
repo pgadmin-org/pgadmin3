@@ -62,10 +62,23 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 	if (!expandedKids)
 	{
 		expandedKids = true;
-		pgSet *set = GetConnection()->ExecuteSet(
+		pgSet *set;
+		
+		if (GetConnection()->BackendMinimumVersion(9, 0))
+		{
+			set = GetConnection()->ExecuteSet(
+		                wxT("SELECT tgname AS trig_tgname FROM pg_trigger t, pg_proc p, pg_namespace n ")
+						wxT("WHERE t.tgrelid = 'public.pgbench_accounts'::regclass ")
+						wxT("AND t.tgfoid = p.oid AND n.nspname = ") + qtDbString(wxT("_") + GetCluster()->GetName()));
+		}
+		else
+		{
+			set = GetConnection()->ExecuteSet(
 		                 wxT("SELECT trig_tgname\n")
 		                 wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_trigger\n")
 		                 wxT(" WHERE trig_tabid = ") + NumToStr(GetSlId()));
+		}
+
 		if (set)
 		{
 			while (!set->Eof())
@@ -85,15 +98,18 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		properties->AppendItem(_("ID"), GetSlId());
 		properties->AppendItem(_("Index Name"), GetIndexName());
 		properties->AppendItem(_("Altered"), GetAltered());
-		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+
 		if (triggers.GetCount() > 0)
 		{
-			properties->AppendItem(_("Triggers"), triggers[0]);
-
 			size_t i;
-			for (i = 1 ; i < triggers.GetCount() ; i++)
-				properties->AppendItem(wxEmptyString, triggers[i]);
+			wxString triglist;
+			for (i = 0; i < triggers.GetCount() ; i++)
+				triglist += triggers[i] + wxT(", ");
+
+			properties->AppendItem(_("Triggers"), triglist.BeforeLast(','));
 		}
+
+		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
 

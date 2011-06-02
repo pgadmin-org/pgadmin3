@@ -199,14 +199,31 @@ wxString dlgRepSetMerge::GetSql()
 	{
 		sql = wxT("-- remember objects to replicate\n")
 		      wxT("CREATE TEMPORARY TABLE pga_tmp_repl_tables(tab_id int4, tabname text, idxname text, comment text, trgname text);\n")
-		      wxT("INSERT INTO pga_tmp_repl_tables(tab_id, tabname, idxname, comment, trgname)\n")
-		      wxT("SELECT tab_id, nspname || '.' || relname, tab_idxname, tab_comment, trig_tgname\n")
-		      wxT("  FROM ") + prefix + wxT("sl_table\n")
-		      wxT("  JOIN pg_class cl ON cl.oid=tab_reloid\n")
-		      wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
-		      wxT("  LEFT JOIN ") + prefix + wxT("sl_trigger ON tab_id=trig_tabid")
-		      wxT(" WHERE tab_set = ") + addId + wxT(";\n")
-		      wxT("\n")
+		      wxT("INSERT INTO pga_tmp_repl_tables(tab_id, tabname, idxname, comment, trgname)\n");
+
+		if (cluster->ClusterMinimumVersion(2, 0))
+		{
+		      sql += wxT("SELECT tab_id, nsp.nspname || '.' || relname, tab_idxname, tab_comment, tgname\n")
+					wxT("  FROM ") + prefix + wxT("sl_table\n")
+					wxT("  JOIN pg_class cl ON cl.oid=tab_reloid\n")
+					wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
+					wxT("  LEFT JOIN pg_trigger t ON t.tgrelid = tab_reloid\n")
+					wxT("  JOIN pg_proc p ON t.tgfoid = p.oid\n")
+					wxT("  JOIN pg_namespace np ON p.pronamespace = np.oid\n")
+					wxT(" WHERE tab_set = ") + addId + 
+					wxT("  AND np.nspname = ") + qtDbString(wxT("_") + cluster->GetName()) + wxT(";\n");
+		}
+		else
+		{
+		      sql += wxT("SELECT tab_id, nspname || '.' || relname, tab_idxname, tab_comment, trig_tgname\n")
+					wxT("  FROM ") + prefix + wxT("sl_table\n")
+					wxT("  JOIN pg_class cl ON cl.oid=tab_reloid\n")
+					wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
+					wxT("  LEFT JOIN ") + prefix + wxT("sl_trigger ON tab_id=trig_tabid")
+					wxT(" WHERE tab_set = ") + addId + wxT(";\n");
+		}
+
+		sql += wxT("\n")
 		      wxT("CREATE TEMPORARY TABLE pga_tmp_repl_seqs(seq_id int4, seqname text, comment text);\n")
 		      wxT("INSERT INTO pga_tmp_repl_seqs(seq_id, seqname, comment)\n")
 		      wxT("SELECT seq_id, nspname ||'.' || relname, seq_comment\n")
@@ -227,11 +244,16 @@ wxString dlgRepSetMerge::GetSql()
 		      wxT("-- add objects to new set: tables, triggers, sequences\n")
 		      wxT("SELECT ") + prefix + wxT("setaddtable(") + toId + wxT(", tab_id, tabname, idxname, comment)\n")
 		      wxT("  FROM (SELECT DISTINCT tab_id, tabname, idxname, comment FROM pga_tmp_repl_tables) AS tmp;\n")
-		      wxT("\n")
-		      wxT("SELECT ") + prefix + wxT("storetrigger(tab_id, trgname)\n")
-		      wxT("  FROM pga_tmp_repl_tables WHERE trgname IS NOT NULL;\n")
-		      wxT("\n")
-		      wxT("SELECT ") + prefix + wxT("setaddsequence(") + toId + wxT(", seq_id, seqname, comment)\n")
+		      wxT("\n");
+
+		if (!cluster->ClusterMinimumVersion(2, 0))
+		{
+		      sql += wxT("SELECT ") + prefix + wxT("storetrigger(tab_id, trgname)\n")
+					wxT("  FROM pga_tmp_repl_tables WHERE trgname IS NOT NULL;\n")
+					wxT("\n");
+		}
+
+		sql += wxT("SELECT ") + prefix + wxT("setaddsequence(") + toId + wxT(", seq_id, seqname, comment)\n")
 		      wxT("  FROM pga_tmp_repl_seqs;\n")
 		      wxT("\n")
 
