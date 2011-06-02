@@ -114,17 +114,17 @@ wxMenu *pgSchemaBase::GetNewMenu()
 		if (settings->GetDisplayOption(_("FTS Dictionaries")))
 		{
 			if (GetConnection()->BackendMinimumVersion(8, 3))
-				textSearchConfigurationFactory.AppendMenu(menu);
+				textSearchDictionaryFactory.AppendMenu(menu);
 		}
 		if (settings->GetDisplayOption(_("FTS Parsers")))
 		{
 			if (GetConnection()->BackendMinimumVersion(8, 3))
-				textSearchConfigurationFactory.AppendMenu(menu);
+				textSearchParserFactory.AppendMenu(menu);
 		}
 		if (settings->GetDisplayOption(_("FTS Templates")))
 		{
 			if (GetConnection()->BackendMinimumVersion(8, 3))
-				textSearchConfigurationFactory.AppendMenu(menu);
+				textSearchTemplateFactory.AppendMenu(menu);
 		}
 		if (settings->GetDisplayOption(_("Trigger Functions")))
 			triggerFunctionFactory.AppendMenu(menu);
