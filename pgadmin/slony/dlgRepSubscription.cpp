@@ -167,7 +167,16 @@ wxString dlgRepSubscription::GetSql()
 		       + NumToStr(cluster->GetLocalNodeID());
 	}
 	sql += wxT(", ")
-	       + BoolToStr(chkForward->GetValue()) + wxT(");");
+	       + BoolToStr(chkForward->GetValue());
+
+	// Omit copy?
+	if (cluster && cluster->ClusterMinimumVersion(2, 0) &&
+		cluster->GetClusterVersion() != wxT("2.0.0") &&
+		cluster->GetClusterVersion() != wxT("2.0.1") &&
+		cluster->GetClusterVersion() != wxT("2.0.2"))
+		sql += wxT(", false");
+
+	sql += wxT(");");
 
 	return sql;
 }
