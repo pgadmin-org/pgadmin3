@@ -735,7 +735,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		if (restr.IsEmpty())
 			restr = wxT(" WHERE datname IN (");
 		else
-			restr = wxT("   AND datname IN (");
+			restr += wxT("   AND datname IN (");
 
 		restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
 	}

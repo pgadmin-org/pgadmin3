@@ -1740,11 +1740,11 @@ wxString dlgSecurityProperty::GetHelpPage() const
 }
 
 
-void dlgSecurityProperty::EnableOK(bool enable)
+void dlgSecurityProperty::EnableOK(bool enable, bool ignoreSql)
 {
 	// Don't enable the OK button if the object isn't yet created,
 	// leave that to the object dialog.
-	if (securityChanged && GetObject())
+	if (securityChanged && GetObject() && !ignoreSql)
 	{
 		wxString sql = GetSql();
 		if (sql.IsEmpty())
@@ -1869,11 +1869,11 @@ void dlgDefaultSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 #endif
 
 
-void dlgDefaultSecurityProperty::EnableOK(bool enable)
+void dlgDefaultSecurityProperty::EnableOK(bool enable, bool ignoreSql)
 {
 	// Don't enable the OK button if the object isn't yet created,
 	// leave that to the object dialog.
-	if (GetObject())
+	if (GetObject() && !ignoreSql)
 	{
 		wxString sql = GetSql();
 		if (sql.IsEmpty())
@@ -1883,7 +1883,7 @@ void dlgDefaultSecurityProperty::EnableOK(bool enable)
 		else
 			enable = true;
 	}
-	dlgSecurityProperty::EnableOK(enable);
+	dlgSecurityProperty::EnableOK(enable, ignoreSql);
 }
 
 
