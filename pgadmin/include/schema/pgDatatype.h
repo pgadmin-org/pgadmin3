@@ -77,8 +77,8 @@ private:
 class DatatypeReader
 {
 public:
-	DatatypeReader(pgDatabase *db, bool withDomains = true);
-	DatatypeReader(pgDatabase *db, const wxString &condition);
+	DatatypeReader(pgDatabase *db, bool withDomains = true, bool addSerials = false);
+	DatatypeReader(pgDatabase *db, const wxString &condition, bool addSerials = false);
 	~DatatypeReader()
 	{
 		if (set) delete set;
@@ -107,7 +107,7 @@ public:
 private:
 	pgSet *set;
 	pgDatabase *database;
-	void init(pgDatabase *db, const wxString &condition);
+	void init(pgDatabase *db, const wxString &condition, bool addSerials = false);
 };
 
 #endif

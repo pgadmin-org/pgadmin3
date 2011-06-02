@@ -1264,19 +1264,19 @@ dlgTypeProperty::dlgTypeProperty(pgaFactory *f, frmMain *frame, const wxString &
 }
 
 
-void dlgTypeProperty::FillDatatype(ctlComboBox *cb, bool withDomains)
+void dlgTypeProperty::FillDatatype(ctlComboBox *cb, bool withDomains, bool addSerials)
 {
-	FillDatatype(cb, 0, withDomains);
+	FillDatatype(cb, 0, withDomains, addSerials);
 }
 
-void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains)
+void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains, bool addSerials)
 {
 
 	if (dtCache.IsEmpty())
 	{
 		// A column dialog is directly called, no datatype caching is done.
 		// Fetching datatypes from server.
-		DatatypeReader tr(database, withDomains);
+		DatatypeReader tr(database, withDomains, addSerials);
 		while (tr.HasMore())
 		{
 			pgDatatype dt = tr.GetDatatype();

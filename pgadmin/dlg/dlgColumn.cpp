@@ -367,11 +367,7 @@ int dlgColumn::Go(bool modal)
 	else
 	{
 		// create mode
-		FillDatatype(cbDatatype);
-		cbDatatype->Append(wxT("serial"));
-		cbDatatype->Append(wxT("bigserial"));
-		AddType(wxT(" "), 0, wxT("serial"));
-		AddType(wxT(" "), 0, wxT("bigserial"));
+		FillDatatype(cbDatatype, true, true);
 
 		if (!table)
 		{

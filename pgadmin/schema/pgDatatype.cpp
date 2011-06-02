@@ -180,13 +180,13 @@ long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxSt
 }
 
 
-DatatypeReader::DatatypeReader(pgDatabase *db, const wxString &condition)
+DatatypeReader::DatatypeReader(pgDatabase *db, const wxString &condition, bool addSerials)
 {
-	init(db, condition);
+	init(db, condition, addSerials);
 }
 
 
-DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
+DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains, bool addSerials)
 {
 	wxString condition = wxT("typisdefined AND typtype ");
 	if (withDomains)
@@ -198,19 +198,27 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
 
 	if (!settings->GetShowSystemObjects())
 		condition += wxT(" AND nsp.nspname != 'information_schema'");
-	init(db, condition);
+	init(db, condition, addSerials);
 }
 
-void DatatypeReader::init(pgDatabase *db, const wxString &condition)
+void DatatypeReader::init(pgDatabase *db, const wxString &condition, bool addSerials)
 {
 	database = db;
-	set = db->GetConnection()->ExecuteSet(
-	          wxT("SELECT format_type(t.oid,NULL) AS typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
-	          wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
-	          wxT("  FROM pg_type t\n")
-	          wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
-	          wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n")
-	          wxT("  ORDER BY typtype != 'd', t.typelem > 0, 1"));
+	wxString sql = wxT("SELECT * FROM (SELECT format_type(t.oid,NULL) AS typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
+				wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
+				wxT("  FROM pg_type t\n")
+				wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
+				wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n");
+
+	if (addSerials)
+	{
+		sql += wxT(" UNION SELECT 'bigserial', 0, 8, 'b', 0, 'pg_catalog', false\n");
+		sql += wxT(" UNION SELECT 'serial', 0, 4, 'b', 0, 'pg_catalog', false\n");
+	}
+
+	sql += wxT("  ) AS dummy ORDER BY nspname <> 'pg_catalog', nspname <> 'public', nspname, 1");
+
+	set = db->GetConnection()->ExecuteSet(sql);
 }
 
 

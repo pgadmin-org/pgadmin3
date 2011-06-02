@@ -214,8 +214,8 @@ public:
 protected:
 	dlgTypeProperty(pgaFactory *factory, frmMain *frame, const wxString &resName);
 	void CheckLenEnable();
-	void FillDatatype(ctlComboBox *cb, bool withDomains = true);
-	void FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains = true);
+	void FillDatatype(ctlComboBox *cb, bool withDomains = true, bool addSerials = false);
+	void FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains = true, bool addSerials = false);
 
 	bool isVarLen, isVarPrec;
 	long minVarLen, maxVarLen;

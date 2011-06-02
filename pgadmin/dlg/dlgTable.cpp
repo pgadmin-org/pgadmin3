@@ -1860,7 +1860,7 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
 // Cache datatypes to avoid multiple calls to server when adding multiple columns to a table.
 void dlgTable::PopulateDatatypeCache()
 {
-	DatatypeReader tr(database, true);
+	DatatypeReader tr(database, true, true);
 	while (tr.HasMore())
 	{
 		pgDatatype dt = tr.GetDatatype();
