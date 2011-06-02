@@ -1846,7 +1846,7 @@ void dlgTable::PopulateDatatypeCache()
 
 		dataType *dType = new dataType();
 		dType->SetOid(tr.GetOid());
-		dType->SetTypename(dt.FullName());
+		dType->SetTypename(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 		dtCache.Add(dType);
 
 		tr.MoveNext();

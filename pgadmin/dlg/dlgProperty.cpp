@@ -1227,10 +1227,10 @@ void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withD
 		{
 			pgDatatype dt = tr.GetDatatype();
 
-			AddType(wxT("?"), tr.GetOid(), dt.FullName());
-			cb->Append(dt.FullName());
+			AddType(wxT("?"), tr.GetOid(), dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
+			cb->Append(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 			if (cb2)
-				cb2->Append(dt.FullName());
+				cb2->Append(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 			tr.MoveNext();
 		}
 	}
