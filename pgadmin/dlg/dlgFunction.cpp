@@ -391,11 +391,11 @@ int dlgFunction::Go(bool modal)
 			pgDatatype dt = tr.GetDatatype();
 
 			typOids.Add(tr.GetOidStr());
-			types.Add(dt.QuotedFullName());
+			types.Add(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 
-			cbDatatype->Append(dt.FullName());
+			cbDatatype->Append(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 			if (factory != &triggerFunctionFactory)
-				cbReturntype->Append(dt.FullName());
+				cbReturntype->Append(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 			tr.MoveNext();
 		}
 

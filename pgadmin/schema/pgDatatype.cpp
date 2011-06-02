@@ -105,7 +105,9 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
 // Return the full name of the type, with dimension and array qualifiers
 wxString pgDatatype::FullName() const
 {
-	if (name == wxT("time with time zone"))
+	if (name == wxT("char") && schema == wxT("pg_catalog"))
+		return wxT("\"char\"") + array;
+	else if (name == wxT("time with time zone"))
 		return wxT("time") + length + wxT(" with time zone") + array;
 	else if (name == wxT("time without time zone"))
 		return wxT("time") + length + wxT(" without time zone") + array;
@@ -120,7 +122,9 @@ wxString pgDatatype::FullName() const
 // Return the quoted full name of the type, with dimension and array qualifiers
 wxString pgDatatype::QuotedFullName() const
 {
-	if (name == wxT("time with time zone"))
+	if (name == wxT("char") && schema == wxT("pg_catalog"))
+		return wxT("\"char\"") + array;
+	else if (name == wxT("time with time zone"))
 		return wxT("time") + length + wxT(" with time zone") + array;
 	else if (name == wxT("time without time zone"))
 		return wxT("time") + length + wxT(" without time zone") + array;
