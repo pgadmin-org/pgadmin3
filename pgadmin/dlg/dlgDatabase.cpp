@@ -356,7 +356,7 @@ void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 	else
 	{
 		wxString sql = wxT("EXPLAIN SELECT 1 FROM pg_namespace\n")
-		               wxT("WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
+ 		               wxT("WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
 
 		wxLogNull nix;
 		wxString result = connection->ExecuteScalar(sql);
@@ -470,7 +470,12 @@ void dlgDatabase::CheckChange()
 	CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
 	CheckValid(enable, schemaRestrictionOk, _("Restriction not valid."));
 
-	EnableOK(enable);
+	// If there's a schema restriction, we need to ignore the SQL
+	// for the dialogue when enabling the OK button.
+	if (schemaRestrictionOk)
+		EnableOK(enable, true);
+	else
+		EnableOK(enable);
 }
 
 

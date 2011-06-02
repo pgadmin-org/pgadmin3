@@ -242,7 +242,7 @@ protected:
 	void AddUsers(ctlComboBox *comboBox = 0);
 
 	wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
-	void EnableOK(bool enable);
+	void EnableOK(bool enable, bool ignoreSql = false);
 	virtual wxString GetHelpPage() const;
 	virtual int Go(bool modal = false);
 	bool DisablePrivilege(const wxString &priv);
@@ -281,7 +281,7 @@ protected:
 
 	virtual wxString GetHelpPage() const;
 
-	void     EnableOK(bool enable);
+	void     EnableOK(bool enable, bool ignoreSql = false);
 	wxString GetDefaultPrivileges(const wxString &schemaName = wxT(""));
 	void     AddGroups(ctlComboBox *comboBox = 0);
 	void     AddUsers(ctlComboBox *comboBox = 0);
