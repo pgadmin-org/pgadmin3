@@ -63,20 +63,20 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 	{
 		expandedKids = true;
 		pgSet *set;
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 0))
 		{
 			set = GetConnection()->ExecuteSet(
-		                wxT("SELECT tgname AS trig_tgname FROM pg_trigger t, pg_proc p, pg_namespace n ")
-						wxT("WHERE t.tgrelid = 'public.pgbench_accounts'::regclass ")
-						wxT("AND t.tgfoid = p.oid AND n.nspname = ") + qtDbString(wxT("_") + GetCluster()->GetName()));
+			          wxT("SELECT tgname AS trig_tgname FROM pg_trigger t, pg_proc p, pg_namespace n ")
+			          wxT("WHERE t.tgrelid = 'public.pgbench_accounts'::regclass ")
+			          wxT("AND t.tgfoid = p.oid AND n.nspname = ") + qtDbString(wxT("_") + GetCluster()->GetName()));
 		}
 		else
 		{
 			set = GetConnection()->ExecuteSet(
-		                 wxT("SELECT trig_tgname\n")
-		                 wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_trigger\n")
-		                 wxT(" WHERE trig_tabid = ") + NumToStr(GetSlId()));
+			          wxT("SELECT trig_tgname\n")
+			          wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_trigger\n")
+			          wxT(" WHERE trig_tabid = ") + NumToStr(GetSlId()));
 		}
 
 		if (set)

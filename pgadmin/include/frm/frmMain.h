@@ -203,7 +203,7 @@ private:
 	void OnAuiNotebookPageClose(wxAuiNotebookEvent &event);
 	void OnContextMenu(wxCommandEvent &event);
 
-	void OnPageChange(wxAuiNotebookEvent& event);
+	void OnPageChange(wxAuiNotebookEvent &event);
 	void OnPropSelChanged(wxListEvent &event);
 	void OnPropSelActivated(wxListEvent &event);
 	void OnPropRightClick(wxListEvent &event);

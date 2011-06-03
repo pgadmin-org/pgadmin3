@@ -64,13 +64,13 @@ pgObject *dlgForeignDataWrapper::GetObject()
 
 int dlgForeignDataWrapper::Go(bool modal)
 {
-    wxString val;
+	wxString val;
 
 	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
 
-	if(!connection->BackendMinimumVersion(9,1))
+	if(!connection->BackendMinimumVersion(9, 1))
 		cbHandler->Disable();
 
 	// Fill handler combobox
@@ -96,11 +96,11 @@ int dlgForeignDataWrapper::Go(bool modal)
 	// Fill validator combobox
 	cbValidator->Append(wxT(""));
 	set = connection->ExecuteSet(
-	                 wxT("SELECT nspname, proname\n")
-	                 wxT("  FROM pg_proc p\n")
-	                 wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
-	                 wxT(" WHERE proargtypes[0]=") + NumToStr(PGOID_TYPE_TEXT_ARRAY) +
-	                 wxT(" AND proargtypes[1]=") + NumToStr(PGOID_TYPE_OID));
+	          wxT("SELECT nspname, proname\n")
+	          wxT("  FROM pg_proc p\n")
+	          wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+	          wxT(" WHERE proargtypes[0]=") + NumToStr(PGOID_TYPE_TEXT_ARRAY) +
+	          wxT(" AND proargtypes[1]=") + NumToStr(PGOID_TYPE_OID));
 	if (set)
 	{
 		while (!set->Eof())
@@ -334,28 +334,28 @@ wxString dlgForeignDataWrapper::GetSql()
 	if (fdw)
 	{
 		// edit mode
-        sql = wxEmptyString;
+		sql = wxEmptyString;
 
 		if (cbHandler->GetValue() != fdw->GetHandlerProc())
 		{
-            if (cbHandler->GetValue().IsEmpty())
-			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			        + wxT("\n   NO HANDLER;\n");
-            else
-			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			        + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue())
-			        + wxT(";\n");
+			if (cbHandler->GetValue().IsEmpty())
+				sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+				       + wxT("\n   NO HANDLER;\n");
+			else
+				sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+				       + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue())
+				       + wxT(";\n");
 		}
 
 		if (cbValidator->GetValue() != fdw->GetValidatorProc())
 		{
-            if (cbValidator->GetValue().IsEmpty())
-			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			        + wxT("\n   NO VALIDATOR;\n");
-            else
-			    sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			          + wxT("\n   VALIDATOR ") + qtIdent(cbValidator->GetValue())
-			          + wxT(";\n");
+			if (cbValidator->GetValue().IsEmpty())
+				sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+				       + wxT("\n   NO VALIDATOR;\n");
+			else
+				sql += wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
+				       + wxT("\n   VALIDATOR ") + qtIdent(cbValidator->GetValue())
+				       + wxT(";\n");
 		}
 
 		wxString sqloptions = GetOptionsSql();

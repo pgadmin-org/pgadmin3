@@ -239,14 +239,14 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			if (conn->BackendMinimumVersion(9, 0))
 			{
 				pid = StrToLong(conn->ExecuteScalar(
-	                             wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetCluster()->GetName()) + wxT(".sl_nodelock nl, ")
-								 wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
-								 + NumToStr(GetCluster()->GetLocalNodeID())));
+				                    wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetCluster()->GetName()) + wxT(".sl_nodelock nl, ")
+				                    wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+				                    + NumToStr(GetCluster()->GetLocalNodeID())));
 			}
 			else
 			{
 				pid = StrToLong(conn->ExecuteScalar(
-			                    wxT("SELECT listenerpid FROM pg_listener WHERE relname=") + qtDbString(wxT("_") + GetCluster()->GetName() + wxT("_Restart"))));
+				                    wxT("SELECT listenerpid FROM pg_listener WHERE relname=") + qtDbString(wxT("_") + GetCluster()->GetName() + wxT("_Restart"))));
 			}
 		}
 

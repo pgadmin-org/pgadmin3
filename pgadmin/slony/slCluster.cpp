@@ -224,19 +224,19 @@ bool slCluster::ClusterMinimumVersion(int major, int minor)
 long slCluster::GetSlonPid()
 {
 	long slonPid;
-	
+
 	if (GetConnection()->BackendMinimumVersion(9, 0))
 	{
 		slonPid = StrToLong(GetConnection()->ExecuteScalar(
-	                             wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetName()) + wxT(".sl_nodelock nl, ")
-								 wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
-								 + NumToStr(GetLocalNodeID())));
+		                        wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetName()) + wxT(".sl_nodelock nl, ")
+		                        wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+		                        + NumToStr(GetLocalNodeID())));
 	}
 	else
 	{
 		slonPid = StrToLong(GetConnection()->ExecuteScalar(
-	                             wxT("SELECT listenerpid FROM pg_listener WHERE relname = ")
-	                             + qtDbString(wxT("_") + GetName() + wxT("_Event"))));
+		                        wxT("SELECT listenerpid FROM pg_listener WHERE relname = ")
+		                        + qtDbString(wxT("_") + GetName() + wxT("_Event"))));
 	}
 
 	return slonPid;
@@ -439,20 +439,20 @@ wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
 	slCluster *cluster = (slCluster *)obj;
 
 	wxString notifyName;
-	
+
 	if (cluster->GetDatabase()->BackendMinimumVersion(9, 0))
 	{
 		notifyName = cluster->GetDatabase()->ExecuteScalar(
-			wxT("SELECT ") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")) +
-			wxT(" FROM _") + cluster->GetName() + wxT(".sl_nodelock nl,")
-			wxT(" pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
-			+ NumToStr(cluster->GetLocalNodeID()));
+		                 wxT("SELECT ") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")) +
+		                 wxT(" FROM _") + cluster->GetName() + wxT(".sl_nodelock nl,")
+		                 wxT(" pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+		                 + NumToStr(cluster->GetLocalNodeID()));
 	}
 	else
 	{
 		notifyName = cluster->GetDatabase()->ExecuteScalar(
-			wxT("SELECT relname FROM pg_listener")
-	        wxT(" WHERE relname=") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")));
+		                 wxT("SELECT relname FROM pg_listener")
+		                 wxT(" WHERE relname=") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")));
 	}
 
 	if (notifyName.IsEmpty())

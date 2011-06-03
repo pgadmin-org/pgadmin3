@@ -720,7 +720,7 @@ void frmMain::ShowObjStatistics(pgObject *data, wxWindow *ctrl)
 
 
 // Ensure we show the data in any tabs that become visible
-void frmMain::OnPageChange(wxAuiNotebookEvent& event)
+void frmMain::OnPageChange(wxAuiNotebookEvent &event)
 {
 	pgObject *data = browser->GetObject(browser->GetSelection());
 

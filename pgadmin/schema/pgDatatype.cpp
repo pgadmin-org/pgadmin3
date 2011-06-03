@@ -205,10 +205,10 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition, bool addSer
 {
 	database = db;
 	wxString sql = wxT("SELECT * FROM (SELECT format_type(t.oid,NULL) AS typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
-				wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
-				wxT("  FROM pg_type t\n")
-				wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
-				wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n");
+	               wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
+	               wxT("  FROM pg_type t\n")
+	               wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
+	               wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n");
 
 	if (addSerials)
 	{

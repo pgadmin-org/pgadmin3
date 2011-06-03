@@ -358,7 +358,7 @@ void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 	else
 	{
 		wxString sql = wxT("EXPLAIN SELECT 1 FROM pg_namespace\n")
- 		               wxT("WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
+		               wxT("WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
 
 		wxLogNull nix;
 		wxString result = connection->ExecuteScalar(sql);

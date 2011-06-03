@@ -171,9 +171,9 @@ wxString dlgRepSubscription::GetSql()
 
 	// Omit copy?
 	if (cluster && cluster->ClusterMinimumVersion(2, 0) &&
-		cluster->GetClusterVersion() != wxT("2.0.0") &&
-		cluster->GetClusterVersion() != wxT("2.0.1") &&
-		cluster->GetClusterVersion() != wxT("2.0.2"))
+	        cluster->GetClusterVersion() != wxT("2.0.0") &&
+	        cluster->GetClusterVersion() != wxT("2.0.1") &&
+	        cluster->GetClusterVersion() != wxT("2.0.2"))
 		sql += wxT(", false");
 
 	sql += wxT(");");

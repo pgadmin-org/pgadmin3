@@ -1410,12 +1410,12 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		if (collection->GetConnection()->BackendMinimumVersion(9, 0))
 		{
 			query += wxT("       (select count(*) FROM pg_trigger\n")
-		             wxT("                     WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount\n");
+			         wxT("                     WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount\n");
 		}
 		else
 		{
 			query += wxT("       (select count(*) FROM pg_trigger\n")
-					 wxT("                     WHERE tgrelid=rel.oid AND tgisconstraint = FALSE) AS triggercount\n");
+			         wxT("                     WHERE tgrelid=rel.oid AND tgisconstraint = FALSE) AS triggercount\n");
 		}
 
 		if (collection->GetConnection()->BackendMinimumVersion(9, 1))
@@ -1778,7 +1778,7 @@ bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
 	return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
 	       && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
 	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1)
-		   && ((pgTable *)obj)->GetTriggerCount() > 0;
+	       && ((pgTable *)obj)->GetTriggerCount() > 0;
 }
 
 enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
@@ -1806,7 +1806,7 @@ bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
 	return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
 	       && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
 	       && ((pgTable *)obj)->GetConnection()->BackendMinimumVersion(8, 1)
-		   && ((pgTable *)obj)->GetTriggerCount() > 0;
+	       && ((pgTable *)obj)->GetTriggerCount() > 0;
 }
 
 truncateFactory::truncateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)

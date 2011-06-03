@@ -188,32 +188,34 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 	wxString sql;
 	pgForeignDataWrapper *fdw = 0;
 
-	bool fdwHandlerSupport = (collection->GetDatabase()->BackendMinimumVersion(9,1));
-	
-	if(fdwHandlerSupport) {
+	bool fdwHandlerSupport = (collection->GetDatabase()->BackendMinimumVersion(9, 1));
+
+	if(fdwHandlerSupport)
+	{
 
 		sql = wxT("SELECT fdw.oid, fdwname, fdwhandler, fdwvalidator, fdwacl, ")
-			  wxT("vh.proname as fdwhan, vp.proname as fdwval, description, ")
-			  wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
-			  wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
+		      wxT("vh.proname as fdwhan, vp.proname as fdwval, description, ")
+		      wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
+		      wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
 		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
-			   wxT("  LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler\n")
-			   wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
-			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
-			   + restriction + wxT("\n")
-			   wxT(" ORDER BY fdwname");
+		       wxT("  LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler\n")
+		       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
+		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+		       + restriction + wxT("\n")
+		       wxT(" ORDER BY fdwname");
 	}
-	else {
+	else
+	{
 
 		sql = wxT("SELECT fdw.oid, fdwname, fdwvalidator, fdwacl, ")
-			  wxT("vp.proname as fdwval, description, ")
-			  wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
-			  wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
-		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")			   
-			   wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
-			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
-			   + restriction + wxT("\n")
-			   wxT(" ORDER BY fdwname");
+		      wxT("vp.proname as fdwval, description, ")
+		      wxT("array_to_string(fdwoptions, ',') AS fdwoptions, ")
+		      wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
+		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
+		       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
+		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+		       + restriction + wxT("\n")
+		       wxT(" ORDER BY fdwname");
 	}
 	pgSet *fdws = collection->GetDatabase()->ExecuteSet(sql);
 
