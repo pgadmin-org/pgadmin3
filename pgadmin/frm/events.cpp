@@ -40,12 +40,12 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
-	EVT_CHILD_FOCUS(			frmMain::OnChildFocus)
+	EVT_CHILD_FOCUS(						frmMain::OnChildFocus)
 	EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)
 	EVT_SIZE(                               frmMain::OnSize)
 	EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
 
-	EVT_MENU(MNU_COPY,			frmMain::OnCopy)
+	EVT_MENU(MNU_COPY,						frmMain::OnCopy)
 	EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
 	EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
 	EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
@@ -55,6 +55,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
 	EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
 	EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu)
 
+	EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY,	frmMain::OnPageChange)
 	EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
 	EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(CTL_PROPVIEW, frmMain::OnPropRightClick)
@@ -367,14 +368,29 @@ void frmMain::OnTreeSelChanged(wxTreeEvent &event)
 }
 
 
+// Reset the list controls
+void frmMain::ResetLists()
+{
+	properties->ClearAll();
+	properties->AddColumn(_("Properties"), properties->GetSize().GetWidth() - 10);
+	properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
+	statistics->ClearAll();
+	statistics->AddColumn(_("Statistics"), properties->GetSize().GetWidth() - 10);
+	statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_PROPERTY);
+	dependencies->ClearAll();
+	dependencies->AddColumn(_("Dependencies"), properties->GetSize().GetWidth() - 10);
+	dependencies->InsertItem(0, _("No dependency information is available for the current selection"), PGICON_PROPERTY);
+	dependents->ClearAll();
+	dependents->AddColumn(_("Dependents"), properties->GetSize().GetWidth() - 10);
+	dependents->InsertItem(0, _("No dependent information is available for the current selection"), PGICON_PROPERTY);
+}
+
+
 void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
 	if (currentNode)
 	{
-		properties->ClearAll();
-		properties->AddColumn(_("Properties"), properties->GetSize().GetWidth() - 10);
-		properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
-
+		ResetLists();
 		sqlPane->Clear();
 	}
 
@@ -395,7 +411,6 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 			properties->Freeze();
 			setDisplay(currentObject, properties, sqlPane);
 			properties->Thaw();
-			ShowObjStatistics(currentObject);
 		}
 		else
 			setDisplay(currentObject, 0, 0);

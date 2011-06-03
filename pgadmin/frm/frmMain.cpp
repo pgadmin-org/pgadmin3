@@ -162,8 +162,7 @@ frmMain::frmMain(const wxString &title)
 	dependencies->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 	dependents->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
-	properties->AddColumn(_("Properties"), 500);
-	properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
+	ResetLists();
 
 	wxColour background;
 	background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
@@ -690,25 +689,45 @@ bool frmMain::SetCurrentNode(wxTreeItemId node, const wxString &path)
 	return false;
 }
 
-void frmMain::ShowObjStatistics(pgObject *data)
+void frmMain::ShowObjStatistics(pgObject *data, wxWindow *ctrl)
 {
 
-	statistics->Freeze();
-	statistics->ClearAll();
-	statistics->AddColumn(_("Statistics"), statistics->GetSize().GetWidth() - 10);
-	statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
-	data->ShowStatistics(this, statistics);
-	statistics->Thaw();
+	// Refresh panes if they're currently shown on screen, unless
+	// they've been specifically requested (eg. a notebook
+	// event is telling us they're about to become visible).
 
-	dependencies->Freeze();
-	dependencies->DeleteAllItems();
-	data->ShowDependencies(this, dependencies);
-	dependencies->Thaw();
+	if ((!ctrl && statistics->IsShownOnScreen()) || ctrl == statistics)
+	{
+		statistics->Freeze();
+		data->ShowStatistics(this, statistics);
+		statistics->Thaw();
+	}
 
-	dependents->Freeze();
-	dependents->DeleteAllItems();
-	data->ShowDependents(this, dependents);
-	dependents->Thaw();
+	if ((!ctrl && dependencies->IsShownOnScreen()) || ctrl == dependencies)
+	{
+		dependencies->Freeze();
+		data->ShowDependencies(this, dependencies);
+		dependencies->Thaw();
+	}
+
+	if ((!ctrl && dependents->IsShownOnScreen()) || ctrl == dependents)
+	{
+		dependents->Freeze();
+		data->ShowDependents(this, dependents);
+		dependents->Thaw();
+	}
+}
+
+
+// Ensure we show the data in any tabs that become visible
+void frmMain::OnPageChange(wxAuiNotebookEvent& event)
+{
+	pgObject *data = browser->GetObject(browser->GetSelection());
+
+	if (!data)
+		return;
+
+	ShowObjStatistics(data, ((wxAuiNotebook *)event.GetEventObject())->GetPage(event.GetSelection()));
 }
 
 

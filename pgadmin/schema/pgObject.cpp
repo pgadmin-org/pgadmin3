@@ -948,24 +948,7 @@ void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties
 
 		SetContextInfo(form);
 
-		ctlListView *statistics = form->GetStatistics();
-		if (statistics)
-			ShowStatistics(form, statistics);
-
-		ctlListView *Dependencies = form->GetDependencies();
-		if (Dependencies)
-		{
-			Dependencies->ClearAll();
-			if (!IsCollection())
-				ShowDependencies(form, Dependencies);
-		}
-		ctlListView *referencedBy = form->GetReferencedBy();
-		if (referencedBy)
-		{
-			referencedBy->ClearAll();
-			if (!IsCollection())
-				ShowDependents(form, referencedBy);
-		}
+		form->ShowObjStatistics(this);
 	}
 
 	ShowTreeDetail(browser, form, properties, sqlPane);

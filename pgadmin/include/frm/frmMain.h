@@ -99,7 +99,7 @@ public:
 	void execSelChange(wxTreeItemId item, bool currentNode);
 	void Refresh(pgObject *data);
 	void ExecDrop(bool cascaded);
-	void ShowObjStatistics(pgObject *data);
+	void ShowObjStatistics(pgObject *data, wxWindow *ctrl = NULL);
 
 	wxImageList *GetImageList()
 	{
@@ -203,6 +203,7 @@ private:
 	void OnAuiNotebookPageClose(wxAuiNotebookEvent &event);
 	void OnContextMenu(wxCommandEvent &event);
 
+	void OnPageChange(wxAuiNotebookEvent& event);
 	void OnPropSelChanged(wxListEvent &event);
 	void OnPropSelActivated(wxListEvent &event);
 	void OnPropRightClick(wxListEvent &event);
@@ -222,6 +223,7 @@ private:
 
 	void OnPositionStc(wxStyledTextEvent &event);
 
+	void ResetLists();
 	bool dropSingleObject(pgObject *data, bool updateFinal, bool cascaded);
 	void doPopup(wxWindow *win, wxPoint point, pgObject *object);
 	void setDisplay(pgObject *data, ctlListView *props = 0, ctlSQLBox *sqlbox = 0);
