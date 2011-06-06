@@ -3066,9 +3066,9 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 
 queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolBaseFactory(list)
 {
-	mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
+	mnu->Append(id, _("CREATE Script"), _("Start Query tool with CREATE script."));
 	if (toolbar)
-		toolbar->AddTool(id, _("CREATE script"), *sql_32_png_bmp, _("Start query tool with CREATE script."), wxITEM_NORMAL);
+		toolbar->AddTool(id, _("CREATE Script"), *sql_32_png_bmp, _("Start query tool with CREATE script."), wxITEM_NORMAL);
 }
 
 
@@ -3086,7 +3086,7 @@ bool queryToolSqlFactory::CheckEnable(pgObject *obj)
 
 queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
-	mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
+	mnu->Append(id, _("SELECT Script"), _("Start query tool with SELECT script."));
 }
 
 bool queryToolSelectFactory::CheckEnable(pgObject *obj)
@@ -3127,7 +3127,7 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
 
 queryToolExecFactory::queryToolExecFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
-	mnu->Append(id, _("EXEC script"), _("Start query tool with EXEC script."));
+	mnu->Append(id, _("EXEC Script"), _("Start query tool with EXEC script."));
 }
 
 bool queryToolExecFactory::CheckEnable(pgObject *obj)
@@ -3147,7 +3147,7 @@ wxWindow *queryToolExecFactory::StartDialog(frmMain *form, pgObject *obj)
 
 queryToolDeleteFactory::queryToolDeleteFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
-	mnu->Append(id, _("DELETE script"), _("Start query tool with DELETE script."));
+	mnu->Append(id, _("DELETE Script"), _("Start query tool with DELETE script."));
 }
 
 
@@ -3174,7 +3174,7 @@ wxWindow *queryToolDeleteFactory::StartDialog(frmMain *form, pgObject *obj)
 
 queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
-	mnu->Append(id, _("UPDATE script"), _("Start query tool with UPDATE script."));
+	mnu->Append(id, _("UPDATE Script"), _("Start query tool with UPDATE script."));
 }
 
 
@@ -3209,7 +3209,7 @@ bool queryToolUpdateFactory::CheckEnable(pgObject *obj)
 
 queryToolInsertFactory::queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
-	mnu->Append(id, _("INSERT script"), _("Start query tool with INSERT script."));
+	mnu->Append(id, _("INSERT Script"), _("Start query tool with INSERT script."));
 }
 
 
