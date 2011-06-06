@@ -40,12 +40,12 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
-	EVT_CHILD_FOCUS(						frmMain::OnChildFocus)
+	EVT_CHILD_FOCUS(			frmMain::OnChildFocus)
 	EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)
 	EVT_SIZE(                               frmMain::OnSize)
 	EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
 
-	EVT_MENU(MNU_COPY,						frmMain::OnCopy)
+	EVT_MENU(MNU_COPY,			frmMain::OnCopy)
 	EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
 	EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
 	EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
