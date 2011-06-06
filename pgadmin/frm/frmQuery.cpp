@@ -25,6 +25,7 @@
 #include <wx/bmpcbox.h>
 
 // App headers
+#include "frm/frmAbout.h"
 #include "frm/frmMain.h"
 #include "frm/frmQuery.h"
 #include "frm/menu.h"
@@ -349,6 +350,13 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	wxMenu *helpMenu = new wxMenu();
 	helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the helpfile."));
 	helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
+
+#ifdef __WXMAC__
+	menuFactories = new menuFactoryList();
+	aboutFactory *af = new aboutFactory(menuFactories, helpMenu, 0);
+        wxApp::s_macAboutMenuItemId = af->GetId();
+	menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));
+#endif
 
 	menuBar->Append(helpMenu, _("&Help"));
 

@@ -23,6 +23,7 @@
 #include <wx/generic/gridctrl.h>
 #include <wx/clipbrd.h>
 
+#include "frm/frmAbout.h"
 #include "frm/frmEditGrid.h"
 #include "ctl/ctlMenuToolbar.h"
 #include "dlg/dlgEditGridOptions.h"
@@ -204,6 +205,13 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 	helpMenu = new wxMenu();
 	helpMenu->Append(MNU_CONTENTS, _("&Help contents"), _("Open the helpfile."));
 	helpMenu->Append(MNU_HELP, _("&Edit grid help"), _("Display help on this window."));
+
+#ifdef __WXMAC__
+	menuFactories = new menuFactoryList();
+	aboutFactory *af = new aboutFactory(menuFactories, helpMenu, 0);
+	wxApp::s_macAboutMenuItemId = af->GetId();
+	menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));
+#endif
 
 	menuBar = new wxMenuBar();
 	menuBar->Append(fileMenu, _("&File"));
