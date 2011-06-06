@@ -24,6 +24,7 @@
 #include <wx/aui/auibook.h>
 
 // App headers
+#include "frm/frmAbout.h"
 #include "frm/frmStatus.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
@@ -239,6 +240,13 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 
 	wxMenu *helpMenu = new wxMenu();
 	helpMenu->Append(MNU_CONTENTS, _("&Help"), _("Open the helpfile."));
+
+#ifdef __WXMAC__
+	menuFactories = new menuFactoryList();
+	aboutFactory *af = new aboutFactory(menuFactories, helpMenu, 0);
+	wxApp::s_macAboutMenuItemId = af->GetId();
+	menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));
+#endif
 
 	menuBar->Append(helpMenu, _("&Help"));
 
