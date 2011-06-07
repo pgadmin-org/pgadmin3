@@ -787,6 +787,7 @@ wxString dlgTable::GetItemConstraintType(ctlListView *list, long pos)
 
 wxString dlgTable::GetSql()
 {
+	int pos;
 	wxString sql;
 	wxString tabname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
@@ -812,8 +813,11 @@ wxString dlgTable::GetSql()
 					definition = qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
 					index = tmpDef.Index(definition);
 					if (index < 0)
+					{
 						tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 						          +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
+						//addcomment
+					}
 				}
 				else
 				{
@@ -1232,7 +1236,6 @@ wxString dlgTable::GetSql()
 		if (!typedTable || (typedTable && lstConstraints->GetItemCount() > 0))
 			sql += wxT("\n(");
 
-		int pos;
 		bool needComma = false;
 		if (!typedTable)
 		{
@@ -1464,17 +1467,16 @@ wxString dlgTable::GetSql()
 				       + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
 				       + wxT(";\n");
 		}
+	}
 
-		// Comments
-		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
-		{
-			if (!lstColumns->GetText(pos, 5).IsEmpty())
-				sql += wxT("COMMENT ON COLUMN ") + tabname
-				       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-				       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-				       + wxT(";\n");
-		}
-
+	// Comments
+	for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
+	{
+		if (!lstColumns->GetText(pos, 5).IsEmpty())
+			sql += wxT("COMMENT ON COLUMN ") + tabname
+				   + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+				   + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+				   + wxT(";\n");
 	}
 
 	AppendComment(sql, wxT("TABLE"), schema, table);
