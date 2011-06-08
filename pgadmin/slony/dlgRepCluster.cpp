@@ -1112,14 +1112,34 @@ int dlgRepClusterUpgrade::Go(bool modal)
 	txtCurrentVersion->Disable();
 	txtVersion->Disable();
 
-	treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
-	pgServer *s;
-	while ((s = (pgServer *)it.GetNextObject()) != 0)
+	// Populate the server combo box
+	ctlTree *browser = mainForm->GetBrowser();
+	wxTreeItemIdValue foldercookie, servercookie;
+	wxTreeItemId folderitem, serveritem;
+	pgObject *object;
+	pgServer *server;
+
+	folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+	while (folderitem)
 	{
-		if (s->IsCreatedBy(serverFactory))
-			cbServer->Append(mainForm->GetBrowser()->GetItemText(s->GetId()), (void *)s);
+		if (browser->ItemHasChildren(folderitem))
+		{
+			serveritem = browser->GetFirstChild(folderitem, servercookie);
+			while (serveritem)
+			{
+				object = browser->GetObject(serveritem);
+				if (object->IsCreatedBy(serverFactory))
+				{
+					server = (pgServer *)object;
+					cbServer->Append(browser->GetItemText(server->GetId()), (void *)server);
+				}
+				serveritem = browser->GetNextChild(folderitem, servercookie);
+			}
+		}
+		folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
 	}
-	if (cbServer->GetCount())
+
+    if (cbServer->GetCount())
 		cbServer->SetSelection(0);
 
 	wxCommandEvent ev;
