@@ -30,7 +30,7 @@ END_EVENT_TABLE()
 
 
 dlgSelectDatabase::dlgSelectDatabase(wxWindow *parent, int id, const wxPoint &pos, const wxSize &size, long style):
-	wxDialog(parent, id, wxT("Select Database"), pos, size, wxDEFAULT_DIALOG_STYLE)
+	wxDialog(parent, id, wxT("Select Database"), pos, size, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
 
 #ifdef __WXMSW__
@@ -72,38 +72,53 @@ void dlgSelectDatabase::Initialize()
 	tcServers->SetImageList(imageList);
 
 	ctlTree *browser = winMain->GetBrowser();
-	wxCookieType cookie;
 
-	wxTreeItemId servers = browser->GetRootItem();
-	wxTreeItemId serverItem = browser->GetFirstChild(servers, cookie);
-	while (serverItem)
+	wxTreeItemId servers = tcServers->GetRootItem();
+
+	wxTreeItemIdValue foldercookie;
+	wxTreeItemId folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+	while (folderitem)
 	{
-		pgServer *server = (pgServer *)browser->GetObject(serverItem);
-
-		dlgSelDBNode *cnInfo = new dlgSelDBNode(server);
-		wxTreeItemId itm = tcServers->AppendItem(rootItemID, server->GetFullName(), server->GetIconId(), -1, cnInfo);
-
-		pgConn *conn = server->connection();
-
-		if (conn && conn->GetStatus() == PGCONN_OK)
+		if (browser->ItemHasChildren(folderitem))
 		{
-			pgSet *res = conn->ExecuteSet(wxT("SELECT datname, datallowconn FROM pg_catalog.pg_database"));
-			if (res)
+			wxCookieType cookie;
+			wxTreeItemId serverItem = browser->GetFirstChild(folderitem, cookie);
+
+			wxTreeItemId tcGroupsItem = tcServers->AppendItem(rootItemID, browser->GetItemText(folderitem), serversObj->GetIconId());
+			while (serverItem)
 			{
-				while (!res->Eof())
+				pgServer *server = (pgServer *)browser->GetObject(serverItem);
+
+				if (server && server->IsCreatedBy(serverFactory))
 				{
-					if (res->GetBool(wxT("datallowconn")))
+					dlgSelDBNode *cnInfo = new dlgSelDBNode(server);
+					wxTreeItemId itm = tcServers->AppendItem(tcGroupsItem, server->GetFullName(), server->GetIconId(), -1, cnInfo);
+
+					pgConn *conn = server->connection();
+
+					if (conn && conn->IsAlive())
 					{
-						dlgSelDBNode *cnInfo = new dlgSelDBNode(server, res->GetVal(wxT("datname")));
-						tcServers->AppendItem(itm, cnInfo->getDatabase(), databaseFactory.GetIconId(), -1, cnInfo);
+						pgSet *res = conn->ExecuteSet(wxT("SELECT datname, datallowconn FROM pg_catalog.pg_database"));
+						if (res)
+						{
+							while (!res->Eof())
+							{
+								if (res->GetBool(wxT("datallowconn")))
+								{
+									dlgSelDBNode *cnInfo = new dlgSelDBNode(server, res->GetVal(wxT("datname")));
+									tcServers->AppendItem(itm, cnInfo->getDatabase(), databaseFactory.GetIconId(), -1, cnInfo);
+								}
+
+								res->MoveNext();
+							}
+						}
 					}
-
-					res->MoveNext();
 				}
-			}
-		}
 
-		serverItem = browser->GetNextChild(servers, cookie);
+				serverItem = browser->GetNextChild(folderitem, cookie);
+			}
+			folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
+		}
 	}
 
 	tcServers->Expand(servers);
@@ -114,7 +129,7 @@ void dlgSelectDatabase::OnSelect(wxTreeEvent &ev)
 {
 	wxTreeItemId sel = tcServers->GetSelection();
 
-	if (sel.IsOk() && sel != tcServers->GetRootItem())
+	if (sel.IsOk() && sel != tcServers->GetRootItem() && tcServers->GetItemParent(sel) != tcServers->GetRootItem())
 	{
 		selectedConn = (dlgSelDBNode *)tcServers->GetItemData(sel);
 	}
