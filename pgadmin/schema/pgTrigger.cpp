@@ -366,7 +366,7 @@ pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
 	if (coll)
 	{
 		wxString restr = wxT("\n   AND t.tgname=") + qtDbString(GetName()) +
-		                 wxT(" AND cl.oid=") + GetTable()->GetOidStr() +
+		                 wxT(" AND cl.oid=") + NumToStr(GetRelationOid()) +
 		                 wxT("::oid AND cl.relnamespace=") + GetSchema()->GetOidStr() + wxT("::oid");
 		trigger = triggerFactory.CreateObjects(coll, 0, restr);
 	}
@@ -414,6 +414,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 			trigger->iSetXid(triggers->GetOid(wxT("xmin")));
 			trigger->iSetComment(triggers->GetVal(wxT("description")));
 			trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
+			trigger->iSetRelationOid(triggers->GetOid(wxT("tgrelid")));
 
 			if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
 			{

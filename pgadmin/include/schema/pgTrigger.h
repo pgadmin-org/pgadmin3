@@ -174,6 +174,14 @@ public:
 	{
 		functionOid = d;
 	}
+	OID GetRelationOid() const
+	{
+		return relationOid;
+	}
+	void iSetRelationOid(const OID d)
+	{
+		relationOid = d;
+	}
 	wxString GetQuotedColumns() const
 	{
 		return quotedColumns;
@@ -235,7 +243,7 @@ private:
 	wxString function, quotedFullTable, arguments, when, language, source, columns, quotedColumns;
 	wxArrayString columnList;
 	long columnCount;
-	OID functionOid;
+	OID functionOid, relationOid;
 	long triggerType;
 	bool enabled, parentistable, isconstraint, deferrable, deferred;
 	pgFunction *triggerFunction;
