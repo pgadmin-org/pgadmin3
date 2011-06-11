@@ -32,6 +32,67 @@ bool slTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slTable::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony table");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony table");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony table \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony table \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony table cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony table?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony table properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony table properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony table DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony table DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony table dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony table dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony table dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony table dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slTable::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -172,6 +233,27 @@ pgObject *slSlTableFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 }
 
 
+wxString slSlTableCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony tables");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony tables");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony tables list report");
+			break;
+	}
+
+	return message;
+}
+
+
 ///////////////////////////////////////////////////
 
 #include "images/table-repl.pngc"
@@ -182,6 +264,12 @@ slSlTableFactory::slSlTableFactory()
 	: slSetObjFactory(__("Table"), __("New Table"), __("Create a new Table."), table_repl_png_img, table_repl_sm_png_img)
 {
 	metaType = SLM_TABLE;
+}
+
+
+pgCollection *slSlTableFactory::CreateCollection(pgObject *obj)
+{
+	return new slSlTableCollection(GetCollectionFactory(), (slSet *)obj);
 }
 
 

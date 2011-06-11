@@ -20,6 +20,7 @@ public:
 	slSlTableFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern slSlTableFactory slTableFactory;
 
@@ -30,6 +31,8 @@ public:
 	slTable(slSet *set, const wxString &newName = wxT(""));
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	bool GetAltered() const
 	{
@@ -60,6 +63,13 @@ private:
 	bool altered;
 	wxString indexName;
 	wxArrayString triggers;
+};
+
+class slSlTableCollection : public slSetObjCollection
+{
+public:
+	slSlTableCollection(pgaFactory *factory, slSet *set) : slSetObjCollection(factory, set) {}
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

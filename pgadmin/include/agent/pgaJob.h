@@ -21,6 +21,7 @@ public:
 	pgaJobFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 	int GetDisabledId()
 	{
 		return disabledId;
@@ -191,11 +192,18 @@ protected:
 };
 
 
+class pgaJobCollection : public pgServerObjCollection
+{
+public:
+	pgaJobCollection(pgaFactory *factory, pgServer *sv);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+
 class pgaJobObjCollection : public pgServerObjCollection
 {
 public:
 	pgaJobObjCollection(pgaFactory *factory, pgaJob *job);
-	wxString GetTranslatedMessage(int kindOfMessage) const;
 	bool CanCreate();
 };
 

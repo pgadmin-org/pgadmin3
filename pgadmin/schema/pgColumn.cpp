@@ -615,6 +615,12 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 
 /////////////////////////////
 
+pgColumnCollection::pgColumnCollection(pgaFactory *factory, pgTable *tbl)
+	: pgTableObjCollection(factory, tbl)
+{
+}
+
+
 wxString pgColumnCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -647,6 +653,11 @@ pgColumnFactory::pgColumnFactory()
 	metaType = PGM_COLUMN;
 }
 
+
+pgCollection *pgColumnFactory::CreateCollection(pgObject *obj)
+{
+	return new pgColumnCollection(GetCollectionFactory(), (pgTable *)obj);
+}
 
 pgColumnFactory columnFactory;
 static pgaCollectionFactory cf(&columnFactory, __("Columns"), columns_png_img);

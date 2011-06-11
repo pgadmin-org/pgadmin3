@@ -633,27 +633,6 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
 	iSetOid(sch->GetOid());
 }
 
-
-wxString pgSchemaObjCollection::GetTranslatedMessage(int kindOfMessage) const
-{
-	wxString message = wxEmptyString;
-
-	switch (kindOfMessage)
-	{
-		case RETRIEVINGDETAILS:
-			message = _("Retrieving details on schemas");
-			break;
-		case REFRESHINGDETAILS:
-			message = _("Refreshing schemas");
-			break;
-		case OBJECTSLISTREPORT:
-			message = _("Schemas list report");
-			break;
-	}
-
-	return message;
-}
-
 bool pgSchemaObjCollection::CanCreate()
 {
 	if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
@@ -673,9 +652,43 @@ bool pgSchemaObjCollection::CanCreate()
 }
 
 
-/////////////////////////////////////////////////////
+/////////////////////////////
 
-wxString pgCatalogObjCollection::GetTranslatedMessage(int kindOfMessage) const
+pgSchemaCollection::pgSchemaCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
+wxString pgSchemaCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on schemas");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing schemas");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Schemas list report");
+			break;
+	}
+
+	return message;
+}
+
+/////////////////////////////
+
+pgCatalogCollection::pgCatalogCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
+wxString pgCatalogCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
 
@@ -694,6 +707,8 @@ wxString pgCatalogObjCollection::GetTranslatedMessage(int kindOfMessage) const
 
 	return message;
 }
+
+/////////////////////////////////////////////////////
 
 
 #include "images/namespace.pngc"
@@ -715,10 +730,20 @@ pgSchemaFactory::pgSchemaFactory()
 	metaType = PGM_SCHEMA;
 }
 
+pgCollection *pgSchemaFactory::CreateCollection(pgObject *obj)
+{
+	return new pgSchemaCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
+
 pgCatalogFactory::pgCatalogFactory()
 	: pgSchemaBaseFactory(__("Catalog"), __("New Catalog..."), __("Create a new Catalog."), catalog_png_img, catalog_sm_png_img)
 {
 	metaType = PGM_CATALOG;
+}
+
+pgCollection *pgCatalogFactory::CreateCollection(pgObject *obj)
+{
+	return new pgCatalogCollection(GetCollectionFactory(), (pgDatabase *)obj);
 }
 
 pgCollection *pgSchemaObjFactory::CreateCollection(pgObject *obj)

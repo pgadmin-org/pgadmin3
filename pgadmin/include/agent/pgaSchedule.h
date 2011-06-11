@@ -21,6 +21,7 @@ public:
 	pgaScheduleFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgaScheduleFactory scheduleFactory;
 
@@ -143,7 +144,7 @@ private:
 class pgaScheduleCollection : public pgaJobObjCollection
 {
 public:
-	pgaScheduleCollection(pgaFactory *factory, pgDatabase *db);
+	pgaScheduleCollection(pgaFactory *factory, pgaJob *job);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 

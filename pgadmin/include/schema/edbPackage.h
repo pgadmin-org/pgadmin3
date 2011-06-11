@@ -25,6 +25,7 @@ public:
 	edbPackageFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	pgCollection *CreateCollection(pgObject *obj);
 };
 extern edbPackageFactory packageFactory;
 
@@ -152,7 +153,6 @@ class edbPackageCollection : public pgSchemaObjCollection
 public:
 	edbPackageCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
-	void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
 class edbPackageObjCollection : public pgSchemaObjCollection

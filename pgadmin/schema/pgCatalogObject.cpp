@@ -160,6 +160,12 @@ pgObject *pgCatalogObjectFactory::CreateObjects(pgCollection *collection, ctlTre
 
 /////////////////////////////
 
+pgCatalogObjectCollection::pgCatalogObjectCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgCatalogObjectCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -192,6 +198,11 @@ pgCatalogObjectFactory::pgCatalogObjectFactory()
 	metaType = PGM_CATALOGOBJECT;
 }
 
+
+pgCollection *pgCatalogObjectFactory::CreateCollection(pgObject *obj)
+{
+	return new pgCatalogObjectCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgCatalogObjectFactory catalogObjectFactory;
 static pgaCollectionFactory cf(&catalogObjectFactory, __("Catalog Objects"), catalogobjects_png_img);

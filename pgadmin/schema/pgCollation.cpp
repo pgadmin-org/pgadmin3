@@ -202,6 +202,12 @@ pgObject *pgCollationFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 /////////////////////////////
 
+pgCollationCollection::pgCollationCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgCollationCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -233,6 +239,11 @@ pgCollationFactory::pgCollationFactory()
 {
 }
 
+
+pgCollection *pgCollationFactory::CreateCollection(pgObject *obj)
+{
+	return new pgCollationCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgCollationFactory collationFactory;
 static pgaCollectionFactory cf(&collationFactory, __("Collations"), collations_png_img);

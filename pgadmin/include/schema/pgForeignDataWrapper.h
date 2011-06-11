@@ -21,6 +21,7 @@ public:
 	pgForeignDataWrapperFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgForeignDataWrapperFactory foreignDataWrapperFactory;
 
@@ -90,6 +91,14 @@ public:
 	pgForeignDataWrapperObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
 		: pgDatabaseObjFactory(tn, ns, nls, img, imgSm) {}
 	virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
+
+class pgForeignDataWrapperCollection : public pgDatabaseObjCollection
+{
+public:
+	pgForeignDataWrapperCollection(pgaFactory *factory, pgDatabase *db);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 

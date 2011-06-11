@@ -22,6 +22,7 @@ public:
 	slPathFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern slPathFactory pathFactory;
 
@@ -33,6 +34,8 @@ public:
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 	static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);
+	
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	void iSetConnInfo(const wxString &s)
 	{
@@ -59,6 +62,14 @@ private:
 	long connRetry;
 	wxString connInfo;
 };
+
+class slPathCollection : public slNodeObjCollection
+{
+public:
+	slPathCollection(pgaFactory *factory, slNode *nd) : slNodeObjCollection(factory, nd) {}
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
 
 #endif
 

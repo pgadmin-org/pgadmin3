@@ -306,6 +306,15 @@ pgObject *pgOperatorClass::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgOperatorClassCollection::pgOperatorClassCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgOperatorClassCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -325,6 +334,7 @@ wxString pgOperatorClassCollection::GetTranslatedMessage(int kindOfMessage) cons
 
 	return message;
 }
+
 
 ///////////////////////////////////////////////////
 
@@ -405,6 +415,11 @@ pgOperatorClassFactory::pgOperatorClassFactory()
 dlgProperty *pgOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
 	return 0; // not implemented
+}
+
+pgCollection *pgOperatorClassFactory::CreateCollection(pgObject *obj)
+{
+	return new pgOperatorClassCollection(GetCollectionFactory(), (pgSchema *)obj);
 }
 
 pgOperatorClassFactory operatorClassFactory;

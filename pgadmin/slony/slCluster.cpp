@@ -74,6 +74,67 @@ bool slCluster::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slCluster::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony cluster");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony cluster");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony cluster \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony cluster \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony cluster cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony cluster?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony cluster properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony cluster properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony cluster DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony cluster DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony cluster dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony cluster dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony cluster dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony cluster dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slCluster::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -386,6 +447,36 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, ctlTree *browser)
 	return slClusterFactory.CreateObjects(coll, browser, wxEmptyString);
 }
 
+/////////////////////////////
+
+slClusterCollection::slClusterCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
+wxString slClusterCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony clusters");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony clusters");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony clusters list report");
+			break;
+	}
+
+	return message;
+}
+
+
+/////////////////////////////
 
 
 #include "images/slcluster.pngc"
@@ -395,6 +486,12 @@ pgaSlClusterFactory::pgaSlClusterFactory()
 	: pgDatabaseObjFactory(__("Slony-I cluster"), __("New Slony-I cluster..."), __("Create new Slony-I Replication Cluster"), slcluster_png_img)
 {
 //    metaType = SLM_CLUSTER;
+}
+
+
+pgCollection *pgaSlClusterFactory::CreateCollection(pgObject *obj)
+{
+	return new slClusterCollection(GetCollectionFactory(), (pgDatabase *)obj);
 }
 
 

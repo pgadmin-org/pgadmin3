@@ -260,6 +260,13 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 /////////////////////////////
 
+
+pgRuleCollection::pgRuleCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgRuleCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -280,6 +287,7 @@ wxString pgRuleCollection::GetTranslatedMessage(int kindOfMessage) const
 	return message;
 }
 
+
 /////////////////////////////
 
 #include "images/rule.pngc"
@@ -293,6 +301,11 @@ pgRuleFactory::pgRuleFactory()
 	closedId = addIcon(rulebad_png_img);
 }
 
+
+pgCollection *pgRuleFactory::CreateCollection(pgObject *obj)
+{
+	return new pgRuleCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgRuleFactory ruleFactory;
 static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_png_img);

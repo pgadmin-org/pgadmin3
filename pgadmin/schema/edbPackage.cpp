@@ -300,6 +300,11 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+edbPackageCollection::edbPackageCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
 wxString edbPackageCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -334,6 +339,11 @@ edbPackageFactory::edbPackageFactory()
 	metaType = EDB_PACKAGE;
 }
 
+
+pgCollection *edbPackageFactory::CreateCollection(pgObject *obj)
+{
+	return new edbPackageCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 edbPackageFactory packageFactory;
 static pgaCollectionFactory cf(&packageFactory, __("Packages"), packages_png_img);

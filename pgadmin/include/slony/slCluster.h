@@ -28,6 +28,7 @@ public:
 	pgaSlClusterFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgaSlClusterFactory slClusterFactory;
 
@@ -39,6 +40,8 @@ public:
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 	static pgObject *ReadObjects(pgCollection *coll, ctlTree *browser);
+	
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	bool ClusterMinimumVersion(int major, int minor);
 
@@ -120,6 +123,13 @@ private:
 	RemoteConnArray remoteConns;
 };
 
+
+class slClusterCollection : public pgDatabaseObjCollection
+{
+public:
+	slClusterCollection(pgaFactory *factory, pgDatabase *db);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
 
 
 // Slony-I object

@@ -359,6 +359,34 @@ pgCollection *pgForeignDataWrapperObjFactory::CreateCollection(pgObject *obj)
 }
 
 
+/////////////////////////////
+
+pgForeignDataWrapperCollection::pgForeignDataWrapperCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
+wxString pgForeignDataWrapperCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on foreign data wrappers");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing foreign data wrappers");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Foreign data wrappers list report");
+			break;
+	}
+
+	return message;
+}
+
 ///////////////////////////////////////////////////
 
 #include "images/foreigndatawrapper.pngc"
@@ -370,6 +398,11 @@ pgForeignDataWrapperFactory::pgForeignDataWrapperFactory()
 {
 }
 
+
+pgCollection *pgForeignDataWrapperFactory::CreateCollection(pgObject *obj)
+{
+	return new pgForeignDataWrapperCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
 
 pgForeignDataWrapperFactory foreignDataWrapperFactory;
 static pgaCollectionFactory cf(&foreignDataWrapperFactory, __("Foreign Data Wrappers"), foreigndatawrappers_png_img);

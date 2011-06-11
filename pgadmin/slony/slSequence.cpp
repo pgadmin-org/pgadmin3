@@ -35,6 +35,67 @@ bool slSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slSequence::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony sequence");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony sequence");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony sequence \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony sequence \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony sequence cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony sequence?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony sequence properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony sequence properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony sequence DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony sequence DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony sequence dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony sequence dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony sequence dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony sequence dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slSequence::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -126,6 +187,26 @@ pgObject *slSlSequenceFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 }
 
 
+wxString slSlSequenceCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony sequences");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony sequences");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony sequences list report");
+			break;
+	}
+
+	return message;
+}
+
 
 ///////////////////////////////////////////////////
 
@@ -136,6 +217,12 @@ slSlSequenceFactory::slSlSequenceFactory()
 	: slSetObjFactory(__("Sequence"), __("New Sequence"), __("Create a new Sequence."), sequence_repl_png_img)
 {
 	metaType = SLM_SEQUENCE;
+}
+
+
+pgCollection *slSlSequenceFactory::CreateCollection(pgObject *obj)
+{
+	return new slSlSequenceCollection(GetCollectionFactory(), (slSet *)obj);
 }
 
 

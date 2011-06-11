@@ -46,6 +46,10 @@ wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
 		case PROPERTIES:
 			message = _("pgAgent job properties");
 			break;
+		case DDLREPORT:
+			message = _("pgAgent job DDL report");
+			message += wxT(" - ") + GetName();
+			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent job dependencies report");
 			break;
@@ -278,6 +282,34 @@ bool pgaJob::RunNow()
 	return true;
 }
 
+
+pgaJobCollection::pgaJobCollection(pgaFactory *factory, pgServer *sv)
+	: pgServerObjCollection(factory, sv)
+{
+}
+
+
+wxString pgaJobCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on pgAgent jobs");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing pgAgent jobs");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("pgAgent jobs list report");
+			break;
+	}
+
+	return message;
+}
+
+
 pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString &newName)
 	: pgServerObject(factory, newName)
 {
@@ -305,23 +337,6 @@ pgCollection *pgaJobObjFactory::CreateCollection(pgObject *obj)
 }
 
 
-wxString pgaJobObjCollection::GetTranslatedMessage(int kindOfMessage) const
-{
-	wxString message = wxEmptyString;
-
-	switch (kindOfMessage)
-	{
-		case RETRIEVINGDETAILS:
-			message = _("Retrieving details on pgAgent jobs");
-			break;
-		case REFRESHINGDETAILS:
-			message = _("Refreshing pgAgent jobs");
-			break;
-	}
-
-	return message;
-}
-
 /////////////////////////////
 
 
@@ -334,6 +349,12 @@ pgaJobFactory::pgaJobFactory()
 {
 	metaType = PGM_JOB;
 	disabledId = addIcon(jobdisabled_png_img);
+}
+
+
+pgCollection *pgaJobFactory::CreateCollection(pgObject *obj)
+{
+	return new pgaJobCollection(GetCollectionFactory(), (pgServer *)obj);
 }
 
 

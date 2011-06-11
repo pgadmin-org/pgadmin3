@@ -344,6 +344,12 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 /////////////////////////////
 
+pgAggregateCollection::pgAggregateCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgAggregateCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -377,7 +383,7 @@ pgAggregateFactory::pgAggregateFactory()
 
 pgCollection *pgAggregateFactory::CreateCollection(pgObject *obj)
 {
-	return new pgSchemaObjCollection(GetCollectionFactory(), (pgSchema *)obj);
+	return new pgAggregateCollection(GetCollectionFactory(), (pgSchema *)obj);
 }
 
 pgAggregateFactory aggregateFactory;

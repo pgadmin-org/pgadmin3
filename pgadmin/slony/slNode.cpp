@@ -67,6 +67,67 @@ bool slNode::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slNode::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony node");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony node");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony node \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony node \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony node cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony node?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony node properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony node properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony node DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony node DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony node dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony node dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony node dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony node dependents");
+			break;
+	}
+
+	return message;
+}
+
 bool slNode::WaitForEvent(long evNode)
 {
 	return true;
@@ -316,6 +377,27 @@ pgObject *slNodeFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
 		delete nodes;
 	}
 	return node;
+}
+
+
+wxString slNodeCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony nodes");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony nodes");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony nodes list report");
+			break;
+	}
+
+	return message;
 }
 
 

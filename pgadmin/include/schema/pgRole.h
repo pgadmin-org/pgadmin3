@@ -32,6 +32,7 @@ public:
 	pgLoginRoleFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 class pgGroupRoleFactory : public pgRoleBaseFactory
@@ -40,6 +41,7 @@ public:
 	pgGroupRoleFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 extern pgLoginRoleFactory loginRoleFactory;

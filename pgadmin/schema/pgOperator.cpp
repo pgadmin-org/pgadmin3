@@ -220,6 +220,15 @@ pgObject *pgOperator::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+//////////////////////////////////////////////////////
+
+
+pgOperatorCollection::pgOperatorCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgOperatorCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -359,6 +368,11 @@ pgOperatorFactory::pgOperatorFactory()
 {
 }
 
+
+pgCollection *pgOperatorFactory::CreateCollection(pgObject *obj)
+{
+	return new pgOperatorCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgOperatorFactory operatorFactory;
 static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_png_img);

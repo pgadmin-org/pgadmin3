@@ -26,6 +26,7 @@ public:
 		return 0;
 	};
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	pgCollection *CreateCollection(pgObject *obj);
 
 	edbPackageFunction *AppendFunctions(pgObject *obj, edbPackage *package, ctlTree *browser, const wxString &restriction);
 };
@@ -38,6 +39,7 @@ public:
 	edbPackageFunction(edbPackage *newPackage, const wxString &newName = wxT(""));
 	edbPackageFunction(edbPackage *newPackage, pgaFactory &factory, const wxString &newName = wxT(""));
 
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
 	wxString GetSql(ctlTree *browser);
@@ -128,6 +130,13 @@ private:
 	long argCount;
 	wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
 	wxString returnType, source, visibility;
+};
+
+class edbPackageFunctionCollection : public edbPackageObjCollection
+{
+public:
+	edbPackageFunctionCollection(pgaFactory *factory, edbPackage *pkg);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 class edbPackageProcedureFactory : public edbPackageFunctionFactory

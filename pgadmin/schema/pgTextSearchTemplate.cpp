@@ -146,6 +146,15 @@ pgObject *pgTextSearchTemplate::Refresh(ctlTree *browser, const wxTreeItemId ite
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgTextSearchTemplateCollection::pgTextSearchTemplateCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgTextSearchTemplateCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -223,6 +232,11 @@ pgTextSearchTemplateFactory::pgTextSearchTemplateFactory()
 {
 }
 
+
+pgCollection *pgTextSearchTemplateFactory::CreateCollection(pgObject *obj)
+{
+	return new pgTextSearchTemplateCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgTextSearchTemplateFactory textSearchTemplateFactory;
 static pgaCollectionFactory cf(&textSearchTemplateFactory, __("FTS Templates"), templates_png_img);

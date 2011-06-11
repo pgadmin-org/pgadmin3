@@ -46,6 +46,8 @@ public:
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
+	
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	bool CanDrop();
 	bool RequireDropConfirm()
@@ -106,6 +108,7 @@ class slNodeCollection : public slObjCollection
 {
 public:
 	slNodeCollection(pgaFactory *factory, slCluster *cl) : slObjCollection(factory, cl) {}
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

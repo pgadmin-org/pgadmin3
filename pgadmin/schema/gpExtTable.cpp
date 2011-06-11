@@ -524,6 +524,11 @@ pgObject *gpExtTableFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+gpExtTableCollection::gpExtTableCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
 wxString gpExtTableCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -559,6 +564,11 @@ gpExtTableFactory::gpExtTableFactory()
 	metaType = GP_EXTTABLE;
 }
 
+
+pgCollection *gpExtTableFactory::CreateCollection(pgObject *obj)
+{
+	return new gpExtTableCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 gpExtTableFactory extTableFactory;
 static pgaCollectionFactory cf(&extTableFactory, __("External Tables"), exttables_png_img);

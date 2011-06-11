@@ -32,6 +32,8 @@ public:
 	wxMenu *GetNewMenu();
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+	
 	pgTable *table;
 };
 

@@ -199,6 +199,12 @@ pgObject *pgConversionFactory::CreateObjects(pgCollection *collection, ctlTree *
 
 /////////////////////////////
 
+pgConversionCollection::pgConversionCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgConversionCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -229,6 +235,11 @@ pgConversionFactory::pgConversionFactory()
 {
 }
 
+
+pgCollection *pgConversionFactory::CreateCollection(pgObject *obj)
+{
+	return new pgConversionCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgConversionFactory conversionFactory;
 static pgaCollectionFactory cf(&conversionFactory, __("Conversions"), conversions_png_img);

@@ -150,6 +150,15 @@ pgObject *pgTextSearchDictionary::Refresh(ctlTree *browser, const wxTreeItemId i
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgTextSearchDictionaryCollection::pgTextSearchDictionaryCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgTextSearchDictionaryCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -222,6 +231,11 @@ pgTextSearchDictionaryFactory::pgTextSearchDictionaryFactory()
 {
 }
 
+
+pgCollection *pgTextSearchDictionaryFactory::CreateCollection(pgObject *obj)
+{
+	return new pgTextSearchDictionaryCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgTextSearchDictionaryFactory textSearchDictionaryFactory;
 static pgaCollectionFactory cf(&textSearchDictionaryFactory, __("FTS Dictionaries"), dictionaries_png_img);

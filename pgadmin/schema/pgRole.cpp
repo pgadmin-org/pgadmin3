@@ -579,6 +579,12 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+pgLoginRoleCollection::pgLoginRoleCollection(pgaFactory *factory, pgServer *sv)
+	: pgServerObjCollection(factory, sv)
+{
+}
+
+
 wxString pgLoginRoleCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -601,6 +607,12 @@ wxString pgLoginRoleCollection::GetTranslatedMessage(int kindOfMessage) const
 
 
 /////////////////////////////
+
+pgGroupRoleCollection::pgGroupRoleCollection(pgaFactory *factory, pgServer *sv)
+	: pgServerObjCollection(factory, sv)
+{
+}
+
 
 wxString pgGroupRoleCollection::GetTranslatedMessage(int kindOfMessage) const
 {
@@ -658,6 +670,11 @@ pgLoginRoleFactory::pgLoginRoleFactory()
 {
 }
 
+pgCollection *pgLoginRoleFactory::CreateCollection(pgObject *obj)
+{
+	return new pgLoginRoleCollection(GetCollectionFactory(), (pgServer *)obj);
+}
+
 pgLoginRoleFactory loginRoleFactory;
 static pgaCollectionFactory lcf(&loginRoleFactory, __("Login Roles"), loginroles_png_img);
 
@@ -665,6 +682,11 @@ static pgaCollectionFactory lcf(&loginRoleFactory, __("Login Roles"), loginroles
 pgGroupRoleFactory::pgGroupRoleFactory()
 	: pgRoleBaseFactory(__("Group Role"), __("New Group Role..."), __("Create a new Group Role."), group_png_img)
 {
+}
+
+pgCollection *pgGroupRoleFactory::CreateCollection(pgObject *obj)
+{
+	return new pgGroupRoleCollection(GetCollectionFactory(), (pgServer *)obj);
 }
 
 pgGroupRoleFactory groupRoleFactory;

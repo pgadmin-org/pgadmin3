@@ -356,6 +356,15 @@ void pgView::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgViewCollection::pgViewCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgViewCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -439,6 +448,11 @@ pgViewFactory::pgViewFactory()
 	metaType = PGM_VIEW;
 }
 
+
+pgCollection *pgViewFactory::CreateCollection(pgObject *obj)
+{
+	return new pgViewCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgViewFactory viewFactory;
 static pgaCollectionFactory cf(&viewFactory, __("Views"), views_png_img);

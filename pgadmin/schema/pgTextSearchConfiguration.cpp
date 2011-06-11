@@ -151,6 +151,15 @@ pgObject *pgTextSearchConfiguration::Refresh(ctlTree *browser, const wxTreeItemI
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgTextSearchConfigurationCollection::pgTextSearchConfigurationCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgTextSearchConfigurationCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -265,6 +274,11 @@ pgTextSearchConfigurationFactory::pgTextSearchConfigurationFactory()
 {
 }
 
+
+pgCollection *pgTextSearchConfigurationFactory::CreateCollection(pgObject *obj)
+{
+	return new pgTextSearchConfigurationCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgTextSearchConfigurationFactory textSearchConfigurationFactory;
 static pgaCollectionFactory cf(&textSearchConfigurationFactory, __("FTS Configurations"), configurations_png_img);

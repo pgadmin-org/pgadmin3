@@ -47,6 +47,67 @@ bool slSubscription::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slSubscription::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony subscription");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony subscription");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony subscription \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony subscription \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony subscription cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony subscription?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony subscription properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony subscription properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony subscription DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony subscription DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony subscription dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony subscription dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony subscription dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony subscription dependents");
+			break;
+	}
+
+	return message;
+}
+
 bool slSubscription::CanCreate()
 {
 	return GetSet()->GetOriginId() != GetReceiverId() && slSetObject::CanCreate();
@@ -190,6 +251,27 @@ pgObject *slSubscriptionFactory::CreateObjects(pgCollection *coll, ctlTree *brow
 }
 
 
+wxString slSubscriptionCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony subscriptions");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony subscriptions");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony subscriptions list report");
+			break;
+	}
+
+	return message;
+}
+
+
 ///////////////////////////////////////////////////
 
 #include "images/slsubscription.pngc"
@@ -199,6 +281,12 @@ slSubscriptionFactory::slSubscriptionFactory()
 	: slSetObjFactory(__("Subscription"), __("New Subscription"), __("Create a new Subscription."), slsubscription_png_img)
 {
 	metaType = SLM_SUBSCRIPTION;
+}
+
+
+pgCollection *slSubscriptionFactory::CreateCollection(pgObject *obj)
+{
+	return new slSubscriptionCollection(GetCollectionFactory(), (slSet *)obj);
 }
 
 

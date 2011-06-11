@@ -644,7 +644,6 @@ public:
 		return table;
 	}
 	bool CanCreate();
-	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 protected:
 	pgTable *table;

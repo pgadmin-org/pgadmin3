@@ -23,6 +23,7 @@ public:
 	pgColumnFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgColumnFactory columnFactory;
 
@@ -304,10 +305,10 @@ private:
 	wxArrayString variables;
 };
 
-class pgColumnCollection : public pgSchemaObjCollection
+class pgColumnCollection : public pgTableObjCollection
 {
 public:
-	pgColumnCollection(pgaFactory *factory, pgSchema *sch);
+	pgColumnCollection(pgaFactory *factory, pgTable *tbl);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 

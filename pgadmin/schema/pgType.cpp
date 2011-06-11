@@ -316,6 +316,15 @@ pgObject *pgType::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgTypeCollection::pgTypeCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgTypeCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -440,6 +449,11 @@ pgTypeFactory::pgTypeFactory()
 {
 }
 
+
+pgCollection *pgTypeFactory::CreateCollection(pgObject *obj)
+{
+	return new pgTypeCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgTypeFactory typeFactory;
 static pgaCollectionFactory cf(&typeFactory, __("Types"), types_png_img);

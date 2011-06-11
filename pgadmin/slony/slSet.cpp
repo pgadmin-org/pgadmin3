@@ -64,6 +64,67 @@ bool slSet::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slSet::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony set");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony set");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony set \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony set \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony set cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony set?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony set properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony set properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony set DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony set DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony set dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony set dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony set dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony set dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slSet::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -262,6 +323,27 @@ pgObject *slSetFactory::CreateObjects(pgCollection *coll, ctlTree *browser, cons
 }
 
 
+wxString slSetCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony sets");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony sets");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony sets list report");
+			break;
+	}
+
+	return message;
+}
+
+
 //////////////////////////////////////////////////
 
 #include "images/slset.pngc"
@@ -273,6 +355,12 @@ slSetFactory::slSetFactory()
 {
 	exportedIconId = addIcon(slset_png_img);
 	metaType = SLM_SET;
+}
+
+
+pgCollection *slSetFactory::CreateCollection(pgObject *obj)
+{
+	return new slSetCollection(GetCollectionFactory(), (slCluster *)obj);
 }
 
 

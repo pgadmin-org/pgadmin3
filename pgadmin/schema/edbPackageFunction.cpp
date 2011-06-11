@@ -33,6 +33,54 @@ edbPackageProcedure::edbPackageProcedure(edbPackage *newPackage, const wxString 
 {
 }
 
+wxString edbPackageFunction::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on package function");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing package function");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop package function \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop package function \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop package function cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop package function?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Package function properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Package function properties");
+			break;
+		case DDLREPORT:
+			message = _("Package function DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Package function DDL");
+			break;
+	}
+
+	return message;
+}
+
+
 wxString edbPackageFunction::GetFullName()
 {
 	return GetName() + wxT("(") + GetArgSigList() + wxT(")");
@@ -176,6 +224,36 @@ pgObject *edbPackageFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
 	return packageFunction;
 }
 
+
+/////////////////////////////
+
+edbPackageFunctionCollection::edbPackageFunctionCollection(pgaFactory *factory, edbPackage *pkg)
+	: edbPackageObjCollection(factory, pkg)
+{
+}
+
+wxString edbPackageFunctionCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on package functions");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing package functions");
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for package functions");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Package functions list report");
+			break;
+	}
+
+	return message;
+}
 
 ///////////////////////////////////////////////////
 
@@ -394,6 +472,11 @@ edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxC
 	: edbPackageObjFactory(tn, ns, nls, img)
 {
 	metaType = EDB_PACKAGEFUNCTION;
+}
+
+pgCollection *edbPackageFunctionFactory::CreateCollection(pgObject *obj)
+{
+	return new edbPackageFunctionCollection(GetCollectionFactory(), (edbPackage *)obj);
 }
 
 edbPackageFunctionFactory packageFunctionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_png_img);

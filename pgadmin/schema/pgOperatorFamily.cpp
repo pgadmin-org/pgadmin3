@@ -140,6 +140,15 @@ pgObject *pgOperatorFamily::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgOperatorFamilyCollection::pgOperatorFamilyCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgOperatorFamilyCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -217,6 +226,11 @@ pgOperatorFamilyFactory::pgOperatorFamilyFactory()
 dlgProperty *pgOperatorFamilyFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
 	return 0; // not implemented
+}
+
+pgCollection *pgOperatorFamilyFactory::CreateCollection(pgObject *obj)
+{
+	return new pgOperatorFamilyCollection(GetCollectionFactory(), (pgSchema *)obj);
 }
 
 pgOperatorFamilyFactory operatorFamilyFactory;

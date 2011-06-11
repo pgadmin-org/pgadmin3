@@ -221,6 +221,15 @@ pgObject *pgSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+///////////////////////////////////////////////////
+
+
+pgSequenceCollection::pgSequenceCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgSequenceCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -296,6 +305,11 @@ pgSequenceFactory::pgSequenceFactory()
 	metaType = PGM_SEQUENCE;
 }
 
+
+pgCollection *pgSequenceFactory::CreateCollection(pgObject *obj)
+{
+	return new pgSequenceCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgSequenceFactory sequenceFactory;
 static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"), sequences_png_img);

@@ -159,12 +159,47 @@ pgObject *edbPrivateSynonymFactory::CreateObjects(pgCollection *collection, ctlT
 
 /////////////////////////////
 
+edbPrivateSynonymCollection::edbPrivateSynonymCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+wxString edbPrivateSynonymCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on private synonyms");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing private synonyms");
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for private synonyms");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Private synonyms list report");
+			break;
+	}
+
+	return message;
+}
+
+/////////////////////////////
+
 #include "images/synonym.pngc"
 #include "images/synonyms.pngc"
 
 edbPrivateSynonymFactory::edbPrivateSynonymFactory()
 	: pgSchemaObjFactory(__("Synonym"), __("New Synonym..."), __("Create a new Synonym."), synonym_png_img)
 {}
+
+pgCollection *edbPrivateSynonymFactory::CreateCollection(pgObject *obj)
+{
+	return new edbPrivateSynonymCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 edbPrivateSynonymFactory edbPrivFactory;
 

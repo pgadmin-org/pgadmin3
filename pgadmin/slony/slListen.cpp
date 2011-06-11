@@ -38,6 +38,67 @@ bool slListen::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slListen::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony listen");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony listen");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony listen \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony listen \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony listen cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony listen?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony listen properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony listen properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony listen DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony listen DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony listen dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony listen dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony listen dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony listen dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slListen::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -140,6 +201,27 @@ pgObject *slListenFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 }
 
 
+wxString slListenCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony listens");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony listens");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony listens list report");
+			break;
+	}
+
+	return message;
+}
+
+
 ///////////////////////////////////////////////////
 
 #include "images/sllisten.pngc"
@@ -149,6 +231,12 @@ slListenFactory::slListenFactory()
 	: slNodeObjFactory(__("Listen"), __("New Listen"), __("Create a new Listen."), sllisten_png_img)
 {
 	metaType = SLM_LISTEN;
+}
+
+
+pgCollection *slListenFactory::CreateCollection(pgObject *obj)
+{
+	return new slListenCollection(GetCollectionFactory(), (slNode *)obj);
 }
 
 

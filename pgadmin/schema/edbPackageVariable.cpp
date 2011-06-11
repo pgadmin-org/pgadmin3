@@ -22,6 +22,54 @@ edbPackageVariable::edbPackageVariable(edbPackage *newPackage, const wxString &n
 {
 }
 
+wxString edbPackageVariable::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on package variable");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing package variable");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop package variable \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop package variable \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop package variable cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop package variable?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Package variable properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Package variable properties");
+			break;
+		case DDLREPORT:
+			message = _("Package variable DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Package variable DDL");
+			break;
+	}
+
+	return message;
+}
+
+
 wxString edbPackageVariable::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -129,6 +177,38 @@ pgObject *edbPackageVariableFactory::CreateObjects(pgCollection *collection, ctl
 	return packageVariable;
 }
 
+/////////////////////////////
+
+edbPackageVariableCollection::edbPackageVariableCollection(pgaFactory *factory, edbPackage *pkg)
+	: edbPackageObjCollection(factory, pkg)
+{
+}
+
+wxString edbPackageVariableCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on package variables");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing package variables");
+			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for package variables");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Package variables list report");
+			break;
+	}
+
+	return message;
+}
+
+/////////////////////////////
+
 #include "images/variable.pngc"
 #include "images/variables.pngc"
 
@@ -136,6 +216,11 @@ edbPackageVariableFactory::edbPackageVariableFactory()
 	: edbPackageObjFactory(__("Variable"), __("New Variable..."), __("Create a new Variable."), variable_png_img)
 {
 	metaType = EDB_PACKAGEVARIABLE;
+}
+
+pgCollection *edbPackageVariableFactory::CreateCollection(pgObject *obj)
+{
+	return new edbPackageVariableCollection(GetCollectionFactory(), (edbPackage *)obj);
 }
 
 edbPackageVariableFactory packageVariableFactory;

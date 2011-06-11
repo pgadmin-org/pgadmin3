@@ -300,6 +300,15 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 }
 
 
+/////////////////////////////////////////////////////////
+
+
+pgForeignTableCollection::pgForeignTableCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgForeignTableCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -376,6 +385,11 @@ pgForeignTableFactory::pgForeignTableFactory()
 	metaType = PGM_FOREIGNTABLE;
 }
 
+
+pgCollection *pgForeignTableFactory::CreateCollection(pgObject *obj)
+{
+	return new pgForeignTableCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgForeignTableFactory foreignTableFactory;
 static pgaCollectionFactory cf(&foreignTableFactory, __("Foreign Tables"), foreigntables_png_img);

@@ -35,12 +35,14 @@ class pgSchemaFactory : public pgSchemaBaseFactory
 {
 public:
 	pgSchemaFactory();
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 class pgCatalogFactory : public pgSchemaBaseFactory
 {
 public:
 	pgCatalogFactory();
+	virtual pgCollection *CreateCollection(pgObject *obj);
 	bool CanCreate()
 	{
 		return false;
@@ -241,12 +243,27 @@ protected:
 };
 
 
+class pgSchemaCollection : public pgDatabaseObjCollection
+{
+public:
+	pgSchemaCollection(pgaFactory *factory, pgDatabase *db);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+
+class pgCatalogCollection : public pgDatabaseObjCollection
+{
+public:
+	pgCatalogCollection(pgaFactory *factory, pgDatabase *db);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+
 // collection of pgSchemaObject
 class pgSchemaObjCollection : public pgCollection
 {
 public:
 	pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch);
-	wxString GetTranslatedMessage(int kindOfMessage) const;
 	virtual bool CanCreate();
 };
 
@@ -255,7 +272,6 @@ class pgCatalogObjCollection : public pgCollection
 {
 public:
 	pgCatalogObjCollection(pgaFactory *factory, pgSchema *sch);
-	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 

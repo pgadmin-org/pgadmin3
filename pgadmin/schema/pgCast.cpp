@@ -221,6 +221,12 @@ pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 /////////////////////////////
 
+pgCastCollection::pgCastCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
 wxString pgCastCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -252,6 +258,11 @@ pgCastFactory::pgCastFactory()
 {
 }
 
+
+pgCollection *pgCastFactory::CreateCollection(pgObject *obj)
+{
+	return new pgCastCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
 
 pgCastFactory castFactory;
 static pgaCollectionFactory cf(&castFactory, __("Casts"), casts_png_img);

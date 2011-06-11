@@ -13,7 +13,6 @@
 #define EDBPACKAGEVARIABLE_H
 
 #include "edbPackage.h"
-
 class pgCollection;
 class edbPackageVariable;
 
@@ -26,6 +25,7 @@ public:
 		return 0;
 	};
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	pgCollection *CreateCollection(pgObject *obj);
 };
 extern edbPackageVariableFactory packageVariableFactory;
 
@@ -35,6 +35,7 @@ class edbPackageVariable : public edbPackageObject
 public:
 	edbPackageVariable(edbPackage *newPackage, const wxString &newName = wxT(""));
 
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
 	wxString GetSql(ctlTree *browser);
@@ -65,6 +66,13 @@ public:
 
 private:
 	wxString dataType, visibility;
+};
+
+class edbPackageVariableCollection : public edbPackageObjCollection
+{
+public:
+	edbPackageVariableCollection(pgaFactory *factory, edbPackage *pkg);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

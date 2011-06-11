@@ -110,7 +110,7 @@ public:
 	int GetMetaType() const;
 	wxString GetTypeName() const;
 	wxString GetTranslatedTypeName() const;
-	wxString GetTranslatedMessage(int kindOfMessage) const;
+	virtual wxString GetTranslatedMessage(int kindOfMessage) const;
 	virtual int GetIconId();
 	bool UpdateIcon(ctlTree *browser);
 

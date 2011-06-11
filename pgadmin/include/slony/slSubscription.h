@@ -21,6 +21,7 @@ public:
 	slSubscriptionFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 	int GetExportedIconId()
 	{
 		return exportedIconId;
@@ -39,6 +40,8 @@ public:
 
 	int GetIconId();
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	bool WantDummyChild();
 	bool RequireDropConfirm()
@@ -116,6 +119,13 @@ private:
 	bool active, forward, isSubscribed;
 	long providerId, receiverId;
 	wxString providerNode, receiverNode;
+};
+
+class slSubscriptionCollection : public slSetObjCollection
+{
+public:
+	slSubscriptionCollection(pgaFactory *factory, slSet *set) : slSetObjCollection(factory, set) {}
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

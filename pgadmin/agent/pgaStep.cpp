@@ -44,6 +44,10 @@ wxString pgaStep::GetTranslatedMessage(int kindOfMessage) const
 		case PROPERTIES:
 			message = _("pgAgent step properties");
 			break;
+		case DDLREPORT:
+			message = _("pgAgent step DDL report");
+			message += wxT(" - ") + GetName();
+			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent step dependencies report");
 			break;
@@ -266,6 +270,13 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 /////////////////////////////
 
+
+pgaStepCollection::pgaStepCollection(pgaFactory *factory, pgaJob *job)
+	: pgaJobObjCollection(factory, job)
+{
+}
+
+
 wxString pgaStepCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -278,10 +289,14 @@ wxString pgaStepCollection::GetTranslatedMessage(int kindOfMessage) const
 		case REFRESHINGDETAILS:
 			message = _("Refreshing pgAgent steps");
 			break;
+		case OBJECTSLISTREPORT:
+			message = _("pgAgent steps list report");
+			break;
 	}
 
 	return message;
 }
+
 
 /////////////////////////////
 
@@ -293,6 +308,12 @@ pgaStepFactory::pgaStepFactory()
 	: pgaJobObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_png_img)
 {
 	metaType = PGM_STEP;
+}
+
+
+pgCollection *pgaStepFactory::CreateCollection(pgObject *obj)
+{
+	return new pgaStepCollection(GetCollectionFactory(), (pgaJob *)obj);
 }
 
 

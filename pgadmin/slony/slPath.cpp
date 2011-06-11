@@ -37,6 +37,67 @@ bool slPath::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+wxString slPath::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony path");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony path");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony path \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop Slony path \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop Slony path cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop Slony path?");
+			break;
+		case PROPERTIESREPORT:
+			message = _("Slony path properties report");
+			message += wxT(" - ") + GetName();
+			break;
+		case PROPERTIES:
+			message = _("Slony path properties");
+			break;
+		case DDLREPORT:
+			message = _("Slony path DDL report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DDL:
+			message = _("Slony path DDL");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("Slony path dependencies report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENCIES:
+			message = _("Slony path dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("Slony path dependents report");
+			message += wxT(" - ") + GetName();
+			break;
+		case DEPENDENTS:
+			message = _("Slony path dependents");
+			break;
+	}
+
+	return message;
+}
+
 wxString slPath::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -132,6 +193,27 @@ pgObject *slPathFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
 }
 
 
+wxString slPathCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on Slony paths");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing Slony paths");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Slony paths list report");
+			break;
+	}
+
+	return message;
+}
+
+
 ///////////////////////////////////////////////////
 
 #include "images/slpath.pngc"
@@ -141,6 +223,12 @@ slPathFactory::slPathFactory()
 	: slNodeObjFactory(__("Path"), __("New Path"), __("Create a new Path."), slpath_png_img)
 {
 	metaType = SLM_PATH;
+}
+
+
+pgCollection *slPathFactory::CreateCollection(pgObject *obj)
+{
+	return new slPathCollection(GetCollectionFactory(), (slNode *)obj);
 }
 
 

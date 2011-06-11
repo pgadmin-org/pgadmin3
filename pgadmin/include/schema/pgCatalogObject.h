@@ -23,6 +23,7 @@ public:
 		return NULL;
 	};
 	virtual pgObject *CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgCatalogObjectFactory catalogObjectFactory;
 

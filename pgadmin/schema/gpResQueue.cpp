@@ -245,6 +245,11 @@ pgObject *gpResQueueFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+gpResQueueCollection::gpResQueueCollection(pgaFactory *factory, pgServer *sv)
+	: pgServerObjCollection(factory, sv)
+{
+}
+
 wxString gpResQueueCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -280,6 +285,11 @@ gpResQueueFactory::gpResQueueFactory()
 	metaType = GP_RESOURCE_QUEUE;
 }
 
+
+pgCollection *gpResQueueFactory::CreateCollection(pgObject *obj)
+{
+	return new gpResQueueCollection(GetCollectionFactory(), (pgServer *)obj);
+}
 
 gpResQueueFactory resQueueFactory;
 static pgaCollectionFactory lcf(&resQueueFactory, __("Resource Queues"), roles_png_img);

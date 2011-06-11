@@ -201,6 +201,12 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+pgLanguageCollection::pgLanguageCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
 wxString pgLanguageCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -232,6 +238,11 @@ pgLanguageFactory::pgLanguageFactory()
 {
 }
 
+
+pgCollection *pgLanguageFactory::CreateCollection(pgObject *obj)
+{
+	return new pgLanguageCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
 
 pgLanguageFactory languageFactory;
 static pgaCollectionFactory cf(&languageFactory, __("Languages"), languages_png_img);

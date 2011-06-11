@@ -496,7 +496,15 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	return trigger;
 }
 
+
 /////////////////////////////
+
+
+pgTriggerCollection::pgTriggerCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
 
 wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
 {
@@ -518,6 +526,7 @@ wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
 	return message;
 }
 
+
 /////////////////////////////
 
 #include "images/trigger.pngc"
@@ -531,6 +540,11 @@ pgTriggerFactory::pgTriggerFactory()
 	closedId = addIcon(triggerbad_png_img);
 }
 
+
+pgCollection *pgTriggerFactory::CreateCollection(pgObject *obj)
+{
+	return new pgTriggerCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgTriggerFactory triggerFactory;
 static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_png_img);

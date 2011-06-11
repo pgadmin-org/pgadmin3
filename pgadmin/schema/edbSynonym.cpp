@@ -191,6 +191,11 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 /////////////////////////////
 
+edbSynonymCollection::edbSynonymCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
 wxString edbSynonymCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -224,6 +229,11 @@ edbSynonymFactory::edbSynonymFactory()
 {
 }
 
+
+pgCollection *edbSynonymFactory::CreateCollection(pgObject *obj)
+{
+	return new edbSynonymCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
 
 edbSynonymFactory synonymFactory;
 static pgaCollectionFactory cf(&synonymFactory, __("Public Synonyms"), synonyms_png_img);

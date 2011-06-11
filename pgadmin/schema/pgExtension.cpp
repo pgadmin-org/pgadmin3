@@ -189,6 +189,12 @@ pgObject *pgExtensionFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 /////////////////////////////
 
+pgExtensionCollection::pgExtensionCollection(pgaFactory *factory, pgDatabase *db)
+	: pgDatabaseObjCollection(factory, db)
+{
+}
+
+
 wxString pgExtensionCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -220,6 +226,11 @@ pgExtensionFactory::pgExtensionFactory()
 {
 }
 
+
+pgCollection *pgExtensionFactory::CreateCollection(pgObject *obj)
+{
+	return new pgExtensionCollection(GetCollectionFactory(), (pgDatabase *)obj);
+}
 
 pgExtensionFactory extensionFactory;
 static pgaCollectionFactory cf(&extensionFactory, __("Extensions"), extensions_png_img);

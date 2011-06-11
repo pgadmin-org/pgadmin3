@@ -48,6 +48,10 @@ wxString pgaSchedule::GetTranslatedMessage(int kindOfMessage) const
 		case PROPERTIES:
 			message = _("pgAgent schedule properties");
 			break;
+		case DDLREPORT:
+			message = _("pgAgent schedule DDL report");
+			message += wxT(" - ") + GetName();
+			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent schedule dependencies report");
 			break;
@@ -516,6 +520,13 @@ wxString pgaSchedule::GetExceptionsString()
 
 /////////////////////////////
 
+
+pgaScheduleCollection::pgaScheduleCollection(pgaFactory *factory, pgaJob *job)
+	: pgaJobObjCollection(factory, job)
+{
+}
+
+
 wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -527,6 +538,9 @@ wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case REFRESHINGDETAILS:
 			message = _("Refreshing pgAgent schedules");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("pgAgent schedules list report");
 			break;
 	}
 
@@ -543,6 +557,12 @@ pgaScheduleFactory::pgaScheduleFactory()
 	: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_png_img)
 {
 	metaType = PGM_SCHEDULE;
+}
+
+
+pgCollection *pgaScheduleFactory::CreateCollection(pgObject *obj)
+{
+	return new pgaScheduleCollection(GetCollectionFactory(), (pgaJob *)obj);
 }
 
 

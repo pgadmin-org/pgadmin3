@@ -267,6 +267,12 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 
 /////////////////////////////
 
+pgDomainCollection::pgDomainCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
 wxString pgDomainCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -298,6 +304,11 @@ pgDomainFactory::pgDomainFactory()
 {
 }
 
+
+pgCollection *pgDomainFactory::CreateCollection(pgObject *obj)
+{
+	return new pgDomainCollection(GetCollectionFactory(), (pgSchema *)obj);
+}
 
 pgDomainFactory domainFactory;
 static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_png_img);

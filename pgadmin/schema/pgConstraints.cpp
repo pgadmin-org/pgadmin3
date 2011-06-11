@@ -63,6 +63,26 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 }
 
 
+wxString pgConstraintCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on constraints");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing constraints");
+			break;
+		case OBJECTSLISTREPORT:
+			message = _("Constraints list report");
+			break;
+	}
+
+	return message;
+}
+
 
 /////////////////////////////
 
