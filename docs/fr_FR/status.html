@@ -71,8 +71,10 @@ utiliser les boutons « Commit » ou « Rollback » pour cela.
 </p>
 <p>
 L'onglet Logfile affiche les journaux applicatifs du serveur si c'est configuré
-correctement dans le fichier postgresql.conf (redirect_stderr = true, 
-log_destination='stderr' et log_filename='postgresql-%Y-%m-%d_%H%M%S.log'). 
+correctement dans le fichier postgresql.conf (redirect_stderr = true ou logging_collector = true, 
+log_destination='stderr' et log_filename='postgresql-%Y-%m-%d_%H%M%S.log'
+sur PostgreSQL ou 'enterprisedb-%Y-%m-%d_%H%M%S.log' sur Advanced 
+Server d'EnterpriseDB). 
 pgAdmin récupèrera un horodatage dans le journal applicatif sur une colonne
 séparée à condition que log_line_prefix soit configuré en adéquation. Nous
 recommandons l'utilisation de '%t:' comme format car des formats plus compliqués

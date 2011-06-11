@@ -9,30 +9,42 @@
 <body>
 
 <h3>Outils serveur</h3>
-<p>
-Il manque des outils au serveur.
-</p>
-<p>
-pgAdmin III utilise certaines fonctions de support qui ne sont pas disponibles
-par défaut dans toutes les versions de PostgreSQL. Elles activent certaines
-tâches qui rendent la vie plsu facile lors du traitement des journaux de trace
-et des fichiers de configuration.
-</p>
-<p>
-Lorsque vous avez installé PostgreSQL 8.0 ou supérieur en utilisant l'installeur
-Windows, vous avez besoin d'activer l'option admin.
-</p>
-<p>
-Lors de la compilation à partir des sources, les fichiers nécessaires sont
-disponibles dans le sous-répertoire xtra du répertoire des sources de pgAdmin.
-Pour PostgreSQL 8.0, copiez le répertoire admin sous le répertoire des sources
-des contributions PostgreSQL et lancez <quote>make</quote> puis <quote>make
-install</quote> à partir de là. Pour PostgreSQL 8.1,  utilisez le répertoire
-admin81 pour cela. Après l'installation du module, vous aurez besoin de créer
-les fonctions outils dans votre base de données de maintenance en utilisant le
-script admin.sql (admin81.sql pour PostgreSQL 8.1), situé dans le répertoire share
-de PostgreSQL (par exemple /usr/local/pgsql/share).
-</p>
+<p>adminpack est installé et activé par défaut si vous avez utilisé
+l'installeur one-click de PostgreSQL pour Windows et est inclus en tant
+que module contrib pour toutes les versions de PostgreSQL, à partir de la
+version 8.2. Néanmoins si vous avez une version antérieure, vous devrez
+l'installer manuellement. Pour cela, copiez le code source approprié dans
+le répertoire contrib de votre répertoire des sources de PostgreSQL.
+Vous pouvez télécharger les sources
+<a href="http://www.pgadmin.org/download/adminpacks.php">ici</a>.</p>
+
+<p>Exécutez les commandes suivantes (en substituant <i>admin</i> par
+<i>admin81</i> si nécessaire)&nbsp;:</p>
+
+<pre>
+    # cd $PGSRC/contrib/admin
+    # make all
+    # make install
+</pre>
+
+<p>Le module doit maintenant être construit et installé dans votre
+installation de PostgreSQL. Pour être utilisé, vous devez installer le
+module dans la base de données que vous utilisez come <I>base de
+maintenance</I> (habituellement <i>postgres</i>, bien que vous pouvez
+avoir sélectionné une autre base de données). Pour cela, trouvez le
+fichier <i>admin.sql</i> ou <i>admin81.sql</i> installé lors de l'étape
+précédente - il devrait normalement se trouver dans le répertoire
+/usr/local/pgsql/share/contrib/ et exécutez-le sur votre base de données.
+Vous aurez normalement besoin de le faire en tant que superutilisateur
+PostgreSQL&nbsp;:</p>
+
+<pre>
+    $ psql postgres < /usr/local/pgsql/share/contrib/admin.sql
+</pre>
+
+<p>La prochaine fois que vous vous connecterez à pgAdmin, il détectera
+la présence de l'adminpack et disposera de toutes les fonctionnalités.</p>
+
 <p>
 Les outils serveur étendus ne sont pas supportés pour les versions 7.3 et 7.4 de
 PostgreSQL.
