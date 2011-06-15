@@ -57,6 +57,8 @@ pgObject *dlgView::GetObject()
 
 int dlgView::Go(bool modal)
 {
+    if (!view)
+        cbOwner->Append(wxEmptyString);
 	AddGroups(cbOwner);
 	AddUsers(cbOwner);
 

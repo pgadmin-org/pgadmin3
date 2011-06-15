@@ -62,10 +62,9 @@ pgObject *dlgForeignServer::GetObject()
 
 int dlgForeignServer::Go(bool modal)
 {
+	// Fill owner combobox
 	if (!foreignserver)
 		cbOwner->Append(wxT(""));
-
-	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
 

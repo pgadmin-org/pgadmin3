@@ -94,8 +94,11 @@ pgObject *dlgForeignTable::GetObject()
 int dlgForeignTable::Go(bool modal)
 {
 	// Fill owner combobox
+	if (!foreigntable)
+		cbOwner->Append(wxT(""));
 	AddGroups();
 	AddUsers(cbOwner);
+
 	// Fill datatype combobox
 	FillDatatype(cbDatatype);
 
