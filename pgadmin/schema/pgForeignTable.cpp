@@ -227,15 +227,15 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 
 	options = wxEmptyString;
 
-	wxLogInfo(tmpoptions);
+	if (tmpoptions == wxEmptyString)
+		return;
+
 	// parse the options string
 	// we start at 1 and stop at length-1 to get rid of the { and } of the array
 	for (unsigned int index = 1 ; index < tmpoptions.Length() - 1 ; index++)
 	{
 		// get current char
 		currentChar = tmpoptions.Mid(index, 1);
-
-		wxLogInfo(wxT("current char: >") + currentChar + wxT("<"));
 
 		// if there is a double quote at the beginning of an option,
 		// the whole option=value will be wrapped in quotes
@@ -254,9 +254,6 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 				option = tmp.BeforeFirst('=');
 				value = tmp.AfterFirst('=');
 
-				wxLogInfo(wxT("option=") + option);
-				wxLogInfo(wxT("value=") + value);
-
 				// put them in the array
 				optionsArray.Add(option);
 				optionsArray.Add(value);
@@ -274,8 +271,6 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 				tmp += currentChar;
 			antislash = false;
 		}
-
-		wxLogInfo(wxT("tmp: >") + tmp + wxT("<"));
 	}
 
 	// last options
@@ -285,8 +280,6 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 		// we need to grab option and value from tmp string
 		option = tmp.BeforeFirst('=');
 		value = tmp.AfterFirst('=');
-		wxLogInfo(wxT("option=") + option);
-		wxLogInfo(wxT("value=") + value);
 
 		// put them in the array
 		optionsArray.Add(option);
