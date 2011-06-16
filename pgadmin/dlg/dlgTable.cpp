@@ -1474,9 +1474,9 @@ wxString dlgTable::GetSql()
 	{
 		if (!lstColumns->GetText(pos, 5).IsEmpty())
 			sql += wxT("COMMENT ON COLUMN ") + tabname
-				   + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-				   + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-				   + wxT(";\n");
+			       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+			       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+			       + wxT(";\n");
 	}
 
 	AppendComment(sql, wxT("TABLE"), schema, table);

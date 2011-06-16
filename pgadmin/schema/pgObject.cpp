@@ -99,7 +99,7 @@ wxString pgObject::GetTranslatedTypeName() const
 wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
-	
+
 	switch (kindOfMessage)
 	{
 		case RETRIEVINGDETAILS:

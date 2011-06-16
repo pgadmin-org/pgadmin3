@@ -34,7 +34,7 @@ public:
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 	static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);
-	
+
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	void iSetConnInfo(const wxString &s)

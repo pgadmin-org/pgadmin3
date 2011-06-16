@@ -354,7 +354,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 #ifdef __WXMAC__
 	menuFactories = new menuFactoryList();
 	aboutFactory *af = new aboutFactory(menuFactories, helpMenu, 0);
-        wxApp::s_macAboutMenuItemId = af->GetId();
+	wxApp::s_macAboutMenuItemId = af->GetId();
 	menuFactories->RegisterMenu(this, wxCommandEventHandler(pgFrame::OnAction));
 #endif
 

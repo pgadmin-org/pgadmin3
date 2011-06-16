@@ -1139,7 +1139,7 @@ int dlgRepClusterUpgrade::Go(bool modal)
 		folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
 	}
 
-    if (cbServer->GetCount())
+	if (cbServer->GetCount())
 		cbServer->SetSelection(0);
 
 	wxCommandEvent ev;
