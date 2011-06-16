@@ -300,7 +300,7 @@ int dlgIndexConstraint::Go(bool modal)
 	}
 
 	txtFillFactor->SetValidator(numericValidator);
-	if (connection->BackendMinimumVersion(8, 2))
+	if (!index && connection->BackendMinimumVersion(8, 2))
 		txtFillFactor->Enable();
 	else
 		txtFillFactor->Disable();
