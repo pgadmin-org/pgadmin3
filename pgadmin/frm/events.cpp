@@ -546,9 +546,7 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 		}
 	}
 
-#ifndef __WXMSW__
 	browser->Expand(item);
-#endif
 }
 
 void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
