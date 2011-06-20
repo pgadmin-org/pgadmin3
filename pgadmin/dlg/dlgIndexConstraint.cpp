@@ -300,7 +300,7 @@ int dlgIndexConstraint::Go(bool modal)
 	}
 
 	txtFillFactor->SetValidator(numericValidator);
-	if (!index && connection->BackendMinimumVersion(8, 2))
+	if (connection->BackendMinimumVersion(8, 2))
 		txtFillFactor->Enable();
 	else
 		txtFillFactor->Disable();
@@ -567,6 +567,13 @@ wxString dlgIndexConstraint::GetSql()
 			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
 			       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
+		}
+
+		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != index->GetFillFactor())
+		{
+			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
+			       +  wxT("\n  SET (FILLFACTOR=")
+			       +  txtFillFactor->GetValue() + wxT(");\n");
 		}
 	}
 

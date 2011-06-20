@@ -94,7 +94,7 @@ int dlgIndexBase::Go(bool modal)
 	if (txtFillFactor)
 	{
 		txtFillFactor->SetValidator(numericValidator);
-		if (!index && connection->BackendMinimumVersion(8, 2))
+		if (connection->BackendMinimumVersion(8, 2))
 			txtFillFactor->Enable();
 		else
 			txtFillFactor->Disable();
@@ -164,7 +164,8 @@ void dlgIndexBase::CheckChange()
 	if (index)
 	{
 		EnableOK(txtComment->GetValue() != index->GetComment() ||
-		         cbTablespace->GetOIDKey() != index->GetTablespaceOid());
+		         cbTablespace->GetOIDKey() != index->GetTablespaceOid() ||
+		         txtFillFactor->GetValue() != index->GetFillFactor());
 	}
 	else
 	{

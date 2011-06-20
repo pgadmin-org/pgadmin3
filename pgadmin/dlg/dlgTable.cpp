@@ -105,6 +105,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
 	EVT_CHECKBOX(XRCID("chkUnlogged"),               dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtFillFactor"),		dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbOfType"),                 dlgTable::OnChangeOfType)
 	EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
@@ -745,13 +746,10 @@ int dlgTable::Go(bool modal)
 		if (table)
 		{
 			txtFillFactor->SetValue(table->GetFillFactor());
-			txtFillFactor->Disable();
 		}
-		else
-		{
-			txtFillFactor->Enable();
-			txtFillFactor->SetValidator(numericValidator);
-		}
+
+		txtFillFactor->SetValidator(numericValidator);
+		txtFillFactor->Enable();
 	}
 	else
 	{
@@ -932,6 +930,13 @@ wxString dlgTable::GetSql()
 			sql += wxT("ALTER TABLE ") + tabname
 			       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
+
+		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != table->GetFillFactor())
+		{
+			sql += wxT("ALTER TABLE ") + tabname
+			          +  wxT("\n  SET (FILLFACTOR=")
+			          +  txtFillFactor->GetValue() + wxT(");\n");
+		}
 
 		if (connection->BackendMinimumVersion(8, 1))
 		{
