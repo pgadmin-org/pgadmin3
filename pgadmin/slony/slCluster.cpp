@@ -515,7 +515,7 @@ pgCollection *slObjFactory::CreateCollection(pgObject *obj)
 
 
 pgaSlClusterFactory slClusterFactory;
-static pgaCollectionFactory cf(&slClusterFactory, __("Replication"), slclusters_png_img);
+static pgaCollectionFactory cf(&slClusterFactory, __("Slony Replication"), slclusters_png_img);
 
 //////////////////////////////////////////////7
 
