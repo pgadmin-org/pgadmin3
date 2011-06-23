@@ -312,7 +312,7 @@ void frmMain::CreateMenus()
 	new slonyUnlockSetFactory(menuFactories, slonyMenu, 0);
 	new slonyMergeSetFactory(menuFactories, slonyMenu, 0);
 	new slonyMoveSetFactory(menuFactories, slonyMenu, 0);
-	toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);
+	toolsMenu->Append(MNU_SLONY_SUBMENU, _("Slony Replication"), slonyMenu);
 
 	propFactory = new propertyFactory(menuFactories, 0, toolBar);
 	new separatorFactory(menuFactories);
