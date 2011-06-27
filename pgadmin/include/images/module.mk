@@ -50,6 +50,20 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/database-sm.png \
 	$(srcdir)/include/images/database.png \
 	$(srcdir)/include/images/databases.png \
+    $(srcdir)/include/images/ddAddColumn.png \
+    $(srcdir)/include/images/ddAddForeignKey.png \
+    $(srcdir)/include/images/ddDown.png \
+    $(srcdir)/include/images/ddforeignkey.png \
+    $(srcdir)/include/images/ddMaximizeTable.png \
+    $(srcdir)/include/images/ddMinimizeTable.png \
+    $(srcdir)/include/images/ddnotnull.png \
+    $(srcdir)/include/images/ddnull.png \
+    $(srcdir)/include/images/ddprimaryforeignkey.png \
+    $(srcdir)/include/images/ddprimarykey.png \
+    $(srcdir)/include/images/ddRemoveColumn.png \
+    $(srcdir)/include/images/ddRemoveTable.png \
+    $(srcdir)/include/images/ddUp.png \
+    $(srcdir)/include/images/ddunique.png \
 	$(srcdir)/include/images/debugger.png \
 	$(srcdir)/include/images/delete.png \
 	$(srcdir)/include/images/dictionary.png \

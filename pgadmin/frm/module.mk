@@ -16,6 +16,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/frm/frmBackupGlobals.cpp \
 	$(srcdir)/frm/frmBackupServer.cpp \
 	$(srcdir)/frm/frmConfig.cpp \
+	$(srcdir)/frm/frmDatabaseDesigner.cpp \
 	$(srcdir)/frm/frmEditGrid.cpp \
 	$(srcdir)/frm/frmExport.cpp \
 	$(srcdir)/frm/frmGrantWizard.cpp \
