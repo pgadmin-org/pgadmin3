@@ -30,7 +30,7 @@
  */
 #define PG_KEYWORD(a,b,c) {a,c},
 const ScanKeyword ScanKeywords[] = {
-#include <server/parser/kwlist.h>
+#include <parser/kwlist.h>
 };
 const int NumScanKeywords = lengthof(ScanKeywords);
 
