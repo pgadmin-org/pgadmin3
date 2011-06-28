@@ -60,8 +60,8 @@ int dlgLanguage::Go(bool modal)
 	if (!connection->BackendMinimumVersion(7, 5))
 		txtComment->Disable();
 
-    if (!language)
-        cbOwner->Append(wxEmptyString);
+	if (!language)
+		cbOwner->Append(wxEmptyString);
 	AddGroups(cbOwner);
 	AddUsers(cbOwner);
 	if (!connection->BackendMinimumVersion(8, 3))

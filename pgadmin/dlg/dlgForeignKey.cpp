@@ -366,7 +366,7 @@ int dlgForeignKey::Go(bool modal)
 		chkDeferred->Disable();
 		chkMatchFull->Disable();
 		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 1));
-		if(!connection->BackendMinimumVersion(9, 1)) 
+		if(!connection->BackendMinimumVersion(9, 1))
 		{
 			chkDontValidate->SetValue(true);
 		}
