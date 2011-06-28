@@ -78,6 +78,11 @@ bool ddTableNameDialog::Create(	wxWindow *parent,
                                 const wxSize &size = wxDefaultSize,
                                 long style = wxCAPTION )
 {
+
+	// We have to set extra styles before creating the
+	// dialog
+
+	SetExtraStyle(wxWS_EX_BLOCK_EVENTS | wxDIALOG_EX_CONTEXTHELP);
 	if (!wxDialog::Create( parent, id, caption, pos, size, style ))
 		return false;
 
@@ -175,15 +180,16 @@ bool ddTableNameDialog::TransferDataToWindow()
 {
 	wxTextCtrl *val1Ctrl = (wxTextCtrl *) FindWindow(DDVALUE1);
 	wxTextCtrl *val2Ctrl = (wxTextCtrl *) FindWindow(DDVALUE2);
-	wxCheckBox *valCheckbox = (wxCheckBox *) FindWindow(DDGENBUTTON);
 
-	val1Ctrl->SetValue(m_value1);
-	val2Ctrl->SetValue(m_value2);
-	valCheckbox->SetValue(checkGenerate);
+	if (val1Ctrl)
+		val1Ctrl->SetValue(m_value1);
+	if (val2Ctrl)
+		val2Ctrl->SetValue(m_value2);
 
-
-
-	return true;
+	if(val1Ctrl && val2Ctrl)
+		return true;
+	else
+		return false;
 }
 
 //Transfer data from the window
@@ -191,13 +197,16 @@ bool ddTableNameDialog::TransferDataFromWindow()
 {
 	wxTextCtrl *val1Ctrl = (wxTextCtrl *) FindWindow(DDVALUE1);
 	wxTextCtrl *val2Ctrl = (wxTextCtrl *) FindWindow(DDVALUE2);
-	wxCheckBox *valCheckbox = (wxCheckBox *) FindWindow(DDGENBUTTON);
 
-	m_value1 = val1Ctrl->GetValue();
-	m_value2 = val2Ctrl->GetValue();
-	checkGenerate = valCheckbox->GetValue();
+	if (val1Ctrl)
+		m_value1 = val1Ctrl->GetValue();
+	if(val2Ctrl)
+		m_value2 = val2Ctrl->GetValue();
 
-	return true;
+	if(val1Ctrl && val2Ctrl)
+		return true;
+	else
+		return false;
 }
 
 //Generation CheckBox Event to generata short name when checkbox clicked
@@ -226,4 +235,5 @@ void ddTableNameDialog::OnEnterPressed( wxCommandEvent &event )
 		}
 
 	}
+	event.Skip();
 }
