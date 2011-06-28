@@ -23,39 +23,39 @@
 
 
 wxhdPolyLineHandle::wxhdPolyLineHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index):
-wxhdLocatorHandle((wxhdIFigure *)figure,loc)
+	wxhdLocatorHandle((wxhdIFigure *)figure, loc)
 {
-	indx=index;
+	indx = index;
 }
 
 wxhdPolyLineHandle::~wxhdPolyLineHandle()
 {
 }
 
-void wxhdPolyLineHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdPolyLineHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = getDisplayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
-	double middle=copy.width/2;
+	double middle = copy.width / 2;
 	context.DrawCircle(
-        wxPoint(copy.x+middle,copy.y+middle),
-        wxCoord(middle)
-        );
+	    wxPoint(copy.x + middle, copy.y + middle),
+	    wxCoord(middle)
+	);
 }
 
-void wxhdPolyLineHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdPolyLineHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
-	((wxhdPolyLineFigure*) getOwner())->setPointAt(indx,x,y);
-	
+	int x = event.GetPosition().x, y = event.GetPosition().y;
+	((wxhdPolyLineFigure *) getOwner())->setPointAt(indx, x, y);
+
 }
 
-void wxhdPolyLineHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdPolyLineHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	if(event.RightDown())
 	{
-		((wxhdPolyLineFigure*) getOwner())->removePointAt(indx);
+		((wxhdPolyLineFigure *) getOwner())->removePointAt(indx);
 	}
 }
 wxCursor wxhdPolyLineHandle::createCursor()
@@ -71,7 +71,7 @@ int wxhdPolyLineHandle::getIndex()
 
 void wxhdPolyLineHandle::setIndex(int index)
 {
-	indx=index;
-	wxhdPolyLineLocator *l = (wxhdPolyLineLocator*) locator();
+	indx = index;
+	wxhdPolyLineLocator *l = (wxhdPolyLineLocator *) locator();
 	l->setIndex(index);
 }

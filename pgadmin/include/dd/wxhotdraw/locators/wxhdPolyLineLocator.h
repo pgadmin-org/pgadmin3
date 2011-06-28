@@ -18,9 +18,9 @@ class wxhdPolyLineLocator : public wxhdILocator
 {
 public:
 	wxhdPolyLineLocator(int index);
-    ~wxhdPolyLineLocator();
+	~wxhdPolyLineLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 	virtual void setIndex(int index);
 
 protected:

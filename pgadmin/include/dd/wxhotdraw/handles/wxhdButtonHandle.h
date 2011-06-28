@@ -20,16 +20,16 @@
 class wxhdButtonHandle : public wxhdIHandle
 {
 public:
-	wxhdButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size);
-    ~wxhdButtonHandle();
+	wxhdButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
+	~wxhdButtonHandle();
 
 	virtual wxCursor createCursor();
-	virtual wxhdRect& getDisplayBox();
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual wxhdPoint& locate();
-	virtual void invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
-	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
-	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
+	virtual wxhdRect &getDisplayBox();
+	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual wxhdPoint &locate();
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 protected:
 	wxBitmap buttonIcon;
 private:

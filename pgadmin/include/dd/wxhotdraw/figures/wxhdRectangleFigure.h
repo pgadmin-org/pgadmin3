@@ -23,11 +23,11 @@ class wxhdRectangleFigure : public wxhdAbstractFigure
 {
 public:
 	wxhdRectangleFigure();
-    ~wxhdRectangleFigure();
-	void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
-	void setRectangle(wxhdRect& rect);
-	void setSize(wxSize& size);
+	~wxhdRectangleFigure();
+	void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	void setRectangle(wxhdRect &rect);
+	void setSize(wxSize &size);
 
 protected:
 private:

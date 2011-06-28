@@ -18,12 +18,12 @@ class wxhdLineTerminal : public wxhdObject
 {
 public:
 	wxhdLineTerminal();
-    ~wxhdLineTerminal();
+	~wxhdLineTerminal();
 
-	virtual wxhdPoint& draw (wxBufferedDC& context, wxhdPoint& a, wxhdPoint& b, wxhdDrawingView *view);
+	virtual wxhdPoint &draw (wxBufferedDC &context, wxhdPoint &a, wxhdPoint &b, wxhdDrawingView *view);
 	virtual void setLinePen(wxPen pen);
 protected:
-	wxPen terminalLinePen;	
+	wxPen terminalLinePen;
 private:
 	wxhdPoint middle;
 

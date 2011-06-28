@@ -18,7 +18,7 @@
 class ddRelationshipItem : public wxhdObject
 {
 public:
-	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType, ddColumnFigure *existingColumn=NULL);
+	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType, ddColumnFigure *existingColumn = NULL);
 	~ddRelationshipItem();
 	wxString originalStartColName;
 	wxString originalShortName;
@@ -28,7 +28,7 @@ public:
 
 	wxString autoGenerateNameForFk();
 	void syncAutoFkName();
-	
+
 	bool isAutomaticallyGenerated();
 	bool relationIsIdentifying();
 	bool relationIsMandatory();

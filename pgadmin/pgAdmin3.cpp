@@ -273,8 +273,8 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, "Sc", "serverstatusconnect", _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, "q", "query", _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, "qc", "queryconnect", _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_SWITCH, "d", "designer", _("open designer window"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_OPTION, "dc", "designerconnectconnect", _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, "d", "designer", _("open designer window"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, "dc", "designerconnectconnect", _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, "f", "file", _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, "cm", NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, "ch", NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -288,8 +288,8 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_SWITCH, wxT("d"), wxT("designer"), _("open designer window"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_OPTION, wxT("dc"), wxT("designerconnectconnect"), _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, wxT("d"), wxT("designer"), _("open designer window"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("dc"), wxT("designerconnectconnect"), _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -310,7 +310,7 @@ bool pgAdmin3::OnInit()
 
 	if ((cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc"))) ||
 	        (cmdParser.Found(wxT("S")) && cmdParser.Found(wxT("Sc"))) ||
-      (cmdParser.Found(wxT("d")) && cmdParser.Found(wxT("dc"))))
+	        (cmdParser.Found(wxT("d")) && cmdParser.Found(wxT("dc"))))
 	{
 		cmdParser.Usage();
 		return false;
@@ -555,91 +555,91 @@ bool pgAdmin3::OnInit()
 			fq->Go();
 		}
 
-        else if ((cmdParser.Found(wxT("d")) || cmdParser.Found(wxT("dc"))) && !cmdParser.Found(wxT("s")))
-        {
-            // -d specified, but not -s. Open the designer window but do *not* open the main window
-            pgConn *conn = NULL;
-            wxString connstr;
-            wxString applicationname = _("pgAdmin - Database designer");
+		else if ((cmdParser.Found(wxT("d")) || cmdParser.Found(wxT("dc"))) && !cmdParser.Found(wxT("s")))
+		{
+			// -d specified, but not -s. Open the designer window but do *not* open the main window
+			pgConn *conn = NULL;
+			wxString connstr;
+			wxString applicationname = _("pgAdmin - Database designer");
 
-            if (cmdParser.Found(wxT("d")))
-            {
-                wxLogInfo(wxT("Starting in designer mode (-d)."), configFile.c_str());
+			if (cmdParser.Found(wxT("d")))
+			{
+				wxLogInfo(wxT("Starting in designer mode (-d)."), configFile.c_str());
 
-                winSplash->Show(false);
-                dlgSelectConnection dlg(NULL, NULL);
-                dlg.CenterOnParent();
+				winSplash->Show(false);
+				dlgSelectConnection dlg(NULL, NULL);
+				dlg.CenterOnParent();
 
-                int rc=dlg.Go(conn, NULL);
-                if (rc != wxID_OK)
-                    return false;
-                bool dummyRes;
-                conn = dlg.CreateConn(applicationname, dummyRes);
-            }
-            else if (cmdParser.Found(wxT("dc"), &connstr))
-            {
-                wxLogInfo(wxT("Starting in database designer connect mode (-dc)."), configFile.c_str());
-                wxString host, database, username, rolename, tmps;
-                int sslmode=0,port=0;
-                wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
-                while (tkn.HasMoreTokens())
-                {
-                    wxString str = tkn.GetNextToken();
-                    if (str.StartsWith(wxT("hostaddr="), &host))
-                        continue;
-                    if (str.StartsWith(wxT("host="), &host))
-                        continue;
-                    if (str.StartsWith(wxT("dbname="), &database))
-                        continue;
-                    if (str.StartsWith(wxT("user="), &username))
-                        continue;
-                    if (str.StartsWith(wxT("role="), &rolename))
-                        continue;
-                    if (str.StartsWith(wxT("port="), &tmps))
-                    {
-                        port = StrToLong(tmps);
-                        continue;
-                    }
-                    if (str.StartsWith(wxT("sslmode="), &tmps))
-                    {
-                        if (!tmps.Cmp(wxT("require")))
-                            sslmode = 1;
-                        else if (!tmps.Cmp(wxT("prefer")))
-                            sslmode = 2;
-                        else if (!tmps.Cmp(wxT("allow")))
-                            sslmode = 3;
-                        else if (!tmps.Cmp(wxT("disable")))
-                            sslmode = 4;
+				int rc = dlg.Go(conn, NULL);
+				if (rc != wxID_OK)
+					return false;
+				bool dummyRes;
+				conn = dlg.CreateConn(applicationname, dummyRes);
+			}
+			else if (cmdParser.Found(wxT("dc"), &connstr))
+			{
+				wxLogInfo(wxT("Starting in database designer connect mode (-dc)."), configFile.c_str());
+				wxString host, database, username, rolename, tmps;
+				int sslmode = 0, port = 0;
+				wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
+				while (tkn.HasMoreTokens())
+				{
+					wxString str = tkn.GetNextToken();
+					if (str.StartsWith(wxT("hostaddr="), &host))
+						continue;
+					if (str.StartsWith(wxT("host="), &host))
+						continue;
+					if (str.StartsWith(wxT("dbname="), &database))
+						continue;
+					if (str.StartsWith(wxT("user="), &username))
+						continue;
+					if (str.StartsWith(wxT("role="), &rolename))
+						continue;
+					if (str.StartsWith(wxT("port="), &tmps))
+					{
+						port = StrToLong(tmps);
+						continue;
+					}
+					if (str.StartsWith(wxT("sslmode="), &tmps))
+					{
+						if (!tmps.Cmp(wxT("require")))
+							sslmode = 1;
+						else if (!tmps.Cmp(wxT("prefer")))
+							sslmode = 2;
+						else if (!tmps.Cmp(wxT("allow")))
+							sslmode = 3;
+						else if (!tmps.Cmp(wxT("disable")))
+							sslmode = 4;
 						else if (!tmps.Cmp(wxT("verify-ca")))
 							sslmode = 5;
 						else if (!tmps.Cmp(wxT("verify-full")))
 							sslmode = 6;
-                        else
-                        {
-                            wxMessageBox(_("Unknown SSL mode: ") + tmps);
-                            return false;
-                        }
-                        continue;
-                    }
-                    wxMessageBox(_("Unknown token in connection string: ") + str);
-                    return false;
-                }
-                winSplash->Show(false);
-                dlgSelectConnection dlg(NULL, NULL);
-                dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, rolename, sslmode, applicationname);
-            }
-            else
-            {
-                /* Can't happen.. */
-                return false;
-            }
-            if (!conn)
-                return false;
+						else
+						{
+							wxMessageBox(_("Unknown SSL mode: ") + tmps);
+							return false;
+						}
+						continue;
+					}
+					wxMessageBox(_("Unknown token in connection string: ") + str);
+					return false;
+				}
+				winSplash->Show(false);
+				dlgSelectConnection dlg(NULL, NULL);
+				dlg.CenterOnParent();
+				conn = dlg.CreateConn(host, database, username, port, rolename, sslmode, applicationname);
+			}
+			else
+			{
+				/* Can't happen.. */
+				return false;
+			}
+			if (!conn)
+				return false;
 
-            frmDatabaseDesigner *fq = new frmDatabaseDesigner(NULL, wxEmptyString, conn);
-            fq->Go();
-        }
+			frmDatabaseDesigner *fq = new frmDatabaseDesigner(NULL, wxEmptyString, conn);
+			fq->Go();
+		}
 
 #ifdef __WXMAC__
 		else if (((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s"))) || !macFileToOpen.IsEmpty())

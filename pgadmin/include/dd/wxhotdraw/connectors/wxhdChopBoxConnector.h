@@ -20,7 +20,7 @@ class wxhdChopBoxConnector : public wxhdIConnector
 {
 public:
 	wxhdChopBoxConnector(wxhdIFigure *owner);
-    ~wxhdChopBoxConnector();
+	~wxhdChopBoxConnector();
 	virtual wxhdPoint findStart(wxhdLineConnection *connFigure);
 	virtual wxhdPoint findEnd(wxhdLineConnection *connFigure);
 protected:

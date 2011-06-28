@@ -17,7 +17,7 @@ class wxhdAttribute : public wxhdObject
 {
 public:
 	wxhdAttribute();
-	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
-	virtual void apply(wxBufferedDC& context);
+	virtual void callDefaultChangeDialog(wxWindow *owner = NULL);
+	virtual void apply(wxBufferedDC &context);
 };
 #endif

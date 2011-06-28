@@ -23,7 +23,7 @@
 class wxhdDrawingEditor;
 
 wxhdSimpleTextTool::wxhdSimpleTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-wxhdFigureTool(editor,fig,dt)
+	wxhdFigureTool(editor, fig, dt)
 {
 	dlgMessage = dialogMessage;
 	dlgCaption = dialogCaption;
@@ -45,34 +45,34 @@ void wxhdSimpleTextTool::calculateSizeEntry(wxhdDrawingView *view)
 {
 	if(edit)
 	{
-		wxhdPoint p=txtFigure->displayBox().GetPosition();
-		view->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
+		wxhdPoint p = txtFigure->displayBox().GetPosition();
+		view->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
 		edit->SetPosition(p);
 		edit->SetSize(txtFigure->displayBox().GetSize());
-		okButton->SetPosition(wxPoint(p.x+edit->GetSize().GetWidth()+4,p.y));
-		cancelButton->SetPosition(wxPoint(okButton->GetPosition().x+okButton->GetSize().GetWidth()+4,p.y));
+		okButton->SetPosition(wxPoint(p.x + edit->GetSize().GetWidth() + 4, p.y));
+		cancelButton->SetPosition(wxPoint(okButton->GetPosition().x + okButton->GetSize().GetWidth() + 4, p.y));
 		//Right now implemented with a hack (function at main view), but source of bug, probably can be tracked.
 	}
 }
 
-void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent& event)
-{	
-	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
+void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent &event)
+{
+	setAnchorCoords(event.GetPosition().x, event.GetPosition().y);
 
-    // Right click to get the contextual menu
+	// Right click to get the contextual menu
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
-        wxMenu menu;
-        getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure,true);
-        txtFigure->createMenu(menu);
-        getDrawingEditor()->view()->connectPopUpMenu(menu);
-        wxhdPoint p=event.GetPosition();
-        event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
-        getDrawingEditor()->view()->PopupMenu(&menu, p);
+		wxMenu menu;
+		getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure, true);
+		txtFigure->createMenu(menu);
+		getDrawingEditor()->view()->connectPopUpMenu(menu);
+		wxhdPoint p = event.GetPosition();
+		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
+		getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
 	}
 
-    // Double click to rename an object
+	// Double click to rename an object
 	if(event.LeftDClick())
 	{
 		if(withoutDialog)
@@ -105,7 +105,7 @@ void wxhdSimpleTextTool::deactivate()
 {
 	if(edit)
 	{
-        // Can't delete this objects because view is the owner of this objects
+		// Can't delete this objects because view is the owner of this objects
 		edit->Hide();
 		okButton->Hide();
 		cancelButton->Hide();
@@ -114,7 +114,7 @@ void wxhdSimpleTextTool::deactivate()
 	wxhdFigureTool::deactivate();
 }
 
-void wxhdSimpleTextTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdSimpleTextTool::mouseDrag(wxhdMouseEvent &event)
 {
 	if(!showEdit)
 	{
@@ -122,19 +122,19 @@ void wxhdSimpleTextTool::mouseDrag(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdSimpleTextTool::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void wxhdSimpleTextTool::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
-	txtFigure->OnGenericPopupClick(event,view);
+	txtFigure->OnGenericPopupClick(event, view);
 }
 
 bool wxhdSimpleTextTool::callDialog()
 {
-			wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(),getDrawingEditor()->view());
-			if (!sNewValue.IsEmpty())
-			{
-				txtFigure->setText(sNewValue);
-				return true;
-			}
-			else
-				return false;
+	wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(), getDrawingEditor()->view());
+	if (!sNewValue.IsEmpty())
+	{
+		txtFigure->setText(sNewValue);
+		return true;
+	}
+	else
+		return false;
 }

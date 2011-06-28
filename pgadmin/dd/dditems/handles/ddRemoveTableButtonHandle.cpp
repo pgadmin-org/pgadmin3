@@ -24,11 +24,11 @@
 //Images
 #include "images/ddDeleteTableCursor.pngc"
 
-ddRemoveTableButtonHandle::ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
+ddRemoveTableButtonHandle::ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size):
+	wxhdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
 	handleCursorImage = wxBitmap(*ddDeleteTableCursor_png_img).ConvertToImage();
-    handleCursor=wxCursor(handleCursorImage);
+	handleCursor = wxCursor(handleCursorImage);
 }
 
 ddRemoveTableButtonHandle::~ddRemoveTableButtonHandle()
@@ -48,8 +48,8 @@ void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 
 	if(view && getOwner())
 	{
-		ddTableFigure *table = (ddTableFigure*) getOwner();	
-		int answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT, view);
+		ddTableFigure *table = (ddTableFigure *) getOwner();
+		int answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO | wxNO_DEFAULT, view);
 		if (answer == wxYES)
 		{
 			//unselect table

@@ -934,8 +934,8 @@ wxString dlgTable::GetSql()
 		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != table->GetFillFactor())
 		{
 			sql += wxT("ALTER TABLE ") + tabname
-			          +  wxT("\n  SET (FILLFACTOR=")
-			          +  txtFillFactor->GetValue() + wxT(");\n");
+			       +  wxT("\n  SET (FILLFACTOR=")
+			       +  txtFillFactor->GetValue() + wxT(");\n");
 		}
 
 		if (connection->BackendMinimumVersion(8, 1))

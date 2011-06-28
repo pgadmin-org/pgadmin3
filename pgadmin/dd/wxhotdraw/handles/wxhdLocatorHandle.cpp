@@ -18,9 +18,9 @@
 #include "dd/wxhotdraw/handles/wxhdLocatorHandle.h"
 
 wxhdLocatorHandle::wxhdLocatorHandle(wxhdIFigure *owner, wxhdILocator *locator):
-wxhdIHandle(owner)
+	wxhdIHandle(owner)
 {
-	loc=locator;
+	loc = locator;
 }
 
 wxhdLocatorHandle::~wxhdLocatorHandle()
@@ -29,25 +29,25 @@ wxhdLocatorHandle::~wxhdLocatorHandle()
 		delete loc;
 }
 
-wxhdPoint& wxhdLocatorHandle::locate()
+wxhdPoint &wxhdLocatorHandle::locate()
 {
-	p=wxhdPoint(0,0);
-	return loc==NULL ? p : loc->locate(getOwner());
+	p = wxhdPoint(0, 0);
+	return loc == NULL ? p : loc->locate(getOwner());
 }
 
-wxhdILocator* wxhdLocatorHandle::locator()
+wxhdILocator *wxhdLocatorHandle::locator()
 {
 	return loc;
 }
 
-void wxhdLocatorHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdLocatorHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void wxhdLocatorHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdLocatorHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void wxhdLocatorHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdLocatorHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }

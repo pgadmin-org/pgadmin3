@@ -19,9 +19,9 @@ class ddTableBottomLocator : public wxhdILocator
 {
 public:
 	ddTableBottomLocator();
-    ~ddTableBottomLocator();
+	~ddTableBottomLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

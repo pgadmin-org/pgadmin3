@@ -19,17 +19,17 @@ class wxhdFigureTool : public wxhdAbstractTool
 {
 public:
 	wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
-    ~wxhdFigureTool();
+	~wxhdFigureTool();
 	void setDefaultTool(wxhdITool *dt);
-	wxhdITool* getDefaultTool();
+	wxhdITool *getDefaultTool();
 	void setFigure(wxhdIFigure *fig);
-	wxhdIFigure* getFigure();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseMove(wxhdMouseEvent& event);
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void keyDown(wxhdKeyEvent& event);
-	virtual void keyUp(wxhdKeyEvent& event);
+	wxhdIFigure *getFigure();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseMove(wxhdMouseEvent &event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void keyDown(wxhdKeyEvent &event);
+	virtual void keyUp(wxhdKeyEvent &event);
 protected:
 	wxhdITool *defaultTool;
 	wxhdIFigure *figure;

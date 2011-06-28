@@ -28,27 +28,27 @@ class wxhdAttributeFigure : public wxhdAbstractFigure
 {
 public:
 	wxhdAttributeFigure();
-    ~wxhdAttributeFigure();
-	
-	void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
-	void reapplyAttributes(wxBufferedDC& context, wxhdDrawingView *view);
-	void reapplySelAttributes(wxBufferedDC& context, wxhdDrawingView *view);
+	~wxhdAttributeFigure();
+
+	void draw(wxBufferedDC &context, wxhdDrawingView *view);
+	void drawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	void reapplyAttributes(wxBufferedDC &context, wxhdDrawingView *view);
+	void reapplySelAttributes(wxBufferedDC &context, wxhdDrawingView *view);
 
 	void initializeDefaultAttributes();
 
-	//Draw attributes	
-	wxhdFontAttribute* fontAttribute;
-	wxhdFontColorAttribute* fontColorAttribute;
-	wxhdFillAttribute* fillAttribute;
-	wxhdLineAttribute* lineAttribute;
-	//Draw selected attributes	
-	wxhdFontAttribute* fontSelAttribute;
-	wxhdFontColorAttribute* fontSelColorAttribute;
-	wxhdFillAttribute* fillSelAttribute;
-	wxhdLineAttribute* lineSelAttribute;
+	//Draw attributes
+	wxhdFontAttribute *fontAttribute;
+	wxhdFontColorAttribute *fontColorAttribute;
+	wxhdFillAttribute *fillAttribute;
+	wxhdLineAttribute *lineAttribute;
+	//Draw selected attributes
+	wxhdFontAttribute *fontSelAttribute;
+	wxhdFontColorAttribute *fontSelColorAttribute;
+	wxhdFillAttribute *fillSelAttribute;
+	wxhdLineAttribute *lineSelAttribute;
 protected:
-	
+
 private:
 
 };

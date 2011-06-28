@@ -22,73 +22,73 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
-ddDrawingView::ddDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor ,wxSize size, wxhdDrawing *drawing)
-:wxhdDrawingView(ddParent,editor,size,drawing)
+ddDrawingView::ddDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing)
+	: wxhdDrawingView(ddParent, editor, size, drawing)
 {
 }
 
 void ddDrawingView::deleteSelectedFigures()
 {
 	wxhdIFigure *tmp;
-    ddTableFigure *table;
+	ddTableFigure *table;
 	ddRelationshipFigure *relation;
 	int answer;
 	int numbTables = 0;
 	int numbRelationships = 0;
 
-    if (selection->count() == 1)
-    {
-		tmp = (wxhdIFigure*) selection->getItemAt(0);
+	if (selection->count() == 1)
+	{
+		tmp = (wxhdIFigure *) selection->getItemAt(0);
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			numbTables = 1;
-			table = (ddTableFigure *)tmp;	
-			answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
+			table = (ddTableFigure *)tmp;
+			answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO | wxNO_DEFAULT);
 		}
 		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 		{
 			numbRelationships = 1;
-			relation = (ddRelationshipFigure *)tmp;	
-			answer = wxMessageBox(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), wxYES_NO|wxNO_DEFAULT);
+			relation = (ddRelationshipFigure *)tmp;
+			answer = wxMessageBox(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), wxYES_NO | wxNO_DEFAULT);
 		}
-    }
-    else if (selection->count() > 1)
-    {
+	}
+	else if (selection->count() > 1)
+	{
 		numbTables = 0;
-		wxhdIteratorBase *iterator=selection->createIterator();
+		wxhdIteratorBase *iterator = selection->createIterator();
 		while(iterator->HasNext())
 		{
-		 tmp=(wxhdIFigure *)iterator->Next();
-		 if(tmp->getKindId() == DDTABLEFIGURE)
-			numbTables++;
+			tmp = (wxhdIFigure *)iterator->Next();
+			if(tmp->getKindId() == DDTABLEFIGURE)
+				numbTables++;
 		}
 		delete iterator;
 
 		answer = wxMessageBox(
-          wxString::Format(_("Are you sure you wish to delete %d tables?"), numbTables),
-          _("Delete tables?"), wxYES_NO|wxNO_DEFAULT);
+		             wxString::Format(_("Are you sure you wish to delete %d tables?"), numbTables),
+		             _("Delete tables?"), wxYES_NO | wxNO_DEFAULT);
 
-		if(numbTables==0)
+		if(numbTables == 0)
 		{
-			iterator=selection->createIterator();
+			iterator = selection->createIterator();
 			while(iterator->HasNext())
 			{
-			 tmp=(wxhdIFigure *)iterator->Next();
-			 if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
-				numbRelationships++;
+				tmp = (wxhdIFigure *)iterator->Next();
+				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+					numbRelationships++;
 			}
 			delete iterator;
 		}
-    }
+	}
 
-    if (answer == wxYES)
-    {
-        while(numbTables > 0)
-        {
-			tmp = (wxhdIFigure*) selection->getItemAt(0);
+	if (answer == wxYES)
+	{
+		while(numbTables > 0)
+		{
+			tmp = (wxhdIFigure *) selection->getItemAt(0);
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
-				table = (ddTableFigure *)tmp;	
+				table = (ddTableFigure *)tmp;
 				removeFromSelection(table);
 				table->processDeleteAlert(this);
 				remove(table);
@@ -100,16 +100,16 @@ void ddDrawingView::deleteSelectedFigures()
 			{
 				removeFromSelection(tmp); //isn't a tables is probably a relationship
 			}
-        }
-		
-		if( numbRelationships>0 && numbTables==0 )
+		}
+
+		if( numbRelationships > 0 && numbTables == 0 )
 		{
 			while(numbRelationships > 0)
 			{
-				tmp = (wxhdIFigure*) selection->getItemAt(0);
+				tmp = (wxhdIFigure *) selection->getItemAt(0);
 				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 				{
-					relation = (ddRelationshipFigure *)tmp;	
+					relation = (ddRelationshipFigure *)tmp;
 					relation->removeForeignKeys();
 					relation->disconnectEnd();
 					relation->disconnectStart();

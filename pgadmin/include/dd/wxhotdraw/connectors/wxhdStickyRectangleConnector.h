@@ -6,8 +6,8 @@
 // This software is released under the PostgreSQL Licence
 //
 // wxhdAbstractFigure.h - A StickyRectangleConnector locates connection points by choping
-// the connection between the centers of the two figures at the display box. The location 
-// of the connection point is computed once, when the user connects the figure. 
+// the connection between the centers of the two figures at the display box. The location
+// of the connection point is computed once, when the user connects the figure.
 // Moving the figure around will not change the location.
 //
 //////////////////////////////////////////////////////////////////////////
@@ -28,12 +28,12 @@ class wxhdStickyRectangleConnector : public wxhdChopBoxConnector
 {
 public:
 	wxhdStickyRectangleConnector(wxhdIFigure *owner, wxhdPoint p);
- 	~wxhdStickyRectangleConnector();
+	~wxhdStickyRectangleConnector();
 	virtual void setAngle(float newAngle);
 	virtual void updateAnchor(wxhdPoint p);
 	virtual wxhdPoint getAnchor();
 	virtual wxhdPoint chop(wxhdIFigure *target, wxhdPoint point);
-	virtual void draw(wxBufferedDC& context);
+	virtual void draw(wxBufferedDC &context);
 protected:
 	float angle;
 private:

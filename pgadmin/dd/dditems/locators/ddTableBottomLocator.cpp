@@ -26,20 +26,20 @@ ddTableBottomLocator::~ddTableBottomLocator()
 {
 }
 
-wxhdPoint& ddTableBottomLocator::locate(wxhdIFigure *owner)
+wxhdPoint &ddTableBottomLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{
-		ddTableFigure *table = (ddTableFigure*) owner;
+		ddTableFigure *table = (ddTableFigure *) owner;
 
-		int x = table->getFullSpace().GetLeftBottom().x + table->getFullSpace().width * 0.25; 
-		int y = table->getFullSpace().GetLeftBottom().y-2;
+		int x = table->getFullSpace().GetLeftBottom().x + table->getFullSpace().width * 0.25;
+		int y = table->getFullSpace().GetLeftBottom().y - 2;
 
-		locatePoint.x=x;
-		locatePoint.y=y;
+		locatePoint.x = x;
+		locatePoint.y = y;
 		return locatePoint;
 	}
-	locatePoint.x=0;
-	locatePoint.y=0;
+	locatePoint.x = 0;
+	locatePoint.y = 0;
 	return locatePoint;
 }

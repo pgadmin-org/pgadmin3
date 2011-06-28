@@ -20,9 +20,9 @@ class wxhdILocator : public wxhdObject
 {
 public:
 	wxhdILocator();
-    ~wxhdILocator();
+	~wxhdILocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner)=0;
+	virtual wxhdPoint &locate(wxhdIFigure *owner) = 0;
 
 protected:
 	wxhdPoint locatePoint;

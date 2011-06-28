@@ -23,29 +23,29 @@ class wxhdIConnectionFigure : public wxhdIFigure
 {
 public:
 
-	virtual void connectStart(wxhdIConnector *start)=0;
-	virtual void connectEnd(wxhdIConnector *end)=0;
-	virtual void updateConnection()=0;
-	virtual void disconnectStart()=0;
-	virtual void disconnectEnd()=0;
-	virtual bool canConnectStart(wxhdIFigure *figure)=0;
-	virtual bool canConnectEnd(wxhdIFigure *figure)=0;
-	virtual wxhdPoint* pointAt(int index)=0;
-	virtual void splitSegment(int x, int y)=0;
+	virtual void connectStart(wxhdIConnector *start) = 0;
+	virtual void connectEnd(wxhdIConnector *end) = 0;
+	virtual void updateConnection() = 0;
+	virtual void disconnectStart() = 0;
+	virtual void disconnectEnd() = 0;
+	virtual bool canConnectStart(wxhdIFigure *figure) = 0;
+	virtual bool canConnectEnd(wxhdIFigure *figure) = 0;
+	virtual wxhdPoint *pointAt(int index) = 0;
+	virtual void splitSegment(int x, int y) = 0;
 
-	virtual int pointCount()=0;
-	virtual wxhdIConnector* getStartConnector()=0;
-	virtual wxhdIConnector* getEndConnector()=0;
-	virtual void setStartConnector(wxhdIConnector* connector)=0;
-	virtual void setEndConnector(wxhdIConnector* connector)=0;
-	virtual wxhdPoint* getStartPoint()=0;
-	virtual void setStartPoint(wxhdPoint *point)=0;
-	virtual wxhdPoint* getEndPoint()=0;
-	virtual void setEndPoint(wxhdPoint *point)=0;
-	virtual wxhdIFigure* getStartFigure()=0;
-	virtual wxhdIFigure* getEndFigure()=0;
-	virtual wxhdIHandle* getStartHandle()=0;
-	virtual wxhdIHandle* getEndHandle()=0;
+	virtual int pointCount() = 0;
+	virtual wxhdIConnector *getStartConnector() = 0;
+	virtual wxhdIConnector *getEndConnector() = 0;
+	virtual void setStartConnector(wxhdIConnector *connector) = 0;
+	virtual void setEndConnector(wxhdIConnector *connector) = 0;
+	virtual wxhdPoint *getStartPoint() = 0;
+	virtual void setStartPoint(wxhdPoint *point) = 0;
+	virtual wxhdPoint *getEndPoint() = 0;
+	virtual void setEndPoint(wxhdPoint *point) = 0;
+	virtual wxhdIFigure *getStartFigure() = 0;
+	virtual wxhdIFigure *getEndFigure() = 0;
+	virtual wxhdIHandle *getStartHandle() = 0;
+	virtual wxhdIHandle *getEndHandle() = 0;
 
 protected:
 

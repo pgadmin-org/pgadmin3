@@ -24,8 +24,8 @@
 
 wxhdLineTerminal::wxhdLineTerminal()
 {
-	middle = wxhdPoint(0,0);
-	terminalLinePen = wxPen(wxString(wxT("BLACK")),1,wxSOLID);
+	middle = wxhdPoint(0, 0);
+	terminalLinePen = wxPen(wxString(wxT("BLACK")), 1, wxSOLID);
 }
 
 wxhdLineTerminal::~wxhdLineTerminal()
@@ -34,26 +34,26 @@ wxhdLineTerminal::~wxhdLineTerminal()
 
 void wxhdLineTerminal::setLinePen(wxPen pen)
 {
-	terminalLinePen=pen;
+	terminalLinePen = pen;
 }
 
-wxhdPoint& wxhdLineTerminal::draw (wxBufferedDC& context, wxhdPoint& a, wxhdPoint& b, wxhdDrawingView *view)
+wxhdPoint &wxhdLineTerminal::draw (wxBufferedDC &context, wxhdPoint &a, wxhdPoint &b, wxhdDrawingView *view)
 {
 	wxhdGeometry g;
 	context.SetPen(terminalLinePen);
 
 	wxhdPoint copyA = wxhdPoint (a);
-	view->CalcScrolledPosition(copyA.x,copyA.y,&copyA.x,&copyA.y);
+	view->CalcScrolledPosition(copyA.x, copyA.y, &copyA.x, &copyA.y);
 	wxhdPoint copyB = wxhdPoint (b);
-	view->CalcScrolledPosition(copyB.x,copyB.y,&copyB.x,&copyB.y);
+	view->CalcScrolledPosition(copyB.x, copyB.y, &copyB.x, &copyB.y);
 	context.DrawLine(copyA, copyB);
-	
-	context.SetPen(wxPen(wxString(wxT("BLACK")),1,wxSOLID));
-	int x=copyA.x+g.ddabs(copyA.x - copyB.x);
-	int y=copyA.y+g.ddabs(copyA.y - copyB.y);
-	middle = wxhdPoint(x,y);
 
-	context.DrawRectangle(wxRect(copyA.x,copyA.y,5,5));
-	context.DrawCircle(copyA,10);
+	context.SetPen(wxPen(wxString(wxT("BLACK")), 1, wxSOLID));
+	int x = copyA.x + g.ddabs(copyA.x - copyB.x);
+	int y = copyA.y + g.ddabs(copyA.y - copyB.y);
+	middle = wxhdPoint(x, y);
+
+	context.DrawRectangle(wxRect(copyA.x, copyA.y, 5, 5));
+	context.DrawCircle(copyA, 10);
 	return middle;
 }

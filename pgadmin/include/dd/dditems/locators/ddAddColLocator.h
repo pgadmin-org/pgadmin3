@@ -19,9 +19,9 @@ class ddAddColLocator : public wxhdILocator
 {
 public:
 	ddAddColLocator();
-    ~ddAddColLocator();
+	~ddAddColLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

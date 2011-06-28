@@ -18,21 +18,21 @@
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
 wxhdPoint::wxhdPoint():
-wxPoint()
+	wxPoint()
 {
 }
 
 wxhdPoint::wxhdPoint(int x, int y):
-wxPoint(x,y)
+	wxPoint(x, y)
 {
 }
 
-wxhdPoint::wxhdPoint(const wxhdPoint& p):
-wxPoint(p.x,p.y)
+wxhdPoint::wxhdPoint(const wxhdPoint &p):
+	wxPoint(p.x, p.y)
 {
 }
 
-wxhdPoint::wxhdPoint(const wxPoint& p):
-wxPoint(p.x,p.y)
+wxhdPoint::wxhdPoint(const wxPoint &p):
+	wxPoint(p.x, p.y)
 {
 }

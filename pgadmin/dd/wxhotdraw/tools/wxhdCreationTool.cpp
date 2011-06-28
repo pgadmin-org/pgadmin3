@@ -19,29 +19,29 @@
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 
 wxhdCreationTool::wxhdCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype):
-wxhdAbstractTool(editor)
+	wxhdAbstractTool(editor)
 {
-	figurePrototype=prototype;
+	figurePrototype = prototype;
 }
 
 wxhdCreationTool::~wxhdCreationTool()
 {
 }
 
-void wxhdCreationTool::mouseDown(wxhdMouseEvent& event)
+void wxhdCreationTool::mouseDown(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseDown(event);
 	if(event.LeftDown())
 	{
 		getDrawingEditor()->view()->getDrawing()->add(figurePrototype);
-		int x=event.GetPosition().x, y=event.GetPosition().y;
-		figurePrototype->moveTo(x,y);
+		int x = event.GetPosition().x, y = event.GetPosition().y;
+		figurePrototype->moveTo(x, y);
 		getDrawingEditor()->view()->clearSelection();
 		getDrawingEditor()->view()->addToSelection(figurePrototype);
 	}
 }
 
-void wxhdCreationTool::mouseUp(wxhdMouseEvent& event)
+void wxhdCreationTool::mouseUp(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseUp(event);
 	getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
@@ -61,10 +61,10 @@ void wxhdCreationTool::deactivate()
 
 void wxhdCreationTool::setPrototype(wxhdIFigure *prototype)
 {
-	figurePrototype=prototype;
+	figurePrototype = prototype;
 }
 
-wxhdIFigure* wxhdCreationTool::getPrototype()
+wxhdIFigure *wxhdCreationTool::getPrototype()
 {
 	return figurePrototype;
 }

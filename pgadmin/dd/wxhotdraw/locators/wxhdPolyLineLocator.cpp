@@ -26,10 +26,10 @@ wxhdPolyLineLocator::~wxhdPolyLineLocator()
 
 wxhdPolyLineLocator::wxhdPolyLineLocator(int index)
 {
-	indx=index;
+	indx = index;
 }
 
-wxhdPoint& wxhdPolyLineLocator::locate(wxhdIFigure *owner)
+wxhdPoint &wxhdPolyLineLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{
@@ -45,5 +45,5 @@ wxhdPoint& wxhdPolyLineLocator::locate(wxhdIFigure *owner)
 
 void wxhdPolyLineLocator::setIndex(int index)
 {
-	indx=index;
+	indx = index;
 }

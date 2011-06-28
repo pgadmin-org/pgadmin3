@@ -21,19 +21,19 @@ class wxhdPolyLineFigure : public wxhdAbstractMenuFigure
 {
 public:
 	wxhdPolyLineFigure();
-    ~wxhdPolyLineFigure();
+	~wxhdPolyLineFigure();
 
-	virtual wxhdRect& getBasicDisplayBox();
+	virtual wxhdRect &getBasicDisplayBox();
 	virtual int pointCount();
-	virtual wxhdPoint& getStartPoint();
+	virtual wxhdPoint &getStartPoint();
 	virtual void setStartPoint(wxhdPoint point);
-	virtual wxhdPoint& getEndPoint();
+	virtual wxhdPoint &getEndPoint();
 	virtual void setEndPoint(wxhdPoint point);
 	virtual void setStartTerminal(wxhdLineTerminal *terminal);
-	virtual wxhdLineTerminal* getStartTerminal();
+	virtual wxhdLineTerminal *getStartTerminal();
 	virtual void setEndTerminal(wxhdLineTerminal *terminal);
-	virtual wxhdLineTerminal* getEndTerminal();
-	wxhdCollection* handlesEnumerator();
+	virtual wxhdLineTerminal *getEndTerminal();
+	wxhdCollection *handlesEnumerator();
 	virtual int findSegment (int x, int y);
 	virtual void splitSegment(int x, int y);
 	virtual void changed();
@@ -44,15 +44,15 @@ public:
 	virtual void setPointAt (int index, int x, int y);
 	virtual void removePointAt (int index);
 	virtual void basicMoveBy(int x, int y);
-	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 
-	virtual wxhdPoint& pointAt(int index);
+	virtual wxhdPoint &pointAt(int index);
 	virtual bool containsPoint (int x, int y);
 	virtual void setLinePen(wxPen pen);
 
 protected:
-	virtual void basicDraw (wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDraw (wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 
 	virtual void updateHandlesIndexes();
 	wxhdArrayCollection *points;

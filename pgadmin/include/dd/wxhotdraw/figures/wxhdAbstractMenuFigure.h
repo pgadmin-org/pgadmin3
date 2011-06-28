@@ -21,13 +21,13 @@ class wxhdAbstractMenuFigure : public wxhdAttributeFigure
 {
 public:
 	wxhdAbstractMenuFigure();
-    ~wxhdAbstractMenuFigure();
-	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	~wxhdAbstractMenuFigure();
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void createMenu(wxMenu &mnu) {}
 	virtual void enablePopUp();
 	virtual void disablePopUp();
 	virtual bool menuEnabled();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view=NULL);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view = NULL);
 protected:
 	wxArrayString strings;
 	bool showMenu;

@@ -23,16 +23,16 @@ class ddScrollBarHandle : public wxhdLocatorHandle
 {
 public:
 	ddScrollBarHandle(ddTableFigure *owner, wxhdILocator *scrollBarLocator , wxSize &size);
-    ~ddScrollBarHandle();
+	~ddScrollBarHandle();
 
 
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual wxhdPoint& locate();
+	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual wxhdPoint &locate();
 	virtual wxCursor createCursor();
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual wxhdRect& getDisplayBox();
+	virtual wxhdRect &getDisplayBox();
 protected:
 private:
 	wxhdPoint pointLocate;

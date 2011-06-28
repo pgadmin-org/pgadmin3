@@ -23,7 +23,7 @@ public:
 	wxhdRect(wxhdPoint &point);
 	void add (int newX, int netY);
 	void add (wxhdRect *newRect);
-	void add (wxhdRect& newRect);
+	void add (wxhdRect &newRect);
 	void add (wxhdPoint *p);
 	wxhdPoint center();
 protected:

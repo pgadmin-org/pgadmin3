@@ -15,10 +15,11 @@
 #include <wx/statline.h>
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
-enum {
-    DDSELECTKINDFKSDIALOG = 10000,
+enum
+{
+	DDSELECTKINDFKSDIALOG = 10000,
 	DDSELECTKINDFK = 10001,
-    DDCHOICESELECTBASE = 30000
+	DDCHOICESELECTBASE = 30000
 };
 
 class ddSelectFkKindLine : public wxhdObject
@@ -27,62 +28,62 @@ public:
 	wxStaticText *sourceCtrl;
 	wxChoice *destinationCtrl;
 
-	ddSelectFkKindLine(wxWindow* parent, wxString sourceColumn, wxArrayString possibleTargets, wxWindowID eventId);
+	ddSelectFkKindLine(wxWindow *parent, wxString sourceColumn, wxArrayString possibleTargets, wxWindowID eventId);
 	ddSelectFkKindLine();
 	~ddSelectFkKindLine();
 };
 
 
-WX_DECLARE_STRING_HASH_MAP( ddSelectFkKindLine*, choicesControlsHashMap );
+WX_DECLARE_STRING_HASH_MAP( ddSelectFkKindLine *, choicesControlsHashMap );
 
 class ddSelectKindFksDialog : public wxDialog
 {
 	DECLARE_CLASS( ddSelectKindFksDialog )
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 public:
 	ddSelectKindFksDialog();
 	~ddSelectKindFksDialog();
-	ddSelectKindFksDialog(	wxWindow* parent,
-							ddRelationshipFigure *relation,					
-							wxWindowID id = DDSELECTKINDFKSDIALOG,
-							const wxPoint& pos = wxDefaultPosition,
-							const wxSize& size = wxDefaultSize,
-							long style = wxCAPTION
-							);
+	ddSelectKindFksDialog(	wxWindow *parent,
+	                        ddRelationshipFigure *relation,
+	                        wxWindowID id = DDSELECTKINDFKSDIALOG,
+	                        const wxPoint &pos = wxDefaultPosition,
+	                        const wxSize &size = wxDefaultSize,
+	                        long style = wxCAPTION
+	                     );
 
 	// Member initialization
-    void Init();
+	void Init();
 	// Creation
-	bool Create(	wxWindow* parent,
-					wxWindowID id,
-					const wxPoint& pos,
-					const wxSize& size,
-					long style);
+	bool Create(	wxWindow *parent,
+	                wxWindowID id,
+	                const wxPoint &pos,
+	                const wxSize &size,
+	                long style);
 
 
 	// Creates the controls and sizers
-    void CreateControls();
+	void CreateControls();
 
 	// Sets the validators for the dialog controls
 	bool TransferDataToWindow();
 	bool TransferDataFromWindow();
 
 	// Sets the help text for the dialog controls
-    void SetDialogHelp();
+	void SetDialogHelp();
 
 	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
-	void OnEnterPressed( wxCommandEvent& event );
-	void OnOkButtonClicked( wxCommandEvent& event );
+	void OnEnterPressed( wxCommandEvent &event );
+	void OnOkButtonClicked( wxCommandEvent &event );
 
 
 protected:
 	void populateColumnsControls(bool primaryKey, int useUkIndex);
 	void deleteColsControls();
 	void OnChoiceFkKind(wxCommandEvent &event);
-	    // Data members
+	// Data members
 	ddRelationshipFigure *tablesRelation;
 
-		// Dialog controls
+	// Dialog controls
 	choicesControlsHashMap choices;
 	wxBoxSizer *topSizer, *linesSizer, *okCancelBox, *colsTopSizer;
 

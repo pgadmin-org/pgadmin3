@@ -21,17 +21,17 @@ class wxhdAbstractTool : public wxhdITool
 {
 public:
 	wxhdAbstractTool(wxhdDrawingEditor *editor);
-    ~wxhdAbstractTool();
+	~wxhdAbstractTool();
 
 	void setAnchorCoords(int x, int y);
-	
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseMove(wxhdMouseEvent& event);
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void keyDown(wxhdKeyEvent& event);
-	virtual void keyUp(wxhdKeyEvent& event);
-	wxhdDrawingEditor* getDrawingEditor();
+
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseMove(wxhdMouseEvent &event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void keyDown(wxhdKeyEvent &event);
+	virtual void keyUp(wxhdKeyEvent &event);
+	wxhdDrawingEditor *getDrawingEditor();
 
 protected:
 	int anchorX, anchorY;

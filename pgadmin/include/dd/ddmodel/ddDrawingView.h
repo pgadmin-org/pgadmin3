@@ -17,7 +17,7 @@
 class ddDrawingView : public wxhdDrawingView
 {
 public:
-	ddDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor ,wxSize size, wxhdDrawing *drawing);
+	ddDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing);
 	virtual void deleteSelectedFigures();
 protected:
 private:

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAddColButtonHandle.h - A handle for a table figure that allow to graphically add columns 
+// ddAddColButtonHandle.h - A handle for a table figure that allow to graphically add columns
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,8 +17,8 @@
 class ddAddColButtonHandle : public wxhdButtonHandle
 {
 public:
-	ddAddColButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size);
-    ~ddAddColButtonHandle();
+	ddAddColButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
+	~ddAddColButtonHandle();
 
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
@@ -27,7 +27,7 @@ public:
 protected:
 
 private:
-    wxImage handleCursorImage;
-    wxCursor handleCursor;
+	wxImage handleCursorImage;
+	wxCursor handleCursor;
 };
 #endif

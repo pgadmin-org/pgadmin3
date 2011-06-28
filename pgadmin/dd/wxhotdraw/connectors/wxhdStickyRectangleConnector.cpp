@@ -6,8 +6,8 @@
 // This software is released under the PostgreSQL Licence
 //
 // wxhdStickyRectangleConnector.cpp - A StickyRectangleConnector locates connection points by choping
-// the connection between the centers of the two figures at the display box. The location 
-// of the connection point is computed once, when the user connects the figure. 
+// the connection between the centers of the two figures at the display box. The location
+// of the connection point is computed once, when the user connects the figure.
 // Moving the figure around will not change the location.
 //
 //////////////////////////////////////////////////////////////////////////
@@ -27,7 +27,7 @@ class wxhdLineConnection;
 class wxhdIFigure;
 
 wxhdStickyRectangleConnector::wxhdStickyRectangleConnector(wxhdIFigure *owner, wxhdPoint p):
-wxhdChopBoxConnector(owner)
+	wxhdChopBoxConnector(owner)
 {
 	wxhdGeometry g;
 	updateAnchor(p);
@@ -39,7 +39,7 @@ wxhdStickyRectangleConnector::~wxhdStickyRectangleConnector()
 
 void wxhdStickyRectangleConnector::setAngle(float newAngle)
 {
-	angle=newAngle;
+	angle = newAngle;
 }
 
 void wxhdStickyRectangleConnector::updateAnchor(wxhdPoint p)
@@ -54,19 +54,20 @@ wxhdPoint wxhdStickyRectangleConnector::getAnchor()
 {
 	wxhdGeometry g;
 
-	wxhdRect rect = getDisplayBox();  //hack to avoid linux bug	
+	wxhdRect rect = getDisplayBox();  //hack to avoid linux bug
 	return g.edgePointFromAngle(rect, angle);
 }
 
-wxhdPoint wxhdStickyRectangleConnector::chop(wxhdIFigure *target, wxhdPoint point){
-	
+wxhdPoint wxhdStickyRectangleConnector::chop(wxhdIFigure *target, wxhdPoint point)
+{
+
 	wxhdGeometry g;
-	
+
 	wxhdRect rect = target->displayBox();  //hack to avoid linux bug
-	point=g.edgePointFromAngle(rect, angle);
-	return point; 
+	point = g.edgePointFromAngle(rect, angle);
+	return point;
 }
 
-void wxhdStickyRectangleConnector::draw(wxBufferedDC& context)
+void wxhdStickyRectangleConnector::draw(wxBufferedDC &context)
 {
 }

@@ -21,7 +21,7 @@
 
 
 ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-wxhdFigureTool(editor,fig,dt)
+	wxhdFigureTool(editor, fig, dt)
 {
 	delegateTool = NULL;
 }
@@ -29,29 +29,29 @@ wxhdFigureTool(editor,fig,dt)
 ddColumnFigureTool::~ddColumnFigureTool()
 {
 	//This tool destructor is at compositeTool, because this is only a selection tool and neither tool belongs to it.
-	wxhdITool *tmpDefault=wxhdFigureTool::getDefaultTool();
+	wxhdITool *tmpDefault = wxhdFigureTool::getDefaultTool();
 	wxhdFigureTool *tmpDelegateDefault;
 
 	if(delegateTool->ms_classInfo.IsKindOf(&wxhdFigureTool::ms_classInfo))
-		tmpDelegateDefault = (wxhdFigureTool*)delegateTool;
-	else 
+		tmpDelegateDefault = (wxhdFigureTool *)delegateTool;
+	else
 		tmpDelegateDefault = NULL;
 
-	if(delegateTool && delegateTool!=tmpDefault)
+	if(delegateTool && delegateTool != tmpDefault)
 	{
-		//Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool 
+		//Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool
 		// if this is the same as defaultTool (this->defaultTool) of this Object.
-		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool()==tmpDefault)  
-			tmpDelegateDefault->setDefaultTool(NULL);   
-		
-		//Hack to avoid delete wxhdDragTrackerTool Default twice because this figure is only used inside 
+		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool() == tmpDefault)
+			tmpDelegateDefault->setDefaultTool(NULL);
+
+		//Hack to avoid delete wxhdDragTrackerTool Default twice because this figure is only used inside
 		//a table, and then create a compositeTool and default in both tools is wxhdDragTrackerTool
 		//but I can't hard code this is Composite because that class should remain generic
 		if(tmpDelegateDefault->getDefaultTool()->ms_classInfo.IsKindOf(&wxhdDragTrackerTool::ms_classInfo))
 			tmpDelegateDefault->setDefaultTool(NULL);
 		delete delegateTool;
 	}
-	
+
 }
 
 void ddColumnFigureTool::setDefaultTool(wxhdITool *dt)
@@ -59,7 +59,7 @@ void ddColumnFigureTool::setDefaultTool(wxhdITool *dt)
 	wxhdFigureTool::setDefaultTool(dt);
 }
 
-wxhdITool* ddColumnFigureTool::getDefaultTool()
+wxhdITool *ddColumnFigureTool::getDefaultTool()
 {
 	if(delegateTool)
 	{
@@ -71,15 +71,15 @@ wxhdITool* ddColumnFigureTool::getDefaultTool()
 	}
 }
 
-void ddColumnFigureTool::mouseDown(wxhdMouseEvent& event)
+void ddColumnFigureTool::mouseDown(wxhdMouseEvent &event)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddColumnFigure *cfigure = (ddColumnFigure*) getFigure();
-	wxhdIFigure *figure = cfigure->findFigure(x,y);
-	
+	int x = event.GetPosition().x, y = event.GetPosition().y;
+	ddColumnFigure *cfigure = (ddColumnFigure *) getFigure();
+	wxhdIFigure *figure = cfigure->findFigure(x, y);
+
 	if(figure)
 	{
-		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),getDefaultTool()));
+		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), getDefaultTool()));
 	}
 	else
 	{
@@ -116,15 +116,15 @@ void ddColumnFigureTool::setDelegateTool(wxhdITool *tool)
 		delete delegateTool;
 		delegateTool = NULL;
 	}
-	
-	delegateTool=tool;
+
+	delegateTool = tool;
 	if(delegateTool)
 	{
 		delegateTool->activate();
 	}
 }
 
-wxhdITool* ddColumnFigureTool::getDelegateTool()
+wxhdITool *ddColumnFigureTool::getDelegateTool()
 {
 	return delegateTool;
 }

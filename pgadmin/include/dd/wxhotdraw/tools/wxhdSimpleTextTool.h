@@ -20,12 +20,12 @@ class wxhdSimpleTextTool : public wxhdFigureTool
 
 public:
 	wxhdSimpleTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
-    ~wxhdSimpleTextTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	~wxhdSimpleTextTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 	virtual bool callDialog();
 	//Because a bug it was move to main View class instance as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:

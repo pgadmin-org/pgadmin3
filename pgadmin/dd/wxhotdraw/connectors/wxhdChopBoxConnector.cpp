@@ -19,7 +19,7 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 wxhdChopBoxConnector::wxhdChopBoxConnector(wxhdIFigure *owner):
-wxhdIConnector(owner)
+	wxhdIConnector(owner)
 {
 }
 
@@ -28,43 +28,44 @@ wxhdChopBoxConnector::~wxhdChopBoxConnector()
 }
 
 
-wxhdPoint wxhdChopBoxConnector::chop(wxhdIFigure *target, wxhdPoint point){
+wxhdPoint wxhdChopBoxConnector::chop(wxhdIFigure *target, wxhdPoint point)
+{
 	if(target && target->containsPoint(point.x, point.y))
 	{
-		point=target->displayBox().center();
+		point = target->displayBox().center();
 		return point;
 	}
 	else if(!target)
 	{
-		point = wxhdPoint(0,0);		
+		point = wxhdPoint(0, 0);
 		return point;
 	}
-	
+
 	wxhdGeometry g;
-	
+
 	rect = getDisplayBox();  //hack to avoid linux bug
 	double angle = g.angleFromPoint(rect, point);
-	point=g.edgePointFromAngle(rect, angle);
-	return point; 
+	point = g.edgePointFromAngle(rect, angle);
+	return point;
 }
 
 wxhdPoint wxhdChopBoxConnector::findStart(wxhdLineConnection *connFigure)
 {
 	if(!connFigure)
 	{
-		point=getDisplayBox().center();
-		return point; 
+		point = getDisplayBox().center();
+		return point;
 	}
-	
-	if(connFigure->pointCount()<2)
+
+	if(connFigure->pointCount() < 2)
 	{
-		point=getDisplayBox().center();
+		point = getDisplayBox().center();
 		return point;
 	}
 
 	wxhdIFigure *start = connFigure->getStartConnector()->getOwner();
 	point = connFigure->pointAt(1);
-	point = chop(start,point);
+	point = chop(start, point);
 	return point;
 }
 
@@ -75,7 +76,7 @@ wxhdPoint wxhdChopBoxConnector::findEnd(wxhdLineConnection *connFigure)
 		return getDisplayBox().center();
 	}
 	wxhdIFigure *end = connFigure->getEndConnector()->getOwner();
-	point = connFigure->pointAt(connFigure->pointCount()-2);
-	point = chop(end,point);
+	point = connFigure->pointAt(connFigure->pointCount() - 2);
+	point = chop(end, point);
 	return point;
 }

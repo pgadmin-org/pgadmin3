@@ -43,7 +43,7 @@ void wxhdSimpleTextFigure::setText(wxString textString)
 }
 
 //extended is flag that inform about returning an extended version of text stored at figure
-wxString& wxhdSimpleTextFigure::getText(bool extended)
+wxString &wxhdSimpleTextFigure::getText(bool extended)
 {
 	return text;
 }
@@ -56,39 +56,39 @@ void wxhdSimpleTextFigure::setFont(wxFont textFont)
 
 void wxhdSimpleTextFigure::getFontMetrics(int &width, int &height)
 {
-	wxBitmap emptyBitmap(*ddnull_png_img);	
+	wxBitmap emptyBitmap(*ddnull_png_img);
 	wxMemoryDC temp_dc;
 	temp_dc.SelectObject(emptyBitmap);
 	temp_dc.SetFont(font);
-	if(getText(true).length()>5)
-		temp_dc.GetTextExtent(getText(true),&width,&height);
+	if(getText(true).length() > 5)
+		temp_dc.GetTextExtent(getText(true), &width, &height);
 	else
-		temp_dc.GetTextExtent(wxT("EMPTY"),&width,&height);
+		temp_dc.GetTextExtent(wxT("EMPTY"), &width, &height);
 }
 
 void wxhdSimpleTextFigure::recalculateDisplayBox()
 {
-	int w,h;
-	
-	getFontMetrics(w,h);
+	int w, h;
+
+	getFontMetrics(w, h);
 
 	wxhdGeometry g;
-	displayBox().width = g.max(w,10)+padding;
-	displayBox().height = g.max(h,10)+padding;
+	displayBox().width = g.max(w, 10) + padding;
+	displayBox().height = g.max(h, 10) + padding;
 }
 
-void wxhdSimpleTextFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdSimpleTextFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-	context.DrawText(getText(true),copy.GetPosition());
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
+	context.DrawText(getText(true), copy.GetPosition());
 }
 
-void wxhdSimpleTextFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdSimpleTextFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-	context.DrawText(getText(true),copy.GetPosition());
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
+	context.DrawText(getText(true), copy.GetPosition());
 }
 
 void wxhdSimpleTextFigure::basicMoveBy(int x, int y)
@@ -97,9 +97,9 @@ void wxhdSimpleTextFigure::basicMoveBy(int x, int y)
 	displayBox().y += y;
 }
 
-wxhdITool* wxhdSimpleTextFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdSimpleTextFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return textEditable ? new wxhdSimpleTextTool(editor,this,defaultTool) : defaultTool;
+	return textEditable ? new wxhdSimpleTextTool(editor, this, defaultTool) : defaultTool;
 }
 
 void wxhdSimpleTextFigure::setEditable(bool value)
@@ -132,7 +132,7 @@ bool wxhdSimpleTextFigure::menuEnabled()
 	return 	showMenu;
 }
 
-void wxhdSimpleTextFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void wxhdSimpleTextFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
 	setText(strings[event.GetId()]);
 }

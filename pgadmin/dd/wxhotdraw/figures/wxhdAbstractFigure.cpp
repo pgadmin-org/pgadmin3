@@ -34,50 +34,50 @@ wxhdAbstractFigure::~wxhdAbstractFigure()
 
 bool wxhdAbstractFigure::canConnect ()
 {
-    return true;
+	return true;
 }
 
 bool wxhdAbstractFigure::includes(wxhdIFigure *figure)
 {
-	return (this==figure);	
+	return (this == figure);
 }
 
-void wxhdAbstractFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAbstractFigure::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	//Hack to Allow creations of limits for figures movements, but what to do should be defined at derivated classes
 	spaceForMovement = view->canvasSize;
-	wxhdIFigure::draw(context,view);
-	basicDraw(context,view);
+	wxhdIFigure::draw(context, view);
+	basicDraw(context, view);
 }
 
-void wxhdAbstractFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAbstractFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
 	context.SetPen(*wxGREEN_PEN);
-	context.SetBrush(wxBrush (wxColour(208, 208, 208),wxSOLID));
+	context.SetBrush(wxBrush (wxColour(208, 208, 208), wxSOLID));
 	context.DrawRectangle(copy);
 }
 
-void wxhdAbstractFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAbstractFigure::drawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdIFigure::drawSelected(context,view);	
-	basicDrawSelected(context,view);
+	wxhdIFigure::drawSelected(context, view);
+	basicDrawSelected(context, view);
 }
 
-void wxhdAbstractFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAbstractFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-	
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
+
 	context.SetPen(*wxRED_PEN);
-	context.SetBrush(wxBrush (wxColour(133, 133, 133),wxSOLID));
+	context.SetBrush(wxBrush (wxColour(133, 133, 133), wxSOLID));
 	context.DrawRectangle(copy);
 }
 
 
-wxhdITool* wxhdAbstractFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdAbstractFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
@@ -85,25 +85,25 @@ wxhdITool* wxhdAbstractFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdI
 void wxhdAbstractFigure::moveBy(int x, int y)
 {
 	willChange();
-	basicMoveBy(x,y);
+	basicMoveBy(x, y);
 	changed();
 }
 
 void wxhdAbstractFigure::basicMoveBy(int x, int y)
 {
-		wxhdRect r = basicDisplayBox;
-		r.x += x;
-		r.y += y;
-		basicDisplayBox = r;
+	wxhdRect r = basicDisplayBox;
+	r.x += x;
+	r.y += y;
+	basicDisplayBox = r;
 }
 
 
 void wxhdAbstractFigure::moveTo(int x, int y)
 {
-		wxhdRect r = basicDisplayBox;
-		r.x = x;
-		r.y = y;
-		basicDisplayBox = r;
+	wxhdRect r = basicDisplayBox;
+	r.x = x;
+	r.y = y;
+	basicDisplayBox = r;
 }
 
 void wxhdAbstractFigure::willChange()
@@ -113,8 +113,8 @@ void wxhdAbstractFigure::willChange()
 
 void wxhdAbstractFigure::changed()
 {
-    invalidate();
-    onFigureChanged(this);
+	invalidate();
+	onFigureChanged(this);
 }
 
 void wxhdAbstractFigure::invalidate()
@@ -124,7 +124,7 @@ void wxhdAbstractFigure::invalidate()
 
 bool wxhdAbstractFigure::containsPoint(int x, int y)
 {
-	return basicDisplayBox.Contains(x,y);
+	return basicDisplayBox.Contains(x, y);
 }
 
 void wxhdAbstractFigure::onFigureChanged(wxhdIFigure *figure)

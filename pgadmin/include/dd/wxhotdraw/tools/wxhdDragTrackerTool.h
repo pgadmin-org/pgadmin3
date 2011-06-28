@@ -23,13 +23,13 @@ class wxhdDragTrackerTool : public wxhdAbstractTool
 {
 public:
 	wxhdDragTrackerTool(wxhdDrawingEditor *editor, wxhdIFigure *anchor);
-    ~wxhdDragTrackerTool();
+	~wxhdDragTrackerTool();
 
 	void setLastCoords(int x, int y);
 	bool hasMoved();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseDrag(wxhdMouseEvent& event);
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
 
 protected:
 	wxhdIFigure *anchorFigure;

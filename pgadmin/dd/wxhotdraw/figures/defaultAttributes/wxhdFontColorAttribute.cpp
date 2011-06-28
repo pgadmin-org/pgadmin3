@@ -22,17 +22,17 @@
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
 wxhdFontColorAttribute::wxhdFontColorAttribute():
-wxhdAttribute()
+	wxhdAttribute()
 {
 	fontColor = wxColour(*wxBLACK);
 }
 
-void wxhdFontColorAttribute::apply(wxBufferedDC& context)
+void wxhdFontColorAttribute::apply(wxBufferedDC &context)
 {
 	context.SetTextForeground(fontColor);
 }
 
 void wxhdFontColorAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
-	fontColor = wxGetColourFromUser(owner, fontColor,wxT("Select a color for font..."));
+	fontColor = wxGetColourFromUser(owner, fontColor, wxT("Select a color for font..."));
 }

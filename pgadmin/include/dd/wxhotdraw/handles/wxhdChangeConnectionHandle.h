@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdChangeConnectionHandle.h - Base Handle to allow change connected figures at connection figures 
+// wxhdChangeConnectionHandle.h - Base Handle to allow change connected figures at connection figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,20 +21,20 @@ class wxhdChangeConnectionHandle : public wxhdIHandle
 {
 public:
 	wxhdChangeConnectionHandle(wxhdLineConnection *owner);
-    ~wxhdChangeConnectionHandle();
-	
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	~wxhdChangeConnectionHandle();
+
+	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual wxCursor createCursor();
-	virtual void invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view);
-	virtual wxhdIConnector* target()=0;
-	virtual void disconnect(wxhdDrawingView *view=NULL)=0;
-	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view=NULL)=0;
-	virtual void setPoint(wxhdPoint p)=0;
-	virtual bool isConnectionPossible(wxhdIFigure *figure)=0;
-	wxhdIFigure* findConnectableFigure(int x, int y, wxhdDrawing *drawing);
-	wxhdIConnector* findConnectionTarget(int x, int y, wxhdDrawing *drawing);
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual wxhdIConnector *target() = 0;
+	virtual void disconnect(wxhdDrawingView *view = NULL) = 0;
+	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view = NULL) = 0;
+	virtual void setPoint(wxhdPoint p) = 0;
+	virtual bool isConnectionPossible(wxhdIFigure *figure) = 0;
+	wxhdIFigure *findConnectableFigure(int x, int y, wxhdDrawing *drawing);
+	wxhdIConnector *findConnectionTarget(int x, int y, wxhdDrawing *drawing);
 protected:
 	wxhdLineConnection *connection;
 	wxhdIFigure *targetFigure;

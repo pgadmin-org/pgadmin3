@@ -36,12 +36,12 @@ ddDatabaseDesign::~ddDatabaseDesign()
 		delete draw;
 }
 
-wxhdDrawingEditor* ddDatabaseDesign::getEditor()
+wxhdDrawingEditor *ddDatabaseDesign::getEditor()
 {
 	return draw;
 }
 
-wxhdDrawingView* ddDatabaseDesign::getView()
+wxhdDrawingView *ddDatabaseDesign::getView()
 {
 	return draw->view();
 }
@@ -56,7 +56,7 @@ void ddDatabaseDesign::removeTable(wxhdIFigure *figure)
 	draw->view()->remove(figure);
 }
 
-void ddDatabaseDesign::setTool(wxhdITool* tool)
+void ddDatabaseDesign::setTool(wxhdITool *tool)
 {
 	draw->setTool(tool);
 }
@@ -71,26 +71,26 @@ void ddDatabaseDesign::eraseModel()
 	draw->view()->removeAll();
 }
 
-bool ddDatabaseDesign::validateModel(wxString& errors)
+bool ddDatabaseDesign::validateModel(wxString &errors)
 {
-	bool out=true;
+	bool out = true;
 
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmpFigure;
 	ddTableFigure *table;
 
 	while(iterator->HasNext())
-    {
-		tmpFigure=(wxhdIFigure *)iterator->Next();
+	{
+		tmpFigure = (wxhdIFigure *)iterator->Next();
 		if(tmpFigure->getKindId() == DDTABLEFIGURE)
 		{
-			table=(ddTableFigure*)tmpFigure;
+			table = (ddTableFigure *)tmpFigure;
 			if(!table->validateTable(errors))
 			{
 				out = false;
 			}
 		}
-	 }
+	}
 	delete iterator;
 
 	return out;
@@ -99,96 +99,97 @@ bool ddDatabaseDesign::validateModel(wxString& errors)
 wxString ddDatabaseDesign::generateModel()
 {
 	wxString out;
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())
-    {
-		tmp=(wxhdIFigure *)iterator->Next();
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
-			out+=wxT(" \n");
-			table=(ddTableFigure*)tmp;
-			out+=wxT("--\n-- ");
-            out+=_("Generating SQL for table: ");
-			out+=table->getTableName();
-			out+=wxT(" \n--\n");
-			out+=table->generateSQL();
-			out+=wxT(" \n");
-			out+=wxT(" \n");
+			out += wxT(" \n");
+			table = (ddTableFigure *)tmp;
+			out += wxT("--\n-- ");
+			out += _("Generating SQL for table: ");
+			out += table->getTableName();
+			out += wxT(" \n--\n");
+			out += table->generateSQL();
+			out += wxT(" \n");
+			out += wxT(" \n");
 		}
-	 }
+	}
 	delete iterator;
 	return out;
 }
 
 wxString ddDatabaseDesign::getNewTableName()
 {
-	wxString out,tmpStr;
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxString out, tmpStr;
+	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
-	int indx=0;
+	int indx = 0;
 	bool repeat;
 	do
-    {
-		repeat=false;
+	{
+		repeat = false;
 		iterator->ResetIterator();
 		while(iterator->HasNext())
-        {
-			tmp=(wxhdIFigure *)iterator->Next();
+		{
+			tmp = (wxhdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
-				table=(ddTableFigure*)tmp;
-				if(indx==0)
-					tmpStr=_("NewTable");
+				table = (ddTableFigure *)tmp;
+				if(indx == 0)
+					tmpStr = _("NewTable");
 				else
-					tmpStr=wxString::Format(_("NewTable%d"),indx);
+					tmpStr = wxString::Format(_("NewTable%d"), indx);
 
 				if(table->getTableName().Contains(tmpStr))
 				{
 					indx++;
-					repeat=true;
+					repeat = true;
 					break;
 				}
 			}
-		 }
-	} while(repeat);
+		}
+	}
+	while(repeat);
 	delete iterator;
-	out=wxString::Format(_("NewTable%d"),indx);
+	out = wxString::Format(_("NewTable%d"), indx);
 	return out;
 }
 
-ddTableFigure* ddDatabaseDesign::getSelectedTable()
+ddTableFigure *ddDatabaseDesign::getSelectedTable()
 {
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmp;
-    ddTableFigure *table = 0L;
-    while(iterator->HasNext())
-    {
-        tmp=(wxhdIFigure *)iterator->Next();
-        if (tmp->isSelected() && tmp->getKindId() == DDTABLEFIGURE)
-            table = (ddTableFigure *)tmp;
-	 }
+	ddTableFigure *table = 0L;
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if (tmp->isSelected() && tmp->getKindId() == DDTABLEFIGURE)
+			table = (ddTableFigure *)tmp;
+	}
 	delete iterator;
-    return table;
+	return table;
 }
 
 bool ddDatabaseDesign::containsTable(wxString tableName)
 {
-	bool out=false;
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	bool out = false;
+	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())
-    {
-		tmp=(wxhdIFigure *)iterator->Next();
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
-			table=(ddTableFigure*)tmp;
+			table = (ddTableFigure *)tmp;
 			if(table->getTableName().Contains(tableName))
 			{
-				out=true;
+				out = true;
 			}
 		}
 	}

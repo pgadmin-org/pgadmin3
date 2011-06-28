@@ -35,16 +35,16 @@
 
 ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 {
-	ownerColumn=owner;
+	ownerColumn = owner;
 	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(*ddprimarykey_png_img);
-    iconToDraw = NULL;
-	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
+	iconToDraw = NULL;
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 	isPk = false;
 	ukIndex = -1;
-	
+
 	//Set Value default Attributes
-fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
+	fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
 }
 
 ddColumnKindIcon::~ddColumnKindIcon()
@@ -53,27 +53,27 @@ ddColumnKindIcon::~ddColumnKindIcon()
 
 void ddColumnKindIcon::createMenu(wxMenu &mnu)
 {
-    wxMenuItem *item;
-    
+	wxMenuItem *item;
+
 	item = mnu.AppendCheckItem(MNU_DDCTPKEY, _("Primary key"));
-    item->Check(isPrimaryKey());
-    item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
+	item->Check(isPrimaryKey());
+	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 	item = mnu.AppendCheckItem(MNU_DDCTUKEY, _("Unique key"));
-    item->Check(isUniqueKey());
+	item->Check(isUniqueKey());
 }
 
-void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
-	toggleColumnKind((ddColumnType)event.GetId(),view);
+	toggleColumnKind((ddColumnType)event.GetId(), view);
 }
 
-ddColumnFigure* ddColumnKindIcon::getOwnerColumn()
+ddColumnFigure *ddColumnKindIcon::getOwnerColumn()
 {
 	return ownerColumn;
 }
 
 //if columntype attribute (type) is active then disable, is disable then active.
-void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view, bool interaction) 
+void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view, bool interaction)
 {
 
 	switch(type)
@@ -100,44 +100,44 @@ void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view
 			}
 			else
 			{
-				uniqueConstraintManager(false,view,interaction);
+				uniqueConstraintManager(false, view, interaction);
 			}
 			break;
 	}
-	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
-void ddColumnKindIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
 		wxhdRect copy = displayBox();
-		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		//Adding a yellow circle to increase visibility of uk index
 		if(isUniqueKey())
 		{
 			context.SetBrush(wxBrush(wxColour(wxT("YELLOW")), wxSOLID));
 			context.SetPen(wxPen(wxColour(wxT("YELLOW"))));
-			context.DrawCircle(copy.x+6,copy.y+7,4);
+			context.DrawCircle(copy.x + 6, copy.y + 7, 4);
 		}
 		//Draw icon
-		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
+		context.DrawBitmap(*iconToDraw, copy.GetPosition(), true);
 		//Draw Uk index if needed
-		if(isUniqueKey() && ukIndex>0)
+		if(isUniqueKey() && ukIndex > 0)
 		{
 			wxFont font = settings->GetSystemFont();
 			font.SetPointSize(6);
 			context.SetFont(font);
-			wxString inumber = wxString::Format(wxT("%d"), (int)ukIndex+1);
-			context.DrawText(inumber,copy.x+4,copy.y+2);
+			wxString inumber = wxString::Format(wxT("%d"), (int)ukIndex + 1);
+			context.DrawText(inumber, copy.x + 4, copy.y + 2);
 		}
 
 	}
 }
 
-void ddColumnKindIcon::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnKindIcon::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	basicDraw(context,view);
+	basicDraw(context, view);
 }
 
 int ddColumnKindIcon::getWidth()
@@ -170,90 +170,91 @@ int ddColumnKindIcon::getUniqueConstraintIndex()
 
 void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 {
-	ukIndex=i;
+	ukIndex = i;
 }
 
 bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
 {
-    wxString tmpString;
-    bool isColUk = true;
+	wxString tmpString;
+	bool isColUk = true;
 
 	if(ukCol) //if already this column kind is Unique Key then convert in a normal column
-    {
-        syncUkIndexes();
-        setUniqueConstraintIndex(-1);
-    }
-    else //colType!=uk
-    {
-        if(interaction)
+	{
+		syncUkIndexes();
+		setUniqueConstraintIndex(-1);
+	}
+	else //colType!=uk
+	{
+		if(interaction)
 		{
-            if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)
-            {
-                tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
-                tmpString.append(wxT("_uk"));
-                tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
-                if(tmpString.length()>0)
-                {
-                    getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
-                    ukIndex=0;
-                }
-                else
-                {
-                    setUniqueConstraintIndex(-1);
-                }
-            }
-            else  //>0
-            {
-                getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(wxString(wxT("Add new Unique Constraint...")));
-                unsigned int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"),wxT("Select Unique Key to add Column:"),getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(),view);
-                getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count()-1);
-                if(i>=0)
-                {
-                    if(i==getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count())
-                    {
-                        tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
-                        tmpString.append(wxT("_uk"));
-                        
-                        int newIndex=i+1;
-                        wxString inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
-                        //Validate new name of uk doesn't exists
-                        while(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Index(inumber,false)!=-1){
-                            newIndex++;
-                            inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
-                        }
-                        inumber = wxString::Format(wxT("%d"), (int)newIndex);
-                        tmpString.append(inumber);
-                        tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
-                        if(tmpString.length()>0)
-                        {
-                            getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
-                            ukIndex=i;
-                        }
-                        else
-                        {
-                            setUniqueConstraintIndex(-1);
-                        }
-                    }
-                    else
-                    {
-                        ukIndex=i;
-                    }
-                }
-                else
-                {
-                    setUniqueConstraintIndex(-1);
-                }
-            }
-        }
+			if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count() == 0)
+			{
+				tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
+				tmpString.append(wxT("_uk"));
+				tmpString = wxGetTextFromUser(wxT("Name of new Unique Key constraint:"), tmpString, tmpString, view);
+				if(tmpString.length() > 0)
+				{
+					getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);
+					ukIndex = 0;
+				}
+				else
+				{
+					setUniqueConstraintIndex(-1);
+				}
+			}
+			else  //>0
+			{
+				getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(wxString(wxT("Add new Unique Constraint...")));
+				unsigned int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"), wxT("Select Unique Key to add Column:"), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(), view);
+				getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count() - 1);
+				if(i >= 0)
+				{
+					if(i == getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count())
+					{
+						tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
+						tmpString.append(wxT("_uk"));
+
+						int newIndex = i + 1;
+						wxString inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(), (int)newIndex);
+						//Validate new name of uk doesn't exists
+						while(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Index(inumber, false) != -1)
+						{
+							newIndex++;
+							inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(), (int)newIndex);
+						}
+						inumber = wxString::Format(wxT("%d"), (int)newIndex);
+						tmpString.append(inumber);
+						tmpString = wxGetTextFromUser(wxT("Name of new Unique Key constraint:"), tmpString, tmpString, view);
+						if(tmpString.length() > 0)
+						{
+							getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);
+							ukIndex = i;
+						}
+						else
+						{
+							setUniqueConstraintIndex(-1);
+						}
+					}
+					else
+					{
+						ukIndex = i;
+					}
+				}
+				else
+				{
+					setUniqueConstraintIndex(-1);
+				}
+			}
+		}
 		else //without user interaction
 		{
 
 		}
-    }
+	}
 
 	//synchronize observers if this uk column is used as source of fk
 	setRightIconForColumn();
-	getOwnerColumn()->getOwnerTable()->updateFkObservers();								
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();
 
 	if(!isUniqueKey())
 		return false;
@@ -265,20 +266,20 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
 void ddColumnKindIcon::syncUkIndexes()
 {
 	ddColumnFigure *col;
-	bool lastUk=true;
+	bool lastUk = true;
 	wxhdIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
-    iterator->Next(); //First Figure is Main Rect
-    iterator->Next(); //Second Figure is Table Title
-    while(iterator->HasNext())
-    {
-        col = (ddColumnFigure*) iterator->Next();
-        
-        if(col!=getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
-		{ 
-		  lastUk=false;
-		  break;
+	iterator->Next(); //First Figure is Main Rect
+	iterator->Next(); //Second Figure is Table Title
+	while(iterator->HasNext())
+	{
+		col = (ddColumnFigure *) iterator->Next();
+
+		if(col != getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
+		{
+			lastUk = false;
+			break;
 		}
-    }
+	}
 	if(lastUk)
 	{
 		//here uks indexes are fixed
@@ -287,9 +288,9 @@ void ddColumnKindIcon::syncUkIndexes()
 		iterator->Next(); //Second Figure is Table Title
 		while(iterator->HasNext())
 		{
-			col = (ddColumnFigure*) iterator->Next();
-			if( col->getUniqueConstraintIndex() > getOwnerColumn()->getUniqueConstraintIndex() ) 
-				col->setUniqueConstraintIndex(col->getUniqueConstraintIndex()-1);
+			col = (ddColumnFigure *) iterator->Next();
+			if( col->getUniqueConstraintIndex() > getOwnerColumn()->getUniqueConstraintIndex() )
+				col->setUniqueConstraintIndex(col->getUniqueConstraintIndex() - 1);
 		}
 		getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getUniqueConstraintIndex());
 		getOwnerColumn()->setUniqueConstraintIndex(-1);
@@ -348,7 +349,7 @@ void ddColumnKindIcon::setRightIconForColumn()
 	}
 	else if(isForeignKey() && !isPrimaryKey() && !isUniqueKey() )
 	{
-		
+
 		if(getOwnerColumn()->isForeignKeyFromPk())
 		{
 			icon = wxBitmap(*ddforeignkey_png_img);
@@ -359,7 +360,7 @@ void ddColumnKindIcon::setRightIconForColumn()
 		}
 	}
 
-	
+
 	if(isNone())
 	{
 		iconToDraw = NULL;
@@ -397,7 +398,7 @@ bool ddColumnKindIcon::isForeignKey()
 void ddColumnKindIcon::disableUniqueKey()
 {
 	syncUkIndexes();  //prepare to remove uk attribute to this column
-	ukIndex=-1;
+	ukIndex = -1;
 	getOwnerColumn()->getOwnerTable()->updateFkObservers();
 	setRightIconForColumn();
 }
@@ -406,13 +407,13 @@ void ddColumnKindIcon::disablePrimaryKey()
 {
 	getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
 	isPk = false;
-	getOwnerColumn()->getOwnerTable()->updateFkObservers();	
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();
 	setRightIconForColumn();
 }
 
 void ddColumnKindIcon::enablePrimaryKey()
 {
 	isPk = true;
-	getOwnerColumn()->getOwnerTable()->updateFkObservers();	
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();
 	setRightIconForColumn();
 }

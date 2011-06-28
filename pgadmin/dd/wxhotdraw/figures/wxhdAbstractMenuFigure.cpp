@@ -32,9 +32,9 @@ wxhdAbstractMenuFigure::~wxhdAbstractMenuFigure()
 }
 
 
-wxhdITool* wxhdAbstractMenuFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdAbstractMenuFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return new wxhdMenuTool(editor,this,defaultTool);
+	return new wxhdMenuTool(editor, this, defaultTool);
 }
 
 void wxhdAbstractMenuFigure::enablePopUp()
@@ -52,7 +52,7 @@ bool wxhdAbstractMenuFigure::menuEnabled()
 	return 	showMenu;
 }
 
-void wxhdAbstractMenuFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void wxhdAbstractMenuFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
 	//Action on popup goes here
 	//strings[event.GetId()]

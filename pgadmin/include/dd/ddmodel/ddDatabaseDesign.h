@@ -21,17 +21,17 @@ class ddDatabaseDesign : public wxObject
 public:
 	ddDatabaseDesign(wxWindow *parent);
 	~ddDatabaseDesign();
-	wxhdDrawingView* getView();
-	wxhdDrawingEditor* getEditor();
+	wxhdDrawingView *getView();
+	wxhdDrawingEditor *getEditor();
 	void addTable(wxhdIFigure *figure);
 	void removeTable(wxhdIFigure *figure);
-	void setTool(wxhdITool* tool);
+	void setTool(wxhdITool *tool);
 	void refreshDraw();
 	void eraseModel();
 	wxString generateModel();
-	bool validateModel(wxString& errors);
+	bool validateModel(wxString &errors);
 	wxString getNewTableName();
-    ddTableFigure* getSelectedTable();
+	ddTableFigure *getSelectedTable();
 	bool containsTable(wxString tableName);
 
 

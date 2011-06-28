@@ -17,8 +17,8 @@
 class ddMinMaxTableButtonHandle : public wxhdButtonHandle
 {
 public:
-	ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
-    ~ddMinMaxTableButtonHandle();
+	ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
+	~ddMinMaxTableButtonHandle();
 
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
@@ -28,7 +28,7 @@ protected:
 
 private:
 	wxImage handleCursorImage;
-    wxCursor handleCursor;
+	wxCursor handleCursor;
 	wxBitmap buttonMaximizeImage, tmpImage;
 	bool showFirst;
 };

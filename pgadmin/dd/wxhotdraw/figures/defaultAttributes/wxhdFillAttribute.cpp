@@ -22,12 +22,12 @@
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
 wxhdFillAttribute::wxhdFillAttribute():
-wxhdAttribute()
+	wxhdAttribute()
 {
 	fillAttributes = wxBrush(*wxWHITE);
 }
 
-void wxhdFillAttribute::apply(wxBufferedDC& context)
+void wxhdFillAttribute::apply(wxBufferedDC &context)
 {
 	context.SetBrush(fillAttributes);
 }
@@ -35,11 +35,11 @@ void wxhdFillAttribute::apply(wxBufferedDC& context)
 void wxhdFillAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
 	//create brush dialog
-	wxColour color = wxGetColourFromUser(owner, fillAttributes.GetColour(),wxT("Select a color for fill color..."));
+	wxColour color = wxGetColourFromUser(owner, fillAttributes.GetColour(), wxT("Select a color for fill color..."));
 	fillAttributes = wxBrush(color);
 }
 
-wxBrush& wxhdFillAttribute::brush()
+wxBrush &wxhdFillAttribute::brush()
 {
 	return fillAttributes;
 }

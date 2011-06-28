@@ -376,7 +376,7 @@ void frmMain::CreateMenus()
 	new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
 	new queryToolDeleteFactory(menuFactories, scriptingMenu, 0);
 
-    new databaseDesignerFactory(menuFactories, toolsMenu, toolBar);
+	new databaseDesignerFactory(menuFactories, toolsMenu, toolBar);
 
 	viewdataMenuFactory = new submenuFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
 	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));

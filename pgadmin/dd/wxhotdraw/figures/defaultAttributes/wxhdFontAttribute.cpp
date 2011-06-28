@@ -22,22 +22,22 @@
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
 wxhdFontAttribute::wxhdFontAttribute():
-wxhdAttribute()
+	wxhdAttribute()
 {
 	fontAttributes = settings->GetSystemFont();
 }
 
-void wxhdFontAttribute::apply(wxBufferedDC& context)
+void wxhdFontAttribute::apply(wxBufferedDC &context)
 {
 	context.SetFont(fontAttributes);
 }
 
 void wxhdFontAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
-	fontAttributes = wxGetFontFromUser(owner, fontAttributes,wxT("Select a font..."));
+	fontAttributes = wxGetFontFromUser(owner, fontAttributes, wxT("Select a font..."));
 }
 
-wxFont& wxhdFontAttribute::font()
+wxFont &wxhdFontAttribute::font()
 {
 	return fontAttributes;
 }

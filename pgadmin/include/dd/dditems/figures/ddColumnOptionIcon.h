@@ -18,30 +18,30 @@ class ddColumnFigure;
 
 enum ddColumnOptionType
 {
-	null=0,
+	null = 0,
 	notnull
 };
 
 enum
 {
-    MNU_COLNULL = 0,
-    MNU_COLNOTNULL
+	MNU_COLNULL = 0,
+	MNU_COLNOTNULL
 };
 
 class ddColumnOptionIcon : public wxhdAbstractMenuFigure
 {
 public:
 	ddColumnOptionIcon(ddColumnFigure *owner);
-    ~ddColumnOptionIcon();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view=NULL);
-    virtual void createMenu(wxMenu &mnu);
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
+	~ddColumnOptionIcon();
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view = NULL);
+	virtual void createMenu(wxMenu &mnu);
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void changeIcon(ddColumnOptionType type);
 	virtual int getWidth();
 	virtual int getHeight();
 	ddColumnOptionType getOption();
-	ddColumnFigure* getOwnerColumn();
+	ddColumnFigure *getOwnerColumn();
 
 protected:
 

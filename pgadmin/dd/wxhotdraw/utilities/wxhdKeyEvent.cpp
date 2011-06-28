@@ -18,10 +18,10 @@
 #include "dd/wxhotdraw/utilities/wxhdKeyEvent.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-wxhdKeyEvent::wxhdKeyEvent(wxKeyEvent& event, wxhdDrawingView *owner):
-keyEvent(event)
+wxhdKeyEvent::wxhdKeyEvent(wxKeyEvent &event, wxhdDrawingView *owner):
+	keyEvent(event)
 {
-	view=owner;
+	view = owner;
 	keyCode = event.GetKeyCode();
 }
 
@@ -30,7 +30,7 @@ int wxhdKeyEvent::GetKeyCode()
 	return keyCode;
 }
 
-wxhdDrawingView* wxhdKeyEvent::getView()
+wxhdDrawingView *wxhdKeyEvent::getView()
 {
 	return view;
 }

@@ -16,8 +16,9 @@
 
 class ddColumnFigure;
 
-enum ddColumnType {
-	pk=0,
+enum ddColumnType
+{
+	pk = 0,
 	uk,
 	none,
 	noaction  //no action kind means column type don't have right now a useful value
@@ -25,20 +26,20 @@ enum ddColumnType {
 
 enum
 {
-    MNU_DDCTPKEY = 0,
-    MNU_DDCTUKEY
+	MNU_DDCTPKEY = 0,
+	MNU_DDCTUKEY
 };
 
 class ddColumnKindIcon : public wxhdAbstractMenuFigure
 {
 public:
 	ddColumnKindIcon(ddColumnFigure *owner);
-    ~ddColumnKindIcon();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view=NULL);
-    virtual void createMenu(wxMenu &mnu);
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
-	virtual void toggleColumnKind(ddColumnType type, wxhdDrawingView *view=NULL, bool interaction=true);
+	~ddColumnKindIcon();
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view = NULL);
+	virtual void createMenu(wxMenu &mnu);
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void toggleColumnKind(ddColumnType type, wxhdDrawingView *view = NULL, bool interaction = true);
 	virtual int getWidth();
 	virtual int getHeight();
 	bool isNone();
@@ -47,7 +48,7 @@ public:
 	void disableUniqueKey();
 	void disablePrimaryKey();
 	void enablePrimaryKey();
-	ddColumnFigure* getOwnerColumn();
+	ddColumnFigure *getOwnerColumn();
 	bool isUniqueKey();
 	bool isUniqueKey(int uniqueIndex);
 	int getUniqueConstraintIndex();
@@ -65,6 +66,6 @@ private:
 
 	//multiple Uk management at table
 	void syncUkIndexes();
-	bool uniqueConstraintManager(bool ukCol, wxhdDrawingView *view=NULL, bool interaction=true);
+	bool uniqueConstraintManager(bool ukCol, wxhdDrawingView *view = NULL, bool interaction = true);
 };
 #endif

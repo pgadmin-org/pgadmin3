@@ -28,7 +28,7 @@ public:
 	virtual void createView(wxWindow *owner);
 	//Hack To allow right click menu at canvas without a figure
 	virtual void createMenu(wxMenu &mnu);
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 protected:
 private:
 	ddDatabaseDesign *databaseDesign;

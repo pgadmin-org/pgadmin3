@@ -21,11 +21,11 @@
 
 
 
-wxhdButtonHandle::wxhdButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-wxhdIHandle(owner)
+wxhdButtonHandle::wxhdButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size):
+	wxhdIHandle(owner)
 {
 	buttonIcon = buttonImage;
-	clicked=false;
+	clicked = false;
 	bLocator = buttonLocator;
 	displayBox.SetSize(size);
 }
@@ -41,32 +41,32 @@ wxCursor wxhdButtonHandle::createCursor()
 	return wxCursor(wxCURSOR_PENCIL);
 }
 
-wxhdRect& wxhdButtonHandle::getDisplayBox()
+wxhdRect &wxhdButtonHandle::getDisplayBox()
 {
-	wxhdPoint p = locate();		
+	wxhdPoint p = locate();
 	displayBox.SetPosition(p);
 	return displayBox;
 }
 
-void wxhdButtonHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdButtonHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxPoint copy = getDisplayBox().GetPosition();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	if(buttonIcon.IsOk())
-		context.DrawBitmap(buttonIcon,copy.x,copy.y,true);
+		context.DrawBitmap(buttonIcon, copy.x, copy.y, true);
 }
 
 
-wxhdPoint& wxhdButtonHandle::locate()
+wxhdPoint &wxhdButtonHandle::locate()
 {
 	if(bLocator)
 	{
-		pointLocate=bLocator->locate(getOwner());
+		pointLocate = bLocator->locate(getOwner());
 		return pointLocate;
 	}
 	else
 	{
-		pointLocate=wxhdPoint(0,0);	
-		return pointLocate;		
+		pointLocate = wxhdPoint(0, 0);
+		return pointLocate;
 	}
 }

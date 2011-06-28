@@ -18,10 +18,10 @@
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
 wxhdFigureTool::wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-wxhdAbstractTool(editor)
+	wxhdAbstractTool(editor)
 {
-	defaultTool=dt;
-	figure=fig;
+	defaultTool = dt;
+	figure = fig;
 }
 
 wxhdFigureTool::~wxhdFigureTool()
@@ -34,25 +34,25 @@ wxhdFigureTool::~wxhdFigureTool()
 
 void wxhdFigureTool::setDefaultTool(wxhdITool *dt)
 {
-	defaultTool=dt;
+	defaultTool = dt;
 }
 
-wxhdITool* wxhdFigureTool::getDefaultTool()
+wxhdITool *wxhdFigureTool::getDefaultTool()
 {
 	return defaultTool;
 }
 
 void wxhdFigureTool::setFigure(wxhdIFigure *fig)
 {
-	figure=fig;
+	figure = fig;
 }
 
-wxhdIFigure* wxhdFigureTool::getFigure()
+wxhdIFigure *wxhdFigureTool::getFigure()
 {
 	return figure;
 }
 
-void wxhdFigureTool::mouseDown(wxhdMouseEvent& event)
+void wxhdFigureTool::mouseDown(wxhdMouseEvent &event)
 {
 	if(defaultTool)
 	{
@@ -60,7 +60,7 @@ void wxhdFigureTool::mouseDown(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdFigureTool::mouseUp(wxhdMouseEvent& event)
+void wxhdFigureTool::mouseUp(wxhdMouseEvent &event)
 {
 	if(defaultTool)
 	{
@@ -68,7 +68,7 @@ void wxhdFigureTool::mouseUp(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdFigureTool::mouseMove(wxhdMouseEvent& event)
+void wxhdFigureTool::mouseMove(wxhdMouseEvent &event)
 {
 	if(defaultTool)
 	{
@@ -76,7 +76,7 @@ void wxhdFigureTool::mouseMove(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdFigureTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdFigureTool::mouseDrag(wxhdMouseEvent &event)
 {
 	if(defaultTool)
 	{
@@ -84,7 +84,7 @@ void wxhdFigureTool::mouseDrag(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdFigureTool::keyDown(wxhdKeyEvent& event)
+void wxhdFigureTool::keyDown(wxhdKeyEvent &event)
 {
 	if(defaultTool)
 	{
@@ -92,9 +92,9 @@ void wxhdFigureTool::keyDown(wxhdKeyEvent& event)
 	}
 }
 
-void wxhdFigureTool::keyUp(wxhdKeyEvent& event)
+void wxhdFigureTool::keyUp(wxhdKeyEvent &event)
 {
-		if(defaultTool)
+	if(defaultTool)
 	{
 		defaultTool->keyUp(event);
 	}

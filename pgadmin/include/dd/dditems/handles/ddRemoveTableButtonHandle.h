@@ -17,8 +17,8 @@
 class ddRemoveTableButtonHandle : public wxhdButtonHandle
 {
 public:
-	ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size);
-    ~ddRemoveTableButtonHandle();
+	ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
+	~ddRemoveTableButtonHandle();
 
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
@@ -27,7 +27,7 @@ public:
 protected:
 
 private:
-    wxImage handleCursorImage;
-    wxCursor handleCursor;
+	wxImage handleCursorImage;
+	wxCursor handleCursor;
 };
 #endif

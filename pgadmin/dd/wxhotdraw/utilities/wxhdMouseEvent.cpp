@@ -18,26 +18,26 @@
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-wxhdMouseEvent::wxhdMouseEvent(wxMouseEvent& event, wxhdDrawingView *owner):
-mouseEvent(event)
+wxhdMouseEvent::wxhdMouseEvent(wxMouseEvent &event, wxhdDrawingView *owner):
+	mouseEvent(event)
 {
-	view=owner;
+	view = owner;
 	m_shiftDown = event.m_shiftDown;
 }
 
-wxhdPoint& wxhdMouseEvent::GetPosition()
+wxhdPoint &wxhdMouseEvent::GetPosition()
 {
 	return getUnScrolledPosition();
 }
 
-wxhdPoint& wxhdMouseEvent::getUnScrolledPosition()
+wxhdPoint &wxhdMouseEvent::getUnScrolledPosition()
 {
 	unScrolled = mouseEvent.GetPosition();
-	view->CalcUnscrolledPosition(unScrolled.x,unScrolled.y,&unScrolled.x,&unScrolled.y);
+	view->CalcUnscrolledPosition(unScrolled.x, unScrolled.y, &unScrolled.x, &unScrolled.y);
 	return unScrolled;
 }
 
-wxhdPoint& wxhdMouseEvent::getScrolledPosition()
+wxhdPoint &wxhdMouseEvent::getScrolledPosition()
 {
 	scrolled = mouseEvent.GetPosition();
 	return scrolled;
@@ -93,7 +93,7 @@ bool wxhdMouseEvent::LeftIsDown()
 	return mouseEvent.LeftIsDown();
 }
 
-wxhdDrawingView* wxhdMouseEvent::getView()
+wxhdDrawingView *wxhdMouseEvent::getView()
 {
 	return view;
 }

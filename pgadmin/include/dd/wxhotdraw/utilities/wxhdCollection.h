@@ -19,25 +19,25 @@
 class wxhdCollection : public wxObject
 {
 public:
-    wxhdCollection(wxhdCollectionBase *collectionBase);
-    virtual ~wxhdCollection();
-    void addItem(wxhdObject *item);
-    void removeItem(wxhdObject *item);
+	wxhdCollection(wxhdCollectionBase *collectionBase);
+	virtual ~wxhdCollection();
+	void addItem(wxhdObject *item);
+	void removeItem(wxhdObject *item);
 	void removeItemAt(int index);
-    void deleteAll();
-    void removeAll();
-    int count();
-    bool existsObject(wxhdObject *item);
-    int getIndex(wxhdObject *item);
-    wxhdObject* getItemAt(int index);
-    void insertAtIndex(wxhdObject *item, int index);
+	void deleteAll();
+	void removeAll();
+	int count();
+	bool existsObject(wxhdObject *item);
+	int getIndex(wxhdObject *item);
+	wxhdObject *getItemAt(int index);
+	void insertAtIndex(wxhdObject *item, int index);
 	void replaceAtIndex(wxhdObject *item, int index);
 	void bringToFront(wxhdObject *item);
 	void sendToBack(wxhdObject *item);
-    wxhdIteratorBase* createIterator();
-	wxhdIteratorBase* createDownIterator();
+	wxhdIteratorBase *createIterator();
+	wxhdIteratorBase *createDownIterator();
 
 private:
-    wxhdCollectionBase *collection;
+	wxhdCollectionBase *collection;
 };
 #endif

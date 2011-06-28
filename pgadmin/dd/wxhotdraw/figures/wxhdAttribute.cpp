@@ -20,11 +20,11 @@
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
 wxhdAttribute::wxhdAttribute():
-wxhdObject()
+	wxhdObject()
 {
 }
 
-void wxhdAttribute::apply(wxBufferedDC& context)
+void wxhdAttribute::apply(wxBufferedDC &context)
 {
 }
 

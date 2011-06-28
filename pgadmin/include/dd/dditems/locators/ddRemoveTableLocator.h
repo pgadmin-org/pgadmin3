@@ -19,9 +19,9 @@ class ddRemoveTableLocator : public wxhdILocator
 {
 public:
 	ddRemoveTableLocator();
-    ~ddRemoveTableLocator();
+	~ddRemoveTableLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

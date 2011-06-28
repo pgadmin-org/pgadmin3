@@ -25,11 +25,11 @@
 
 wxhdIFigure::wxhdIFigure()
 {
-	handles=new wxhdCollection(new wxhdArrayCollection());
-	observers=new wxhdCollection(new wxhdArrayCollection());
-	selected=false;
-	connector=NULL;
-	basicDisplayBox.SetSize(wxSize(0,0));
+	handles = new wxhdCollection(new wxhdArrayCollection());
+	observers = new wxhdCollection(new wxhdArrayCollection());
+	selected = false;
+	connector = NULL;
+	basicDisplayBox.SetSize(wxSize(0, 0));
 }
 
 wxhdIFigure::~wxhdIFigure()
@@ -38,18 +38,19 @@ wxhdIFigure::~wxhdIFigure()
 		delete connector;
 	if(handles)
 		delete handles;
-	if(observers){
+	if(observers)
+	{
 		observers->removeAll();
 		delete observers;
 	}
 }
 
-wxhdRect& wxhdIFigure::displayBox()
+wxhdRect &wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();
 }
 
-wxhdRect& wxhdIFigure::getBasicDisplayBox()
+wxhdRect &wxhdIFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
@@ -59,17 +60,17 @@ bool wxhdIFigure::containsPoint (int x, int y)
 	return false;
 }
 
-void wxhdIFigure::draw (wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdIFigure::draw (wxBufferedDC &context, wxhdDrawingView *view)
 {
 
 }
 
-void wxhdIFigure::drawSelected (wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdIFigure::drawSelected (wxBufferedDC &context, wxhdDrawingView *view)
 {
 
 }
 
-wxhdCollection* wxhdIFigure::handlesEnumerator()
+wxhdCollection *wxhdIFigure::handlesEnumerator()
 {
 	return handles;
 }
@@ -77,17 +78,17 @@ wxhdCollection* wxhdIFigure::handlesEnumerator()
 void wxhdIFigure::addHandle (wxhdIHandle *handle)
 {
 	if(!handles)
-    {
+	{
 		handles  = new wxhdCollection(new wxhdArrayCollection());
 	}
-	handles->addItem(handle);	
+	handles->addItem(handle);
 }
 
 void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 {
 	if(handles)
-    {
-		handles->removeItem(handle);		
+	{
+		handles->removeItem(handle);
 	}
 }
 
@@ -99,7 +100,7 @@ void wxhdIFigure::moveTo(int x, int y)
 {
 }
 
-wxhdITool* wxhdIFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
@@ -111,10 +112,10 @@ bool wxhdIFigure::isSelected()
 
 void wxhdIFigure::setSelected(bool value)
 {
-	selected=value;
+	selected = value;
 }
 
-wxhdIConnector* wxhdIFigure::connectorAt (int x, int y)
+wxhdIConnector *wxhdIFigure::connectorAt (int x, int y)
 {
 	if(!connector)
 		connector = new wxhdChopBoxConnector(this);
@@ -129,10 +130,10 @@ bool wxhdIFigure::includes(wxhdIFigure *figure)
 void wxhdIFigure::onFigureChanged(wxhdIFigure *figure)
 {
 
-	wxhdIteratorBase *iterator=observers->createIterator();
+	wxhdIteratorBase *iterator = observers->createIterator();
 	while(iterator->HasNext())
-    {
-		wxhdIFigure *o = (wxhdIFigure*) iterator->Next();
+	{
+		wxhdIFigure *o = (wxhdIFigure *) iterator->Next();
 		o->onFigureChanged(this);
 	}
 	delete iterator;
@@ -141,31 +142,32 @@ void wxhdIFigure::onFigureChanged(wxhdIFigure *figure)
 void wxhdIFigure::addObserver(wxhdIFigure *observer)
 {
 	if(!observers)
-    {
+	{
 		observers  = new wxhdCollection(new wxhdArrayCollection());
 	}
-	observers->addItem(observer);	
+	observers->addItem(observer);
 }
 
 void wxhdIFigure::removeObserver(wxhdIFigure *observer)
 {
-	if(observers){
+	if(observers)
+	{
 		observers->removeItem(observer);
 	}
 }
 
-wxhdIteratorBase* wxhdIFigure::observersEnumerator()
+wxhdIteratorBase *wxhdIFigure::observersEnumerator()
 {
 	return observers->createIterator();
 }
 
 void wxhdIFigure::setKindId(int hiddenId)
 {
-	kindHiddenId=hiddenId;
+	kindHiddenId = hiddenId;
 }
 
 //Hack because is kindof in not powerful as it should be
-int wxhdIFigure::getKindId()  
+int wxhdIFigure::getKindId()
 {
 	return kindHiddenId;
 }

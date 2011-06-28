@@ -12,20 +12,23 @@
 #ifndef DDDATATYPES_H
 #define DDDATATYPES_H
 
-enum ddMenuColumn {
-	add_column=0,
+enum ddMenuColumn
+{
+	add_column = 0,
 	del_column,
 	ren_column,
 	change_datatype
 };
 
-enum ddHiddenTypes {
+enum ddHiddenTypes
+{
 	DDTABLEFIGURE = 100,
 	DDRELATIONSHIPFIGURE = 200
 };
 
-enum ddDataType {
-	dt_null=0,
+enum ddDataType
+{
+	dt_null = 0,
 	dt_serial,
 	dt_boolean,
 	dt_integer,

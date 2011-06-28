@@ -21,7 +21,7 @@ class wxhdLineConnection;
 class wxhdIFigure;
 
 wxhdIConnector::wxhdIConnector(wxhdIFigure *owner):
-wxhdObject()
+	wxhdObject()
 {
 	figureOwner = owner;
 }
@@ -30,7 +30,7 @@ wxhdIConnector::~wxhdIConnector()
 {
 }
 
-wxhdIFigure* wxhdIConnector::getOwner()
+wxhdIFigure *wxhdIConnector::getOwner()
 {
 	return figureOwner;
 
@@ -38,21 +38,21 @@ wxhdIFigure* wxhdIConnector::getOwner()
 
 void wxhdIConnector::setOwner(wxhdIFigure *owner)
 {
-	figureOwner=owner;
+	figureOwner = owner;
 }
 
-void wxhdIConnector::draw(wxBufferedDC& context)
+void wxhdIConnector::draw(wxBufferedDC &context)
 {
 }
 
-wxhdRect& wxhdIConnector::getDisplayBox()
+wxhdRect &wxhdIConnector::getDisplayBox()
 {
 	return figureOwner->displayBox();
 }
 
 bool wxhdIConnector::containsPoint(int x, int y)
 {
-	return figureOwner->containsPoint(x,y);
+	return figureOwner->containsPoint(x, y);
 }
 
 wxhdPoint wxhdIConnector::findStart(wxhdLineConnection *connection)

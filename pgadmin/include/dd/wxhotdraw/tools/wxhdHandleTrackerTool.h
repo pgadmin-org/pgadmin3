@@ -23,11 +23,11 @@ class wxhdHandleTrackerTool : public wxhdAbstractTool
 {
 public:
 	wxhdHandleTrackerTool(wxhdDrawingEditor *editor, wxhdIHandle *anchor);
-    ~wxhdHandleTrackerTool();
+	~wxhdHandleTrackerTool();
 
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseDrag(wxhdMouseEvent& event);
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
 
 protected:
 	wxhdIHandle *anchorHandle;

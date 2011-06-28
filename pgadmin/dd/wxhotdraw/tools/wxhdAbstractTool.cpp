@@ -19,48 +19,49 @@
 
 wxhdAbstractTool::wxhdAbstractTool(wxhdDrawingEditor *editor)
 {
-	anchorX=0;
-	anchorY=0;
-	ownerEditor=editor;
+	anchorX = 0;
+	anchorY = 0;
+	ownerEditor = editor;
 }
 
 wxhdAbstractTool::~wxhdAbstractTool()
 {
 }
 
-void wxhdAbstractTool::mouseDown(wxhdMouseEvent& event)
+void wxhdAbstractTool::mouseDown(wxhdMouseEvent &event)
 {
-	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
+	setAnchorCoords(event.GetPosition().x, event.GetPosition().y);
 }
 
-void wxhdAbstractTool::mouseUp(wxhdMouseEvent& event)
-{
-}
-
-void wxhdAbstractTool::mouseMove(wxhdMouseEvent& event)
+void wxhdAbstractTool::mouseUp(wxhdMouseEvent &event)
 {
 }
 
-void wxhdAbstractTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdAbstractTool::mouseMove(wxhdMouseEvent &event)
 {
 }
 
-void wxhdAbstractTool::keyDown(wxhdKeyEvent& event)
+void wxhdAbstractTool::mouseDrag(wxhdMouseEvent &event)
+{
+}
+
+void wxhdAbstractTool::keyDown(wxhdKeyEvent &event)
 {
 //	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 }
 
-void wxhdAbstractTool::keyUp(wxhdKeyEvent& event)
+void wxhdAbstractTool::keyUp(wxhdKeyEvent &event)
 {
 }
 
 void wxhdAbstractTool::setAnchorCoords(int x, int y)
 {
-	anchorX=x;
-	anchorY=y;
+	anchorX = x;
+	anchorY = y;
 }
 
-wxhdDrawingEditor* wxhdAbstractTool::getDrawingEditor(){
+wxhdDrawingEditor *wxhdAbstractTool::getDrawingEditor()
+{
 	return ownerEditor;
 }
 

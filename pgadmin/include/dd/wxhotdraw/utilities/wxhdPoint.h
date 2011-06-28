@@ -12,12 +12,13 @@
 #ifndef WXHDPOINT_H
 #define WXHDPOINT_H
 
-class wxhdPoint : public wxPoint{
+class wxhdPoint : public wxPoint
+{
 public:
 	wxhdPoint();
 	wxhdPoint(int x, int y);
-	wxhdPoint(const wxhdPoint& p);
-	wxhdPoint(const wxPoint& p);
+	wxhdPoint(const wxhdPoint &p);
+	wxhdPoint(const wxPoint &p);
 };
 
 #endif

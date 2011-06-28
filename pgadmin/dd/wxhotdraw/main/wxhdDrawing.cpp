@@ -29,9 +29,9 @@ wxhdDrawing::wxhdDrawing()
 wxhdDrawing::~wxhdDrawing()
 {
 	wxhdIFigure *tmp;
-	while(figures->count()>0)
+	while(figures->count() > 0)
 	{
-		tmp = (wxhdIFigure*) figures->getItemAt(0);
+		tmp = (wxhdIFigure *) figures->getItemAt(0);
 		figures->removeItemAt(0);
 		delete tmp;
 	}
@@ -42,12 +42,12 @@ wxhdDrawing::~wxhdDrawing()
 void wxhdDrawing::add(wxhdIFigure *figure)
 {
 	if(figures)
-		figures->addItem(figure);	
+		figures->addItem(figure);
 }
 
 void wxhdDrawing::remove(wxhdIFigure *figure)
 {
-    if(figures)
+	if(figures)
 		figures->removeItem(figure);
 }
 
@@ -58,18 +58,18 @@ bool wxhdDrawing::includes(wxhdIFigure *figure)
 	return false;
 }
 
-wxhdIFigure* wxhdDrawing::findFigure(int x, int y)
+wxhdIFigure *wxhdDrawing::findFigure(int x, int y)
 {
-	wxhdIFigure *tmp=NULL, *out=NULL;
-	wxhdIteratorBase *iterator=figures->createIterator();
+	wxhdIFigure *tmp = NULL, *out = NULL;
+	wxhdIteratorBase *iterator = figures->createIterator();
 	while(iterator->HasNext())
-    {
-		 tmp=(wxhdIFigure *)iterator->Next();
-		 if(tmp->containsPoint(x,y))
-         {
-			out=tmp;
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->containsPoint(x, y))
+		{
+			out = tmp;
 			break;
-		 }
+		}
 	}
 
 	delete iterator;;
@@ -77,18 +77,19 @@ wxhdIFigure* wxhdDrawing::findFigure(int x, int y)
 	return out;
 }
 
-void wxhdDrawing::recalculateDisplayBox(){
-	bool first=true;
-	wxhdIFigure *figure=NULL;
+void wxhdDrawing::recalculateDisplayBox()
+{
+	bool first = true;
+	wxhdIFigure *figure = NULL;
 
 	wxhdIteratorBase *iterator = figures->createIterator();
 	while(iterator->HasNext())
 	{
-		figure=(wxhdIFigure *)iterator->Next();
+		figure = (wxhdIFigure *)iterator->Next();
 		if(first)
 		{
-			displayBox=figure->displayBox();
-			first=false;
+			displayBox = figure->displayBox();
+			first = false;
 		}
 		else
 		{
@@ -96,7 +97,7 @@ void wxhdDrawing::recalculateDisplayBox(){
 		}
 	}
 
-	delete iterator;	
+	delete iterator;
 }
 
 void wxhdDrawing::bringToFront(wxhdIFigure *figure)
@@ -113,17 +114,17 @@ void wxhdDrawing::sendToBack(wxhdIFigure *figure)
 	figures->bringToFront(figure);
 }
 
-wxhdRect& wxhdDrawing::DisplayBox()
+wxhdRect &wxhdDrawing::DisplayBox()
 {
 	return displayBox;
 }
 
-wxhdIteratorBase* wxhdDrawing::figuresEnumerator()
+wxhdIteratorBase *wxhdDrawing::figuresEnumerator()
 {
 	return figures->createIterator();
 }
 
-wxhdIteratorBase* wxhdDrawing::figuresInverseEnumerator()
+wxhdIteratorBase *wxhdDrawing::figuresInverseEnumerator()
 {
 	return figures->createDownIterator();
 }
@@ -131,9 +132,9 @@ wxhdIteratorBase* wxhdDrawing::figuresInverseEnumerator()
 void wxhdDrawing::deleteAllFigures()
 {
 	wxhdIFigure *tmp;
-	while(figures->count()>0)
+	while(figures->count() > 0)
 	{
-		tmp = (wxhdIFigure*) figures->getItemAt(0);
+		tmp = (wxhdIFigure *) figures->getItemAt(0);
 		figures->removeItemAt(0);
 		delete tmp;
 	}

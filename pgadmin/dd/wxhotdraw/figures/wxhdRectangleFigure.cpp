@@ -27,26 +27,26 @@ wxhdRectangleFigure::~wxhdRectangleFigure()
 {
 }
 
-void wxhdRectangleFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdRectangleFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawRectangle(copy);
 }
 
-void wxhdRectangleFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdRectangleFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawRectangle(copy);
 }
 
-void wxhdRectangleFigure::setRectangle(wxhdRect& rect)
+void wxhdRectangleFigure::setRectangle(wxhdRect &rect)
 {
-	basicDisplayBox=rect;
+	basicDisplayBox = rect;
 }
 
-void wxhdRectangleFigure::setSize(wxSize& size)
+void wxhdRectangleFigure::setSize(wxSize &size)
 {
 	basicDisplayBox.SetSize(size);
 }

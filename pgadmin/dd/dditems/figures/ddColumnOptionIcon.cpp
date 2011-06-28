@@ -27,14 +27,14 @@
 
 ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner)
 {
-	ownerColumn=owner; 
-	colOption=null;
+	ownerColumn = owner;
+	colOption = null;
 	icon = wxBitmap(*ddnull_png_img);
 	iconToDraw = &icon;
-	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 
 	//Set Value default Attributes
-fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
+	fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
 }
 
 ddColumnOptionIcon::~ddColumnOptionIcon()
@@ -43,61 +43,61 @@ ddColumnOptionIcon::~ddColumnOptionIcon()
 
 void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 {
-    wxMenuItem *item;
-    
+	wxMenuItem *item;
+
 	item = mnu.AppendCheckItem(MNU_COLNULL, _("NULL"));
-	item->Check(colOption==null);
+	item->Check(colOption == null);
 	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 	item = mnu.AppendCheckItem(MNU_COLNOTNULL, _("Not NULL"));
-	item->Check(colOption==notnull);
+	item->Check(colOption == notnull);
 	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 }
 
-void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
 	changeIcon((ddColumnOptionType)event.GetId());
 }
 
 void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
 {
-	colOption=type;
+	colOption = type;
 	switch(type)
 	{
 		case MNU_COLNULL:
-            icon = wxBitmap(*ddnull_png_img);
-            if(getOwnerColumn()->isPrimaryKey())
-            {
-                if(getOwnerColumn()->isForeignKey() || getOwnerColumn()->isUniqueKey())
+			icon = wxBitmap(*ddnull_png_img);
+			if(getOwnerColumn()->isPrimaryKey())
+			{
+				if(getOwnerColumn()->isForeignKey() || getOwnerColumn()->isUniqueKey())
 				{
 					getOwnerColumn()->toggleColumnKind(pk); //remove pk attribute because column now is null
 					getOwnerColumn()->setRightIconForColumn();
 				}
-                else
+				else
 				{
-                   getOwnerColumn()->disablePrimaryKey();
+					getOwnerColumn()->disablePrimaryKey();
 				}
-            }
-            break;
+			}
+			break;
 		case MNU_COLNOTNULL:
-            icon = wxBitmap(*ddnotnull_png_img);
-            break;
+			icon = wxBitmap(*ddnotnull_png_img);
+			break;
 	}
-	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
-void ddColumnOptionIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnOptionIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
 		wxhdRect copy = displayBox();
-		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
+		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
+		context.DrawBitmap(*iconToDraw, copy.GetPosition(), true);
 	}
 }
 
-void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	basicDraw(context,view);
+	basicDraw(context, view);
 }
 
 int ddColumnOptionIcon::getWidth()
@@ -121,7 +121,7 @@ ddColumnOptionType ddColumnOptionIcon::getOption()
 	return colOption;
 }
 
-ddColumnFigure* ddColumnOptionIcon::getOwnerColumn()
+ddColumnFigure *ddColumnOptionIcon::getOwnerColumn()
 {
 	return ownerColumn;
 }

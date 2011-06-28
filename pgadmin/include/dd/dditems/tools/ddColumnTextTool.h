@@ -21,8 +21,8 @@ class ddColumnTextTool : public wxhdSimpleTextTool
 
 public:
 	ddColumnTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
-    ~ddColumnTextTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	~ddColumnTextTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual bool callDialog();
 	// some events functions are needed but because a bug it were move to main View class as a hack.
 protected:

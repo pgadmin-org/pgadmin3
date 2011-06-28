@@ -19,9 +19,9 @@ class ddScrollBarTableLocator : public wxhdILocator
 {
 public:
 	ddScrollBarTableLocator();
-    ~ddScrollBarTableLocator();
+	~ddScrollBarTableLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

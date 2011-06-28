@@ -23,19 +23,19 @@ class ddRelationshipItem;
 class ddColumnFigure : public wxhdAttributeFigure
 {
 public:
-	ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk=NULL);
-    ~ddColumnFigure();
+	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
+	~ddColumnFigure();
 	virtual void basicMoveBy(int x, int y);
 	virtual void moveTo(int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);
 	virtual bool containsPoint(int x, int y);
-	virtual wxhdRect& getBasicDisplayBox();
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual wxhdIFigure* findFigure(int x, int y);
-	virtual wxhdIFigure* getFigureAt(int pos);
-	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
-	virtual ddTableFigure* getOwnerTable();
+	virtual wxhdRect &getBasicDisplayBox();
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual wxhdIFigure *findFigure(int x, int y);
+	virtual wxhdIFigure *getFigureAt(int pos);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual ddTableFigure *getOwnerTable();
 	void displayBoxUpdate();
 	bool isNull();
 	bool isNotNull();
@@ -49,13 +49,13 @@ public:
 	void setUniqueConstraintIndex(int i);
 	bool isPlain();
 	void setColumnKindToNone();
-	void toggleColumnKind(ddColumnType type, wxhdDrawingView *view=NULL);
+	void toggleColumnKind(ddColumnType type, wxhdDrawingView *view = NULL);
 	void setColumnOption(ddColumnOptionType type);
 	void setRightIconForColumn();
 	ddColumnOptionType getColumnOption();
 	ddDataType getDataType();
 	void setDataType(ddDataType type);
-	wxString& getColumnName(bool datatype=false);
+	wxString &getColumnName(bool datatype = false);
 	void setColumnName(wxString name);
 	bool isForeignKey();
 	bool isGeneratedForeignKey();
@@ -65,12 +65,12 @@ public:
 	bool isFkNameGenerated();
 	void activateGenFkName();
 	void deactivateGenFkName();
-	ddRelationshipItem* getFkSource();
+	ddRelationshipItem *getFkSource();
 	int getPrecision();
 	int getScale();
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
-	ddRelationshipItem* getRelatedFkItem();
-	bool validateColumn(wxString& errors);
+	ddRelationshipItem *getRelatedFkItem();
+	bool validateColumn(wxString &errors);
 	void setTextColour(wxColour colour);
 
 
@@ -86,6 +86,6 @@ protected:
 private:
 	ddRelationshipItem *fkSource;
 
-	
+
 };
 #endif

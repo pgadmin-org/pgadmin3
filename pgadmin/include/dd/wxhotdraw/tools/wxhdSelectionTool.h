@@ -19,15 +19,15 @@ class wxhdSelectionTool : public wxhdAbstractTool
 {
 public:
 	wxhdSelectionTool(wxhdDrawingEditor *owner);
-    ~wxhdSelectionTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseMove(wxhdMouseEvent& event);
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void keyDown(wxhdKeyEvent& event);
-	virtual void keyUp(wxhdKeyEvent& event);
+	~wxhdSelectionTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseMove(wxhdMouseEvent &event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void keyDown(wxhdKeyEvent &event);
+	virtual void keyUp(wxhdKeyEvent &event);
 	void setDelegateTool(wxhdITool *tool);
-	wxhdITool* getDelegateTool();
+	wxhdITool *getDelegateTool();
 
 protected:
 	wxhdITool *_delegateTool;

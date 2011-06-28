@@ -33,18 +33,18 @@ wxhdPolyLineFigure::wxhdPolyLineFigure()
 	startTerminal = NULL;
 	endTerminal = NULL;
 	handlesChanged = false;
-	startPoint=wxhdPoint(0,0);
-	endPoint=wxhdPoint(0,0);
-	pointAtPos=wxhdPoint(0,0);
-	linePen = wxPen(wxString(wxT("BLACK")),1,wxSOLID);
+	startPoint = wxhdPoint(0, 0);
+	endPoint = wxhdPoint(0, 0);
+	pointAtPos = wxhdPoint(0, 0);
+	linePen = wxPen(wxString(wxT("BLACK")), 1, wxSOLID);
 }
 
 wxhdPolyLineFigure::~wxhdPolyLineFigure()
 {
 	wxhdPoint *tmp; //Hack: If just delete points collection an error is raised.
-	while(points->count()>0)
+	while(points->count() > 0)
 	{
-		tmp = (wxhdPoint*) points->getItemAt(0);
+		tmp = (wxhdPoint *) points->getItemAt(0);
 		points->removeItemAt(0);
 		delete tmp;
 	}
@@ -56,32 +56,32 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 		delete endTerminal;
 }
 
-wxhdRect& wxhdPolyLineFigure::getBasicDisplayBox()
+wxhdRect &wxhdPolyLineFigure::getBasicDisplayBox()
 {
-	basicDisplayBox.height=0;
-	basicDisplayBox.width=0;
+	basicDisplayBox.height = 0;
+	basicDisplayBox.width = 0;
 	if(points->count() < 2)
 	{
-		
+
 		return basicDisplayBox;
 	}
-	if(points->count()>=1)
+	if(points->count() >= 1)
 	{
 		basicDisplayBox.SetPosition(pointAt(0));
 	}
 	else
 	{
-		basicDisplayBox.SetPosition(wxPoint(0,0));
+		basicDisplayBox.SetPosition(wxPoint(0, 0));
 	}
 
-	wxhdIteratorBase *iterator=points->createIterator();
+	wxhdIteratorBase *iterator = points->createIterator();
 	while(iterator->HasNext())
-    {
+	{
 		wxhdPoint *p = (wxhdPoint *) iterator->Next();
-		wxhdRect r=wxhdRect(p->x,p->y,0,0);
+		wxhdRect r = wxhdRect(p->x, p->y, 0, 0);
 		basicDisplayBox.add(r);
 	}
-	
+
 	delete iterator;
 
 	return basicDisplayBox;
@@ -89,35 +89,35 @@ wxhdRect& wxhdPolyLineFigure::getBasicDisplayBox()
 
 int wxhdPolyLineFigure::pointCount()
 {
-    return points->count();
+	return points->count();
 }
 
-wxhdPoint& wxhdPolyLineFigure::getStartPoint()
+wxhdPoint &wxhdPolyLineFigure::getStartPoint()
 {
-	startPoint.x = ((wxhdPoint*)points->getItemAt(0))->x;
-	startPoint.y = ((wxhdPoint*)points->getItemAt(0))->y;
+	startPoint.x = ((wxhdPoint *)points->getItemAt(0))->x;
+	startPoint.y = ((wxhdPoint *)points->getItemAt(0))->y;
 	return startPoint;
 }
 
 void wxhdPolyLineFigure::setStartPoint(wxhdPoint point)
 {
 	willChange();
-	if(points->count()==0)
-		addPoint(point.x,point.y);
+	if(points->count() == 0)
+		addPoint(point.x, point.y);
 	else
 	{
 		wxhdPoint *p = (wxhdPoint *) points->getItemAt(0);
 		p->x = point.x;
 		p->y = point.y;
 	}
-		
+
 	changed();
 }
 
-wxhdPoint& wxhdPolyLineFigure::getEndPoint()
+wxhdPoint &wxhdPolyLineFigure::getEndPoint()
 {
-	endPoint.x = ((wxhdPoint*)points->getItemAt(points->count()-1))->x;
-	endPoint.y = ((wxhdPoint*)points->getItemAt(points->count()-1))->y;
+	endPoint.x = ((wxhdPoint *)points->getItemAt(points->count() - 1))->x;
+	endPoint.y = ((wxhdPoint *)points->getItemAt(points->count() - 1))->y;
 	return endPoint;
 }
 
@@ -125,10 +125,10 @@ void wxhdPolyLineFigure::setEndPoint(wxhdPoint point)
 {
 	willChange();
 	if(points->count() < 2)
-		addPoint(point.x,point.y);
+		addPoint(point.x, point.y);
 	else
-    {
-		wxhdPoint *p = (wxhdPoint *) points->getItemAt(points->count()-1);
+	{
+		wxhdPoint *p = (wxhdPoint *) points->getItemAt(points->count() - 1);
 		p->x = point.x;
 		p->y = point.y;
 	}
@@ -137,25 +137,25 @@ void wxhdPolyLineFigure::setEndPoint(wxhdPoint point)
 
 void wxhdPolyLineFigure::setStartTerminal(wxhdLineTerminal *terminal)
 {
-	startTerminal=terminal;
+	startTerminal = terminal;
 }
 
-wxhdLineTerminal* wxhdPolyLineFigure::getStartTerminal()
+wxhdLineTerminal *wxhdPolyLineFigure::getStartTerminal()
 {
 	return startTerminal;
 }
 
 void wxhdPolyLineFigure::setEndTerminal(wxhdLineTerminal *terminal)
 {
-	endTerminal=terminal;
+	endTerminal = terminal;
 }
 
-wxhdLineTerminal* wxhdPolyLineFigure::getEndTerminal()
+wxhdLineTerminal *wxhdPolyLineFigure::getEndTerminal()
 {
 	return endTerminal;
 }
 
-wxhdCollection* wxhdPolyLineFigure::handlesEnumerator()
+wxhdCollection *wxhdPolyLineFigure::handlesEnumerator()
 {
 	return handles;
 }
@@ -163,7 +163,7 @@ wxhdCollection* wxhdPolyLineFigure::handlesEnumerator()
 void wxhdPolyLineFigure::addPoint (int x, int y)
 {
 	willChange();
-	points->addItem((wxhdObject *) new wxhdPoint(x,y) );
+	points->addItem((wxhdObject *) new wxhdPoint(x, y) );
 	//Update handles
 	handles->addItem(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(0), 0));
 	updateHandlesIndexes();
@@ -178,7 +178,7 @@ void wxhdPolyLineFigure::changed()
 void wxhdPolyLineFigure::removePointAt (int index)
 {
 	willChange();
-	wxhdPoint *p = (wxhdPoint*) points->getItemAt(index);
+	wxhdPoint *p = (wxhdPoint *) points->getItemAt(index);
 	points->removeItemAt(index);
 	delete p;
 	//Update handles
@@ -187,12 +187,12 @@ void wxhdPolyLineFigure::removePointAt (int index)
 	changed();
 }
 
-void wxhdPolyLineFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdPolyLineFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	basicDraw(context,view); 
+	basicDraw(context, view);
 }
 
-void wxhdPolyLineFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdPolyLineFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(points->count() < 2)
 	{
@@ -203,7 +203,7 @@ void wxhdPolyLineFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 	if(startTerminal)
 	{
 		startTerminal->setLinePen(linePen);
-		start = startTerminal->draw(context, getStartPoint(), pointAt(1),view);
+		start = startTerminal->draw(context, getStartPoint(), pointAt(1), view);
 	}
 	else
 	{
@@ -213,7 +213,7 @@ void wxhdPolyLineFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 	if(endTerminal)
 	{
 		endTerminal->setLinePen(linePen);
-		end = endTerminal->draw(context, getEndPoint(), pointAt(pointCount() - 2),view);
+		end = endTerminal->draw(context, getEndPoint(), pointAt(pointCount() - 2), view);
 	}
 	else
 	{
@@ -221,64 +221,64 @@ void wxhdPolyLineFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 	}
 
 	context.SetPen(linePen);
-	for(int i=0;i<points->count()-1;i++)
-    {
+	for(int i = 0; i < points->count() - 1; i++)
+	{
 		wxhdPoint *p1 = (wxhdPoint *) points->getItemAt(i);
-		wxhdPoint *p2 = (wxhdPoint *) points->getItemAt(i+1);
+		wxhdPoint *p2 = (wxhdPoint *) points->getItemAt(i + 1);
 
 		wxhdPoint copyP1 = wxhdPoint (*p1);
-		view->CalcScrolledPosition(copyP1.x,copyP1.y,&copyP1.x,&copyP1.y);
+		view->CalcScrolledPosition(copyP1.x, copyP1.y, &copyP1.x, &copyP1.y);
 		wxhdPoint copyP2 = wxhdPoint (*p2);
-		view->CalcScrolledPosition(copyP2.x,copyP2.y,&copyP2.x,&copyP2.y);
+		view->CalcScrolledPosition(copyP2.x, copyP2.y, &copyP2.x, &copyP2.y);
 
-		context.DrawLine(copyP1,copyP2);
+		context.DrawLine(copyP1, copyP2);
 	}
 }
 
 void wxhdPolyLineFigure::basicMoveBy(int x, int y)
 {
 	wxhdPoint *movPoint;
-	for(int i=0 ; i<points->count() ; i++)
-    {
+	for(int i = 0 ; i < points->count() ; i++)
+	{
 		movPoint = (wxhdPoint *) points->getItemAt(i);
 		movPoint->x += x;
 		movPoint->y += y;
 	}
 }
 
-wxhdITool* wxhdPolyLineFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdPolyLineFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return new wxhdPolyLineFigureTool(editor,this,new wxhdMenuTool(editor,this,defaultTool));
+	return new wxhdPolyLineFigureTool(editor, this, new wxhdMenuTool(editor, this, defaultTool));
 }
 
 
 int wxhdPolyLineFigure::findSegment (int x, int y)
 {
-	for(int i=0 ; i<points->count()-1 ; i++)
-    {
+	for(int i = 0 ; i < points->count() - 1 ; i++)
+	{
 		wxhdPoint p1 = pointAt(i);
-		wxhdPoint p2 = pointAt(i+1);
+		wxhdPoint p2 = pointAt(i + 1);
 		wxhdGeometry g;
 		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
-        {
-			return i+1;
+		{
+			return i + 1;
 		}
 	}
 	return -1;
 }
 
-wxhdPoint& wxhdPolyLineFigure::pointAt(int index)
+wxhdPoint &wxhdPolyLineFigure::pointAt(int index)
 {
 	//hack to avoid error with bad indexes calls
-	if(index<0)
+	if(index < 0)
 	{
 		pointAtPos.x = 0;
 		pointAtPos.y = 0;
 	}
 	else
 	{
-		pointAtPos.x = ((wxhdPoint*)points->getItemAt(index))->x;
-		pointAtPos.y = ((wxhdPoint*)points->getItemAt(index))->y;
+		pointAtPos.x = ((wxhdPoint *)points->getItemAt(index))->x;
+		pointAtPos.y = ((wxhdPoint *)points->getItemAt(index))->y;
 	}
 	return pointAtPos;
 }
@@ -286,19 +286,19 @@ wxhdPoint& wxhdPolyLineFigure::pointAt(int index)
 bool wxhdPolyLineFigure::containsPoint (int x, int y)
 {
 	wxhdRect rect = wxhdRect(this->displayBox());
-	rect.Inflate(4,4);
-	if(!rect.Contains(x,y))
-    {
+	rect.Inflate(4, 4);
+	if(!rect.Contains(x, y))
+	{
 		return false;
 	}
 
-	for(int i=0 ; i<points->count()-1 ; i++)
-    {
+	for(int i = 0 ; i < points->count() - 1 ; i++)
+	{
 		wxhdPoint p1 = pointAt(i);
-		wxhdPoint p2 = pointAt(i+1);
+		wxhdPoint p2 = pointAt(i + 1);
 		wxhdGeometry g;
 		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
-        {
+		{
 			return true;
 		}
 	}
@@ -313,9 +313,9 @@ void wxhdPolyLineFigure::clearPoints()
 void wxhdPolyLineFigure::insertPointAt (int index, int x, int y)
 {
 	willChange();
-	points->insertAtIndex((wxhdObject*) new wxhdPoint(x,y), index);
+	points->insertAtIndex((wxhdObject *) new wxhdPoint(x, y), index);
 	//Update handles
-	handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index),index);
+	handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), index);
 	updateHandlesIndexes();
 	changed();
 }
@@ -329,27 +329,27 @@ void wxhdPolyLineFigure::setPointAt (int index, int x, int y)
 	changed();
 }
 
-void wxhdPolyLineFigure::splitSegment(int x, int y) 
+void wxhdPolyLineFigure::splitSegment(int x, int y)
 {
-	int index = findSegment(x,y);
+	int index = findSegment(x, y);
 
-	if(index!=-1)
+	if(index != -1)
 	{
-		insertPointAt(index,x,y);
+		insertPointAt(index, x, y);
 	}
 }
 
 void wxhdPolyLineFigure::updateHandlesIndexes()
 {
-    wxhdPolyLineHandle *h = NULL;
-    for(int i=0;i<points->count();i++)
-    {
-        h = (wxhdPolyLineHandle*) handles->getItemAt(i);
-        h->setIndex(i);
+	wxhdPolyLineHandle *h = NULL;
+	for(int i = 0; i < points->count(); i++)
+	{
+		h = (wxhdPolyLineHandle *) handles->getItemAt(i);
+		h->setIndex(i);
 	}
 }
 
 void wxhdPolyLineFigure::setLinePen(wxPen pen)
 {
-	linePen=pen;
+	linePen = pen;
 }

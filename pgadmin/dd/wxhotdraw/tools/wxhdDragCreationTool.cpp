@@ -18,15 +18,16 @@
 #include "dd/wxhotdraw/tools/wxhdDragCreationTool.h"
 
 wxhdDragCreationTool::wxhdDragCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype):
-wxhdCreationTool(editor, prototype)
+	wxhdCreationTool(editor, prototype)
 {
 }
 
-wxhdDragCreationTool::~wxhdDragCreationTool(){
+wxhdDragCreationTool::~wxhdDragCreationTool()
+{
 }
 
 
-void wxhdDragCreationTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdDragCreationTool::mouseDrag(wxhdMouseEvent &event)
 {
 	if(event.LeftIsDown())
 	{

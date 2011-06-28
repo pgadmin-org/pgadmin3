@@ -19,11 +19,11 @@ class wxhdChangeConnectionEndHandle : public wxhdChangeConnectionHandle
 {
 public:
 	wxhdChangeConnectionEndHandle(wxhdLineConnection *owner);
-    ~wxhdChangeConnectionEndHandle();
-	virtual wxhdPoint& locate();
-	virtual wxhdIConnector* target();
-	virtual void disconnect(wxhdDrawingView *view=NULL);
-	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view=NULL);
+	~wxhdChangeConnectionEndHandle();
+	virtual wxhdPoint &locate();
+	virtual wxhdIConnector *target();
+	virtual void disconnect(wxhdDrawingView *view = NULL);
+	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view = NULL);
 	virtual bool isConnectionPossible(wxhdIFigure *figure);
 	virtual void setPoint(wxhdPoint p);
 };

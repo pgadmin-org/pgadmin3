@@ -22,11 +22,11 @@
 //Images
 #include "images/ddMinMaxCursor.pngc"
 
-ddMinMaxTableButtonHandle::ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size):
-wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
+ddMinMaxTableButtonHandle::ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size):
+	wxhdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
 	handleCursorImage = wxBitmap(*ddMinMaxCursor_png_img).ConvertToImage();
-    handleCursor=wxCursor(handleCursorImage);
+	handleCursor = wxCursor(handleCursorImage);
 	buttonMaximizeImage = buttonSecondImage;
 	tmpImage = buttonImage;
 	showFirst = true;
@@ -46,7 +46,7 @@ void ddMinMaxTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVie
 
 void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-	ddTableFigure *table = (ddTableFigure*) getOwner();
+	ddTableFigure *table = (ddTableFigure *) getOwner();
 
 	if(showFirst)
 	{
@@ -56,9 +56,9 @@ void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 	else
 	{
 		buttonIcon = tmpImage;
-		table->setColumnsWindow(table->getTotalColumns(),true);
+		table->setColumnsWindow(table->getTotalColumns(), true);
 	}
-	showFirst=!showFirst;
+	showFirst = !showFirst;
 }
 
 

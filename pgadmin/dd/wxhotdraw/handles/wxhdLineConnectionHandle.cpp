@@ -22,20 +22,20 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 wxhdLineConnectionHandle::wxhdLineConnectionHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index):
-wxhdPolyLineHandle(figure,loc,index)
+	wxhdPolyLineHandle(figure, loc, index)
 {
 }
 
-void wxhdLineConnectionHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)
+void wxhdLineConnectionHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
+	int x = event.GetPosition().x, y = event.GetPosition().y;
 	wxhdPolyLineFigure *figure = (wxhdPolyLineFigure *) getOwner();
 	//eliminate all handles in the middle of a straight line
-	
-	if( figure->pointCount() > 2 && getIndex() != 0 && getIndex() != (figure->pointCount()-1) )
+
+	if( figure->pointCount() > 2 && getIndex() != 0 && getIndex() != (figure->pointCount() - 1) )
 	{
-		wxhdPoint p1 = figure->pointAt(getIndex()-1);
-		wxhdPoint p2 = figure->pointAt(getIndex()+1);
+		wxhdPoint p1 = figure->pointAt(getIndex() - 1);
+		wxhdPoint p2 = figure->pointAt(getIndex() + 1);
 		wxhdGeometry g;
 		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
 		{

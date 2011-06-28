@@ -17,7 +17,7 @@
 // App headers
 #include "dd/wxhotdraw/connectors/wxhdLocatorConnector.h"
 wxhdLocatorConnector::wxhdLocatorConnector(wxhdIFigure *owner, wxhdILocator *locator):
-wxhdIConnector(owner)
+	wxhdIConnector(owner)
 {
 	figureOwner = owner;
 	figureLocator = locator;
@@ -33,20 +33,20 @@ wxhdPoint wxhdLocatorConnector::locate()
 	return figureLocator->locate(getOwner());
 }
 
-void wxhdLocatorConnector::draw(wxBufferedDC& context)
+void wxhdLocatorConnector::draw(wxBufferedDC &context)
 {
 }
 
-wxhdRect& wxhdLocatorConnector::getDisplayBox()
+wxhdRect &wxhdLocatorConnector::getDisplayBox()
 {
 	wxhdPoint p = figureLocator->locate(getOwner());
-	displayBox = wxhdRect(p.x-(size/2), p.y-(size/2), size,size);
+	displayBox = wxhdRect(p.x - (size / 2), p.y - (size / 2), size, size);
 	return displayBox;
 }
 
 bool wxhdLocatorConnector::containsPoint(int x, int y)
 {
-	return getDisplayBox().Contains(x,y);
+	return getDisplayBox().Contains(x, y);
 }
 
 wxhdPoint wxhdLocatorConnector::findStart(wxhdLineConnection *connection)

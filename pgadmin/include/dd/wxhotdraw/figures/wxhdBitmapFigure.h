@@ -18,10 +18,10 @@ class wxhdBitmapFigure : public wxhdAbstractFigure
 {
 public:
 	wxhdBitmapFigure(wxBitmap image);
-    ~wxhdBitmapFigure();
+	~wxhdBitmapFigure();
 
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void changeBitmap(wxBitmap image);
 	virtual int getWidth();
 	virtual int getHeight();

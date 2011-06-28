@@ -19,8 +19,8 @@ class wxhdPolyLineFigureTool : public wxhdFigureTool
 {
 public:
 	wxhdPolyLineFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
-    ~wxhdPolyLineFigureTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	~wxhdPolyLineFigureTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 protected:
 private:
 };

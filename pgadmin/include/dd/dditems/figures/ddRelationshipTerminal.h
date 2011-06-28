@@ -21,10 +21,10 @@ class ddRelationshipTerminal : public wxhdLineTerminal
 {
 public:
 	ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal);
-    ~ddRelationshipTerminal();
-	virtual wxhdPoint& draw (wxBufferedDC& context, wxhdPoint& a, wxhdPoint& b, wxhdDrawingView *view);
+	~ddRelationshipTerminal();
+	virtual wxhdPoint &draw (wxBufferedDC &context, wxhdPoint &a, wxhdPoint &b, wxhdDrawingView *view);
 protected:
-	
+
 private:
 	double lastFactor;
 	ddRelationshipFigure *ownerFigure;

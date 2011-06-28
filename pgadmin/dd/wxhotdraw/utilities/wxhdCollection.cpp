@@ -21,53 +21,53 @@
 
 wxhdCollection::wxhdCollection(wxhdCollectionBase *collectionBase)
 {
-    collection=collectionBase;
+	collection = collectionBase;
 }
 
 wxhdCollection::~wxhdCollection()
 {
-    if(collection)
-        delete collection;
+	if(collection)
+		delete collection;
 }
 
 void wxhdCollection::addItem(wxhdObject *item)
 {
-    collection->addItem(item);
+	collection->addItem(item);
 }
 
 void wxhdCollection::removeItem(wxhdObject *item)
 {
-    collection->removeItem(item);
+	collection->removeItem(item);
 }
 
 
-wxhdIteratorBase* wxhdCollection::createIterator()
+wxhdIteratorBase *wxhdCollection::createIterator()
 {
-    if(collection)
+	if(collection)
 		return collection->createIterator();
 	return NULL;
 }
 
-wxhdIteratorBase* wxhdCollection::createDownIterator()
+wxhdIteratorBase *wxhdCollection::createDownIterator()
 {
-    if(collection)
+	if(collection)
 		return collection->createDownIterator();
 	return NULL;
 }
 
 int wxhdCollection::count()
 {
-    return collection->count();
+	return collection->count();
 }
 
 bool wxhdCollection::existsObject(wxhdObject *item)
 {
-    return collection->existsObject(item);
+	return collection->existsObject(item);
 }
 
-wxhdObject* wxhdCollection::getItemAt(int index)
+wxhdObject *wxhdCollection::getItemAt(int index)
 {
-    return collection->getItemAt(index);
+	return collection->getItemAt(index);
 }
 
 void wxhdCollection::removeItemAt(int index)
@@ -78,26 +78,27 @@ void wxhdCollection::removeItemAt(int index)
 // Remove all items from collection without deleting each one.
 void wxhdCollection::removeAll()
 {
-    collection->removeAll();
+	collection->removeAll();
 }
 
 void wxhdCollection::deleteAll()
 {
-    collection->deleteAll();
+	collection->deleteAll();
 }
 
 int wxhdCollection::getIndex(wxhdObject *item)
 {
-    return collection->getIndex(item);
+	return collection->getIndex(item);
 }
 
 void wxhdCollection::insertAtIndex(wxhdObject *item, int index)
 {
-    collection->insertAtIndex(item,index);
+	collection->insertAtIndex(item, index);
 }
 
-void wxhdCollection::replaceAtIndex(wxhdObject *item, int index){
-	collection->replaceAtIndex(item,index);
+void wxhdCollection::replaceAtIndex(wxhdObject *item, int index)
+{
+	collection->replaceAtIndex(item, index);
 }
 
 void wxhdCollection::bringToFront(wxhdObject *item)

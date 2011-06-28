@@ -19,14 +19,14 @@ class wxhdCompositeFigureTool : public wxhdFigureTool
 {
 public:
 	wxhdCompositeFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
-    ~wxhdCompositeFigureTool();
+	~wxhdCompositeFigureTool();
 	virtual void setDefaultTool(wxhdITool *dt);
-	virtual wxhdITool* getDefaultTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual wxhdITool *getDefaultTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
 	virtual void setDelegateTool(wxhdITool *tool);
-	virtual wxhdITool* getDelegateTool();
+	virtual wxhdITool *getDelegateTool();
 protected:
 	wxhdITool *delegateTool;
 private:

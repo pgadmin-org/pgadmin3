@@ -107,10 +107,10 @@ enum
 	MNU_CR,
 	MNU_CRLF,
 	MNU_LF,
-    
-    MNU_ADDTABLE,
-    MNU_DELETETABLE,
-    MNU_GENERATEMODEL,
+
+	MNU_ADDTABLE,
+	MNU_DELETETABLE,
+	MNU_GENERATEMODEL,
 
 	MNU_RECENT,
 	MNU_NEW = MNU_RECENT + 15, // leave space for recent file entries

@@ -29,9 +29,9 @@ class wxhdDrawingView;
 class wxhdDrawingEditor;
 
 wxhdSelectionTool::wxhdSelectionTool(wxhdDrawingEditor *owner):
-wxhdAbstractTool(owner)
+	wxhdAbstractTool(owner)
 {
-	_delegateTool=NULL;
+	_delegateTool = NULL;
 }
 
 wxhdSelectionTool::~wxhdSelectionTool()
@@ -40,59 +40,59 @@ wxhdSelectionTool::~wxhdSelectionTool()
 		delete _delegateTool;
 }
 
-void wxhdSelectionTool::mouseDown(wxhdMouseEvent& event)
+void wxhdSelectionTool::mouseDown(wxhdMouseEvent &event)
 {
 	wxhdITool::mouseDown(event);
 
-	wxhdDrawingView *view=getDrawingEditor()->view();
-	int x=event.GetPosition().x, y=event.GetPosition().y;
+	wxhdDrawingView *view = getDrawingEditor()->view();
+	int x = event.GetPosition().x, y = event.GetPosition().y;
 
-	wxhdIHandle *handle = view->findHandle(x,y);
+	wxhdIHandle *handle = view->findHandle(x, y);
 	if(handle)
-    {
-		setDelegateTool(new wxhdHandleTrackerTool(getDrawingEditor(),handle));
+	{
+		setDelegateTool(new wxhdHandleTrackerTool(getDrawingEditor(), handle));
 	}
 	else
 	{
-        wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
-        if(figure)
-        {
+		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+		if(figure)
+		{
 			view->getDrawing()->bringToFront(figure);
-			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),new wxhdDragTrackerTool(getDrawingEditor(),figure)));
-        }
-        else
-        {
-			setDelegateTool( new wxhdCanvasMenuTool(getDrawingEditor(),new wxhdSelectAreaTool(getDrawingEditor())) );
-        }
+			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), new wxhdDragTrackerTool(getDrawingEditor(), figure)));
+		}
+		else
+		{
+			setDelegateTool( new wxhdCanvasMenuTool(getDrawingEditor(), new wxhdSelectAreaTool(getDrawingEditor())) );
+		}
 	}
 
 	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
-        delegateTool->mouseDown(event);
+		delegateTool->mouseDown(event);
 }
 
-void wxhdSelectionTool::mouseUp(wxhdMouseEvent& event)
+void wxhdSelectionTool::mouseUp(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseUp(event);
 	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
-			delegateTool->mouseUp(event);
+		delegateTool->mouseUp(event);
 }
 
-void wxhdSelectionTool::mouseMove(wxhdMouseEvent& event)
+void wxhdSelectionTool::mouseMove(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseMove(event);
-	wxhdDrawingView *view=getDrawingEditor()->view();
-	int x=event.GetPosition().x, y=event.GetPosition().y;
-	wxhdIHandle *handle = view->findHandle(x,y);
+	wxhdDrawingView *view = getDrawingEditor()->view();
+	int x = event.GetPosition().x, y = event.GetPosition().y;
+	wxhdIHandle *handle = view->findHandle(x, y);
 
 	if(handle)
-    {
+	{
 		view->SetCursor(handle->createCursor());
 	}
 	else
 	{
-		wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
+		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
 		if(figure)
 		{
 			view->SetCursor(wxCursor(wxCURSOR_HAND));
@@ -104,30 +104,30 @@ void wxhdSelectionTool::mouseMove(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdSelectionTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdSelectionTool::mouseDrag(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseDrag(event);
 	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
-			delegateTool->mouseDrag(event);
+		delegateTool->mouseDrag(event);
 }
 
-void wxhdSelectionTool::keyDown(wxhdKeyEvent& event)
+void wxhdSelectionTool::keyDown(wxhdKeyEvent &event)
 {
 	if(getDelegateTool())
-    {
+	{
 		getDelegateTool()->keyDown(event);
 	}
 	if(event.GetKeyCode() == WXK_DELETE)
-    {
+	{
 		event.getView()->deleteSelectedFigures();
 	}
 }
 
-void wxhdSelectionTool::keyUp(wxhdKeyEvent& event)
+void wxhdSelectionTool::keyUp(wxhdKeyEvent &event)
 {
 	if(getDelegateTool())
-    {
+	{
 		getDelegateTool()->keyUp(event);
 	}
 }
@@ -135,20 +135,20 @@ void wxhdSelectionTool::keyUp(wxhdKeyEvent& event)
 void wxhdSelectionTool::setDelegateTool(wxhdITool *tool)
 {
 	if(_delegateTool)
-    {
+	{
 		_delegateTool->deactivate();
 		delete _delegateTool;
 	}
 
 	_delegateTool = tool;
-	
+
 	if(_delegateTool)
-    {
+	{
 		_delegateTool->activate();
 	}
 }
 
-wxhdITool* wxhdSelectionTool::getDelegateTool()
+wxhdITool *wxhdSelectionTool::getDelegateTool()
 {
 	return _delegateTool;
 }

@@ -23,9 +23,9 @@
 class wxhdDrawingEditor;
 
 wxhdMenuTool::wxhdMenuTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-wxhdFigureTool(editor,fig,dt)
+	wxhdFigureTool(editor, fig, dt)
 {
-	menuFigure = (wxhdAbstractMenuFigure*) this->getFigure();
+	menuFigure = (wxhdAbstractMenuFigure *) this->getFigure();
 	editor->view()->setMenuToolFigure(NULL);
 }
 
@@ -33,21 +33,21 @@ wxhdMenuTool::~wxhdMenuTool()
 {
 }
 
-void wxhdMenuTool::mouseDown(wxhdMouseEvent& event)
-{	
+void wxhdMenuTool::mouseDown(wxhdMouseEvent &event)
+{
 	//Linux hack for bug
-	int x=event.GetPosition().x, y=event.GetPosition().y;
-	setAnchorCoords(x,y);
-	
+	int x = event.GetPosition().x, y = event.GetPosition().y;
+	setAnchorCoords(x, y);
+
 	if(menuFigure->menuEnabled() && event.RightDown())
 	{
-        wxMenu menu;
-        getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
-        menuFigure->createMenu(menu);
-        getDrawingEditor()->view()->connectPopUpMenu(menu);
-        wxhdPoint p=event.GetPosition();
-        event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
-        getDrawingEditor()->view()->PopupMenu(&menu, p);
+		wxMenu menu;
+		getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
+		menuFigure->createMenu(menu);
+		getDrawingEditor()->view()->connectPopUpMenu(menu);
+		wxhdPoint p = event.GetPosition();
+		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
+		getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
 	}
 
@@ -64,12 +64,12 @@ void wxhdMenuTool::deactivate()
 	wxhdFigureTool::deactivate();
 }
 
-void wxhdMenuTool::mouseDrag(wxhdMouseEvent& event)
+void wxhdMenuTool::mouseDrag(wxhdMouseEvent &event)
 {
-		getDefaultTool()->mouseDrag(event);
+	getDefaultTool()->mouseDrag(event);
 }
 
-void wxhdMenuTool::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+void wxhdMenuTool::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
-	menuFigure->OnGenericPopupClick(event,view);
+	menuFigure->OnGenericPopupClick(event, view);
 }

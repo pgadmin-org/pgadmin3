@@ -26,7 +26,7 @@ class wxhdDrawingEditor;
 
 
 ddColumnTextTool::ddColumnTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-wxhdSimpleTextTool(editor,fig,dt, fastEdit, dialogCaption, dialogMessage)
+	wxhdSimpleTextTool(editor, fig, dt, fastEdit, dialogCaption, dialogMessage)
 {
 	if(colTextFigure->ms_classInfo.IsKindOf(&ddTextTableItemFigure::ms_classInfo))
 		colTextFigure = (ddTextTableItemFigure *) fig;
@@ -38,38 +38,38 @@ ddColumnTextTool::~ddColumnTextTool()
 {
 }
 
-void ddColumnTextTool::mouseDown(wxhdMouseEvent& event)
-{	
+void ddColumnTextTool::mouseDown(wxhdMouseEvent &event)
+{
 	wxhdSimpleTextTool::mouseDown(event);
 }
 
 bool ddColumnTextTool::callDialog()
 {
-	if(colTextFigure->getOwnerColumn()==NULL)
+	if(colTextFigure->getOwnerColumn() == NULL)
 	{
 		wxString colName = colTextFigure->getText();
 		wxString colShortName = colTextFigure->getAlias();
 		ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
-												getDrawingEditor()->view(),
-												DDTABLENAMEDIALOG,
-												wxT("Rename Table"),
-												wxT("New Table Name"),
-												colName,
-												wxT("Short Name"),
-												colShortName,
-												wxDefaultPosition,
-												wxDefaultSize,
-												wxCAPTION,
-												colTextFigure
-												);
+		    getDrawingEditor()->view(),
+		    DDTABLENAMEDIALOG,
+		    wxT("Rename Table"),
+		    wxT("New Table Name"),
+		    colName,
+		    wxT("Short Name"),
+		    colShortName,
+		    wxDefaultPosition,
+		    wxDefaultSize,
+		    wxCAPTION,
+		    colTextFigure
+		);
 		nameAliasDialog->ShowModal();
-	
+
 		colTextFigure->setText(nameAliasDialog->GetValue1());
 		colTextFigure->setAlias(nameAliasDialog->GetValue2());
-	
+
 		//check if names changed
 		bool noChange = colShortName.IsSameAs(nameAliasDialog->GetValue1()) && colShortName.IsSameAs(nameAliasDialog->GetValue2());
-		
+
 		delete nameAliasDialog;
 
 		return !noChange;

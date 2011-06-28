@@ -24,18 +24,18 @@ class wxhdIConnector : public wxhdObject
 {
 public:
 	wxhdIConnector(wxhdIFigure *owner);
- 	~wxhdIConnector();
+	~wxhdIConnector();
 	virtual wxhdPoint findStart(wxhdLineConnection *connection);
 	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
 	virtual bool containsPoint(int x, int y);
-	virtual void draw(wxBufferedDC& context);
-	virtual wxhdIFigure* getOwner();
-	virtual wxhdRect& getDisplayBox();
+	virtual void draw(wxBufferedDC &context);
+	virtual wxhdIFigure *getOwner();
+	virtual wxhdRect &getDisplayBox();
 protected:
 	virtual void setOwner(wxhdIFigure *owner);
 	wxhdRect displayBox;
 private:
-	wxhdIFigure *figureOwner; 
+	wxhdIFigure *figureOwner;
 
 };
 #endif

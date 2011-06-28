@@ -26,16 +26,16 @@ ddAddFkLocator::~ddAddFkLocator()
 {
 }
 
-wxhdPoint& ddAddFkLocator::locate(wxhdIFigure *owner)
+wxhdPoint &ddAddFkLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{
-		ddTableFigure *table = (ddTableFigure*) owner;
-		locatePoint.x=table->getTitleRect().GetBottomRight().x-10;
-		locatePoint.y=table->getTitleRect().GetBottomRight().y-9;
+		ddTableFigure *table = (ddTableFigure *) owner;
+		locatePoint.x = table->getTitleRect().GetBottomRight().x - 10;
+		locatePoint.y = table->getTitleRect().GetBottomRight().y - 9;
 		return locatePoint;
 	}
-	locatePoint.x=0;
-	locatePoint.y=0;
+	locatePoint.x = 0;
+	locatePoint.y = 0;
 	return locatePoint;
 }

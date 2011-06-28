@@ -41,20 +41,20 @@ wxhdAttributeFigure::~wxhdAttributeFigure()
 	delete fontSelColorAttribute;
 }
 
-void wxhdAttributeFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAttributeFigure::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	//find a way to allow user to use custom attributes without affecting performance	
+	//find a way to allow user to use custom attributes without affecting performance
 	fillAttribute->apply(context);
 	lineAttribute->apply(context);
 	fontAttribute->apply(context);
 	fontColorAttribute->apply(context);
-	
+
 	wxhdAbstractFigure::draw(context, view);
 }
 
-void wxhdAttributeFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAttributeFigure::drawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	//find a way to allow user to use custom attributes without affecting performance	
+	//find a way to allow user to use custom attributes without affecting performance
 	fillSelAttribute->apply(context);
 	lineSelAttribute->apply(context);
 	fontSelAttribute->apply(context);
@@ -66,19 +66,19 @@ void wxhdAttributeFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *v
 void wxhdAttributeFigure::initializeDefaultAttributes()
 {
 
-	fontAttribute=new wxhdFontAttribute();
-	fontColorAttribute=new wxhdFontColorAttribute();
-	fillAttribute=new wxhdFillAttribute();
-	lineAttribute=new wxhdLineAttribute();
+	fontAttribute = new wxhdFontAttribute();
+	fontColorAttribute = new wxhdFontColorAttribute();
+	fillAttribute = new wxhdFillAttribute();
+	lineAttribute = new wxhdLineAttribute();
 
-	fontSelAttribute=new wxhdFontAttribute();
-	fontSelColorAttribute=new wxhdFontColorAttribute();
-	fillSelAttribute=new wxhdFillAttribute();
-	lineSelAttribute=new wxhdLineAttribute();
+	fontSelAttribute = new wxhdFontAttribute();
+	fontSelColorAttribute = new wxhdFontColorAttribute();
+	fillSelAttribute = new wxhdFillAttribute();
+	lineSelAttribute = new wxhdLineAttribute();
 
 }
 
-void wxhdAttributeFigure::reapplyAttributes(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAttributeFigure::reapplyAttributes(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	fillAttribute->apply(context);
 	lineAttribute->apply(context);
@@ -86,7 +86,7 @@ void wxhdAttributeFigure::reapplyAttributes(wxBufferedDC& context, wxhdDrawingVi
 	fontColorAttribute->apply(context);
 }
 
-void wxhdAttributeFigure::reapplySelAttributes(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdAttributeFigure::reapplySelAttributes(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	fillSelAttribute->apply(context);
 	lineSelAttribute->apply(context);

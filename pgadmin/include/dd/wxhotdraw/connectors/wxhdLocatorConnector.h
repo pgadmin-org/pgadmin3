@@ -22,19 +22,19 @@ class wxhdLocatorConnector : public wxhdIConnector
 {
 public:
 	wxhdLocatorConnector(wxhdIFigure *owner, wxhdILocator *locator);
- 	~wxhdLocatorConnector();
+	~wxhdLocatorConnector();
 	virtual wxhdPoint findStart(wxhdLineConnection *connection);
 	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
 	virtual bool containsPoint(int x, int y);
-	virtual void draw(wxBufferedDC& context);
+	virtual void draw(wxBufferedDC &context);
 	virtual wxhdPoint locate();
-	virtual wxhdRect& getDisplayBox();
+	virtual wxhdRect &getDisplayBox();
 protected:
 	int size; //standard size connector
 	wxhdRect displayBox;
 private:
-	wxhdILocator *figureLocator; 
-	wxhdIFigure *figureOwner; 
+	wxhdILocator *figureLocator;
+	wxhdIFigure *figureOwner;
 
 };
 #endif

@@ -20,10 +20,10 @@ class ddSouthTableSizeHandle : public wxhdLocatorHandle
 {
 public:
 	ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocator *locator);
-    ~ddSouthTableSizeHandle();
+	~ddSouthTableSizeHandle();
 	virtual wxCursor createCursor();
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual wxhdRect& getDisplayBox();
+	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual wxhdRect &getDisplayBox();
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);

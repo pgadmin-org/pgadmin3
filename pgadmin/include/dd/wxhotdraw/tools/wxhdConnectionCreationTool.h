@@ -20,12 +20,12 @@ class wxhdConnectionCreationTool : public wxhdAbstractTool
 {
 public:
 	wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure);
-    ~wxhdConnectionCreationTool();
+	~wxhdConnectionCreationTool();
 
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(wxhdMouseEvent& event);
-	virtual void mouseMove(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent &event);
+	virtual void mouseMove(wxhdMouseEvent &event);
 protected:
 
 private:

@@ -20,27 +20,27 @@
 
 
 wxhdCompositeFigureTool::wxhdCompositeFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-wxhdFigureTool(editor,fig,dt)
+	wxhdFigureTool(editor, fig, dt)
 {
 	delegateTool = NULL;
 }
 
 wxhdCompositeFigureTool::~wxhdCompositeFigureTool()
 {
-	wxhdITool *tmpDefault=wxhdFigureTool::getDefaultTool();
+	wxhdITool *tmpDefault = wxhdFigureTool::getDefaultTool();
 	wxhdFigureTool *tmpDelegateDefault;
 
 	if(delegateTool->ms_classInfo.IsKindOf(&wxhdFigureTool::ms_classInfo))
-		tmpDelegateDefault = (wxhdFigureTool*)delegateTool;
-	else 
+		tmpDelegateDefault = (wxhdFigureTool *)delegateTool;
+	else
 		tmpDelegateDefault = NULL;
 
-	if(delegateTool && delegateTool!=tmpDefault)
+	if(delegateTool && delegateTool != tmpDefault)
 	{
-		// Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool 
+		// Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool
 		// if this is the same as defaultTool (this->defaultTool) of this Object.
-		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool()==tmpDefault)  
-			tmpDelegateDefault->setDefaultTool(NULL);   
+		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool() == tmpDefault)
+			tmpDelegateDefault->setDefaultTool(NULL);
 		delete delegateTool;
 	}
 }
@@ -50,7 +50,7 @@ void wxhdCompositeFigureTool::setDefaultTool(wxhdITool *dt)
 	wxhdFigureTool::setDefaultTool(dt);
 }
 
-wxhdITool* wxhdCompositeFigureTool::getDefaultTool()
+wxhdITool *wxhdCompositeFigureTool::getDefaultTool()
 {
 	if(delegateTool)
 	{
@@ -62,15 +62,15 @@ wxhdITool* wxhdCompositeFigureTool::getDefaultTool()
 	}
 }
 
-void wxhdCompositeFigureTool::mouseDown(wxhdMouseEvent& event)
+void wxhdCompositeFigureTool::mouseDown(wxhdMouseEvent &event)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
-	wxhdCompositeFigure *cfigure = (wxhdCompositeFigure*) getFigure();
-	wxhdIFigure *figure = cfigure->findFigure(x,y);
-	
+	int x = event.GetPosition().x, y = event.GetPosition().y;
+	wxhdCompositeFigure *cfigure = (wxhdCompositeFigure *) getFigure();
+	wxhdIFigure *figure = cfigure->findFigure(x, y);
+
 	if(figure)
 	{
-		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),getDefaultTool()));
+		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), getDefaultTool()));
 	}
 	else
 	{
@@ -107,15 +107,15 @@ void wxhdCompositeFigureTool::setDelegateTool(wxhdITool *tool)
 		delete delegateTool;
 		delegateTool = NULL;
 	}
-	
-	delegateTool=tool;
+
+	delegateTool = tool;
 	if(delegateTool)
 	{
 		delegateTool->activate();
 	}
 }
 
-wxhdITool* wxhdCompositeFigureTool::getDelegateTool()
+wxhdITool *wxhdCompositeFigureTool::getDelegateTool()
 {
 	return delegateTool;
 }

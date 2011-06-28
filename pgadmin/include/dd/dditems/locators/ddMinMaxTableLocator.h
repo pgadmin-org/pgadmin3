@@ -19,9 +19,9 @@ class ddMinMaxTableLocator : public wxhdILocator
 {
 public:
 	ddMinMaxTableLocator();
-    ~ddMinMaxTableLocator();
+	~ddMinMaxTableLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

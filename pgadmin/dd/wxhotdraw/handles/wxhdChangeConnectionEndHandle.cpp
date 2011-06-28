@@ -19,7 +19,7 @@
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
 wxhdChangeConnectionEndHandle::wxhdChangeConnectionEndHandle(wxhdLineConnection *owner):
-wxhdChangeConnectionHandle(owner)
+	wxhdChangeConnectionHandle(owner)
 {
 }
 
@@ -27,19 +27,19 @@ wxhdChangeConnectionEndHandle::~wxhdChangeConnectionEndHandle()
 {
 }
 
-wxhdPoint& wxhdChangeConnectionEndHandle::locate()
+wxhdPoint &wxhdChangeConnectionEndHandle::locate()
 {
 	return connection->getEndPoint();
 }
 
-wxhdIConnector* wxhdChangeConnectionEndHandle::target()
+wxhdIConnector *wxhdChangeConnectionEndHandle::target()
 {
 	return connection->getEndConnector();
 }
 
 void wxhdChangeConnectionEndHandle::connect(wxhdIConnector *connector, wxhdDrawingView *view)
 {
-	connection->connectEnd(connector,view);
+	connection->connectEnd(connector, view);
 }
 
 void wxhdChangeConnectionEndHandle::disconnect(wxhdDrawingView *view)

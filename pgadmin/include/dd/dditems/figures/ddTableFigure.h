@@ -7,7 +7,7 @@
 //
 // ddTableFigure.h - Draw table figure of a model
 //
-//////////////////////////////////////////////////////////////////////////// 
+////////////////////////////////////////////////////////////////////////////
 
 #ifndef DDTABLEFIGURE_H
 #define DDTABLEFIGURE_H
@@ -23,38 +23,38 @@ class ddRelationshipFigure;
 class ddTableFigure : public wxhdCompositeFigure
 {
 public:
-	ddTableFigure(wxString tableName, int x, int y, wxString shortName=wxEmptyString);
-    ~ddTableFigure();
-	
+	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	~ddTableFigure();
+
 	//add remove items
 	bool colNameAvailable(wxString name);
 	void addColumn(ddColumnFigure *column);
 	void removeColumn(ddColumnFigure *column);
-	
+
 	//movement
 	virtual void basicMoveBy(int x, int y);
-	
+
 	//show messages to set fk destination
 	void setSelectFkDestMode(bool value);
 
 	//delete hack tables
 	void processDeleteAlert(wxhdDrawingView *view);
-	
+
 	//columns scrolls
 	void updateTableSize();
 	void recalculateColsPos();
 	void setColsRowsWindow(int num);
-	wxhdRect& getColsSpace();
-	wxhdRect& getFullSpace();
-	wxhdRect& getTitleRect();
+	wxhdRect &getColsSpace();
+	wxhdRect &getFullSpace();
+	wxhdRect &getTitleRect();
 	int getTotalColumns();
 	int getColumnsWindow();
 	int getTopColWindowIndex();
-	void setColumnsWindow(int value, bool maximize=false);
+	void setColumnsWindow(int value, bool maximize = false);
 	void columnsWindowUp();
 	void columnsWindowDown();
 	int getColDefaultHeight(wxFont font);
-	
+
 	//metadata
 	wxString getTableName();
 	void setShortTableName(wxString shortName);
@@ -62,17 +62,17 @@ public:
 	wxString generateSQL();
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
-	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex=-1);
+	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);
 	ddColumnFigure *getColumnByName(wxString name);
-	bool validateTable(wxString& errors);
+	bool validateTable(wxString &errors);
 
 	//uk pk constraints
 	void setPkConstraintName(wxString name);
 	wxString getPkConstraintName();
-	wxArrayString& getUkConstraintsNames();
+	wxArrayString &getUkConstraintsNames();
 	bool disablePrimaryKey();
 	bool enablePrimaryKey();
-		
+
 	//fk related
 	void updateFkObservers();
 	void updateSizeOfObservers();
@@ -80,23 +80,23 @@ public:
 
 protected:
 	//drawing
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 
 private:
 	//Main Rectangle Sizes
 	wxhdRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
 	wxhdRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
-	
+
 	//Rectangle item counters
 	int colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
-	
+
 	//vector indexes
-	int maxColIndex,minIdxIndex,maxIdxIndex;
-	
+	int maxColIndex, minIdxIndex, maxIdxIndex;
+
 	//position
 	int beginDrawCols, beginDrawIdxs;
-	
+
 	//Default Figures
 	wxhdRectangleFigure *rectangleFigure;
 	ddTextTableItemFigure *tableTitle;
@@ -105,7 +105,7 @@ private:
 	bool selectingFkDestination;
 	int internalPadding, externalPadding;
 	bool calcScrolled;
-	
+
 	//specials handles
 	ddScrollBarHandle *scrollbar;
 

@@ -18,8 +18,8 @@ class wxhdFontColorAttribute : public wxhdAttribute
 {
 public:
 	wxhdFontColorAttribute();
-	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
-	virtual void apply(wxBufferedDC& context);
+	virtual void callDefaultChangeDialog(wxWindow *owner = NULL);
+	virtual void apply(wxBufferedDC &context);
 //	void setFontColorAttribute(wxColour color);
 	wxColour fontColor;
 protected:

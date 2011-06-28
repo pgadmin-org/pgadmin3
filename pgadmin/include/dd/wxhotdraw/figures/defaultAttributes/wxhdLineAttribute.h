@@ -18,9 +18,9 @@ class wxhdLineAttribute : public wxhdAttribute
 {
 public:
 	wxhdLineAttribute();
-	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
-	virtual void apply(wxBufferedDC& context);
-	wxPen& pen();
+	virtual void callDefaultChangeDialog(wxWindow *owner = NULL);
+	virtual void apply(wxBufferedDC &context);
+	wxPen &pen();
 protected:
 	wxPen penAttributes;
 };

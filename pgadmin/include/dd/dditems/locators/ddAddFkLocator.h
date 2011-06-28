@@ -19,9 +19,9 @@ class ddAddFkLocator : public wxhdILocator
 {
 public:
 	ddAddFkLocator();
-    ~ddAddFkLocator();
+	~ddAddFkLocator();
 
-	virtual wxhdPoint& locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(wxhdIFigure *owner);
 
 protected:
 

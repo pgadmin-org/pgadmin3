@@ -20,28 +20,28 @@
 
 wxhdIHandle::wxhdIHandle(wxhdIFigure *owner)
 {
-	figureOwner=owner;
+	figureOwner = owner;
 }
 wxhdIHandle::~wxhdIHandle()
 {
 }
 
-wxhdIFigure* wxhdIHandle::getOwner()
+wxhdIFigure *wxhdIHandle::getOwner()
 {
 	return figureOwner;
 }
 
-wxhdRect& wxhdIHandle::getDisplayBox()
+wxhdRect &wxhdIHandle::getDisplayBox()
 {
 	wxhdPoint p = locate();
-	displayBox.width=0;
-	displayBox.height=0;
+	displayBox.width = 0;
+	displayBox.height = 0;
 	displayBox.SetPosition(p);
-	displayBox.Inflate(size,size);
+	displayBox.Inflate(size, size);
 	return displayBox;
 }
 
 bool wxhdIHandle::containsPoint(int x, int y)
 {
-	return getDisplayBox().Contains(x,y);
+	return getDisplayBox().Contains(x, y);
 }

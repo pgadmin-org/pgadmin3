@@ -18,13 +18,13 @@ class wxhdDrawingView;
 
 class wxhdKeyEvent : public wxhdObject
 {
-	public:
-		wxhdKeyEvent(wxKeyEvent& event, wxhdDrawingView *owner);
-		wxhdDrawingView* getView();
-		int GetKeyCode();
+public:
+	wxhdKeyEvent(wxKeyEvent &event, wxhdDrawingView *owner);
+	wxhdDrawingView *getView();
+	int GetKeyCode();
 private:
-		wxhdDrawingView *view;
-		wxKeyEvent& keyEvent;
-		int keyCode;
+	wxhdDrawingView *view;
+	wxKeyEvent &keyEvent;
+	int keyCode;
 };
 #endif

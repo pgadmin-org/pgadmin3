@@ -19,7 +19,7 @@
 
 wxhdILocator::wxhdILocator()
 {
-	locatePoint = wxhdPoint(0,0);
+	locatePoint = wxhdPoint(0, 0);
 }
 
 wxhdILocator::~wxhdILocator()

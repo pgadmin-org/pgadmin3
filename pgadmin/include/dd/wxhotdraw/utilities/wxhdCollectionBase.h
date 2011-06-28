@@ -22,33 +22,33 @@
 class wxhdIteratorBase : wxObject
 {
 public:
-    wxhdIteratorBase() {};
-    virtual wxhdObject* Current() = 0;
-    virtual wxhdObject* Next() = 0;
-    virtual bool HasNext() = 0;
-    virtual void ResetIterator() = 0;
+	wxhdIteratorBase() {};
+	virtual wxhdObject *Current() = 0;
+	virtual wxhdObject *Next() = 0;
+	virtual bool HasNext() = 0;
+	virtual void ResetIterator() = 0;
 };
 
 
-class wxhdCollectionBase : wxObject        
+class wxhdCollectionBase : wxObject
 {
 public:
-    wxhdCollectionBase() {};
-    virtual ~wxhdCollectionBase() {};
-    virtual void addItem(wxhdObject *item) = 0;
-    virtual void removeItem(wxhdObject *item) = 0;
+	wxhdCollectionBase() {};
+	virtual ~wxhdCollectionBase() {};
+	virtual void addItem(wxhdObject *item) = 0;
+	virtual void removeItem(wxhdObject *item) = 0;
 	virtual void removeItemAt(int index) = 0;
-    virtual wxhdObject* getItemAt(int index) = 0;
-    virtual wxhdIteratorBase* createIterator() = 0;
-	virtual wxhdIteratorBase* createDownIterator() = 0;
-    virtual int count() = 0;
-    virtual bool existsObject(wxhdObject *item) = 0;
-    virtual int getIndex(wxhdObject *item) = 0;
-    virtual void insertAtIndex(wxhdObject *item, int index) = 0;
+	virtual wxhdObject *getItemAt(int index) = 0;
+	virtual wxhdIteratorBase *createIterator() = 0;
+	virtual wxhdIteratorBase *createDownIterator() = 0;
+	virtual int count() = 0;
+	virtual bool existsObject(wxhdObject *item) = 0;
+	virtual int getIndex(wxhdObject *item) = 0;
+	virtual void insertAtIndex(wxhdObject *item, int index) = 0;
 	virtual void replaceAtIndex(wxhdObject *item, int index) = 0;
-	virtual void bringToFront(wxhdObject *item)=0;
-	virtual void sendToBack(wxhdObject *item)=0;
-    virtual void deleteAll()=0;
-    virtual void removeAll()=0;           //remove all items from collection without deleting.
+	virtual void bringToFront(wxhdObject *item) = 0;
+	virtual void sendToBack(wxhdObject *item) = 0;
+	virtual void deleteAll() = 0;
+	virtual void removeAll() = 0;         //remove all items from collection without deleting.
 };
 #endif

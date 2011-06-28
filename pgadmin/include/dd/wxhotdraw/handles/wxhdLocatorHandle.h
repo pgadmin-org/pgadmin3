@@ -22,13 +22,13 @@ class wxhdLocatorHandle : public wxhdIHandle
 {
 public:
 	wxhdLocatorHandle(wxhdIFigure *owner, wxhdILocator *locator);
-    ~wxhdLocatorHandle();
+	~wxhdLocatorHandle();
 
-	virtual wxhdPoint& locate();
-	virtual wxhdILocator* locator();
-	virtual void invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view);
+	virtual wxhdPoint &locate();
+	virtual wxhdILocator *locator();
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
 protected:
 
 private:

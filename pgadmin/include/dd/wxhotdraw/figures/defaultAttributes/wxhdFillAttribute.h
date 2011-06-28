@@ -18,9 +18,9 @@ class wxhdFillAttribute : public wxhdAttribute
 {
 public:
 	wxhdFillAttribute();
-	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
-	virtual void apply(wxBufferedDC& context);
-	wxBrush& brush();
+	virtual void callDefaultChangeDialog(wxWindow *owner = NULL);
+	virtual void apply(wxBufferedDC &context);
+	wxBrush &brush();
 protected:
 	wxBrush fillAttributes;
 };

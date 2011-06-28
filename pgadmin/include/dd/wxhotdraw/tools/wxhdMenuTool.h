@@ -21,12 +21,12 @@ class wxhdMenuTool : public wxhdFigureTool
 
 public:
 	wxhdMenuTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
-    ~wxhdMenuTool();
-	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	~wxhdMenuTool();
+	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
-	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
+	virtual void mouseDrag(wxhdMouseEvent &event);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 	//Because a bug it was move to main View class as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:
 private:

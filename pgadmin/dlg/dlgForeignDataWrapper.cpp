@@ -67,8 +67,8 @@ int dlgForeignDataWrapper::Go(bool modal)
 	wxString val;
 
 	// Fill owner combobox
-    if (!fdw)
-        cbOwner->Append(wxEmptyString);
+	if (!fdw)
+		cbOwner->Append(wxEmptyString);
 	AddGroups();
 	AddUsers(cbOwner);
 

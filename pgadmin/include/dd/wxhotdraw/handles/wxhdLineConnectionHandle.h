@@ -18,7 +18,7 @@ class wxhdLineConnectionHandle : public wxhdPolyLineHandle
 {
 public:
 	wxhdLineConnectionHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index);
-	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
 private:
 
 };

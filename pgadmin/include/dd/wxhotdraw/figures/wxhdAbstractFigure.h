@@ -21,13 +21,13 @@ class wxhdAbstractFigure : public wxhdIFigure
 {
 public:
 	wxhdAbstractFigure();
-    ~wxhdAbstractFigure();
-	
+	~wxhdAbstractFigure();
+
 	virtual bool canConnect ();
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void drawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual bool includes(wxhdIFigure *figure);
-	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void moveBy(int x, int y);
 	virtual void basicMoveBy(int x, int y);
 	virtual void moveTo(int x, int y);
@@ -35,8 +35,8 @@ public:
 	virtual void onFigureChanged(wxhdIFigure *figure);
 
 protected:
-	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
+	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	void willChange();
 	void changed();
 	void invalidate();

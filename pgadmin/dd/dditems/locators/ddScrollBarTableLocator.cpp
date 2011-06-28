@@ -26,20 +26,20 @@ ddScrollBarTableLocator::~ddScrollBarTableLocator()
 {
 }
 
-wxhdPoint& ddScrollBarTableLocator::locate(wxhdIFigure *owner)
+wxhdPoint &ddScrollBarTableLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{
-		ddTableFigure *table = (ddTableFigure*) owner;
+		ddTableFigure *table = (ddTableFigure *) owner;
 		;
 		int x = table->getColsSpace().GetTopRight().x - 11; //scrollwidth
 		int y = table->getColsSpace().y;
 
-		locatePoint.x=x;
-		locatePoint.y=y;
+		locatePoint.x = x;
+		locatePoint.y = y;
 		return locatePoint;
 	}
-	locatePoint.x=0;
-	locatePoint.y=0;
+	locatePoint.x = 0;
+	locatePoint.y = 0;
 	return locatePoint;
 }

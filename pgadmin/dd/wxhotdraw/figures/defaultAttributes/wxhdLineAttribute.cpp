@@ -22,12 +22,12 @@
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
 wxhdLineAttribute::wxhdLineAttribute():
-wxhdAttribute()
+	wxhdAttribute()
 {
 	penAttributes = *wxBLACK_PEN;
 }
 
-void wxhdLineAttribute::apply(wxBufferedDC& context)
+void wxhdLineAttribute::apply(wxBufferedDC &context)
 {
 	context.SetPen(penAttributes);
 }
@@ -37,7 +37,7 @@ void wxhdLineAttribute::callDefaultChangeDialog(wxWindow *owner)
 	//create line dialog
 }
 
-wxPen& wxhdLineAttribute::pen()
+wxPen &wxhdLineAttribute::pen()
 {
 	return penAttributes;
 }

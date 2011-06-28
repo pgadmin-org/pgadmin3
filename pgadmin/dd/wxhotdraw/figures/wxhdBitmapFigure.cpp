@@ -22,32 +22,32 @@
 
 wxhdBitmapFigure::wxhdBitmapFigure(wxBitmap image)
 {
-	imageToDraw=image;
-	this->getBasicDisplayBox().width=imageToDraw.GetWidth();
-	this->getBasicDisplayBox().height=imageToDraw.GetHeight();
+	imageToDraw = image;
+	this->getBasicDisplayBox().width = imageToDraw.GetWidth();
+	this->getBasicDisplayBox().height = imageToDraw.GetHeight();
 }
 
 wxhdBitmapFigure::~wxhdBitmapFigure()
 {
 }
 
-void wxhdBitmapFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdBitmapFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	wxhdRect copy = displayBox();
-	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-	context.DrawBitmap(imageToDraw,copy.GetPosition(),true);
+	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
+	context.DrawBitmap(imageToDraw, copy.GetPosition(), true);
 }
 
-void wxhdBitmapFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdBitmapFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	basicDraw(context,view);
+	basicDraw(context, view);
 }
 
 void wxhdBitmapFigure::changeBitmap(wxBitmap image)
 {
-	imageToDraw=image;
-	this->getBasicDisplayBox().width=imageToDraw.GetWidth();
-	this->getBasicDisplayBox().height=imageToDraw.GetHeight();
+	imageToDraw = image;
+	this->getBasicDisplayBox().width = imageToDraw.GetWidth();
+	this->getBasicDisplayBox().height = imageToDraw.GetHeight();
 }
 
 int wxhdBitmapFigure::getWidth()

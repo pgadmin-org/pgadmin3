@@ -23,13 +23,13 @@ public:
 	virtual void add(wxhdIFigure *figure);
 	virtual void remove(wxhdIFigure *figure);
 	virtual bool includes(wxhdIFigure *figure);
-	virtual wxhdIFigure* findFigure(int x, int y);
+	virtual wxhdIFigure *findFigure(int x, int y);
 	virtual void recalculateDisplayBox();
 	virtual void bringToFront(wxhdIFigure *figure);
 	virtual void sendToBack(wxhdIFigure *figure);
-	virtual wxhdRect& DisplayBox();
-	virtual wxhdIteratorBase* figuresEnumerator();
-	virtual wxhdIteratorBase* figuresInverseEnumerator();
+	virtual wxhdRect &DisplayBox();
+	virtual wxhdIteratorBase *figuresEnumerator();
+	virtual wxhdIteratorBase *figuresInverseEnumerator();
 	virtual void deleteAllFigures();
 
 protected:
