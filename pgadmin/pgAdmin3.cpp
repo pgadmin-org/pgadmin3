@@ -889,9 +889,6 @@ void pgAdmin3::InitXtraPaths()
 		wxPathList path;
 
 #ifdef __WXMSW__
-		path.Add(wxT("C:\\PostgresPlus\\9.1\\bin"));
-		path.Add(wxT("C:\\PostgresPlus\\9.0\\bin"));
-		path.Add(wxT("C:\\PostgresPlus\\8.4\\bin"));
 		path.Add(wxT("C:\\PostgresPlus\\8.3\\bin"));
 
 		if (!programFiles.IsEmpty())
@@ -925,12 +922,20 @@ void pgAdmin3::InitXtraPaths()
 		wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
 		// Mac paths
+		path.Add(wxT("/Library/PostgreSQL/9.1/bin"));
+		path.Add(wxT("/Library/PostgreSQL/9.0/bin"));
+		path.Add(wxT("/Library/PostgreSQL/8.4/bin"));
+		path.Add(wxT("/Library/PostgreSQL/8.3/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.1SS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.0SS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/8.4SS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
 
 		// Generic Unix paths
+		path.Add(wxT("/opt/PostgreSQL/9.1/bin"));
+		path.Add(wxT("/opt/PostgreSQL/9.0/bin"));
+		path.Add(wxT("/opt/PostgreSQL/8.4/bin"));
+		path.Add(wxT("/opt/PostgreSQL/8.3/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.1SS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.0SS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/8.4SS/bin"));
