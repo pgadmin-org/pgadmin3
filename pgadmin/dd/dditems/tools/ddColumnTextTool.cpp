@@ -51,15 +51,8 @@ bool ddColumnTextTool::callDialog()
 		wxString colShortName = colTextFigure->getAlias();
 		ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
 		    getDrawingEditor()->view(),
-		    DDTABLENAMEDIALOG,
-		    wxT("Rename Table"),
-		    wxT("New Table Name"),
 		    colName,
-		    wxT("Short Name"),
 		    colShortName,
-		    wxDefaultPosition,
-		    wxDefaultSize,
-		    wxCAPTION,
 		    colTextFigure
 		);
 		nameAliasDialog->ShowModal();

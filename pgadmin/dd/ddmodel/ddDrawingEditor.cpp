@@ -50,15 +50,8 @@ void ddDrawingEditor::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView
 		case MNU_NEWTABLE:
 			ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 			    view,
-			    DDTABLENAMEDIALOG,
-			    wxT("New Table Name"),
-			    wxT("Table Name"),
 			    databaseDesign->getNewTableName(),
-			    wxT("Short Name"),
 			    wxEmptyString,
-			    wxDefaultPosition,
-			    wxDefaultSize,
-			    wxCAPTION,
 			    NULL
 			);
 			int answer = newTableDialog->ShowModal();

@@ -13,6 +13,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/ui/xrcDialogs.cpp 
 
 TMP_ui += \
+	$(srcdir)/ui/ddPrecisionScaleDialog.xrc \
+	$(srcdir)/ui/ddTableNameDialog.xrc \
 	$(srcdir)/ui/dlgAddFavourite.xrc \
 	$(srcdir)/ui/dlgAggregate.xrc \
 	$(srcdir)/ui/dlgCast.xrc \

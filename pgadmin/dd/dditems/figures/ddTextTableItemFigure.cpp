@@ -120,6 +120,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 	wxString tmpString;
 	int answer;
 	int tmpprecision;
+	long tmpvalue;
 
 	switch(event.GetId())
 	{
@@ -232,19 +233,13 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 				if(answer == dt_numeric)
 				{
 					numericDialog = new ddPrecisionScaleDialog(	view,
-					        DDPRECISIONSCALEDIALOG,
-					        wxT("Input precision and scale"),
-					        wxT("Precision"),
-					        getPrecision(),
-					        wxT("Scale"),
-					        getScale()
-					                                          );
+					        NumToStr((long)getPrecision()),
+					        NumToStr((long)getScale()));
 					numericDialog->ShowModal();
-					if (tmpprecision > 0)
-					{
-						setPrecision(numericDialog->GetValue1());
-						setScale(numericDialog->GetValue2());
-					}
+					numericDialog->GetValue1().ToLong(&tmpvalue);
+					setPrecision(tmpvalue);
+					numericDialog->GetValue2().ToLong(&tmpvalue);
+					setScale(tmpvalue);
 					delete numericDialog;
 					recalculateDisplayBox();
 					getOwnerColumn()->displayBoxUpdate();

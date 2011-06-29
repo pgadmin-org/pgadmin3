@@ -12,50 +12,22 @@
 #ifndef DDTABLENAMEDIALOGS_H
 #define DDTABLENAMEDIALOGS_H
 
-#include <wx/statline.h>
+#include "dlg/dlgClasses.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 
-enum
+class ddTableNameDialog : public pgDialog
 {
-	DDTABLENAMEDIALOG = 10000,
-	DDVALUE1 = 10001,
-	DDVALUE2 = 10002,
-	DDGENBUTTON = 10003
-};
-
-class ddTableNameDialog : public wxDialog
-{
-	DECLARE_CLASS( ddTableNameDialog )
-	DECLARE_EVENT_TABLE()
 public:
 	ddTableNameDialog();
 	~ddTableNameDialog();
-	ddTableNameDialog(	wxWindow *parent,
-	                    wxWindowID id,
-	                    const wxString &caption = wxT("Input Dialog"),
-	                    const wxString &captionLabel1 = wxEmptyString,
-	                    const wxString &defaultValue1 = wxEmptyString,
-	                    const wxString &captionLabel2 = wxEmptyString,
-	                    const wxString &defaultValue2 = wxEmptyString,
-	                    const wxPoint &pos = wxDefaultPosition,
-	                    const wxSize &size = wxDefaultSize,
-	                    long style = wxCAPTION,
-	                    ddTextTableItemFigure *tableItem = NULL
+	ddTableNameDialog(wxWindow *parent,
+	                  const wxString &defaultValue1 = wxEmptyString,
+	                  const wxString &defaultValue2 = wxEmptyString,
+	                  ddTextTableItemFigure *tableItem = NULL
 	                 );
 
 	// Member initialization
 	void Init();
-	// Creation
-	bool Create(	wxWindow *parent,
-	                wxWindowID id,
-	                const wxString &caption,
-	                const wxPoint &pos,
-	                const wxSize &size,
-	                long style);
-
-
-	// Creates the controls and sizers
-	void CreateControls();
 
 	// Sets the validators for the dialog controls
 	//void SetDialogValidators();
@@ -97,8 +69,6 @@ public:
 
 	//wxEVT_COMMAND_BUTTON_CLICKED event_handler for DDGENBUTTON
 	void OnGenButtonClicked( wxCommandEvent &event );
-	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
-	void OnEnterPressed( wxCommandEvent &event );
 
 
 protected:
@@ -107,12 +77,8 @@ protected:
 	wxString label1, label2;
 	bool checkGenerate;
 	ddTextTableItemFigure *tabItem;
-	// Dialog controls
-	wxBoxSizer *topSizer, *nameGenBox, *boxSizer, *okCancelBox;
-	wxStaticText *value1Label, *value2Label;
-	wxTextCtrl *value1Ctrl, *value2Ctrl;
-	wxButton *generateButton,  *ok, *cancel;
-	wxStaticLine *line;
+	
+	DECLARE_EVENT_TABLE()
 
 private:
 

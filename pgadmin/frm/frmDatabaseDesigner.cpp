@@ -175,15 +175,8 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 {
 	ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 	    this,
-	    DDTABLENAMEDIALOG,
-	    wxT("New Table Name"),
-	    wxT("Table Name"),
 	    design->getNewTableName(),
-	    wxT("Short Name"),
 	    wxEmptyString,
-	    wxDefaultPosition,
-	    wxDefaultSize,
-	    wxCAPTION,
 	    NULL
 	);
 	int answer = newTableDialog->ShowModal();
