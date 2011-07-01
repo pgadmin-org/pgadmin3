@@ -1204,6 +1204,7 @@ void frmQuery::OnClearHistory(wxCommandEvent &event)
 	queryMenu->Enable(MNU_SAVEHISTORY, false);
 	queryMenu->Enable(MNU_CLEARHISTORY, false);
 	msgHistory->Clear();
+	msgHistory->SetFont(settings->GetSQLFont());
 }
 
 
@@ -1304,9 +1305,15 @@ void frmQuery::OnClear(wxCommandEvent &ev)
 	if (wnd == sqlQuery)
 		sqlQuery->ClearAll();
 	else if (wnd == msgResult)
+	{
 		msgResult->Clear();
+		msgResult->SetFont(settings->GetSQLFont());
+	}
 	else if (wnd == msgHistory)
+	{
 		msgHistory->Clear();
+		msgHistory->SetFont(settings->GetSQLFont());
+	}
 	else if (wnd == scratchPad)
 		scratchPad->Clear();
 }
@@ -2171,6 +2178,7 @@ void frmQuery::OnExecScript(wxCommandEvent &event)
 	// Window stuff
 	explainCanvas->Clear();
 	msgResult->Clear();
+	msgResult->SetFont(settings->GetSQLFont());
 	outputPane->SetSelection(2);
 
 	// Status text
@@ -2341,6 +2349,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 	SetStatusText(_("Query is running."), STATUSPOS_MSGS);
 	SetStatusText(wxT(""), STATUSPOS_ROWS);
 	msgResult->Clear();
+	msgResult->SetFont(settings->GetSQLFont());
 
 	msgHistory->AppendText(_("-- Executing query:\n"));
 	msgHistory->AppendText(query);
