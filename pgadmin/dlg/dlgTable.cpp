@@ -731,7 +731,7 @@ int dlgTable::Go(bool modal)
 	else
 	{
 		/* Remove 'Vacuum Settings' Page */
-		nbNotebook->DeletePage(4);
+		nbNotebook->DeletePage(5);
 	}
 
 	// Find, and disable the RULE ACL option if we're 8.2
