@@ -38,7 +38,7 @@ ddPrecisionScaleDialog::ddPrecisionScaleDialog(	wxWindow *parent,
 	Init();
 	SetValue1(defaultValue1);
 	SetValue2(defaultValue2);
-	
+
 	txtPrecision->SetFocus();
 }
 

@@ -41,10 +41,10 @@ ddTableNameDialog::ddTableNameDialog(	wxWindow *parent,
 	Init();
 	tabItem = tableItem;
 	checkGenerate = false;
-	
+
 	SetValue1(defaultValue1);
 	SetValue2(defaultValue2);
-	
+
 	txtUsualTableName->SetFocus();
 }
 

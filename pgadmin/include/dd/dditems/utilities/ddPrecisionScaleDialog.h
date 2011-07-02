@@ -60,7 +60,7 @@ public:
 protected:
 	// Data members
 	wxString m_value1, m_value2;
-	
+
 	DECLARE_EVENT_TABLE()
 
 };

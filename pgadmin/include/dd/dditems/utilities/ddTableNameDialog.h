@@ -77,7 +77,7 @@ protected:
 	wxString label1, label2;
 	bool checkGenerate;
 	ddTextTableItemFigure *tabItem;
-	
+
 	DECLARE_EVENT_TABLE()
 
 private:
