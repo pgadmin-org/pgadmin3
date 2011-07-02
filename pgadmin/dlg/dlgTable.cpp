@@ -249,7 +249,8 @@ int dlgTable::Go(bool modal)
 
 		btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
 		lbTables->Enable(connection->BackendMinimumVersion(8, 2));
-		chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
+		chkHasOids->Enable((connection->BackendMinimumVersion(8, 0) && table->GetHasOids())
+		                   || connection->BackendMinimumVersion(8, 4));
 		cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
 		wxCookieType cookie;
@@ -921,10 +922,15 @@ wxString dlgTable::GetSql()
 		// Add the ADD CONSTRAINTs...
 		sql += tmpsql;
 
-		if (chkHasOids->GetValue() != table->GetHasOids())
+		if (!chkHasOids->GetValue() && table->GetHasOids())
 		{
 			sql += wxT("ALTER TABLE ") + tabname
 			       +  wxT(" SET WITHOUT OIDS;\n");
+		}
+		if (chkHasOids->GetValue() && !table->GetHasOids())
+		{
+			sql += wxT("ALTER TABLE ") + tabname
+			       +  wxT(" SET WITH OIDS;\n");
 		}
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != table->GetTablespaceOid())
 			sql += wxT("ALTER TABLE ") + tabname
