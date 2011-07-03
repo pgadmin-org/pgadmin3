@@ -779,12 +779,12 @@ wxString dlgRole::GetSql()
 		{
 			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
 				sql += wxT("ALTER ROLE ") + qtIdent(name)
-				       +  wxT(" SET ") + newVar
+				       +  wxT("\n  SET ") + newVar
 				       +  wxT("='") + newVal
 				       +  wxT("';\n");
 			else
 				sql += wxT("ALTER ROLE ") + qtIdent(name)
-				       +  wxT(" SET ") + newVar
+				       +  wxT("\n  SET ") + newVar
 				       +  wxT("=") + newVal
 				       +  wxT(";\n");
 		}
@@ -794,7 +794,7 @@ wxString dlgRole::GetSql()
 	for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
 	{
 		sql += wxT("ALTER ROLE ") + qtIdent(name)
-		       +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+		       +  wxT("\n  RESET ") + vars.Item(pos).BeforeFirst('=')
 		       + wxT(";\n");
 	}
 

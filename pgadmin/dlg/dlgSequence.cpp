@@ -249,12 +249,12 @@ wxString dlgSequence::GetSql()
 		if (GetName() != sequence->GetName())
 		{
 			sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-			       +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+			       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
 		}
 		if (sequence->GetOwner() != cbOwner->GetValue())
 		{
 			sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
-			       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
 		}
 
 		// This is where things get hairy. Per some thought by Horvath Gabor,
@@ -342,7 +342,7 @@ wxString dlgSequence::GetSql()
 		if (cbOwner->GetGuessedSelection() > 0)
 		{
 			sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(name)
-			       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
 		}
 	}
 

@@ -624,7 +624,7 @@ wxString dlgIndex::GetSql()
 		{
 			if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
 				sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
-				       + qtIdent(index->GetName()) +  wxT(" SET (FILLFACTOR=")
+				       + qtIdent(index->GetName()) +  wxT("\n  SET (FILLFACTOR=")
 				       + txtFillFactor->GetValue() + wxT(");\n");
 
 			if(connection->BackendMinimumVersion(8, 0))
@@ -632,12 +632,12 @@ wxString dlgIndex::GetSql()
 				if (index->GetName() != txtName->GetValue() &&
 				        !txtName->GetValue().IsEmpty())
 					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
-					       + qtIdent(index->GetName()) +  wxT(" RENAME TO ")
+					       + qtIdent(index->GetName()) +  wxT("\n  RENAME TO ")
 					       + qtIdent(txtName->GetValue()) + wxT(";\n");
 
 				if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
 					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".") + qtIdent(name)
-					       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+					       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 					       +  wxT(";\n");
 			}
 		}
@@ -645,10 +645,10 @@ wxString dlgIndex::GetSql()
 		{
 			if (index && index->GetIsClustered() && !chkClustered->GetValue())
 				sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-				       +  wxT(" SET WITHOUT CLUSTER;\n");
+				       +  wxT("\n  SET WITHOUT CLUSTER;\n");
 			else if (chkClustered->GetValue() && (!index || !index->GetIsClustered()))
 				sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-				       +  wxT(" CLUSTER ON ") + qtIdent(name) + wxT(";\n");
+				       +  wxT("\n  CLUSTER ON ") + qtIdent(name) + wxT(";\n");
 		}
 
 		AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);

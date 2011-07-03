@@ -511,7 +511,7 @@ wxString dlgForeignTable::GetSql()
 		if (sqloptions.Length() > 0)
 		{
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
+			       + wxT("\n  OPTIONS (") + sqloptions + wxT(");\n");
 		}
 	}
 	else
@@ -595,7 +595,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 		{
 			old_name = elements.Item(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" DROP COLUMN ") + old_name + wxT(";\n");
+			       + wxT("\n  DROP COLUMN ") + old_name + wxT(";\n");
 		}
 
 		// Add all new attributes
@@ -604,7 +604,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 			new_name = lstMembers->GetItemText(i);
 			new_type = GetFullTypeName(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
+			       + wxT("\n  ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
 		}
 	}
 

@@ -199,17 +199,17 @@ wxString dlgDomain::GetSql()
 		{
 			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
 			if (chkNotNull->GetValue())
-				sql += wxT(" SET NOT NULL;\n");
+				sql += wxT("\n  SET NOT NULL;\n");
 			else
-				sql += wxT(" DROP NOT NULL;\n");
+				sql += wxT("\n  DROP NOT NULL;\n");
 		}
 		if (txtDefault->GetValue() != domain->GetDefault())
 		{
 			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
 			if (txtDefault->GetValue().IsEmpty())
-				sql += wxT(" DROP DEFAULT;\n");
+				sql += wxT("\n  DROP DEFAULT;\n");
 			else
-				sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
+				sql += wxT("\n  SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
 		}
 		AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 	}

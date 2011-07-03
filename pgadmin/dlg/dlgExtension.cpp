@@ -182,10 +182,10 @@ wxString dlgExtension::GetSql()
 		// edit mode
 		if (cbSchema->GetValue() != extension->GetSchemaStr())
 			sql += wxT("ALTER EXTENSION ") + qtIdent(extension->GetName())
-			       +  wxT(" SET SCHEMA ") + qtIdent(cbSchema->GetValue()) + wxT(";\n");
+			       +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue()) + wxT(";\n");
 		if (cbVersion->GetValue() != extension->GetVersion())
 			sql += wxT("ALTER EXTENSION ") + qtIdent(extension->GetName())
-			       +  wxT(" UPDATE TO ") + qtIdent(cbVersion->GetValue()) + wxT(";\n");
+			       +  wxT("\n  UPDATE TO ") + qtIdent(cbVersion->GetValue()) + wxT(";\n");
 	}
 	else
 	{

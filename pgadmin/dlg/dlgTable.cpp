@@ -814,7 +814,7 @@ wxString dlgTable::GetSql()
 					if (index < 0)
 					{
 						tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-						          +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
+						          +  wxT("\n  ADD COLUMN ") + definition + wxT(";\n");
 						//addcomment
 					}
 				}
@@ -851,7 +851,7 @@ wxString dlgTable::GetSql()
 			else
 				definition = definition.BeforeFirst(' ');
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-			       +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
+			       +  wxT("\n  DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
 		}
 		// Add the ADD COLUMNs...
 		sql += tmpsql;
@@ -869,7 +869,7 @@ wxString dlgTable::GetSql()
 			index = tmpDef.Index(definition);
 			if (index < 0)
 				tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-				          +  wxT(" INHERIT ") + definition + wxT(";\n");
+				          +  wxT("\n  INHERIT ") + definition + wxT(";\n");
 			else
 				tmpDef.RemoveAt(index);
 		}
@@ -878,7 +878,7 @@ wxString dlgTable::GetSql()
 		{
 			definition = tmpDef.Item(index);
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-			       +  wxT(" NO INHERIT ") + qtIdent(definition) + wxT(";\n");
+			       +  wxT("\n  NO INHERIT ") + qtIdent(definition) + wxT(";\n");
 		}
 		// Add the INHERIT COLUMNs...
 		sql += tmpsql;
@@ -899,7 +899,7 @@ wxString dlgTable::GetSql()
 			else
 			{
 				tmpsql += wxT("ALTER TABLE ") + tabname
-				          +  wxT(" ADD");
+				          +  wxT("\n  ADD");
 				if (!conname.IsEmpty())
 					tmpsql += wxT(" CONSTRAINT ");
 
@@ -915,7 +915,7 @@ wxString dlgTable::GetSql()
 			else
 				definition = definition.BeforeFirst(' ');
 			sql = wxT("ALTER TABLE ") + tabname
-			      + wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
+			      + wxT("\n  DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
 			      + sql;
 
 		}
@@ -925,16 +925,16 @@ wxString dlgTable::GetSql()
 		if (!chkHasOids->GetValue() && table->GetHasOids())
 		{
 			sql += wxT("ALTER TABLE ") + tabname
-			       +  wxT(" SET WITHOUT OIDS;\n");
+			       +  wxT("\n  SET WITHOUT OIDS;\n");
 		}
 		if (chkHasOids->GetValue() && !table->GetHasOids())
 		{
 			sql += wxT("ALTER TABLE ") + tabname
-			       +  wxT(" SET WITH OIDS;\n");
+			       +  wxT("\n  SET WITH OIDS;\n");
 		}
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != table->GetTablespaceOid())
 			sql += wxT("ALTER TABLE ") + tabname
-			       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+			       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
 
 		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != table->GetFillFactor())
@@ -1474,8 +1474,8 @@ wxString dlgTable::GetSql()
 		{
 			if (!lstColumns->GetText(pos, 4).IsEmpty())
 				sql += wxT("ALTER TABLE ") + tabname
-				       + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-				       + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+				       + wxT("\n  ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
+				       + wxT("\n  SET STATISTICS ") + lstColumns->GetText(pos, 4)
 				       + wxT(";\n");
 		}
 	}

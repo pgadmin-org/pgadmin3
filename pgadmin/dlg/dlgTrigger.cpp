@@ -274,7 +274,7 @@ wxString dlgTrigger::GetSql()
 	{
 		if (name != trigger->GetName())
 			sql = wxT("ALTER TRIGGER ") + trigger->GetQuotedIdentifier() + wxT(" ON ") + table->GetQuotedFullIdentifier()
-			      + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n\n");
+			      + wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n\n");
 	}
 
 	if (!trigger ||

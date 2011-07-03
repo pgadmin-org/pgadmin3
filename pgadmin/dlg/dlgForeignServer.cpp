@@ -282,14 +282,14 @@ wxString dlgForeignServer::GetSql()
 		if (txtVersion->GetValue() != foreignserver->GetVersion())
 		{
 			sql = wxT("ALTER SERVER ") + qtIdent(name)
-			      + wxT(" VERSION ") + qtDbString(txtVersion->GetValue()) + wxT(";\n");
+			      + wxT("\n  VERSION ") + qtDbString(txtVersion->GetValue()) + wxT(";\n");
 		}
 
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
 			sql += wxT("ALTER SERVER ") + name
-			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
+			       + wxT("\n  OPTIONS (") + sqloptions + wxT(");\n");
 		}
 
 		AppendOwnerChange(sql, wxT("SERVER ") + qtIdent(name));

@@ -423,14 +423,14 @@ void dlgProperty::AppendNameChange(wxString &sql, const wxString &objName)
 		if (objName.Length() > 0)
 		{
 			sql += wxT("ALTER ") + objName
-			       +  wxT(" RENAME TO ") + qtIdent(GetName())
+			       +  wxT("\n  RENAME TO ") + qtIdent(GetName())
 			       +  wxT(";\n");
 		}
 		else
 		{
 			sql += wxT("ALTER ") + GetObject()->GetTypeName().MakeUpper()
 			       +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
-			       +  wxT(" RENAME TO ") + qtIdent(GetName())
+			       +  wxT("\n  RENAME TO ") + qtIdent(GetName())
 			       +  wxT(";\n");
 		}
 	}
@@ -442,7 +442,7 @@ void dlgProperty::AppendOwnerChange(wxString &sql, const wxString &objName)
 	if (GetObject()->GetOwner() != cbOwner->GetValue())
 	{
 		sql += wxT("ALTER ") + objName
-		       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+		       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
 		       +  wxT(";\n");
 	}
 }
@@ -452,7 +452,7 @@ void dlgProperty::AppendOwnerNew(wxString &sql, const wxString &objName)
 {
 	if (cbOwner->GetGuessedSelection() > 0)
 		sql += wxT("ALTER ") + objName
-		       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+		       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
 		       +  wxT(";\n");
 }
 

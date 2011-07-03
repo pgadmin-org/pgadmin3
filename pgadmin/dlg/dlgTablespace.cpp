@@ -227,7 +227,7 @@ wxString dlgTablespace::GetSql()
 			if (oldVal != newVal)
 			{
 				sql += wxT("ALTER TABLESPACE ") + qtIdent(name)
-				       +  wxT(" SET (") + newVar
+				       +  wxT("\n  SET (") + newVar
 				       +  wxT("=") + newVal
 				       +  wxT(");\n");
 			}
@@ -237,7 +237,7 @@ wxString dlgTablespace::GetSql()
 		for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
 		{
 			sql += wxT("ALTER TABLESPACE ") + qtIdent(name)
-			       +  wxT(" RESET (") + vars.Item(pos).BeforeFirst('=')
+			       +  wxT("\n  RESET (") + vars.Item(pos).BeforeFirst('=')
 			       + wxT(");\n");
 		}
 	}
@@ -245,8 +245,8 @@ wxString dlgTablespace::GetSql()
 	{
 		// Create Mode
 		sql = wxT("CREATE TABLESPACE ") + qtIdent(name);
-		AppendIfFilled(sql, wxT(" OWNER "), qtIdent(cbOwner->GetValue()));
-		sql += wxT(" LOCATION ") + qtDbString(txtLocation->GetValue())
+		AppendIfFilled(sql, wxT("\n  OWNER "), qtIdent(cbOwner->GetValue()));
+		sql += wxT("\n  LOCATION ") + qtDbString(txtLocation->GetValue())
 		       +  wxT(";\n");
 	}
 
@@ -268,7 +268,7 @@ wxString dlgTablespace::GetSql2()
 		for (int pos = 0 ; pos < lstVariables->GetItemCount() ; pos++)
 		{
 			sql += wxT("ALTER TABLESPACE ") + qtIdent(name)
-			       +  wxT(" SET (") + lstVariables->GetText(pos)
+			       +  wxT("\n  SET (") + lstVariables->GetText(pos)
 			       +  wxT("=") + lstVariables->GetText(pos, 1)
 			       +  wxT(");\n");
 		}

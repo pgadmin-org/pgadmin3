@@ -673,7 +673,7 @@ wxString dlgDatabase::GetSql()
 			if (cbTablespace->GetCurrentSelection() > 0 && cbTablespace->GetOIDKey() > 0
 			        && cbTablespace->GetOIDKey() != database->GetTablespaceOid())
 				sql += wxT("ALTER DATABASE ") + qtIdent(name)
-				       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+				       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 				       +  wxT(";\n");
 		}
 		if (connection->BackendMinimumVersion(8, 1))
@@ -690,7 +690,7 @@ wxString dlgDatabase::GetSql()
 				wxString strConnLimit;
 				strConnLimit << connLimit;
 				sql += wxT("ALTER DATABASE ") + qtIdent(name)
-				       +  wxT(" WITH CONNECTION LIMIT = ")
+				       +  wxT("\n  WITH CONNECTION LIMIT = ")
 				       +  strConnLimit
 				       +  wxT(";\n");
 			}
@@ -749,9 +749,9 @@ wxString dlgDatabase::GetSql()
 					sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name);
 
 				if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
-					sql += wxT(" SET ") + newVar + wxT("='") + newVal + wxT("';\n");
+					sql += wxT("\n  SET ") + newVar + wxT("='") + newVal + wxT("';\n");
 				else
-					sql += wxT(" SET ") + newVar + wxT("=") + newVal + wxT(";\n");
+					sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
 			}
 		}
 
@@ -769,13 +769,13 @@ wxString dlgDatabase::GetSql()
 			if (username.Length() == 0)
 			{
 				sql += wxT("ALTER DATABASE ") + qtIdent(name)
-				       +  wxT(" RESET ") + varname
+				       +  wxT("\n  RESET ") + varname
 				       + wxT(";\n");
 			}
 			else
 			{
 				sql += wxT("ALTER ROLE ") + username + wxT(" IN DATABASE ") + qtIdent(name)
-				       +  wxT(" RESET ") + varname + wxT(";\n");
+				       +  wxT("\n  RESET ") + varname + wxT(";\n");
 			}
 		}
 
@@ -845,9 +845,9 @@ wxString dlgDatabase::GetSql2()
 				sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name);
 
 			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
-				sql += wxT(" SET ") + newVar + wxT("='") + newVal + wxT("';\n");
+				sql += wxT("\n  SET ") + newVar + wxT("='") + newVal + wxT("';\n");
 			else
-				sql += wxT(" SET ") + newVar + wxT("=") + newVal + wxT(";\n");
+				sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
 		}
 	}
 

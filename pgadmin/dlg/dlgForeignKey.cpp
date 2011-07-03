@@ -466,7 +466,7 @@ wxString dlgForeignKey::GetSql()
 	if (!foreignKey)
 	{
 		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT(" ADD");
+		      + wxT("\n  ADD");
 		AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
 		sql += wxT(" FOREIGN KEY ") + GetDefinition()
 		       + wxT(";\n");
@@ -474,7 +474,7 @@ wxString dlgForeignKey::GetSql()
 	else if (!chkDontValidate->GetValue())
 	{
 		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT(" VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+		      + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
 	}
 
 	if (!name.IsEmpty())
@@ -484,7 +484,7 @@ wxString dlgForeignKey::GetSql()
 	if (chkAutoIndex->GetValue())
 	{
 		sql += wxT("CREATE INDEX ") + qtIdent(txtIndexName->GetValue())
-		       +  wxT(" ON ") + table->GetQuotedFullIdentifier()
+		       +  wxT("\n  ON ") + table->GetQuotedFullIdentifier()
 		       +  wxT("(");
 
 		int pos;

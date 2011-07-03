@@ -469,14 +469,14 @@ wxString dlgUser::GetSql()
 				tmpGroups.RemoveAt(index);
 			else
 				sql += wxT("ALTER GROUP ") + qtIdent(groupName)
-				       +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
+				       +  wxT("\n  ADD USER ") + qtIdent(name) + wxT(";\n");
 		}
 
 		// check for removed groups
 		for (pos = 0 ; pos < (int)tmpGroups.GetCount() ; pos++)
 		{
 			sql += wxT("ALTER GROUP ") + qtIdent(tmpGroups.Item(pos))
-			       +  wxT(" DROP USER ") + qtIdent(name) + wxT(";\n");
+			       +  wxT("\n  DROP USER ") + qtIdent(name) + wxT(";\n");
 		}
 	}
 	else
@@ -507,7 +507,7 @@ wxString dlgUser::GetSql()
 		int cnt = lbGroupsIn->GetCount();
 		for (pos = 0 ; pos < cnt ; pos++)
 			sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
-			       +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
+			       +  wxT("\n  ADD USER ") + qtIdent(name) + wxT(";\n");
 	}
 
 	wxArrayString vars;
@@ -543,12 +543,12 @@ wxString dlgUser::GetSql()
 		{
 			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
 				sql += wxT("ALTER USER ") + qtIdent(name)
-				       +  wxT(" SET ") + newVar
+				       +  wxT("\n  SET ") + newVar
 				       +  wxT("='") + newVal
 				       +  wxT("';\n");
 			else
 				sql += wxT("ALTER USER ") + qtIdent(name)
-				       +  wxT(" SET ") + newVar
+				       +  wxT("\n  SET ") + newVar
 				       +  wxT("=") + newVal
 				       +  wxT(";\n");
 		}
@@ -558,7 +558,7 @@ wxString dlgUser::GetSql()
 	for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
 	{
 		sql += wxT("ALTER USER ") + qtIdent(name)
-		       +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+		       +  wxT("\n  RESET ") + vars.Item(pos).BeforeFirst('=')
 		       + wxT(";\n");
 	}
 

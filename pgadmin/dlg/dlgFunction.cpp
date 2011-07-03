@@ -866,10 +866,10 @@ wxString dlgFunction::GetSql()
 			if (!isProcedure)
 				sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier()
 				      + wxT("(") + function->GetArgSigList() + wxT(")")
-				      + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+				      + wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
 			else
 				sql = wxT("ALTER PROCEDURE ") + function->GetQuotedFullIdentifier()
-				      + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+				      + wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
 		}
 
 		if (didChange)
@@ -961,7 +961,7 @@ wxString dlgFunction::GetSql()
 	{
 		if (cbOwner->GetValue() != function->GetOwner())
 			sql += wxT("ALTER FUNCTION ") + name
-			       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
 			       + wxT(";\n");
 	}
 	else
@@ -1011,12 +1011,12 @@ wxString dlgFunction::GetSql()
 			{
 				if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
 					sql += wxT("ALTER FUNCTION ") + name
-					       +  wxT(" SET ") + newVar
+					       +  wxT("\n  SET ") + newVar
 					       +  wxT("='") + newVal
 					       +  wxT("';\n");
 				else
 					sql += wxT("ALTER FUNCTION ") + name
-					       +  wxT(" SET ") + newVar
+					       +  wxT("\n  SET ") + newVar
 					       +  wxT("=") + newVal
 					       +  wxT(";\n");
 			}
@@ -1026,7 +1026,7 @@ wxString dlgFunction::GetSql()
 		for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
 		{
 			sql += wxT("ALTER FUNCTION ") + name
-			       +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+			       +  wxT("\n  RESET ") + vars.Item(pos).BeforeFirst('=')
 			       + wxT(";\n");
 		}
 

@@ -134,7 +134,7 @@ wxString dlgView::GetSql()
 		if (name != view->GetName())
 		{
 			sql += wxT("ALTER TABLE ") + view->GetQuotedFullIdentifier()
-			       +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+			       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
 		}
 	}
 

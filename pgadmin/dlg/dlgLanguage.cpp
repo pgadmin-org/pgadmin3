@@ -192,7 +192,7 @@ wxString dlgLanguage::GetSql()
 		// edit mode
 		if (name != language->GetName())
 			sql += wxT("ALTER LANGUAGE ") + qtIdent(language->GetName())
-			       +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+			       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
 		if (connection->BackendMinimumVersion(8, 3))
 			AppendOwnerChange(sql, wxT("LANGUAGE ") + qtIdent(name));
 	}

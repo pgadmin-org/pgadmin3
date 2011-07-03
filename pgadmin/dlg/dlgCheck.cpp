@@ -109,9 +109,9 @@ wxString dlgCheck::GetSql()
 	if (!check)
 	{
 		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT(" ADD");
+		      + wxT("\n  ADD");
 		AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
-		sql += wxT(" CHECK ") + GetDefinition()
+		sql += wxT("\n  CHECK ") + GetDefinition()
 		       + wxT(";\n");
 	}
 	if (!name.IsEmpty())

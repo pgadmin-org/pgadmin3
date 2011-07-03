@@ -401,7 +401,7 @@ wxString dlgOperator::GetSql()
 
 		if (cbOwner->GetValue() != oper->GetOwner())
 			sql += wxT("ALTER OPERATOR ") + name
-			       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
 			       +  wxT(";\n");
 	}
 	else

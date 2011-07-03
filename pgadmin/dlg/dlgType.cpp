@@ -704,7 +704,7 @@ wxString dlgType::GetSql()
 					}
 
 					sql += wxT("ALTER TYPE ") + type->GetQuotedFullIdentifier()
-					       +  wxT(" ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
+					       +  wxT("\n  ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
 					       +  wxT(" ") + direction + wxT(" ")
 					       + connection->qtDbString(elements.Item(existingitems_index + offset))
 					       + wxT(";\n");
@@ -867,7 +867,7 @@ wxString dlgType::GetSqlForTypes()
 		for (i = 0 ; i < elements.GetCount() ; i += 3)
 		{
 			old_name = elements.Item(i);
-			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" DROP ATTRIBUTE ") + old_name + wxT(";\n");
+			sql += wxT("ALTER TYPE ") + type->GetName() + wxT("\n  DROP ATTRIBUTE ") + old_name + wxT(";\n");
 		}
 
 		// Add all new attributes
@@ -876,7 +876,7 @@ wxString dlgType::GetSqlForTypes()
 			new_name = lstMembers->GetItemText(i);
 			new_type = GetFullTypeName(i);
 			new_collation = memberCollations.Item(i);
-			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" ADD ATTRIBUTE ")
+			sql += wxT("ALTER TYPE ") + type->GetName() + wxT("\n  ADD ATTRIBUTE ")
 			       + new_name + wxT(" ") + new_type;
 			if (!new_collation.IsEmpty() && new_collation != wxT("pg_catalog.\"default\""))
 				sql += wxT(" COLLATE ") + new_collation;

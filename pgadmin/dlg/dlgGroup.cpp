@@ -183,14 +183,14 @@ wxString dlgGroup::GetSql()
 				tmpUsers.RemoveAt(index);
 			else
 				sql += wxT("ALTER GROUP ") + qtIdent(name)
-				       +  wxT(" ADD USER ") + qtIdent(userName) + wxT(";\n");
+				       +  wxT("\n  ADD USER ") + qtIdent(userName) + wxT(";\n");
 		}
 
 		// check for removed users
 		for (pos = 0 ; pos < (int)tmpUsers.GetCount() ; pos++)
 		{
 			sql += wxT("ALTER GROUP ") + qtIdent(name)
-			       +  wxT(" DROP USER ") + qtIdent(tmpUsers.Item(pos)) + wxT(";\n");
+			       +  wxT("\n  DROP USER ") + qtIdent(tmpUsers.Item(pos)) + wxT(";\n");
 		}
 	}
 	else

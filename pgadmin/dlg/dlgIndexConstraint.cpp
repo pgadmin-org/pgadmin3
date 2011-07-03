@@ -554,7 +554,7 @@ wxString dlgIndexConstraint::GetSql()
 	if (!index)
 	{
 		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT(" ADD");
+		      + wxT("\n  ADD");
 		AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
 
 		sql += wxT(" ") + wxString(factory->GetTypeName()).Upper() + wxT(" ") + GetDefinition()
@@ -565,7 +565,7 @@ wxString dlgIndexConstraint::GetSql()
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != index->GetTablespaceOid())
 		{
 			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
-			       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+			       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
 		}
 

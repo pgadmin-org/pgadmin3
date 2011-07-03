@@ -286,7 +286,7 @@ wxString dlgUserMapping::GetSql()
 		if (sqloptions.Length() > 0)
 		{
 			sql += wxT("ALTER USER MAPPING FOR ") + usermapping->GetUsr() + wxT(" SERVER ") + foreignserver->GetName()
-			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
+			       + wxT("\n  OPTIONS (") + sqloptions + wxT(");\n");
 		}
 	}
 	else
