@@ -90,6 +90,9 @@ wxString frmMaintenance::GetHelpPage() const
 		case 2:
 			page = wxT("pg/sql-reindex");
 			break;
+		case 3:
+			page = wxT("pg/sql-cluster");
+			break;
 	}
 	return page;
 }
@@ -104,11 +107,17 @@ void frmMaintenance::OnAction(wxCommandEvent &ev)
 	chkAnalyze->Enable(isVacuum);
 
 	bool isReindex = (rbxAction->GetSelection() == 2);
-	if (isReindex)
+	bool isCluster = (rbxAction->GetSelection() == 3);
+	if (isReindex || (isCluster && !conn->BackendMinimumVersion(8, 4)))
 	{
 		chkVerbose->SetValue(false);
+		chkVerbose->Enable(false);
 	}
-	chkVerbose->Enable(!isReindex);
+	else
+	{
+		chkVerbose->SetValue(true);
+		chkVerbose->Enable(true);
+	}
 }
 
 
@@ -167,6 +176,28 @@ wxString frmMaintenance::GetSql()
 				      + wxT(" ") + object->GetQuotedFullIdentifier();
 			}
 			break;
+		}
+		case 3:
+		{
+			sql = wxT("CLUSTER ");
+
+			if (chkVerbose->GetValue())
+				sql += wxT("VERBOSE ");
+			if (object->GetMetaType() == PGM_TABLE)
+				sql += object->GetQuotedFullIdentifier();
+			if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_UNIQUE
+			        || object->GetMetaType() == PGM_PRIMARYKEY)
+			{
+				sql += object->GetTable()->GetQuotedFullIdentifier();
+				if (conn->BackendMinimumVersion(8, 4))
+				{
+					sql += wxT(" USING ") + object->GetQuotedIdentifier();
+				}
+				else
+				{
+					sql += wxT(" ON ") + object->GetQuotedIdentifier();
+				}
+			}
 		}
 	}
 
