@@ -248,13 +248,29 @@ wxString dlgSequence::GetSql()
 
 		if (GetName() != sequence->GetName())
 		{
-			sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-			       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+			if (connection->BackendMinimumVersion(8, 3))
+			{
+				sql += wxT("ALTER SEQUENCE ") + sequence->GetQuotedFullIdentifier()
+				       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+			}
+			else
+			{
+				sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
+				       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+			}
 		}
 		if (sequence->GetOwner() != cbOwner->GetValue())
 		{
-			sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
-			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			if (connection->BackendMinimumVersion(8, 4))
+			{
+				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
+					   +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			}
+			else
+			{
+				sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			}
 		}
 
 		// This is where things get hairy. Per some thought by Horvath Gabor,
@@ -337,12 +353,20 @@ wxString dlgSequence::GetSql()
 		AppendIfFilled(sql, wxT("\n   MINVALUE "), txtMin->GetValue());
 		AppendIfFilled(sql, wxT("\n   MAXVALUE "), txtMax->GetValue());
 		AppendIfFilled(sql, wxT("\n   CACHE "), txtCache->GetValue());
-
 		sql += wxT(";\n");
+
 		if (cbOwner->GetGuessedSelection() > 0)
 		{
-			sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(name)
-			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			if (connection->BackendMinimumVersion(8, 4))
+			{
+				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
+					   +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			}
+			else
+			{
+				sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+			}
 		}
 	}
 
