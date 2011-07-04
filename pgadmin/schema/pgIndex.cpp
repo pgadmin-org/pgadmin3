@@ -188,7 +188,7 @@ void pgIndexBase::ReadColumnDetails()
 					quotedColumns += wxT(", ");
 				}
 
-				wxString options, coldef;
+				wxString options, coldef, opcname;
 				if (GetConnection()->BackendMinimumVersion(8, 3))
 					options = wxT("  i.indoption[") + NumToStr((long)(i - 1)) + wxT("] AS options,\n");
 
@@ -198,12 +198,9 @@ void pgIndexBase::ReadColumnDetails()
 				if (GetConnection()->BackendMinimumVersion(9, 0))
 				{
 					query = wxT("SELECT\n") + options +
-					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
-					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
-					        wxT("  ELSE\n") +
-					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-					        wxT("  END AS coldef,\n") +
-					        wxT("  op.oprname\n");
+					        wxT("  pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") AS coldef,\n") +
+					        wxT("  op.oprname,\n") +
+					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN o.opcname ELSE null END AS opcname\n");
 					if (GetConnection()->BackendMinimumVersion(9, 1))
 						query += wxT(",\n  coll.collname, nspc.nspname as collnspname\n");
 					query += wxT("FROM pg_index i\n")
@@ -219,11 +216,8 @@ void pgIndexBase::ReadColumnDetails()
 				else
 				{
 					query = wxT("SELECT\n") + options +
-					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
-					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
-					        wxT("  ELSE\n") +
-					        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-					        wxT("  END AS coldef\n") +
+					        wxT("  pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") AS coldef,\n") +
+					        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN o.opcname ELSE null END AS opcname\n") +
 					        wxT("FROM pg_index i\n") +
 					        wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
 					        wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i - 1)) + wxT("])\n") +
@@ -235,6 +229,20 @@ void pgIndexBase::ReadColumnDetails()
 				if (res->NumRows() > 0)
 				{
 					coldef = res->GetVal(wxT("coldef"));
+
+					if (GetConnection()->BackendMinimumVersion(9, 1) && !indexconstraint)
+					{
+						wxString collation = wxEmptyString;
+						if (!res->GetVal(wxT("collname")).IsEmpty())
+						{
+							collation = qtIdent(res->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(res->GetVal(wxT("collname")));
+							coldef += wxT(" COLLATE ") + collation;
+						}
+						collationsArray.Add(collation);
+					}
+
+					opcname = res->GetVal(wxT("opcname"));
+					coldef += wxT(" ") + opcname;
 
 					// Get the column options
 					if (GetConnection()->BackendMinimumVersion(8, 3))
@@ -260,21 +268,9 @@ void pgIndexBase::ReadColumnDetails()
 				{
 					coldef += wxT(" WITH ") + res->GetVal(wxT("oprname"));
 				}
-
 				columns += coldef;
 				quotedColumns += coldef;
 				columnList.Add(coldef);
-
-				if (GetConnection()->BackendMinimumVersion(9, 1) && !indexconstraint)
-				{
-					wxString collation = wxEmptyString;
-					if (!res->GetVal(wxT("collname")).IsEmpty())
-					{
-						collation = qtIdent(res->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(res->GetVal(wxT("collname")));
-						quotedColumns += wxT(" COLLATE ") + collation;
-					}
-					collationsArray.Add(collation);
-				}
 			}
 		}
 		else
