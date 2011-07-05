@@ -154,6 +154,7 @@ public:
 	void UpdateAllMacrosList();
 
 	void SetItemBackgroundColour(wxTreeItemId item, wxColour colour);
+	wxString GetNodePath(wxTreeItemId node);
 
 private:
 	wxAuiManager manager;
@@ -233,7 +234,7 @@ private:
 
 	void GetExpandedChildNodes(wxTreeItemId node, wxArrayString &expandedNodes);
 	void ExpandChildNodes(wxTreeItemId node, wxArrayString &expandedNodes);
-	wxString GetNodePath(wxTreeItemId node);
+
 
 	void PopulatePluginButtonMenu(wxCommandEvent &event);
 

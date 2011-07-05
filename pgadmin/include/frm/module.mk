@@ -31,7 +31,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frm/frmRestore.h \
 	$(srcdir)/include/frm/frmSplash.h \
 	$(srcdir)/include/frm/frmStatus.h \
-    $(srcdir)/include/frm/menu.h
+    	$(srcdir)/include/frm/menu.h
 
 EXTRA_DIST += \
     $(srcdir)/include/frm/module.mk

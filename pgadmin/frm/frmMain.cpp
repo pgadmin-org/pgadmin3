@@ -68,6 +68,7 @@
 #include "frm/frmEditGrid.h"
 #include "dlg/dlgServer.h"
 #include "dlg/dlgDatabase.h"
+#include "dlg/dlgSearchObject.h"
 #include "schema/pgTable.h"
 #include "schema/pgFunction.h"
 #include "schema/pgIndex.h"
@@ -147,6 +148,8 @@ frmMain::frmMain(const wxString &title)
 	statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
 	dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
 	dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+
+
 
 	// Switch back to the native list control.
 #ifdef __WXMAC__
@@ -354,6 +357,7 @@ void frmMain::CreateMenus()
 	new resetTableStatsFactory(menuFactories, editMenu, 0);
 	new resetFunctionStatsFactory(menuFactories, editMenu, 0);
 	new reassignDropOwnedFactory(menuFactories, editMenu, 0);
+	new searchObjectFactory(menuFactories, editMenu, 0);
 	editMenu->AppendSeparator();
 
 	new separatorFactory(menuFactories);
@@ -652,12 +656,13 @@ void frmMain::ExpandChildNodes(wxTreeItemId node, wxArrayString &expandedNodes)
 wxString frmMain::GetNodePath(wxTreeItemId node)
 {
 	wxString path;
-	path = browser->GetItemText(node).BeforeFirst('(');
+	path = browser->GetItemText(node).BeforeFirst('(').Trim();
 
 	wxTreeItemId parent = browser->GetItemParent(node);
 	while (parent.IsOk())
 	{
-		path = browser->GetItemText(parent).BeforeFirst('(') + wxT("/") + path;
+		browser->GetItemData(parent);
+		path = browser->GetItemText(parent).BeforeFirst('(').Trim() + wxT("/") + path;
 		parent = browser->GetItemParent(parent);
 	}
 
@@ -671,22 +676,35 @@ wxString frmMain::GetCurrentNodePath()
 }
 
 // Attempt to reselect the node with the given path
-bool frmMain::SetCurrentNode(wxTreeItemId node, const wxString &path)
+bool frmMain::SetCurrentNode(wxTreeItemId node, const wxString &origPath)
 {
+	wxString path = origPath.Lower();
 	wxTreeItemIdValue cookie;
 	wxTreeItemId child = browser->GetFirstChild(node, cookie);
 
+
 	while (child.IsOk())
 	{
-		if (GetNodePath(child) == path)
-		{
-			browser->SelectItem(child, true);
-			return true;
-		}
-		else if (SetCurrentNode(child, path))
-			return true;
+		wxString actNodePath = GetNodePath(child).Lower();
 
+		if(path.StartsWith(actNodePath))
+		{
+			if(!browser->IsExpanded(child))
+			{
+				browser->SelectItem(child, true);
+				browser->Expand(child);
+			}
+
+			if (actNodePath == path)
+			{
+				browser->SelectItem(child, true);
+				return true;
+			}
+			else if (SetCurrentNode(child, path))
+				return true;
+		}
 		child = browser->GetNextChild(node, cookie);
+
 	}
 
 	return false;

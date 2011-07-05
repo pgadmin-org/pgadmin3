@@ -63,6 +63,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgRule.xrc \
 	$(srcdir)/ui/dlgSchedule.xrc \
 	$(srcdir)/ui/dlgSchema.xrc \
+        $(srcdir)/ui/dlgSearchObject.xrc \
 	$(srcdir)/ui/dlgSelectConnection.xrc \
 	$(srcdir)/ui/dlgSequence.xrc \
 	$(srcdir)/ui/dlgServer.xrc \

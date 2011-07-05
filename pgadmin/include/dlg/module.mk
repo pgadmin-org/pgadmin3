@@ -44,6 +44,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgRole.h \
 	$(srcdir)/include/dlg/dlgRule.h \
 	$(srcdir)/include/dlg/dlgSchema.h \
+	$(srcdir)/include/dlg/dlgSearchObject.h \
 	$(srcdir)/include/dlg/dlgSelectConnection.h \
 	$(srcdir)/include/dlg/dlgSequence.h \
 	$(srcdir)/include/dlg/dlgServer.h \
