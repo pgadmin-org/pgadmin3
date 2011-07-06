@@ -46,7 +46,7 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db)
 	// Icon
 	appearanceFactory->SetIcons(this);
 	RestorePosition();
-	
+
 	btnSearch->Disable();
 
 	lcResults->InsertColumn(0, _("Type"));
@@ -136,7 +136,7 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db)
 		cbType->Append(_("Collations"));
 	}
 	cbType->SetSelection(0);
-	
+
 	txtPattern->SetFocus();
 }
 
@@ -427,7 +427,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 					continue;
 				}
 			}
-			
+
 			if(ItemPath.Contains(wxT("Schemas/pg_catalog")))
 			{
 				ItemPath.Replace(wxT(":Schemas/pg_catalog"), wxT(":Catalogs/PostgreSQL"));
@@ -453,7 +453,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		}
 		delete set;
 	}
-	
+
 	lcResults->SetColumnWidth(0, wxLIST_AUTOSIZE);
 	lcResults->SetColumnWidth(1, wxLIST_AUTOSIZE);
 	lcResults->SetColumnWidth(2, wxLIST_AUTOSIZE);

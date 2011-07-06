@@ -264,7 +264,7 @@ wxString dlgSequence::GetSql()
 			if (connection->BackendMinimumVersion(8, 4))
 			{
 				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
-					   +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
 			}
 			else
 			{
@@ -360,7 +360,7 @@ wxString dlgSequence::GetSql()
 			if (connection->BackendMinimumVersion(8, 4))
 			{
 				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
-					   +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
 			}
 			else
 			{
