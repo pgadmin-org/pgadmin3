@@ -335,7 +335,9 @@ wxString dlgTextSearchDictionary::GetSql()
 
 		sql += wxT("\n);\n");
 
+		AppendOwnerNew(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
 	}
+
 	AppendComment(sql, wxT("TEXT SEARCH DICTIONARY ") + objname, dict);
 
 	return sql;

@@ -357,6 +357,7 @@ wxString dlgTextSearchConfiguration::GetSql()
 
 		sql += wxT("\n);\n");
 
+		AppendOwnerNew(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
 	}
 
 	if (cbParser->GetValue().Length() > 0)
