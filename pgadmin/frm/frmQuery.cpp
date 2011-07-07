@@ -2681,7 +2681,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 	setTools(false);
 	fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
 
-	if (!IsActive())
+	if (!IsActive() || IsIconized())
 		RequestUserAttention();
 
 	if (!viewMenu->IsChecked(MNU_OUTPUTPANE))
