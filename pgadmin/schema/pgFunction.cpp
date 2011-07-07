@@ -235,8 +235,7 @@ void pgFunction::ShowStatistics(frmMain *form, ctlListView *statistics)
 		               wxT(", total_time AS ") + qtIdent(_("Total Time")) +
 		               wxT(", self_time AS ") + qtIdent(_("Self Time")) +
 		               wxT(" FROM pg_stat_user_functions") +
-		               wxT(" WHERE schemaname = ") + qtDbString(GetSchema()->GetName()) +
-		               wxT(" AND funcname = ") + qtDbString(GetName());
+		               wxT(" WHERE funcid = ") + NumToStr(GetOid());
 		DisplayStatistics(statistics, sql);
 	}
 }
