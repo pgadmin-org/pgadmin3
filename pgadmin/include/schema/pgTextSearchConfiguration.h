@@ -34,10 +34,6 @@ public:
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
-	virtual wxString GetQuotedIdentifier() const
-	{
-		return GetName();
-	}
 	bool CanDropCascaded()
 	{
 		return GetSchema()->GetMetaType() != PGM_CATALOG;
