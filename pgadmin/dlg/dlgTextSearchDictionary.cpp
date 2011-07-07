@@ -308,7 +308,7 @@ wxString dlgTextSearchDictionary::GetSql()
 	if (dict)
 	{
 		// edit mode
-		AppendNameChange(sql);
+		AppendNameChange(sql, wxT("TEXT SEARCH DICTIONARY ") + dict->GetQuotedFullIdentifier());
 		AppendOwnerChange(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
 
 		wxString sqloptions = GetOptionsSql();

@@ -342,7 +342,7 @@ wxString dlgTextSearchConfiguration::GetSql()
 	if (config)
 	{
 		// edit mode
-		AppendNameChange(sql);
+		AppendNameChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + config->GetQuotedFullIdentifier());
 		AppendOwnerChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
 	}
 	else

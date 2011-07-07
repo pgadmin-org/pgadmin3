@@ -233,7 +233,7 @@ wxString dlgTextSearchParser::GetSql()
 	if (parser)
 	{
 		// edit mode
-		AppendNameChange(sql);
+		AppendNameChange(sql, wxT("TEXT SEARCH PARSER ") + parser->GetQuotedFullIdentifier());
 	}
 	else
 	{

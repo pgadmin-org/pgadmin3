@@ -161,7 +161,7 @@ wxString dlgTextSearchTemplate::GetSql()
 	if (tmpl)
 	{
 		// edit mode
-		AppendNameChange(sql);
+		AppendNameChange(sql, wxT("TEXT SEARCH TEMPLATE ") + tmpl->GetQuotedFullIdentifier());
 	}
 	else
 	{
