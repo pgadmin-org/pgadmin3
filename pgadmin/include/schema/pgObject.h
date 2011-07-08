@@ -353,7 +353,7 @@ private:
 	static void AppendRight(wxString &rights, const wxString &acl, wxChar c, const wxChar *rightName, const wxString &column = wxEmptyString);
 	static wxString GetPrivilegeGrant(const wxString &allPattern, const wxString &acl, const wxString &grantObject, const wxString &user, const wxString &column);
 	void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
-	wxString name, owner, comment, acl;
+	wxString name, owner, schema, comment, acl;
 	int type;
 	OID oid, xid;
 

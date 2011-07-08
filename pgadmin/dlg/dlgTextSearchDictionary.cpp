@@ -93,6 +93,7 @@ int dlgTextSearchDictionary::Go(bool modal)
 	if (dict)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
 		cbTemplate->SetValue(dict->GetTemplate());
 		cbTemplate->Disable();
 
@@ -152,6 +153,7 @@ void dlgTextSearchDictionary::CheckChange()
 	if (dict)
 	{
 		EnableOK(txtName->GetValue() != dict->GetName()
+		         || cbSchema->GetValue() != dict->GetSchema()->GetName()
 		         || txtComment->GetValue() != dict->GetComment()
 		         || cbOwner->GetValue() != dict->GetOwner()
 		         || GetOptionsSql().Length() > 0);
@@ -303,27 +305,31 @@ wxString dlgTextSearchDictionary::GetOptionsSql()
 wxString dlgTextSearchDictionary::GetSql()
 {
 	wxString sql;
-	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString objname;
 
 	if (dict)
 	{
 		// edit mode
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 		AppendNameChange(sql, wxT("TEXT SEARCH DICTIONARY ") + dict->GetQuotedFullIdentifier());
-		AppendOwnerChange(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
 
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
 			sql += wxT("ALTER TEXT SEARCH DICTIONARY ") + objname
-			       + wxT(" (") + sqloptions + wxT(")");
+			       + wxT("\n  (") + sqloptions + wxT(");\n");
 		}
+		AppendOwnerChange(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
+
+		AppendSchemaChange(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
 	}
 	else
 	{
 		// create mode
+		objname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
 		sql = wxT("CREATE TEXT SEARCH DICTIONARY ")
-		      + schema->GetQuotedPrefix() + GetName()
-		      + wxT(" (")
+		      + objname
+		      + wxT("\n  (")
 		      + wxT("\n  TEMPLATE = ") + cbTemplate->GetValue();
 
 		// check for options
@@ -338,7 +344,7 @@ wxString dlgTextSearchDictionary::GetSql()
 		AppendOwnerNew(sql, wxT("TEXT SEARCH DICTIONARY ") + objname);
 	}
 
-	AppendComment(sql, wxT("TEXT SEARCH DICTIONARY ") + objname, dict);
+	AppendComment(sql, wxT("TEXT SEARCH DICTIONARY ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), dict);
 
 	return sql;
 }

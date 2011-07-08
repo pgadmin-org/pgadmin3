@@ -65,7 +65,7 @@ int dlgView::Go(bool modal)
 	if (view)
 	{
 		// edit mode
-
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		oldDefinition = view->GetFormattedDefinition();
 		txtSqlBox->SetText(oldDefinition);
 	}
@@ -107,6 +107,7 @@ void dlgView::CheckChange()
 			enable = txtComment->GetValue() != view->GetComment()
 			         || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false)
 			         || cbOwner->GetValue() != view->GetOwner()
+			         || cbSchema->GetValue() != view->GetSchema()->GetName()
 			         || name != view->GetName();
 		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
 		EnableOK(enable);
@@ -125,35 +126,46 @@ void dlgView::CheckChange()
 
 wxString dlgView::GetSql()
 {
-	wxString sql, name = GetName();
+	wxString sql;
+	wxString name;
 
 	if (view)
 	{
 		// edit mode
+		name = GetName();
 
 		if (name != view->GetName())
 		{
-			sql += wxT("ALTER TABLE ") + view->GetQuotedFullIdentifier()
-			       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+			if (connection->BackendMinimumVersion(8, 3))
+				AppendNameChange(sql, wxT("VIEW ") + view->GetQuotedFullIdentifier());
+			else
+				AppendNameChange(sql, wxT("TABLE ") + view->GetQuotedFullIdentifier());
 		}
+
+		if (connection->BackendMinimumVersion(8, 4) && cbSchema->GetName() != view->GetSchema()->GetName())
+			AppendSchemaChange(sql, wxT("VIEW " + qtIdent(view->GetSchema()->GetName()) + wxT(".") + qtIdent(name)));
+		else
+			AppendSchemaChange(sql, wxT("TABLE " + qtIdent(view->GetSchema()->GetName()) + wxT(".") + qtIdent(name)));
 	}
 
 	if (!view || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false))
 	{
-		sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" AS\n")
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
+		sql += wxT("CREATE OR REPLACE VIEW ") + name + wxT(" AS\n")
 		       + txtSqlBox->GetText().Trim(true).Trim(false)
 		       + wxT(";\n");
 	}
 
 	if (view)
-		AppendOwnerChange(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+		AppendOwnerChange(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 	else
-		AppendOwnerNew(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+		AppendOwnerNew(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 
-	sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+	sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
-	AppendComment(sql, wxT("VIEW"), schema, view);
+	AppendComment(sql, wxT("VIEW ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), view);
 	return sql;
 }
 

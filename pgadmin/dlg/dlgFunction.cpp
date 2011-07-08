@@ -171,6 +171,7 @@ int dlgFunction::Go(bool modal)
 
 	if (function)
 	{
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		rdbIn->Disable();
 		rdbOut->Disable();
 		rdbInOut->Disable();
@@ -833,7 +834,7 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 wxString dlgFunction::GetSql()
 {
 	wxString sql;
-	wxString name = GetName();
+	wxString name;
 	wxString objType;
 	if (isProcedure)
 		objType = wxT("PROCEDURE ");
@@ -859,23 +860,23 @@ wxString dlgFunction::GetSql()
 
 	if (function)
 	{
+		name = GetName();
 		// edit mode
 		if (name != function->GetName())
 		{
 			if (!isProcedure)
-				sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier()
-				      + wxT("(") + function->GetArgSigList() + wxT(")")
-				      + wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier()
+				                 + wxT("(") + function->GetArgSigList() + wxT(")"));
 			else
-				sql = wxT("ALTER PROCEDURE ") + function->GetQuotedFullIdentifier()
-				      + wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
+				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier());
 		}
-
 		if (didChange)
 			sql += wxT("CREATE OR REPLACE ") + objType;
 	}
 	else
 	{
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		// create mode
 		sql = wxT("CREATE " ) + objType;
 	}
@@ -958,10 +959,8 @@ wxString dlgFunction::GetSql()
 
 	if (function)
 	{
-		if (cbOwner->GetValue() != function->GetOwner())
-			sql += wxT("ALTER FUNCTION ") + name
-			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
-			       + wxT(";\n");
+		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
+		AppendSchemaChange(sql, wxT("FUNCTION ") + name);
 	}
 	else
 	{
@@ -1035,7 +1034,7 @@ wxString dlgFunction::GetSql()
 	if (isProcedure)
 		AppendComment(sql, wxT("PROCEDURE ") + schema->GetQuotedPrefix() + qtIdent(GetName()), function);
 	else
-		AppendComment(sql, wxT("FUNCTION ") + name, function);
+		AppendComment(sql, wxT("FUNCTION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), function);
 
 	return sql;
 }

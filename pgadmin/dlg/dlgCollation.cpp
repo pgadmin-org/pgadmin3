@@ -116,6 +116,7 @@ void dlgCollation::CheckChange()
 	if (collation)
 	{
 		EnableOK(txtName->GetValue() != collation->GetName()
+		         || cbSchema->GetValue() != collation->GetSchema()->GetName()
 		         || cbOwner->GetValue() != collation->GetOwner()
 		         || txtComment->GetValue() != collation->GetComment());
 	}
@@ -141,19 +142,23 @@ void dlgCollation::CheckChange()
 
 wxString dlgCollation::GetSql()
 {
-	wxString sql, name;
-	name = GetName();
+	wxString sql;
+	wxString name;
 
 	if (collation)
 	{
 		// edit mode
+		name = schema->GetQuotedPrefix() + qtIdent(GetName());;
 		AppendNameChange(sql, wxT("COLLATION ") + collation->GetQuotedFullIdentifier());
-		AppendOwnerChange(sql, wxT("COLLATION ") + collation->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("COLLATION ") + name);
+		AppendSchemaChange(sql, wxT("COLLATION ") + name);
 	}
 	else
 	{
 		// create mode
-		sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name);
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
+		sql = wxT("CREATE COLLATION ") + name;
 		if (cbCollation->GetValue().IsEmpty())
 		{
 			if (txtLocale->GetValue().IsEmpty())
@@ -169,14 +174,13 @@ wxString dlgCollation::GetSql()
 		}
 		else
 		{
-			sql = wxT("CREATE COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name)
-			      + wxT(" FROM ") + cbCollation->GetValue();
+			sql += wxT(" FROM ") + cbCollation->GetValue();
 		}
 		sql += wxT(";\n");
 
 		AppendOwnerNew(sql, wxT("COLLATION ") + schema->GetQuotedPrefix() + qtIdent(name));
 	}
-	AppendComment(sql, wxT("COLLATION"), schema, collation);
+	AppendComment(sql, wxT("COLLATION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), collation);
 
 	return sql;
 }

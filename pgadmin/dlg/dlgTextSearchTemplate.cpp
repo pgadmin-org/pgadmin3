@@ -102,6 +102,7 @@ int dlgTextSearchTemplate::Go(bool modal)
 	if (tmpl)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
 		cbInit->SetValue(tmpl->GetInit());
 		cbInit->Disable();
 		cbLexize->SetValue(tmpl->GetLexize());
@@ -133,6 +134,7 @@ void dlgTextSearchTemplate::CheckChange()
 	if (tmpl)
 	{
 		EnableOK(txtName->GetValue() != tmpl->GetName()
+		         || cbSchema->GetValue() != tmpl->GetSchema()->GetName()
 		         || txtComment->GetValue() != tmpl->GetComment());
 	}
 	else
@@ -156,18 +158,21 @@ void dlgTextSearchTemplate::OnChange(wxCommandEvent &ev)
 wxString dlgTextSearchTemplate::GetSql()
 {
 	wxString sql;
-	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString objname;
 
 	if (tmpl)
 	{
 		// edit mode
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 		AppendNameChange(sql, wxT("TEXT SEARCH TEMPLATE ") + tmpl->GetQuotedFullIdentifier());
+		AppendSchemaChange(sql, wxT("TEXT SEARCH TEMPLATE ") + objname);
 	}
 	else
 	{
 		// create mode
+		objname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
 		sql = wxT("CREATE TEXT SEARCH TEMPLATE ")
-		      + schema->GetQuotedPrefix() + GetName()
+		      + objname
 		      + wxT(" (");
 
 		AppendIfFilled(sql, wxT("\n   INIT="), cbInit->GetValue());
@@ -179,7 +184,7 @@ wxString dlgTextSearchTemplate::GetSql()
 
 	}
 
-	AppendComment(sql, wxT("TEXT SEARCH TEMPLATE ") + objname, tmpl);
+	AppendComment(sql, wxT("TEXT SEARCH TEMPLATE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), tmpl);
 
 	return sql;
 }

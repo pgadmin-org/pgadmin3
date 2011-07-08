@@ -93,6 +93,8 @@ int dlgOperator::Go(bool modal)
 	if (oper)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
+
 		cbLeftType->Append(oper->GetLeftType());
 		cbLeftType->SetSelection(0);
 
@@ -197,6 +199,7 @@ void dlgOperator::CheckChange()
 	if (oper)
 	{
 		EnableOK(txtComment->GetValue() != oper->GetComment()
+		         || cbSchema->GetValue() != oper->GetSchema()->GetName()
 		         || cbOwner->GetValue() != oper->GetOwner());
 	}
 	else
@@ -399,15 +402,15 @@ wxString dlgOperator::GetSql()
 		name = oper->GetQuotedFullIdentifier()
 		       + wxT("(") + oper->GetOperands() + wxT(")");
 
-		if (cbOwner->GetValue() != oper->GetOwner())
-			sql += wxT("ALTER OPERATOR ") + name
-			       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
-			       +  wxT(";\n");
+		AppendOwnerChange(sql, wxT("OPERATOR ") + name);
+		AppendSchemaChange(sql, wxT("OPERATOR ") + name);
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + GetName()
+		       + wxT("(") + oper->GetOperands() + wxT(")");
 	}
 	else
 	{
 		// create mode
-		name = schema->GetQuotedPrefix() + GetName() + wxT("(");
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + GetName() + wxT("(");
 		if (cbLeftType->GetGuessedSelection() > 0)
 			name += GetQuotedTypename(cbLeftType->GetGuessedSelection());
 		else
@@ -420,7 +423,7 @@ wxString dlgOperator::GetSql()
 		name += wxT(")");
 
 
-		sql = wxT("CREATE OPERATOR ") + schema->GetQuotedPrefix() + GetName()
+		sql = wxT("CREATE OPERATOR ") + qtIdent(cbSchema->GetValue()) + wxT(".") + GetName()
 		      + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetGuessedSelection());
 
 		AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetGuessedSelection()));
@@ -458,7 +461,7 @@ wxString dlgOperator::GetSql()
 			}
 		}
 		sql += wxT(");\n");
-
+		AppendOwnerChange(sql, wxT("OPERATOR ") + name);
 	}
 	AppendComment(sql, wxT("OPERATOR ") + name, oper);
 

@@ -89,6 +89,8 @@ int dlgAggregate::Go(bool modal)
 	if (aggregate)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
+
 		for (unsigned int x = 0; x < aggregate->GetInputTypesArray().Count(); x++ )
 		{
 			lstInputTypes->InsertItem(x, aggregate->GetInputTypesArray()[x]);
@@ -162,6 +164,7 @@ void dlgAggregate::CheckChange()
 	if (aggregate)
 	{
 		EnableOK(GetName() != aggregate->GetName()
+		         || cbSchema->GetValue() != aggregate->GetSchema()->GetName()
 		         || txtComment->GetValue() != aggregate->GetComment()
 		         || cbOwner->GetValue() != aggregate->GetOwner());
 	}
@@ -305,23 +308,28 @@ wxString dlgAggregate::GetSql()
 	if (aggregate)
 	{
 		// edit mode
+		name = GetName();
+
 		AppendNameChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(aggregate->GetName()) +
 		                 wxT("(") + GetInputTypesList() + wxT(")"));
 		AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName()) +
 		                  wxT("(") + GetInputTypesList() + wxT(")"));
+		AppendSchemaChange(sql,  wxT("AGGREGATE ") + qtIdent(aggregate->GetSchema()->GetName()) + wxT(".") + qtIdent(name) +
+		                   wxT("(") + GetInputTypesList() + wxT(")"));
 	}
 	else
 	{
 		// create mode
-		name = GetName();
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		if (connection->BackendMinimumVersion(8, 2))
 		{
-			sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
+			sql = wxT("CREATE AGGREGATE ") + name
 			      + wxT("(") + GetInputTypesList() + wxT(") (\n");
 		}
 		else
 		{
-			sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
+			sql = wxT("CREATE AGGREGATE ") + name
 			      + wxT("(\n   BASETYPE=") + GetInputTypesList() + wxT(",\n");
 		}
 
@@ -356,7 +364,7 @@ wxString dlgAggregate::GetSql()
 		AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name) +
 		               wxT("(") + GetInputTypesList() + wxT(")"));
 	}
-	AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName())
+	AppendComment(sql, wxT("AGGREGATE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
 	              + wxT("(") + GetInputTypesList()
 	              + wxT(")"), aggregate);
 

@@ -165,6 +165,7 @@ int dlgTextSearchParser::Go(bool modal)
 	if (parser)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
 		cbStart->SetValue(parser->GetStart());
 		cbStart->Disable();
 		cbGetToken->SetValue(parser->GetGettoken());
@@ -202,6 +203,7 @@ void dlgTextSearchParser::CheckChange()
 	if (parser)
 	{
 		EnableOK(txtName->GetValue() != parser->GetName()
+		         || cbSchema->GetValue() != parser->GetSchema()->GetName()
 		         || txtComment->GetValue() != parser->GetComment());
 	}
 	else
@@ -228,18 +230,21 @@ void dlgTextSearchParser::OnChange(wxCommandEvent &ev)
 wxString dlgTextSearchParser::GetSql()
 {
 	wxString sql;
-	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString objname;
 
 	if (parser)
 	{
 		// edit mode
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 		AppendNameChange(sql, wxT("TEXT SEARCH PARSER ") + parser->GetQuotedFullIdentifier());
+		AppendSchemaChange(sql, wxT("TEXT SEARCH PARSER ") + objname);
 	}
 	else
 	{
 		// create mode
+		objname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
 		sql = wxT("CREATE TEXT SEARCH PARSER ")
-		      + schema->GetQuotedPrefix() + GetName()
+		      + objname
 		      + wxT(" (")
 		      + wxT("\n  START = ") + cbStart->GetValue()
 		      + wxT(",\n  GETTOKEN = ") + cbGetToken->GetValue()
@@ -251,7 +256,7 @@ wxString dlgTextSearchParser::GetSql()
 		sql += wxT("\n);\n");
 
 	}
-	AppendComment(sql, wxT("TEXT SEARCH PARSER ") + objname, parser);
+	AppendComment(sql, wxT("TEXT SEARCH PARSER ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), parser);
 
 	return sql;
 }

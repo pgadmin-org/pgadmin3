@@ -134,6 +134,7 @@ protected:
 	void AppendNameChange(wxString &sql, const wxString &objname = wxEmptyString);
 	void AppendOwnerChange(wxString &sql, const wxString &objName = wxEmptyString);
 	void AppendOwnerNew(wxString &sql, const wxString &objname);
+	void AppendSchemaChange(wxString &sql, const wxString &objname = wxEmptyString);
 	void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);
 	void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
 	void AppendQuoted(wxString &sql, const wxString &name);
@@ -159,6 +160,7 @@ public:
 protected:
 	void AddGroups(ctlComboBoxFix *comboBox = 0);
 	void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2 = 0);
+	void AddSchemas(ctlComboBoxFix *comboBox = 0);
 	void FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2 = 0);
 	void PrepareTablespace(ctlComboBoxFix *cb, const OID current = 0);
 	void OnHelp(wxCommandEvent &ev);
@@ -174,6 +176,7 @@ protected:
 	wxNotebook *nbNotebook;
 	wxTextCtrl *txtName, *txtOid, *txtComment;
 	ctlComboBox *cbOwner;
+	ctlComboBox *cbSchema;
 	wxComboBox *cbClusterSet;
 	wxCheckBox *chkReadOnly;
 	ctlSQLBox *sqlTextField1;

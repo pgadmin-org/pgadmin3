@@ -81,6 +81,8 @@ int dlgSequence::Go(bool modal)
 
 		stStart->SetLabel(_("Current value"));
 
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
+
 		if (!connection->BackendMinimumVersion(7, 4))
 		{
 			txtIncrement->Disable();
@@ -208,6 +210,7 @@ void dlgSequence::CheckChange()
 	if (sequence)
 	{
 		EnableOK(maxOk && (name != sequence->GetName()
+						   || cbSchema->GetValue() != sequence->GetSchema()->GetName()
 		                   || txtComment->GetValue() != sequence->GetComment()
 		                   || cbOwner->GetValue() != sequence->GetOwner()
 		                   || txtStart->GetValue() != sequence->GetLastValue().ToString()
@@ -238,40 +241,22 @@ bool dlgSequence::doesOverflowBigInt(const wxString &str, bool emptyAllowed)
 
 wxString dlgSequence::GetSql()
 {
-	wxString sql;
-
-	wxString name = GetName();
+	wxString sql, name;
 
 	if (sequence)
 	{
 		// edit mode
+		name = GetName();
 
-		if (GetName() != sequence->GetName())
-		{
-			if (connection->BackendMinimumVersion(8, 3))
-			{
-				sql += wxT("ALTER SEQUENCE ") + sequence->GetQuotedFullIdentifier()
-				       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
-			}
-			else
-			{
-				sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-				       +  wxT("\n  RENAME TO ") + qtIdent(name) + wxT(";\n");
-			}
-		}
-		if (sequence->GetOwner() != cbOwner->GetValue())
-		{
-			if (connection->BackendMinimumVersion(8, 4))
-			{
-				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
-			}
-			else
-			{
-				sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
-			}
-		}
+		if (connection->BackendMinimumVersion(8, 3))
+			AppendNameChange(sql, wxT("SEQUENCE ") + sequence->GetQuotedFullIdentifier());
+		else
+			AppendNameChange(sql, wxT("TABLE ") + sequence->GetQuotedFullIdentifier());
+
+		if (connection->BackendMinimumVersion(8, 4))
+			AppendOwnerChange(sql, wxT("SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name));
+		else
+			AppendOwnerChange(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
 
 		// This is where things get hairy. Per some thought by Horvath Gabor,
 		// we need to adjust the min/max sequence values, and the the current
@@ -340,12 +325,17 @@ wxString dlgSequence::GetSql()
 				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
 				       +  tmp + wxT(";\n");
 			}
+
+			if (connection->BackendMinimumVersion(8, 1))
+				AppendSchemaChange(sql,  wxT("SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name));
 		}
 	}
 	else
 	{
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		// create mode
-		sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name);
+		sql = wxT("CREATE SEQUENCE ") + name;
 		if (chkCycled->GetValue())
 			sql += wxT(" CYCLE");
 		AppendIfFilled(sql, wxT("\n   INCREMENT "), txtIncrement->GetValue());
@@ -359,23 +349,21 @@ wxString dlgSequence::GetSql()
 		{
 			if (connection->BackendMinimumVersion(8, 4))
 			{
-				sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+				AppendOwnerChange(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 			}
 			else
 			{
-				sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
+				AppendOwnerChange(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 			}
 		}
 	}
 
-	if (!connection->BackendMinimumVersion(8, 2))
-		sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
-	else
-		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
-
-	AppendComment(sql, wxT("SEQUENCE"), schema, sequence);
+ 	if (!connection->BackendMinimumVersion(8, 2))
+		sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
+ 	else
+		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
+ 
+	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
 
 	return sql;
 }

@@ -124,6 +124,7 @@ int dlgTextSearchConfiguration::Go(bool modal)
 	if (config)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
 		cbParser->SetValue(config->GetParser());
 		cbCopy->Disable();
 
@@ -208,6 +209,7 @@ void dlgTextSearchConfiguration::CheckChange()
 	if (config)
 	{
 		EnableOK(txtName->GetValue() != config->GetName()
+		         || cbSchema->GetValue() != config->GetSchema()->GetName()
 		         || txtComment->GetValue() != config->GetComment()
 		         || cbOwner->GetValue() != config->GetOwner()
 		         || dirtyTokens);
@@ -337,28 +339,7 @@ void dlgTextSearchConfiguration::OnRemoveToken(wxCommandEvent &ev)
 wxString dlgTextSearchConfiguration::GetSql()
 {
 	wxString sql;
-	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
-
-	if (config)
-	{
-		// edit mode
-		AppendNameChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + config->GetQuotedFullIdentifier());
-		AppendOwnerChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
-	}
-	else
-	{
-		// create mode
-		sql = wxT("CREATE TEXT SEARCH CONFIGURATION ")
-		      + schema->GetQuotedPrefix() + GetName()
-		      + wxT(" (");
-
-		AppendIfFilled(sql, wxT("\n   PARSER="), cbParser->GetValue());
-		AppendIfFilled(sql, wxT("\n   COPY="), cbCopy->GetValue());
-
-		sql += wxT("\n);\n");
-
-		AppendOwnerNew(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
-	}
+	wxString objname = schema->GetQuotedPrefix() + qtIdent(config->GetName());
 
 	if (cbParser->GetValue().Length() > 0)
 	{
@@ -397,15 +378,15 @@ wxString dlgTextSearchConfiguration::GetSql()
 				if (oldVal.Length() == 0)
 				{
 					sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
-					       +  wxT(" ADD MAPPING FOR ") + newTok
-					       +  wxT(" WITH ") + newVal
+					       +  wxT("\n  ADD MAPPING FOR ") + newTok
+					       +  wxT("\n  WITH ") + newVal
 					       +  wxT(";\n");
 				}
 				else
 				{
 					sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
-					       +  wxT(" ALTER MAPPING FOR ") + newTok
-					       + wxT(" WITH ") + newVal
+					       +  wxT("\n  ALTER MAPPING FOR ") + newTok
+					       +  wxT("\n  WITH ") + newVal
 					       +  wxT(";\n");
 				}
 			}
@@ -425,7 +406,30 @@ wxString dlgTextSearchConfiguration::GetSql()
 		}
 	}
 
-	AppendComment(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname, config);
+	if (config)
+	{
+		// edit mode
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+		AppendNameChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + config->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
+		AppendSchemaChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
+	}
+	else
+	{
+		// create mode
+		objname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+		sql = wxT("CREATE TEXT SEARCH CONFIGURATION ")
+		      + objname
+		      + wxT(" (");
+
+		AppendIfFilled(sql, wxT("\n   PARSER="), cbParser->GetValue());
+		AppendIfFilled(sql, wxT("\n   COPY="), cbCopy->GetValue());
+
+		sql += wxT("\n);\n");
+
+	}
+
+	AppendComment(sql, wxT("TEXT SEARCH CONFIGURATION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), config);
 
 	return sql;
 }

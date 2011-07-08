@@ -89,6 +89,8 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
 	EVT_TEXT(XRCID("txtName"),                      dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
 	EVT_COMBOBOX(XRCID("cbOwner"),                  dlgProperty::OnChange)
+	EVT_TEXT(XRCID("cbSchema"),                     dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbSchema"),                 dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtComment"),                   dlgProperty::OnChange)
 
 	EVT_CHECKBOX(CTRLID_CHKSQLTEXTFIELD,            dlgProperty::OnChangeReadOnly)
@@ -137,6 +139,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 	txtOid = CTRL_TEXT("txtOID");
 	txtComment = CTRL_TEXT("txtComment");
 	cbOwner = CTRL_COMBOBOX2("cbOwner");
+	cbSchema = CTRL_COMBOBOX2("cbSchema");
 	cbClusterSet = CTRL_COMBOBOX1("cbClusterSet");
 
 	wxString db = wxT("Database");
@@ -239,6 +242,8 @@ int dlgProperty::Go(bool modal)
 {
 	wxASSERT(factory != 0);
 
+	pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection());
+
 	// restore previous position and size, if applicable
 	wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
 
@@ -256,6 +261,7 @@ int dlgProperty::Go(bool modal)
 	Move(pos);
 
 	ctlComboBoxFix *cbowner = (ctlComboBoxFix *)cbOwner;
+	ctlComboBoxFix *cbschema = (ctlComboBoxFix *)cbSchema;
 
 	if (cbClusterSet)
 	{
@@ -301,6 +307,9 @@ int dlgProperty::Go(bool modal)
 	if (txtOid)
 		txtOid->Disable();
 
+	if (cbschema && !cbschema->GetCount())
+		AddSchemas(cbschema);
+
 	if (GetObject())
 	{
 		if (txtName)
@@ -309,6 +318,8 @@ int dlgProperty::Go(bool modal)
 			txtOid->SetValue(NumToStr((unsigned long)GetObject()->GetOid()));
 		if (cbOwner)
 			cbOwner->SetValue(GetObject()->GetOwner());
+		if (cbSchema)
+			cbSchema->SetValue(GetObject()->GetSchema()->GetName());
 		if (txtComment)
 			txtComment->SetValue(GetObject()->GetComment());
 
@@ -329,6 +340,11 @@ int dlgProperty::Go(bool modal)
 			btn->Hide();
 		if (factory)
 			SetTitle(wxGetTranslation(factory->GetNewString()));
+		if (cbSchema)
+			if (obj->GetMetaType() == PGM_SCHEMA)
+				cbSchema->SetValue(obj->GetName());
+			else
+				cbSchema->SetValue(obj->GetSchema()->GetName());
 	}
 	if (statusBar)
 		statusBar->SetStatusText(wxEmptyString);
@@ -439,7 +455,7 @@ void dlgProperty::AppendNameChange(wxString &sql, const wxString &objName)
 
 void dlgProperty::AppendOwnerChange(wxString &sql, const wxString &objName)
 {
-	if (GetObject()->GetOwner() != cbOwner->GetValue())
+	if (!GetObject() || GetObject()->GetOwner() != cbOwner->GetValue())
 	{
 		sql += wxT("ALTER ") + objName
 		       +  wxT("\n  OWNER TO ") + qtIdent(cbOwner->GetValue())
@@ -457,13 +473,35 @@ void dlgProperty::AppendOwnerNew(wxString &sql, const wxString &objName)
 }
 
 
+void dlgProperty::AppendSchemaChange(wxString &sql, const wxString &objName)
+{
+	wxString currentschema;
+
+	if (GetObject()->GetMetaType() == PGM_SCHEMA)
+	{
+		currentschema = GetObject()->GetName();
+	}
+	else
+	{
+		currentschema = GetObject()->GetSchema()->GetName();
+	}
+
+	if (currentschema != cbSchema->GetValue())
+	{
+		sql += wxT("ALTER ") + objName
+		    +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue())
+		    +  wxT(";\n");
+	}
+}
+
+
 void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject *obj)
 {
 	wxString comment = txtComment->GetValue();
 	if ((!obj && !comment.IsEmpty()) || (obj && obj->GetComment() != comment))
 	{
 		sql += wxT("COMMENT ON ") + objName
-		       + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
+		       + wxT("\n  IS ") + qtDbString(comment) + wxT(";\n");
 	}
 }
 
@@ -547,6 +585,16 @@ void dlgProperty::AddGroups(ctlComboBoxFix *combo)
 	else
 	{
 		FillCombobox(wxT("SELECT groname FROM pg_group ORDER BY 1"), combo);
+	}
+}
+
+
+void dlgProperty::AddSchemas(ctlComboBoxFix *combo)
+{
+	if (connection->BackendMinimumVersion(8,1))
+	{
+		FillCombobox(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname != 'information_schema' ORDER BY nspname"),
+		            combo);
 	}
 }
 
@@ -745,6 +793,9 @@ void dlgProperty::ShowObject()
 	// inherently get refreshed as well. Yay :-)
 	if (owneritem)
 	{
+		// Get the object node in case we need it later
+		wxTreeItemId objectnode = mainForm->GetBrowser()->GetItemParent(owneritem);
+
 		// Stash the selected items path
 		wxString currentPath = mainForm->GetCurrentNodePath();
 
@@ -755,6 +806,35 @@ void dlgProperty::ShowObject()
 
 		// Restore the previous selection...
 		mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
+
+		// If we couldn't restore the previous selection, it means that
+		// the object doesn't exist any more. Either it was dropped, or
+		// moved to another schema.
+		// If it is the latter, we need to refresh the Schemas node.
+		if (currentPath != mainForm->GetCurrentNodePath())
+		{
+			if (objectnode.IsOk())
+			{
+				// first parent is the objects' node
+				wxTreeItemId objectsnode = mainForm->GetBrowser()->GetItemParent(objectnode);
+				if (objectsnode.IsOk())
+				{
+					// second parent is the schema's node
+					wxTreeItemId schemanode = mainForm->GetBrowser()->GetItemParent(objectsnode);
+					if (objectsnode.IsOk())
+					{
+						// third parent is the schemas' node
+						wxTreeItemId schemasnode = mainForm->GetBrowser()->GetItemParent(schemanode);
+						if (objectsnode.IsOk())
+						{
+							// we finally have the schemas' node, so we refresh it
+							pgObject *schemasnodeobj = mainForm->GetBrowser()->GetObject(schemasnode);
+							mainForm->Refresh(schemasnodeobj);
+						}
+					}
+				}
+			}
+		}
 	}
 	else if (data)
 	{
@@ -1084,6 +1164,8 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
 			break;
 
 		default:
+			// we want to do this as objects can change schema
+			owneritem = node->GetId();
 			break;
 	}
 }

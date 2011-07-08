@@ -102,7 +102,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
-	EVT_CHECKBOX(XRCID("chkUnlogged"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkUnlogged"),              dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtFillFactor"),		dlgProperty::OnChange)
@@ -251,6 +251,7 @@ int dlgTable::Go(bool modal)
 		lbTables->Enable(connection->BackendMinimumVersion(8, 2));
 		chkHasOids->Enable((connection->BackendMinimumVersion(8, 0) && table->GetHasOids())
 		                   || connection->BackendMinimumVersion(8, 4));
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
 		wxCookieType cookie;
@@ -788,7 +789,7 @@ wxString dlgTable::GetSql()
 {
 	int pos;
 	wxString sql;
-	wxString tabname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString tabname;
 
 	if (table)
 	{
@@ -799,6 +800,8 @@ wxString dlgTable::GetSql()
 
 		wxArrayString tmpDef = previousColumns;
 		wxString tmpsql;
+
+		tabname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
 		// Build a temporary list of ADD COLUMNs, and fixup the list to remove
 		for (pos = 0; pos < lstColumns->GetItemCount() ; pos++)
@@ -1233,10 +1236,18 @@ wxString dlgTable::GetSql()
 					sql += vacStr;
 			}
 		}
+		// This needs to always be last so that other statements use correct schema
+		if (connection->BackendMinimumVersion(8, 1) && cbSchema->GetValue() != table->GetSchema()->GetName())
+		{
+			AppendSchemaChange(sql, wxT("TABLE ") + tabname);
+		}
 	}
 	else
 	{
 		bool typedTable = cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0;
+
+		tabname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		sql = wxT("CREATE ");
 		if (chkUnlogged->GetValue())
 			sql +=  wxT("UNLOGGED ");
@@ -1490,7 +1501,7 @@ wxString dlgTable::GetSql()
 			       + wxT(";\n");
 	}
 
-	AppendComment(sql, wxT("TABLE"), schema, table);
+	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
 
 	if (connection->BackendMinimumVersion(8, 2))
 		sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + tabname);

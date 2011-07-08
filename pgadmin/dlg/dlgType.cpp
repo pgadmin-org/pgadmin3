@@ -189,7 +189,8 @@ int dlgType::Go(bool modal)
 	if (type)
 	{
 		// Edit Mode
-		txtName->Disable();
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
+		txtName->Enable(connection->BackendMinimumVersion(8, 4));
 		rdbType->SetSelection(type->GetTypeClass());
 		rdbType->Disable();
 
@@ -448,7 +449,9 @@ void dlgType::CheckChange()
 {
 	if (type)
 	{
-		EnableOK(txtComment->GetValue() != type->GetComment()
+		EnableOK(txtName->GetValue() != type->GetName()
+				 || txtComment->GetValue() != type->GetComment()
+		         || cbSchema->GetValue() != type->GetSchema()->GetName()
 		         || cbOwner->GetValue() != type->GetOwner()
 		         || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
 		         || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1)));
@@ -675,13 +678,16 @@ pgObject *dlgType::CreateObject(pgCollection *collection)
 
 wxString dlgType::GetSql()
 {
-	wxString sql, direction;
+	wxString sql, direction, objname;
 	size_t existingitems_index, listitems_index, offset;
 
 	if (type)
 	{
 		// Edit Mode
-		AppendOwnerChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+		AppendNameChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("TYPE ") + objname);
+
 		sql += GetSqlForTypes();
 		if (rdbType->GetSelection() == TYPE_ENUM && connection->BackendMinimumVersion(9, 1))
 		{
@@ -703,7 +709,7 @@ wxString dlgType::GetSql()
 						offset = -1;
 					}
 
-					sql += wxT("ALTER TYPE ") + type->GetQuotedFullIdentifier()
+					sql += wxT("ALTER TYPE ") + objname
 					       +  wxT("\n  ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
 					       +  wxT(" ") + direction + wxT(" ")
 					       + connection->qtDbString(elements.Item(existingitems_index + offset))
@@ -713,6 +719,7 @@ wxString dlgType::GetSql()
 					existingitems_index++;
 			}
 		}
+		AppendSchemaChange(sql, wxT("TYPE ") + objname);
 	}
 	else
 	{
@@ -817,7 +824,7 @@ wxString dlgType::GetSql()
 
 		sql += wxT(");\n");
 	}
-	AppendComment(sql, wxT("TYPE"), schema, type);
+	AppendComment(sql, wxT("TYPE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), type);
 
 	return sql;
 }

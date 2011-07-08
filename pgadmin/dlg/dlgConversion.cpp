@@ -72,6 +72,7 @@ int dlgConversion::Go(bool modal)
 	if (conversion)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(9, 1));
 		cbSourceEncoding->Append(conversion->GetForEncoding());
 		cbSourceEncoding->SetSelection(0);
 		cbTargetEncoding->Append(conversion->GetToEncoding());
@@ -91,6 +92,7 @@ int dlgConversion::Go(bool modal)
 	else
 	{
 		// create mode
+
 		wxString qry =
 		    wxT("SELECT proname, nspname\n")
 		    wxT("  FROM pg_proc p\n")
@@ -150,6 +152,7 @@ void dlgConversion::CheckChange()
 	if (conversion)
 	{
 		EnableOK(txtName->GetValue() != conversion->GetName()
+		         || cbSchema->GetValue() != conversion->GetSchema()->GetName()
 		         || txtComment->GetValue() != conversion->GetComment()
 		         || cbOwner->GetValue() != conversion->GetOwner());
 	}
@@ -171,22 +174,32 @@ void dlgConversion::CheckChange()
 wxString dlgConversion::GetSql()
 {
 	wxString sql;
-	wxString name = GetName();
+	wxString name;
 
 	if (conversion)
 	{
 		// edit mode
+		name = GetName();
 
 		AppendNameChange(sql);
 		AppendOwnerChange(sql, wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name));
+
+		if (cbSchema->GetValue() != conversion->GetSchema()->GetName())
+		{
+			sql += wxT("ALTER CONVERSION ") + qtIdent(conversion->GetSchema()->GetName()) + wxT(".") + qtIdent(name)
+			       +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue())
+			       +  wxT(";\n");
+		}
 	}
 	else
 	{
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		// create mode
 		sql = wxT("CREATE ");
 		if (chkDefault->GetValue())
 			sql += wxT("DEFAULT ");
-		sql += wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name)
+		sql += wxT("CONVERSION ") + name
 		       + wxT("\n   FOR ") + qtDbString(cbSourceEncoding->GetValue())
 		       + wxT(" TO ") + qtDbString(cbTargetEncoding->GetValue())
 		       + wxT("\n   FROM ") + functions.Item(cbFunction->GetCurrentSelection())
@@ -194,7 +207,7 @@ wxString dlgConversion::GetSql()
 
 		AppendOwnerNew(sql, wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name));
 	}
-	AppendComment(sql, wxT("CONVERSION"), schema, conversion);
+	AppendComment(sql, wxT("CONVERSION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), conversion);
 
 	return sql;
 }
