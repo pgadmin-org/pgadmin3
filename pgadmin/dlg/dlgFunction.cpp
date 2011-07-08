@@ -846,7 +846,6 @@ wxString dlgFunction::GetSql()
 	                 || cbVolatility->GetValue() != function->GetVolatility()
 	                 || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
 	                 || chkStrict->GetValue() != function->GetIsStrict()
-	                 || cbOwner->GetValue() != function->GetOwner()
 	                 || GetArgs() != function->GetArgListWithNames()
 	                 || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
 	                 || (!isC && txtSqlBox->GetText() != function->GetSource());
