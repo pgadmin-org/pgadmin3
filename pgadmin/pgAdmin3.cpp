@@ -1000,7 +1000,7 @@ void pgAdmin3::InitXtraPaths()
 
 		if (!programFilesX86.IsEmpty())
 		{
-			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.2\\bin"))
+			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.2\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.1\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.0\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\bin"));
