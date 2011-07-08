@@ -476,7 +476,7 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objType, pgSchema
 		sql += wxT("COMMENT ON ") + objType + wxT(" ");
 		if (schema)
 			sql += schema->GetQuotedPrefix();
-		sql += qtIdent(GetName()) + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
+		sql += qtIdent(GetName()) + wxT("\n  IS ") + qtDbString(comment) + wxT(";\n");
 	}
 }
 
