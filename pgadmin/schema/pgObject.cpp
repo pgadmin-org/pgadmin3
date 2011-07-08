@@ -756,7 +756,7 @@ wxString pgObject::GetCommentSql()
 	if (!comment.IsNull())
 	{
 		cmt = wxT("COMMENT ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier()
-		      + wxT(" IS ") + qtDbString(comment) + wxT(";\n");
+		      + wxT("\n  IS ") + qtDbString(comment) + wxT(";\n");
 	}
 	return cmt;
 }
@@ -775,7 +775,7 @@ wxString pgObject::GetOwnerSql(int major, int minor, wxString objname, wxString 
 			if (objname.IsEmpty())
 				objname = objtype + wxT(" ") + GetQuotedFullIdentifier();
 
-			sql = wxT("ALTER ") + objname + wxT(" OWNER TO ") + qtIdent(owner) + wxT(";\n");
+			sql = wxT("ALTER ") + objname + wxT("\n  OWNER TO ") + qtIdent(owner) + wxT(";\n");
 		}
 	}
 	return sql;
