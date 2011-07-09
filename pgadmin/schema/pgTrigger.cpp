@@ -204,6 +204,12 @@ wxString pgTrigger::GetSql(ctlTree *browser)
 			       + wxT(";\n");
 		}
 
+		if (!GetEnabled())
+		{
+			sql += wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ")
+				+  wxT("DISABLE TRIGGER ") + GetQuotedIdentifier() + wxT(";\n");
+		}
+
 		if (!GetComment().IsEmpty())
 			sql += wxT("COMMENT ON TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
 			       +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
@@ -558,10 +564,16 @@ enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, 
 wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 	((pgTrigger *)obj)->SetEnabled(form->GetBrowser(), !((pgTrigger *)obj)->GetEnabled());
+	((pgTrigger *)obj)->SetDirty();
 
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))
+	{
 		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+		form->GetSqlPane()->SetReadOnly(false);
+		form->GetSqlPane()->SetText(((pgTrigger *)obj)->GetSql(form->GetBrowser()));
+		form->GetSqlPane()->SetReadOnly(true);
+	}
 	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
 	return 0;

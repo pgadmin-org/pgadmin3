@@ -138,6 +138,13 @@ wxString pgRule::GetSql(ctlTree *browser)
 		      + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";\n\n")
 		      + wxT("CREATE OR REPLACE") + GetFormattedDefinition().Mid(6) // the backend pg_get_ruledef gives CREATE only
 		      + wxT("\n");
+
+		if (!GetEnabled())
+		{
+			sql += wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ")
+				+  wxT("DISABLE RULE ") + GetQuotedIdentifier() + wxT(";\n");
+		}
+
 		if (!GetComment().IsEmpty())
 			sql += wxT("COMMENT ON RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
 			       +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
@@ -320,10 +327,16 @@ enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu
 wxWindow *enabledisableRuleFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 	((pgRule *)obj)->SetEnabled(form->GetBrowser(), !((pgRule *)obj)->GetEnabled());
+	((pgRule *)obj)->SetDirty();
 
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))
+	{
 		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+		form->GetSqlPane()->SetReadOnly(false);
+		form->GetSqlPane()->SetText(((pgRule *)obj)->GetSql(form->GetBrowser()));
+		form->GetSqlPane()->SetReadOnly(true);
+	}
 	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
 	return 0;
