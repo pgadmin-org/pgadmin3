@@ -411,6 +411,9 @@ wxWindow *validateForeignKeyFactory::StartDialog(frmMain *form, pgObject *obj)
 	if (obj == form->GetBrowser()->GetObject(item))
 	{
 		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+		form->GetSqlPane()->SetReadOnly(false);
+		form->GetSqlPane()->SetText(((pgForeignKey *)obj)->GetSql(form->GetBrowser()));
+		form->GetSqlPane()->SetReadOnly(true);
 	}
 	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
