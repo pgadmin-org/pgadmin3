@@ -19,6 +19,10 @@
 #include "ctl/explainCanvas.h"
 
 
+BEGIN_EVENT_TABLE(ExplainCanvas, wxShapeCanvas)
+	EVT_MOTION(ExplainCanvas::OnMouseMotion)
+END_EVENT_TABLE()
+
 
 ExplainCanvas::ExplainCanvas(wxWindow *parent)
 	: wxShapeCanvas(parent)
@@ -26,7 +30,7 @@ ExplainCanvas::ExplainCanvas(wxWindow *parent)
 	SetDiagram(new wxDiagram);
 	GetDiagram()->SetCanvas(this);
 	SetBackgroundColour(*wxWHITE);
-	popup = new ExplainPopup(this);
+	popup = NULL;
 }
 
 
@@ -164,20 +168,40 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 }
 
 
+void ExplainCanvas::OnMouseMotion(wxMouseEvent &ev)
+{
+	ev.Skip(true);
+
+	if (ev.Dragging())
+		return;
+
+	wxClientDC dc(this);
+	PrepareDC(dc);
+
+	wxPoint logPos(ev.GetLogicalPosition(dc));
+
+	double x, y;
+	x = (double) logPos.x;
+	y = (double) logPos.y;
+
+	// Find the nearest object
+	int attachment = 0;
+	ExplainShape *nearestObj = dynamic_cast<ExplainShape *>(FindShape(x, y, &attachment));
+
+	if (nearestObj)
+	{
+		ShowPopup(nearestObj);
+	}
+}
+
+
 void ExplainCanvas::ShowPopup(ExplainShape *s)
 {
-	int sx, sy;
-	CalcScrolledPosition((int)s->GetX(), (int)s->GetY(), &sx, &sy);
+	if (popup || s == NULL)
+		return;
 
-	popup->SetShape(s);
+	popup = new ExplainPopup(this, s, &popup);
 
-	if (sy > GetClientSize().y * 2 / 3)
-		sy -= popup->GetSize().y;
-	sx -= popup->GetSize().x / 2;
-	if (sx < 0) sx = 0;
-
-	popup->Popup();
-	popup->Move(ClientToScreen(wxPoint(sx, sy)));
 }
 
 
@@ -215,9 +239,16 @@ void ExplainCanvas::SaveAsImage(const wxString &fileName, wxBitmapType imageType
 class ExplainText : public wxWindow
 {
 public:
-	ExplainText(wxWindow *parent, ExplainShape *s);
+	ExplainText(ExplainPopup *parent, ExplainShape *s);
+
+protected:
+	void OnMouseMove(wxMouseEvent &ev);
+#ifdef wxUSE_POPUPWIN
+	void OnMouseLost(wxMouseCaptureLostEvent &ev);
+#endif
 
 private:
+	ExplainPopup *popup;
 	ExplainShape *shape;
 	void OnPaint(wxPaintEvent &ev);
 
@@ -226,14 +257,18 @@ private:
 
 BEGIN_EVENT_TABLE(ExplainText, wxWindow)
 	EVT_PAINT(ExplainText::OnPaint)
+	EVT_MOTION(ExplainText::OnMouseMove)
+#ifdef wxUSE_POPUPWIN
+	EVT_MOUSE_CAPTURE_LOST(ExplainText::OnMouseLost)
+#endif
 END_EVENT_TABLE()
 
-
-ExplainText::ExplainText(wxWindow *parent, ExplainShape *s) : wxWindow(parent, -1)
+ExplainText::ExplainText(ExplainPopup *parent, ExplainShape *s) : wxWindow(parent, -1)
 {
 	SetBackgroundColour(wxColour(255, 255, 224));
 
 	shape = s;
+	popup = parent;
 
 	wxWindowDC dc(this);
 	dc.SetFont(settings->GetSystemFont());
@@ -266,6 +301,26 @@ ExplainText::ExplainText(wxWindow *parent, ExplainShape *s) : wxWindow(parent, -
 	SetSize(GetCharHeight() + w1, GetCharHeight() + h * n + h / 3);
 }
 
+void ExplainText::OnMouseMove(wxMouseEvent &ev)
+{
+	popup->OnMouseMove(ev);
+}
+
+#ifdef wxUSE_POPUPWIN
+void ExplainText::OnMouseLost(wxMouseCaptureLostEvent &ev)
+{
+	/*
+	 * We will not do anything here.
+	 * But - in order to resolve a wierd bug on window, when using
+	 * wxPopupTransientWindow, related to loosing the mouse control,
+	 * was not taken care properly, we have to introduce this function
+	 * to avoid the crash.
+	 *
+	 * Please refer:
+	 * http://article.gmane.org/gmane.comp.lib.wxwidgets.devel/82376
+	 */
+}
+#endif
 
 void ExplainText::OnPaint(wxPaintEvent &ev)
 {
@@ -308,55 +363,229 @@ void ExplainText::OnPaint(wxPaintEvent &ev)
 		y += yoffs;
 		dc.DrawText(shape->actual, x, y);
 	}
+
+#if wxUSE_POPUPWIN
+
+	wxPen pen1 = wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)),
+	      pen2 = wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DDKSHADOW)),
+	      pen3 = wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DHIGHLIGHT)),
+	      pen4 = wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW));
+
+	wxRect rect(wxPoint(0, 0), GetSize());
+
+	// draw the rectangle
+	dc.SetPen(pen1);
+	dc.DrawLine(rect.GetLeft(), rect.GetTop(), rect.GetLeft(), rect.GetBottom());
+	dc.DrawLine(rect.GetLeft() + 1, rect.GetTop(), rect.GetRight(), rect.GetTop());
+	dc.SetPen(pen2);
+	dc.DrawLine(rect.GetRight(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+	dc.DrawLine(rect.GetLeft(), rect.GetBottom(), rect.GetRight() + 1, rect.GetBottom());
+
+	// adjust the rect
+	rect.Inflate(-1);
+
+	// draw the rectangle
+	dc.SetPen(pen3);
+	dc.DrawLine(rect.GetLeft(), rect.GetTop(), rect.GetLeft(), rect.GetBottom());
+	dc.DrawLine(rect.GetLeft() + 1, rect.GetTop(), rect.GetRight(), rect.GetTop());
+	dc.SetPen(pen4);
+	dc.DrawLine(rect.GetRight(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+	dc.DrawLine(rect.GetLeft(), rect.GetBottom(), rect.GetRight() + 1, rect.GetBottom());
+
+	// adjust the rect
+	rect.Inflate(-1);
+
+	dc.SetPen(pen1);
+	dc.SetBrush(*wxTRANSPARENT_BRUSH);
+	dc.DrawRectangle(rect);
+
+#endif
+
 }
 
 
-BEGIN_EVENT_TABLE(ExplainPopup, wxDialog)
+BEGIN_EVENT_TABLE(ExplainPopup, pgTipWindowBase)
 	EVT_MOTION(ExplainPopup::OnMouseMove)
+	EVT_LEFT_DOWN(ExplainPopup::OnMouseClick)
+	EVT_RIGHT_DOWN(ExplainPopup::OnMouseClick)
+	EVT_MIDDLE_DOWN(ExplainPopup::OnMouseClick)
+#if wxUSE_POPUPWIN
+	EVT_MOUSE_CAPTURE_LOST(ExplainPopup::OnMouseLost)
+#else
+	EVT_KILL_FOCUS(ExplainPopup::OnKillFocus)
+	EVT_ACTIVATE(ExplainPopup::OnActivate)
+#endif // !wxUSE_POPUPWIN
 END_EVENT_TABLE()
 
-ExplainPopup::ExplainPopup(wxWindow *w) : wxDialog(w, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
+ExplainPopup::ExplainPopup(ExplainCanvas *parent, ExplainShape *shape, ExplainPopup **popup)
+#if wxUSE_POPUPWIN
+	: wxPopupTransientWindow(parent, wxNO_BORDER)
+#else
+	: wxFrame(parent, wxID_ANY, wxEmptyString,
+	          wxDefaultPosition, wxDefaultSize,
+	          wxNO_BORDER | wxFRAME_NO_TASKBAR )
+#endif
 {
-	explainText = 0;
+	wxASSERT(parent != NULL);
+	wxASSERT(shape != NULL);
+
+	if (popup)
+		m_ptr = popup;
+	else
+		m_ptr = NULL;
+
+	m_explainText = new ExplainText(this, shape);
+#if !wxUSE_POPUPWIN
+	m_creationTime = wxGetLocalTime();
+#endif
+	double width = 0.0, height = 0.0;
+
+	shape->GetBoundingBoxMin(&width, &height);
+	if (fabs(width) < 4.0) width = 4.0;
+	if (fabs(height) < 4.0) height = 4.0;
+
+	width += (double)4.0;
+	height += (double)4.0; // Allowance for inaccurate mousing
+
+	int x = (int)(shape->GetX() - (width / 2.0));
+	int y = (int)(shape->GetY() - (height / 2.0));
+
+	int sx, sy;
+	parent->CalcScrolledPosition(x, y, &sx, &sy);
+	parent->ClientToScreen(&sx, &sy);
+
+	m_rectBound.x = sx;
+	m_rectBound.y = sy;
+	m_rectBound.width = WXROUND(width);
+	m_rectBound.height = WXROUND(height);
+
+	SetSize(m_explainText->GetSize());
+
+	if (sy > GetClientSize().y * 2 / 3)
+		sy -= GetSize().y;
+	sx -= GetSize().x / 2;
+
+	if (sx < 5) sx = 5;
+
+	if (sx < 0) x = 0;
+
+#if wxUSE_POPUPWIN
+	Position(wxPoint(sx, sy), wxSize(0, 0));
+	Popup(m_explainText);
+	m_explainText->SetFocus();
+#ifdef __WXGTK__
+	m_explainText->CaptureMouse();
+#endif
+#else
+	Move(sx, sy);
+	Show(true);
+
+	m_explainText->SetFocus();
+	m_explainText->CaptureMouse();
+#endif
 }
 
-
-void ExplainPopup::SetShape(ExplainShape *s)
-{
-	if (explainText)
-		delete explainText;
-	explainText = new ExplainText(this, s);
-	SetSize(explainText->GetSize());
-}
-
-
-void ExplainPopup::Popup()
-{
-	Show();
-	Raise();
-	wxTheApp->Yield(true);
-
-	popupPoint = wxDefaultPosition;
-	CaptureMouse();
-}
-
-
-#define POPUP_HISTERESIS 5
 
 void ExplainPopup::OnMouseMove(wxMouseEvent &ev)
 {
-	if (popupPoint == wxDefaultPosition)
+	if ( m_rectBound.width &&
+	        !m_rectBound.Contains(ClientToScreen(ev.GetPosition())) )
 	{
-		popupPoint = ev.GetPosition();
+		// mouse left the bounding rect, disappear
+		Close();
 	}
 	else
 	{
-		if (abs(popupPoint.x - ev.GetX()) > POPUP_HISTERESIS || abs(popupPoint.y - ev.GetY()) > POPUP_HISTERESIS)
-		{
-			ReleaseMouse();
-			delete explainText;
-			explainText = 0;
-			wxDialog::Hide();
-		}
+		ev.Skip();
 	}
 }
+
+
+void ExplainPopup::OnMouseClick(wxMouseEvent &ev)
+{
+	Close();
+}
+
+
+ExplainPopup::~ExplainPopup()
+{
+	if (m_ptr)
+	{
+		*m_ptr = NULL;
+	}
+#ifdef wxUSE_POPUPWIN
+#ifdef __WXGTK__
+	if (m_explainText->HasCapture() )
+		m_explainText->ReleaseMouse();
+#endif
+#endif
+	if(HasCapture())
+		ReleaseMouse();
+}
+
+void ExplainPopup::Close()
+{
+	if (m_ptr)
+	{
+		*m_ptr = NULL;
+		m_ptr = NULL;
+	}
+
+	if (m_explainText->HasCapture())
+		m_explainText->ReleaseMouse();
+
+	if(HasCapture())
+		ReleaseMouse();
+
+#if wxUSE_POPUPWIN
+	Show(false);
+#ifdef __WXGTK__
+#endif
+	Destroy();
+#else
+	wxFrame::Close();
+#endif
+}
+
+
+#if wxUSE_POPUPWIN
+void ExplainPopup::OnDismiss()
+{
+	Close();
+}
+
+void ExplainPopup::OnMouseLost(wxMouseCaptureLostEvent &ev)
+{
+	/* Do Nothing */
+}
+#else
+void ExplainPopup::OnKillFocus(wxFocusEvent &event)
+{
+	// Workaround the kill focus event happening just after creation in wxGTK
+	if (wxGetLocalTime() > m_creationTime + 1 &&
+	        m_rectBound.width &&
+	        !m_rectBound.Contains(::wxGetMousePosition()))
+	{
+		Close();
+		return;
+	}
+	m_explainText->SetFocus();
+	m_explainText->CaptureMouse();
+}
+
+
+void ExplainPopup::OnActivate(wxActivateEvent &event)
+{
+	if (!event.GetActive())
+	{
+		if ( m_rectBound.width &&
+		        !m_rectBound.Contains(::wxGetMousePosition()) )
+		{
+			Close();
+			return;
+		}
+		m_explainText->SetFocus();
+		m_explainText->CaptureMouse();
+	}
+}
+#endif // !wxUSE_POPUPWIN

@@ -12,6 +12,16 @@
 #ifndef EXPLAINCANVAS_H
 #define EXPLAINCANVAS_H
 
+#if wxUSE_POPUPWIN
+#include "wx/popupwin.h"
+
+#define pgTipWindowBase wxPopupTransientWindow
+#else
+#include "wx/frame.h"
+
+#define pgTipWindowBase wxFrame
+#endif
+
 #include <ogl/ogl.h>
 
 
@@ -36,9 +46,12 @@ public:
 	void SaveAsImage(const wxString &fileName, wxBitmapType imageType);
 
 private:
+	void OnMouseMotion(wxMouseEvent &ev);
 
 	ExplainShape *rootShape;
 	ExplainPopup *popup;
+
+	DECLARE_EVENT_TABLE()
 };
 
 
@@ -106,18 +119,38 @@ private:
 };
 
 
-class ExplainPopup : public wxDialog
+class ExplainPopup : public pgTipWindowBase
 {
 public:
-	ExplainPopup(wxWindow *w);
-	void SetShape(ExplainShape *s);
-	void Popup();
+	ExplainPopup(ExplainCanvas *parent, ExplainShape *shape, ExplainPopup **popup = NULL);
+	void Close();
+	~ExplainPopup();
 
-private:
+protected:
+	// event handlers
+	void OnMouseClick(wxMouseEvent &event);
 	void OnMouseMove(wxMouseEvent &ev);
 
-	ExplainText *explainText;
-	wxPoint popupPoint;
+#if !wxUSE_POPUPWIN
+	void OnActivate(wxActivateEvent &event);
+	void OnKillFocus(wxFocusEvent &event);
+
+#else // wxUSE_POPUPWIN
+	virtual void OnDismiss();
+	void OnMouseLost(wxMouseCaptureLostEvent &ev);
+#endif // wxUSE_POPUPWIN/!wxUSE_POPUPWIN
+
+	ExplainPopup **m_ptr;
+	wxRect         m_rectBound;
+
+	ExplainText   *m_explainText;
+
+#if !wxUSE_POPUPWIN
+	long           m_creationTime;
+#endif // !wxUSE_POPUPWIN
+
+	friend class ExplainText;
+
 	DECLARE_EVENT_TABLE()
 };
 
