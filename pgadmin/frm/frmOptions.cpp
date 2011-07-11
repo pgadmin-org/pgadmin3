@@ -66,6 +66,7 @@
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
 #define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
+#define chkShowNotices			    CTRL_CHECKBOX("chkShowNotices")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
 #define pickerSqlFont               CTRL_FONTPICKER("pickerSqlFont")
 #define chkSuppressHints            CTRL_CHECKBOX("chkSuppressHints")
@@ -250,6 +251,7 @@ frmOptions::frmOptions(frmMain *parent)
 	chkIndicateNull->SetValue(settings->GetIndicateNull());
 	chkAutoRollback->SetValue(settings->GetAutoRollback());
 	chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
+	chkShowNotices->SetValue(settings->GetShowNotices());
 
 	txtPgHelpPath->SetValue(settings->GetPgHelpPath());
 	txtEdbHelpPath->SetValue(settings->GetEdbHelpPath());
@@ -559,6 +561,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetIndicateNull(chkIndicateNull->GetValue());
 	settings->SetAutoRollback(chkAutoRollback->GetValue());
 	settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
+	settings->SetShowNotices(chkShowNotices->GetValue());
+
 	settings->SetUnicodeFile(chkUnicodeFile->GetValue());
 	settings->SetWriteBOM(chkWriteBOM->GetValue());
 	settings->SetSystemFont(pickerFont->GetSelectedFont());

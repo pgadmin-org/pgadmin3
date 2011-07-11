@@ -236,13 +236,13 @@ bool pgConn::DoConnect()
 		}
 	}
 
-	// Set client encoding to Unicode/Ascii
+	// Set client encoding to Unicode/Ascii, Datestyle to ISO, and ask for notices.
 	if (PQstatus(conn) == CONNECTION_OK)
 	{
 		connStatus = PGCONN_OK;
 		PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
-		wxString sql = wxT("SET DateStyle=ISO;\n");
+		wxString sql = wxT("SET DateStyle=ISO;\nSET client_min_messages=notice;\n");
 		if (BackendMinimumVersion(9, 0))
 			sql += wxT("SET bytea_output=escape;\n");
 
@@ -646,6 +646,11 @@ void pgConn::Notice(const char *msg)
 	else
 	{
 		wxString str(msg, *conv);
+
+		// Display the notice if required
+		if (settings->GetShowNotices())
+			wxMessageBox(str, _("Notice"), wxICON_INFORMATION);
+
 		wxLogNotice(wxT("%s"), str.Trim().c_str());
 	}
 }

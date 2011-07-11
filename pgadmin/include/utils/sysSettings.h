@@ -669,6 +669,17 @@ public:
 		WriteBool(wxT("IgnoreVersion"), newval);
 	}
 
+	bool GetShowNotices() const
+	{
+		bool b;
+		Read(wxT("ShowNotices"), &b, false);
+		return b;
+	}
+	void SetShowNotices(const bool newval)
+	{
+		WriteBool(wxT("ShowNotices"), newval);
+	}
+
 	// Functions for storing settings
 	bool Write(const wxString &key, const wxString &value)
 	{
