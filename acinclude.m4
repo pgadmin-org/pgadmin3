@@ -287,6 +287,43 @@ AC_DEFUN([LOCATE_POSTGRESQL],
 	])
 ])
 
+#################
+# Locate Sphinx #
+#################
+AC_DEFUN([LOCATE_SPHINX],
+[
+        AC_ARG_WITH(sphinx-build, [  --with-sphinx-build=FILE sphinx-build executable to build the docs with],
+        [
+                if test "$withval" != no
+                then
+                        SPHINX_BUILD="$withval"
+                        if test ! -f "${SPHINX_BUILD}"
+                        then
+                                AC_MSG_ERROR([Could not find your sphinx-build executable ${SPHINX_BUILD}])
+                        fi
+
+                fi
+        ],
+        [
+                SPHINX_BUILD=/usr/local/bin/sphinx-build
+                if test ! -f "${SPHINX_BUILD}"
+                then
+                        SPHINX_BUILD=/usr/bin/sphinx-build
+                        if test ! -f "${SPHINX_BUILD}"
+                        then
+                                # Search the path
+				SPHINX_BUILD=""
+                                AC_PATH_PROGS(SPHINX_BUILD, sphinx-build sphinx-build-2.7 sphinx-build-2.6, "")
+                                if test ! -f "${SPHINX_BUILD}"
+                                then
+                                        AC_MSG_WARN([Could not find your sphinx-build executable. You might need to use the --with-sphinx-build=FILE configure option])
+                                fi
+                        fi
+                fi
+        ])
+])
+AC_SUBST(SPHINX_BUILD)
+
 ###########################
 # Debug build of pgAdmin3 #
 ###########################
@@ -840,7 +877,13 @@ AC_DEFUN([SUMMARY],
 		echo "Building a Mac OS X appbundle:		No"
 	fi
 	echo
-
+        if test "$SPHINX_BUILD" = ""
+        then
+                echo "sphinx-build executable:                <not found>"
+        else
+                echo "sphinx-build executable:                ${SPHINX_BUILD}"
+        fi
+	echo
 	echo "pgAdmin configuration is now complete. You can now compile and"
 	echo "install pgAdmin using 'make; make install'."
 	echo
