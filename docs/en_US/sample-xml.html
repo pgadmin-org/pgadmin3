@@ -1,75 +1,70 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-<title>Sample XML report data</title>
-</head>
+<meta name="generator" content=
+"HTML Tidy for Mac OS X (vers 25 March 2009), see www.w3.org">
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii">
+  <link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
 
-<body>
+  <title>Sample XML report data</title>
 
-<H3>Sample XML report data</H3>
+<h3>Sample XML report data</h3>
 
-<P>
-The sample report below demonstrates the XML format that the pgAdmin 
-<a href="reports.html">Report Tool</a> will produce.
-</p>
+  <p>The sample report below demonstrates the XML format that the
+  pgAdmin <a href="reports.html">Report Tool</a> will produce.
+  <pre style="background-color: #dddddd;">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="C:\stylesheet.xsl" ?&gt;
 
-<pre style="background-color: #dddddd;">
-&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;
-&#60;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;C:\stylesheet.xsl&#34; ?&#62;
+&lt;report&gt;
 
-&#60;report&#62;
+  &lt;header&gt;
 
-  &#60;header&#62;
+    &lt;!-- All the values in the header section are optional, apart from the title. --&gt;
 
-    &#60;!-- All the values in the header section are optional, apart from the title. --&#62;
+    &lt;title&gt;Sample XML file&lt;/title&gt;
+    &lt;notes&gt;This is a sample XML file.&lt;/notes&gt;
+    &lt;generated&gt;10/05/2006 11:21:23&lt;/generated&gt;
+    &lt;server&gt;localhost:5432&lt;/database&gt;
+    &lt;database&gt;postgres&lt;/database&gt;
+    &lt;schema&gt;public&lt;/schema&gt;
+    &lt;table&gt;pg_ts_cfg&lt;/table&gt;
+    &lt;job&gt;&lt;/job&gt;
+  &lt;/header&gt;
 
-    &#60;title&#62;Sample XML file&#60;/title&#62;
-    &#60;notes&#62;This is a sample XML file.&#60;/notes&#62;
-    &#60;generated&#62;10/05/2006 11:21:23&#60;/generated&#62;
-    &#60;server&#62;localhost:5432&#60;/database&#62;
-    &#60;database&#62;postgres&#60;/database&#62;
-    &#60;schema&#62;public&#60;/schema&#62;
-    &#60;table&#62;pg_ts_cfg&#60;/table&#62;
-    &#60;job&#62;&#60;/job&#62;
-  &#60;/header&#62;
+  &lt;!-- Multiple report sections may be present, and must have a name --&gt;
 
-  &#60;!-- Multiple report sections may be present, and must have a name --&#62;
-
-  &#60;section id=&#34;s1&#34; number=&#34;1&#34; name=&#34;Query results&#34;&#62;
+  &lt;section id="s1" number="1" name="Query results"&gt;
   
-    &#60;!-- A table is optional within a section. If present, the number --&#62;
-    &#60;!-- of columns should be appropriate for the attributes specified --&#62;
-    &#60;!-- in each row. A row needn't specify every value however. --&#62;
+    &lt;!-- A table is optional within a section. If present, the number --&gt;
+    &lt;!-- of columns should be appropriate for the attributes specified --&gt;
+    &lt;!-- in each row. A row needn't specify every value however. --&gt;
 
-    &#60;table&#62;
-      &#60;columns&#62;
-        &#60;column id=&#34;c1&#34; number=&#34;1&#34; name=&#34;oid&#34; /&#62;
-        &#60;column id=&#34;c2&#34; number=&#34;2&#34; name=&#34;ts_name&#34; /&#62;
-        &#60;column id=&#34;c3&#34; number=&#34;3&#34; name=&#34;prs_name&#34; /&#62;
-        &#60;column id=&#34;c4&#34; number=&#34;4&#34; name=&#34;locale&#34; /&#62;
-      &#60;/columns&#62;
-      &#60;rows&#62;
-        &#60;row id=&#34;r1&#34; number=&#34;1&#34; c1=&#34;17108&#34; c2=&#34;default&#34; c3=&#34;default&#34; c4=&#34;C&#34; /&#62;
-        &#60;row id=&#34;r2&#34; number=&#34;2&#34; c1=&#34;17109&#34; c2=&#34;default_russian&#34; c3=&#34;default&#34; c4=&#34;ru_RU.KOI8-R&#34; /&#62;
-        &#60;row id=&#34;r3&#34; number=&#34;3&#34; c1=&#34;17110&#34; c2=&#34;simple&#34; c3=&#34;default&#34; c4=&#34;&#34; /&#62;
-      &#60;/rows&#62;
+    &lt;table&gt;
+      &lt;columns&gt;
+        &lt;column id="c1" number="1" name="oid" /&gt;
+        &lt;column id="c2" number="2" name="ts_name" /&gt;
+        &lt;column id="c3" number="3" name="prs_name" /&gt;
+        &lt;column id="c4" number="4" name="locale" /&gt;
+      &lt;/columns&gt;
+      &lt;rows&gt;
+        &lt;row id="r1" number="1" c1="17108" c2="default" c3="default" c4="C" /&gt;
+        &lt;row id="r2" number="2" c1="17109" c2="default_russian" c3="default" c4="ru_RU.KOI8-R" /&gt;
+        &lt;row id="r3" number="3" c1="17110" c2="simple" c3="default" c4="" /&gt;
+      &lt;/rows&gt;
       
-      &#60;!-- Additional section specific info may be supplied. --&#62;
+      &lt;!-- Additional section specific info may be supplied. --&gt;
 
-      &#60;info&#62;3 rows with 4 columns retrieved.&#60;/info&#62;
+      &lt;info&gt;3 rows with 4 columns retrieved.&lt;/info&gt;
 
-    &#60;/table&#62;
+    &lt;/table&gt;
     
-    &#60;!-- Each section may also contain some related SQL. --&#62;
+    &lt;!-- Each section may also contain some related SQL. --&gt;
 
-    &#60;sql&#62;SELECT oid, * FROM pg_ts_cfg&#60;/sql&#62;
+    &lt;sql&gt;SELECT oid, * FROM pg_ts_cfg&lt;/sql&gt;
 
-  &#60;/section&#62;
+  &lt;/section&gt;
 
-&#60;/report&#62;
+&lt;/report&gt;
 </pre>
 
-</body>
-</html>
