@@ -833,7 +833,7 @@ wxString dlgType::GetFullTypeName(int type)
 			typname += wxT(",") + memberPrecisions.Item(type);
 		typname += wxT(")");
 	}
-	if (!memberPrecisions.Item(type).IsEmpty() && memberPrecisions.Item(type) != wxT("pg_catalog.\"default\""))
+	if (!memberCollations.Item(type).IsEmpty() && memberCollations.Item(type) != wxT("pg_catalog.\"default\""))
 		typname += wxT(" COLLATE ") + memberCollations.Item(type);
 
 	return typname;
