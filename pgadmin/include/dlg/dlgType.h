@@ -54,7 +54,7 @@ private:
 	void showDefinition(int panel);
 	wxString GetFullTypeName(int type);
 
-	wxArrayString memberTypes, memberLengths, memberPrecisions, memberCollations;
+	wxArrayString memberTypes, memberLengths, memberPrecisions, memberCollations, memberOriginalNames;
 	bool queriesToBeSplitted;
 
 	DECLARE_EVENT_TABLE()
