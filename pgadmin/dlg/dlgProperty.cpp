@@ -489,8 +489,8 @@ void dlgProperty::AppendSchemaChange(wxString &sql, const wxString &objName)
 	if (currentschema != cbSchema->GetValue())
 	{
 		sql += wxT("ALTER ") + objName
-		    +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue())
-		    +  wxT(";\n");
+		       +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue())
+		       +  wxT(";\n");
 	}
 }
 
@@ -591,10 +591,10 @@ void dlgProperty::AddGroups(ctlComboBoxFix *combo)
 
 void dlgProperty::AddSchemas(ctlComboBoxFix *combo)
 {
-	if (connection->BackendMinimumVersion(8,1))
+	if (connection->BackendMinimumVersion(8, 1))
 	{
 		FillCombobox(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname != 'information_schema' ORDER BY nspname"),
-		            combo);
+		             combo);
 	}
 }
 

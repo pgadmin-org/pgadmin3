@@ -469,11 +469,11 @@ void dlgType::CheckChange()
 	if (type)
 	{
 		EnableOK(enable && (txtName->GetValue() != type->GetName()
-				 || txtComment->GetValue() != type->GetComment()
-		         || cbSchema->GetValue() != type->GetSchema()->GetName()
-		         || cbOwner->GetValue() != type->GetOwner()
-		         || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
-		         || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1))));
+		                    || txtComment->GetValue() != type->GetComment()
+		                    || cbSchema->GetValue() != type->GetSchema()->GetName()
+		                    || cbOwner->GetValue() != type->GetOwner()
+		                    || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
+		                    || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1))));
 	}
 	else
 	{
@@ -891,7 +891,7 @@ wxString dlgType::GetSqlForTypes()
 		new_collation = memberCollations.Item(newindex);
 
 		if (!original_name.IsEmpty() && original_name == old_name && (new_name != old_name
-		    || new_type != old_type || new_collation != old_collation))
+		        || new_type != old_type || new_collation != old_collation))
 		{
 			// if this was originally in the list and the name has changed then rename it
 
@@ -946,7 +946,7 @@ wxString dlgType::GetSqlForTypes()
 		if (newindex + 1 - hold == lstMembers->GetItemCount() && elements.GetCount() >= (oldindex * 3) + 3)
 		{
 			// remove remaining old attributes
-			for (;elements.GetCount() >= (oldindex * 3) + 3;oldindex++)
+			for (; elements.GetCount() >= (oldindex * 3) + 3; oldindex++)
 			{
 				old_name = elements.Item(oldindex * 3);
 				old_type = elements.Item(oldindex * 3 + 1);

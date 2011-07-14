@@ -210,7 +210,7 @@ void dlgSequence::CheckChange()
 	if (sequence)
 	{
 		EnableOK(maxOk && (name != sequence->GetName()
-						   || cbSchema->GetValue() != sequence->GetSchema()->GetName()
+		                   || cbSchema->GetValue() != sequence->GetSchema()->GetName()
 		                   || txtComment->GetValue() != sequence->GetComment()
 		                   || cbOwner->GetValue() != sequence->GetOwner()
 		                   || txtStart->GetValue() != sequence->GetLastValue().ToString()
@@ -358,11 +358,11 @@ wxString dlgSequence::GetSql()
 		}
 	}
 
- 	if (!connection->BackendMinimumVersion(8, 2))
+	if (!connection->BackendMinimumVersion(8, 2))
 		sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
- 	else
+	else
 		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
- 
+
 	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
 
 	return sql;
