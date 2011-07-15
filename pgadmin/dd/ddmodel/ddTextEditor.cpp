@@ -41,7 +41,7 @@ ddTextEditor::ddTextEditor(wxString initialText) : wxFrame(NULL, wxID_ANY, wxT("
 void ddTextEditor::OnSave(wxCommandEvent &event)
 {
 	wxFileDialog *saveDialog = new wxFileDialog(this, wxT("Save File~"), wxT(""), wxT(""),
-	        wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxSAVE);
+	        wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxFD_SAVE);
 	int response = saveDialog->ShowModal();
 	if (response == wxID_OK)
 	{
@@ -52,7 +52,7 @@ void ddTextEditor::OnSave(wxCommandEvent &event)
 void ddTextEditor::OnOpen(wxCommandEvent &event)
 {
 	wxFileDialog *openDialog = new wxFileDialog(this, wxT("Open File~"), wxT(""), wxT(""),
-	        wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxOPEN);
+	        wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxFD_OPEN);
 	int response = openDialog->ShowModal();
 	if (response == wxID_OK)
 	{
