@@ -186,6 +186,7 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 	lstColumns->AddColumn(_("Column comment"), 0);
 	lstColumns->AddColumn(_("Column statistics"), 0);
 	lstColumns->AddColumn(_("Column"), 0);
+	lstColumns->AddColumn(_("Column type oid"), 0);
 
 	lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
@@ -1912,7 +1913,7 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
 			lstColumns->SetItem(pos, 3, col.GetSql());
 		lstColumns->SetItem(pos, 4, col.GetStatistics());
 		lstColumns->SetItem(pos, 5, col.GetComment());
-
+		lstColumns->SetItem(pos, 7, col.GetTypeOid());
 	}
 
 	CheckChange();

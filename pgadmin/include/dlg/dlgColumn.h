@@ -40,6 +40,7 @@ public:
 	{
 		return CTRL_TEXT("txtAttstattarget")->GetValue();
 	}
+	wxString GetTypeOid();
 
 	int Go(bool modal);
 

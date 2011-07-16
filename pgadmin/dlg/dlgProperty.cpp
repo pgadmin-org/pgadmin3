@@ -1589,7 +1589,9 @@ int dlgCollistProperty::Go(bool modal)
 		{
 			wxString col = columns->GetItemText(pos);
 			if (cbColumns->FindString(col) < 0)
-				cbColumns->Append(col);
+			{
+				cbColumns->Append(col, StrToOid(columns->GetText(pos, 7)));
+			}
 		}
 	}
 	if (table)
