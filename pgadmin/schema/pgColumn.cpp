@@ -479,20 +479,26 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
 	pgColumn *column = 0;
 	pgDatabase *database = collection->GetDatabase();
+	wxString sql;
+	int currentcol;
+	int currentlimit;
+
+	// grab inherited tables
+	sql = wxT("SELECT inhparent::regclass AS inhrelname,\n")
+	      wxT("  (SELECT count(*) FROM pg_attribute WHERE attrelid=inhparent AND attnum>0) AS colscount\n")
+	      wxT("  FROM pg_inherits\n")
+	      wxT("  WHERE inhrelid =  ") + collection->GetOidStr() + wxT("::oid\n")
+	      wxT("  ORDER BY inhseqno");
+	pgSet *inhtables = database->ExecuteSet(sql);
 
 	wxString systemRestriction;
 	if (!settings->GetShowSystemObjects())
 		systemRestriction = wxT("\n   AND att.attnum > 0");
 
-	wxString sql =
+	sql =
 	    wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, format_type(ty.oid,att.atttypmod) AS displaytypname, tn.nspname as typnspname, et.typname as elemtypname,\n")
 	    wxT("  ty.typstorage AS defaultstorage, cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
-	    wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey,\n")
-	    wxT("  CASE \n")
-	    wxT("       WHEN inh.inhparent IS NOT NULL AND att.attinhcount>0\n")
-	    wxT("            THEN inh.inhparent::regclass\n")
-	    wxT("       ELSE NULL\n")
-	    wxT("  END AS inhrelname");
+	    wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
 
 	if (database->BackendMinimumVersion(9, 1))
 		sql += wxT(",\n  coll.collname, nspc.nspname as collnspname");
@@ -510,7 +516,6 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	       wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
 	       wxT("  JOIN pg_class cl ON cl.oid=att.attrelid\n")
 	       wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
-	       wxT("  LEFT OUTER JOIN pg_inherits inh ON inh.inhrelid=att.attrelid\n")
 	       wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
 	       wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=att.attrelid AND adnum=att.attnum\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=att.attrelid AND des.objsubid=att.attnum\n")
@@ -528,8 +533,15 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	pgSet *columns = database->ExecuteSet(sql);
 	if (columns)
 	{
+		currentcol = 0;
+		if (inhtables && !inhtables->Eof())
+		{
+			currentlimit = inhtables->GetLong(wxT("colscount"));
+		}
 		while (!columns->Eof())
 		{
+			currentcol++;
+
 			column = new pgColumn(collection->GetTable(), columns->GetVal(wxT("attname")));
 
 			column->iSetAttTypId(columns->GetOid(wxT("atttypid")));
@@ -580,7 +592,20 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 			                            + qtIdent(columns->GetVal(wxT("relname"))));
 			column->iSetTableName(columns->GetVal(wxT("relname")));
 			column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
-			column->iSetInheritedTableName(columns->GetVal(wxT("inhrelname")));
+
+			if (inhtables)
+			{
+				if (currentcol > currentlimit)
+				{
+					inhtables->MoveNext();
+					if (!inhtables->Eof())
+						currentlimit += inhtables->GetLong(wxT("colscount"));
+				}
+
+				if (!inhtables->Eof())
+					column->iSetInheritedTableName(inhtables->GetVal(wxT("inhrelname")));
+			}
+
 			column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
 			column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
 			if (database->BackendMinimumVersion(8, 5))
