@@ -426,7 +426,7 @@ wxString dlgColumn::GetSql()
 			{
 				wxString sqlPart;
 				if (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
-					sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetGuessedSelection());
+					sqlPart = wxT("atttypid=") + dlgTypeProperty::GetTypeOid(cbDatatype->GetGuessedSelection());
 
 
 				if (!sqlPart.IsEmpty() ||
@@ -588,6 +588,12 @@ wxString dlgColumn::GetDefinition()
 	AppendIfFilled(sql, wxT(" DEFAULT "), txtDefault->GetValue());
 
 	return sql;
+}
+
+
+wxString dlgColumn::GetTypeOid()
+{
+	return dlgTypeProperty::GetTypeOid(cbDatatype->GetGuessedSelection());
 }
 
 
