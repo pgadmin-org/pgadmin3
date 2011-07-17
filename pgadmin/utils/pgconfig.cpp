@@ -357,6 +357,9 @@ const wxChar *pgHbaMethodStrings[] =
 	wxT("ldap"),
 	wxT("gss"),
 	wxT("sspi"),
+	wxT("cert"),
+	wxT("peer"),
+	wxT("radius"),
 	0
 };
 
