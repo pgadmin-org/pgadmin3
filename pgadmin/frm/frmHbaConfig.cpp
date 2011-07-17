@@ -172,7 +172,7 @@ void frmHbaConfig::DisplayFile(const wxString &str)
 	{
 		pgHbaConfigLine &line = lines.Item(i);
 		const wxChar *connTypeStr = line.GetConnectType();
-		if (connTypeStr)
+		if ((line.isValid || (!line.isValid && !line.isComment)) && !line.GetText().IsEmpty())
 		{
 			int imgIndex = 0;
 			if (!line.isComment)
