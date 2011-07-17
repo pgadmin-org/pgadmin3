@@ -23,7 +23,7 @@
 
 // pointer to controls
 #define cbName          CTRL_COMBOBOX("cbName")
-#define cbSchema        CTRL_COMBOBOX("cbSchema")
+#define cbObjectsSchema CTRL_COMBOBOX("cbObjectsSchema")
 #define cbVersion       CTRL_COMBOBOX("cbVersion")
 
 
@@ -36,8 +36,8 @@ dlgProperty *pgExtensionFactory::CreateDialog(frmMain *frame, pgObject *node, pg
 BEGIN_EVENT_TABLE(dlgExtension, dlgProperty)
 	EVT_TEXT(XRCID("cbName"),                       dlgExtension::OnChangeName)
 	EVT_COMBOBOX(XRCID("cbName"),                   dlgExtension::OnChangeName)
-	EVT_TEXT(XRCID("cbSchema"),                     dlgProperty::OnChange)
-	EVT_COMBOBOX(XRCID("cbSchema"),                 dlgProperty::OnChange)
+	EVT_TEXT(XRCID("cbObjectsSchema"),                     dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbObjectsSchema"),                 dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbVersion"),                    dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbVersion"),                dlgProperty::OnChange)
 END_EVENT_TABLE();
@@ -61,14 +61,14 @@ int dlgExtension::Go(bool modal)
 	txtComment->Disable();
 
 	// add all schemas
-	cbSchema->Append(wxEmptyString);
+	cbObjectsSchema->Append(wxEmptyString);
 	pgSetIterator schemas(connection,
 	                      wxT("SELECT nspname FROM pg_namespace\n")
 	                      wxT(" ORDER BY nspname"));
 
 	while (schemas.RowsLeft())
-		cbSchema->Append(schemas.GetVal(wxT("nspname")));
-	cbSchema->SetSelection(0);
+		cbObjectsSchema->Append(schemas.GetVal(wxT("nspname")));
+	cbObjectsSchema->SetSelection(0);
 
 	if (extension)
 	{
@@ -77,8 +77,8 @@ int dlgExtension::Go(bool modal)
 		cbName->SetSelection(0);
 		cbName->Disable();
 
-		cbSchema->SetValue(extension->GetSchemaStr());
-		cbSchema->Enable(extension->GetIsRelocatable());
+		cbObjectsSchema->SetValue(extension->GetSchemaStr());
+		cbObjectsSchema->Enable(extension->GetIsRelocatable());
 
 		// add all versions
 		cbVersion->Clear();
@@ -142,12 +142,12 @@ void dlgExtension::OnChangeName(wxCommandEvent &ev)
 
 	if (relocatable)
 	{
-		cbSchema->Enable();
+		cbObjectsSchema->Enable();
 	}
 	else
 	{
-		cbSchema->SetSelection(0);
-		cbSchema->Disable();
+		cbObjectsSchema->SetSelection(0);
+		cbObjectsSchema->Disable();
 	}
 
 	OnChange(ev);
@@ -159,7 +159,7 @@ void dlgExtension::CheckChange()
 	bool didChange = true;
 	if (extension)
 	{
-		didChange = cbSchema->GetValue() != extension->GetSchemaStr()
+		didChange = cbObjectsSchema->GetValue() != extension->GetSchemaStr()
 		            || cbVersion->GetValue() != extension->GetVersion();
 		EnableOK(didChange);
 	}
@@ -180,9 +180,9 @@ wxString dlgExtension::GetSql()
 	if (extension)
 	{
 		// edit mode
-		if (cbSchema->GetValue() != extension->GetSchemaStr())
+		if (cbObjectsSchema->GetValue() != extension->GetSchemaStr())
 			sql += wxT("ALTER EXTENSION ") + qtIdent(extension->GetName())
-			       +  wxT("\n  SET SCHEMA ") + qtIdent(cbSchema->GetValue()) + wxT(";\n");
+			       +  wxT("\n  SET SCHEMA ") + qtIdent(cbObjectsSchema->GetValue()) + wxT(";\n");
 		if (cbVersion->GetValue() != extension->GetVersion())
 			sql += wxT("ALTER EXTENSION ") + qtIdent(extension->GetName())
 			       +  wxT("\n  UPDATE TO ") + qtIdent(cbVersion->GetValue()) + wxT(";\n");
@@ -190,7 +190,7 @@ wxString dlgExtension::GetSql()
 	else
 	{
 		sql = wxT("CREATE EXTENSION ") + qtIdent(cbName->GetValue());
-		AppendIfFilled(sql, wxT("\n   SCHEMA "), qtIdent(cbSchema->GetValue()));
+		AppendIfFilled(sql, wxT("\n   SCHEMA "), qtIdent(cbObjectsSchema->GetValue()));
 		AppendIfFilled(sql, wxT("\n   VERSION "), qtIdent(cbVersion->GetValue()));
 	}
 
