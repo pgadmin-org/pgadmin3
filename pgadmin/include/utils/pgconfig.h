@@ -99,6 +99,7 @@ public:
 
 	long item;
 
+	bool isValid;
 	bool isComment;
 	bool changed;
 };

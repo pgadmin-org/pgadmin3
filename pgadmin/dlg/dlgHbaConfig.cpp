@@ -168,8 +168,8 @@ dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *_con
 		}
 
 		wxString sql = wxT("SELECT usename FROM pg_user\n")
-						wxT("UNION\n")
-						wxT("SELECT 'group ' || groname FROM pg_group");
+		               wxT("UNION\n")
+		               wxT("SELECT 'group ' || groname FROM pg_group");
 		set = conn->ExecuteSet(sql);
 		if (set)
 		{
@@ -223,7 +223,7 @@ void dlgHbaConfig::OnAddDatabase(wxCommandEvent &ev)
 
 	wxString newDatabase;
 	if (database == wxT("all") || database == wxT("sameuser") || database == wxT("samegroup")
-	    || database == wxT("samerole") || database == wxT("replication") || database.Left(1) == wxT("@"))
+	        || database == wxT("samerole") || database == wxT("replication") || database.Left(1) == wxT("@"))
 		database = wxEmptyString;
 
 	if (sel == 3)    // file
