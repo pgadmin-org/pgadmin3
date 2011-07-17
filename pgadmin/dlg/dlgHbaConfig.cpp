@@ -166,10 +166,10 @@ dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *_con
 			}
 			delete set;
 		}
-		wxString sql = wxT("SELECT 'group ' || groname FROM pg_group");
-		if (settings->GetShowUsersForPrivileges())
-			sql += wxT("\nUNION\nSELECT usename FROM pg_user");
 
+		wxString sql = wxT("SELECT usename FROM pg_user\n")
+						wxT("UNION\n")
+						wxT("SELECT 'group ' || groname FROM pg_group");
 		set = conn->ExecuteSet(sql);
 		if (set)
 		{
