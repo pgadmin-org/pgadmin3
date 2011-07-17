@@ -829,7 +829,8 @@ void dlgProperty::ShowObject()
 						{
 							// we finally have the schemas' node, so we refresh it
 							pgObject *schemasnodeobj = mainForm->GetBrowser()->GetObject(schemasnode);
-							mainForm->Refresh(schemasnodeobj);
+							if (schemasnodeobj)
+								mainForm->Refresh(schemasnodeobj);
 						}
 					}
 				}
