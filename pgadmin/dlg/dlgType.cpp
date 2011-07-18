@@ -112,11 +112,16 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 
 void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
+	wxString name = txtMembername->GetValue().Strip(wxString::both);
+
 	btnAddMember->Enable(
 	    ((type && connection->BackendMinimumVersion(9, 1)) || !type)
-	    && !txtMembername->GetValue().Strip(wxString::both).IsEmpty()
+	    && !name.IsEmpty()
+	    && lstMembers->FindItem(-1, name, false) == -1
 	    && cbDatatype->GetGuessedSelection() >= 0);
-	btnChangeMember->Enable(true);
+	btnChangeMember->Enable(
+	    lstMembers->FindItem(-1, name, false) == lstMembers->GetFirstSelected()
+	    || lstMembers->FindItem(-1, name, false) == -1);
 }
 
 void dlgType::showDefinition(int panel)
@@ -239,7 +244,7 @@ int dlgType::Go(bool modal)
 		bool changeok = connection->BackendMinimumVersion(9, 1);
 		txtMembername->Enable(changeok);
 		cbCollation->Enable(changeok);
-		btnAddMember->Enable(changeok);
+		btnAddMember->Enable(false);
 		btnChangeMember->Enable(false);
 		btnRemoveMember->Enable(false);
 
@@ -529,7 +534,7 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
 		type += wxT(")");
 	}
 
-	if (!name.IsEmpty() && lstMembers->FindItem(-1, name, false) == -1)
+	if (!name.IsEmpty())
 	{
 		size_t pos = lstMembers->GetItemCount();
 		lstMembers->InsertItem(pos, name, 0);
