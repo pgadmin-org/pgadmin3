@@ -411,13 +411,14 @@ wxString dlgColumn::GetSql()
 			{
 				if ((cbDatatype->GetValue() != column->GetRawTypename() && !column->GetIsArray()) ||
 				        (cbDatatype->GetValue() != column->GetRawTypename() + wxT("[]") && column->GetIsArray()) ||
+				        (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != column->GetCollation()) ||
 				        (isVarLen && txtLength->IsEnabled() && StrToLong(len) != column->GetLength()) ||
 				        (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
 				{
 					sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 					       +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
 					       +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
-					if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
+					if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != column->GetCollation())
 						sql += wxT(" COLLATE ") + cbCollation->GetValue();
 					sql += wxT(";\n");
 				}
