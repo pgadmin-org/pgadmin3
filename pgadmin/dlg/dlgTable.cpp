@@ -819,7 +819,6 @@ wxString dlgTable::GetSql()
 					{
 						tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 						          +  wxT("\n  ADD COLUMN ") + definition + wxT(";\n");
-						//addcomment
 					}
 				}
 				else
@@ -1493,13 +1492,16 @@ wxString dlgTable::GetSql()
 	}
 
 	// Comments
-	for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
+	if (!table)
 	{
-		if (!lstColumns->GetText(pos, 5).IsEmpty())
-			sql += wxT("COMMENT ON COLUMN ") + tabname
-			       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-			       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-			       + wxT(";\n");
+		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
+		{
+			if (!lstColumns->GetText(pos, 5).IsEmpty())
+				sql += wxT("COMMENT ON COLUMN ") + tabname
+					   + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+					   + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+					   + wxT(";\n");
+		}
 	}
 
 	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
