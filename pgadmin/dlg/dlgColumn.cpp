@@ -48,6 +48,7 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 	EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
+	EVT_COMBOBOX(XRCID("cbCollation"),              dlgColumn::OnSelChangeTyp)
 	EVT_BUTTON(CTL_ADDPRIV,                         dlgColumn::OnAddPriv)
 	EVT_BUTTON(CTL_DELPRIV,                         dlgColumn::OnDelPriv)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgColumn::OnVarSelChange)
@@ -76,6 +77,8 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 	column = node;
 	table = parentNode;
 	wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW || table->GetMetaType() == GP_EXTTABLE || table->GetMetaType() == GP_PARTITION));
+
+	dirtyVars = false;
 
 	txtAttstattarget->SetValidator(numericValidator);
 
@@ -411,13 +414,14 @@ wxString dlgColumn::GetSql()
 			{
 				if ((cbDatatype->GetValue() != column->GetRawTypename() && !column->GetIsArray()) ||
 				        (cbDatatype->GetValue() != column->GetRawTypename() + wxT("[]") && column->GetIsArray()) ||
+				        (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != column->GetCollation()) ||
 				        (isVarLen && txtLength->IsEnabled() && StrToLong(len) != column->GetLength()) ||
 				        (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
 				{
 					sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-					       +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
+					       +  wxT("\n   ALTER COLUMN ") + qtIdent(name) + wxT(" TYPE ")
 					       +  GetQuotedTypename(cbDatatype->GetGuessedSelection());
-					if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
+					if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != column->GetCollation())
 						sql += wxT(" COLLATE ") + cbCollation->GetValue();
 					sql += wxT(";\n");
 				}
@@ -566,7 +570,7 @@ wxString dlgColumn::GetSql()
 		}
 
 		AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier()
-		              + wxT(".") + qtIdent(name), column);
+					  + wxT(".") + qtIdent(name), column);
 
 		// securityPage will exists only for PG 8.4 and later
 		if (connection->BackendMinimumVersion(8, 4))
@@ -625,6 +629,7 @@ void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
 
 void dlgColumn::CheckChange()
 {
+	bool enable = true;
 	long varlen = StrToLong(txtLength->GetValue()),
 	     varprec = StrToLong(txtPrecision->GetValue());
 
@@ -632,21 +637,16 @@ void dlgColumn::CheckChange()
 	{
 		txtPrecision->Enable(column->GetTable()->GetMetaType() != PGM_VIEW && isVarPrec && varlen > 0);
 
-		bool enable = true;
-		EnableOK(enable);   // to get rid of old messages
-
 		CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
 		if (!connection->BackendMinimumVersion(7, 5))
 		{
 			CheckValid(enable, !isVarLen || !txtLength->GetValue().IsEmpty() || varlen >= column->GetLength(),
 			           _("New length must not be less than old length."));
-
 			CheckValid(enable, !txtPrecision->IsEnabled() || varprec >= column->GetPrecision(),
 			           _("New precision must not be less than old precision."));
 			CheckValid(enable, !txtPrecision->IsEnabled() || varlen - varprec >= column->GetLength() - column->GetPrecision(),
 			           _("New total digits must not be less than old total digits."));
 		}
-
 
 		if (enable)
 			enable = GetName() != column->GetName()
@@ -655,13 +655,14 @@ void dlgColumn::CheckChange()
 			         || chkNotNull->GetValue() != column->GetNotNull()
 			         || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename() && !column->GetIsArray())
 			         || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename() + wxT("[]") && column->GetIsArray())
+			         || (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != column->GetCollation())
 			         || (isVarLen && varlen != column->GetLength())
 			         || (isVarPrec && varprec != column->GetPrecision())
 			         || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget())
 			         || cbStorage->GetValue() != column->GetStorage()
 			         || dirtyVars;
 
-		EnableOK(enable | securityChanged);
+		EnableOK(enable || securityChanged);
 	}
 	else
 	{
@@ -669,7 +670,6 @@ void dlgColumn::CheckChange()
 
 		wxString name = GetName();
 
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
 		CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty()
