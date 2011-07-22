@@ -290,7 +290,6 @@ wxString pgTable::GetSql(ctlTree *browser)
 	wxString colDetails, conDetails;
 	wxString prevComment;
 	wxString cols_sql = wxEmptyString;
-	bool showparens = false;
 
 	wxString columnPrivileges;
 
@@ -361,7 +360,6 @@ wxString pgTable::GetSql(ctlTree *browser)
 						{
 							cols_sql += wxString::Format(wxT("-- %s "), _("Inherited"))
 							            + wxT("from table ") +  column->GetInheritedTableName() + wxT(":");
-							showparens = true;
 						}
 					}
 
@@ -377,14 +375,12 @@ wxString pgTable::GetSql(ctlTree *browser)
 						{
 							cols_sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" WITH OPTIONS ")
 							            + column->GetDefinition();
-							showparens = true;
 						}
 					}
 					else
 					{
 						cols_sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
 						            + column->GetDefinition();
-						showparens = true;
 					}
 
 					prevComment = column->GetComment();
@@ -455,10 +451,7 @@ wxString pgTable::GetSql(ctlTree *browser)
 		if (!prevComment.IsEmpty())
 			cols_sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-		if (showparens)
-			sql += wxT("\n(\n") + cols_sql + wxT("\n)");
-		else
-			sql += wxT("\n-- (\n") + cols_sql + wxT("\n-- )");
+		sql += wxT("\n(\n") + cols_sql + wxT("\n)");
 
 		if (GetInheritedTableCount())
 		{
