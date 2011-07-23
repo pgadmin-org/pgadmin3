@@ -1291,9 +1291,9 @@ wxString dlgTable::GetSql()
 				needComma = true;
 
 			sql += wxT("\n   ");
-			AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
-
-			sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
+			if (!name.IsEmpty())
+				sql += wxT("CONSTRAINT ") + qtIdent(name) + wxT(" ");
+			sql += GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
 		}
 
 		if (!typedTable || (typedTable && lstConstraints->GetItemCount() > 0))
@@ -1498,9 +1498,9 @@ wxString dlgTable::GetSql()
 		{
 			if (!lstColumns->GetText(pos, 5).IsEmpty())
 				sql += wxT("COMMENT ON COLUMN ") + tabname
-					   + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-					   + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-					   + wxT(";\n");
+				       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+				       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+				       + wxT(";\n");
 		}
 	}
 

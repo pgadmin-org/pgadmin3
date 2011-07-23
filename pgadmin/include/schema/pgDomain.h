@@ -164,6 +164,22 @@ public:
 	{
 		typmod = l;
 	}
+	bool GetValid() const
+	{
+		return constraintvalid;
+	}
+	void iSetValid(const bool b)
+	{
+		constraintvalid = b;
+	}
+	wxString GetCheckConstraintName() const
+	{
+		return checkconstraintname;
+	}
+	void iSetCheckConstraintName(const wxString &s)
+	{
+		checkconstraintname = s;
+	}
 
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	wxString GetSql(ctlTree *browser);
@@ -181,12 +197,13 @@ public:
 	{
 		return true;
 	}
+	void Validate(frmMain *form);
 
 private:
-	wxString basetype, quotedBasetype, defaultVal, delimiter, check, collation, quotedCollation;
+	wxString basetype, quotedBasetype, defaultVal, delimiter, check, collation, quotedCollation, checkconstraintname;
 	long length, precision, dimensions;
 	long typlen, typmod;
-	bool notNull, isDup;
+	bool notNull, isDup, constraintvalid;
 	OID basetypeOid, collationOid;
 };
 
@@ -195,6 +212,14 @@ class pgDomainCollection : public pgSchemaObjCollection
 public:
 	pgDomainCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+class validateDomainCheckFactory : public contextActionFactory
+{
+public:
+	validateDomainCheckFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif

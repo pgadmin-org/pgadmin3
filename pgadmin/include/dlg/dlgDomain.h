@@ -31,6 +31,7 @@ public:
 
 private:
 	void OnSelChangeTyp(wxCommandEvent &ev);
+	void OnChangeValidate(wxCommandEvent &ev);
 
 	pgSchema *schema;
 	pgDomain *domain;

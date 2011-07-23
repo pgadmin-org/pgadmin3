@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frm/frmMain.h"
 #include "utils/misc.h"
 #include "schema/pgCheck.h"
 
@@ -94,6 +95,15 @@ wxString pgCheck::GetTranslatedMessage(int kindOfMessage) const
 }
 
 
+int pgCheck::GetIconId()
+{
+	if (!GetDatabase()->BackendMinimumVersion(9, 2) || GetValid())
+		return checkFactory.GetIconId();
+	else
+		return checkFactory.GetClosedIconId();
+}
+
+
 bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
 	wxString sql = wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
@@ -106,7 +116,12 @@ bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 wxString pgCheck::GetConstraint()
 {
-	return GetQuotedIdentifier() +  wxT(" CHECK (") + GetDefinition() + wxT(")");
+	sql = GetQuotedIdentifier() +  wxT(" CHECK (") + GetDefinition() + wxT(")");
+
+	if (GetDatabase()->BackendMinimumVersion(9, 2) && !GetValid())
+		sql += wxT(" NOT VALID");
+
+	return sql;
 }
 
 
@@ -141,6 +156,8 @@ void pgCheck::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Definition"), GetDefinition());
+		if (GetDatabase()->BackendMinimumVersion(9, 2))
+			properties->AppendItem(_("Valid?"), BoolToYesNo(GetValid()));
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
@@ -158,21 +175,34 @@ pgObject *pgCheck::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+void pgCheck::Validate(frmMain *form)
+{
+	wxString sql = wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+	               + wxT("\n  VALIDATE CONSTRAINT ") + GetQuotedIdentifier();
+	GetDatabase()->ExecuteVoid(sql);
+
+	iSetValid(true);
+	UpdateIcon(form->GetBrowser());
+}
+
 
 pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
 	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
 	pgCheck *check = 0;
-	pgSet *checks = collection->GetDatabase()->ExecuteSet(
-	                    wxT("SELECT c.oid, conname, relname, nspname, description,\n")
-	                    wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n")
-	                    wxT("  FROM pg_constraint c\n")
-	                    wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
-	                    wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
-	                    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
-	                    wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
-	                    + restriction + wxT("::oid\n")
-	                    wxT(" ORDER BY conname"));
+	wxString sql = wxT("SELECT c.oid, conname, relname, nspname, description,\n")
+	               wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n");
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 2))
+		sql += wxT(", convalidated");
+	sql += wxT("  FROM pg_constraint c\n")
+	       wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+	       wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	       wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
+	       + restriction + wxT("::oid\n")
+	       wxT(" ORDER BY conname");
+
+	pgSet *checks = collection->GetDatabase()->ExecuteSet(sql);
 
 	if (checks)
 	{
@@ -184,6 +214,8 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 			check->iSetDefinition(checks->GetVal(wxT("consrc")));
 			check->iSetFkTable(checks->GetVal(wxT("relname")));
 			check->iSetFkSchema(checks->GetVal(wxT("nspname")));
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 2))
+				check->iSetValid(checks->GetBool(wxT("convalidated")));
 			check->iSetComment(checks->GetVal(wxT("description")));
 
 			if (browser)
@@ -225,13 +257,47 @@ wxString pgCheckCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 #include "images/check.pngc"
+#include "images/checkbad.pngc"
 
 pgCheckFactory::pgCheckFactory()
 	: pgTableObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_png_img)
 {
 	metaType = PGM_CHECK;
 	collectionFactory = &constraintCollectionFactory;
+	closedId = addIcon(checkbad_png_img);
 }
 
 
 pgCheckFactory checkFactory;
+
+validateCheckFactory::validateCheckFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Validate check constraint"), _("Validate the selected check constraint."));
+}
+
+
+wxWindow *validateCheckFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	((pgCheck *)obj)->Validate(form);
+	((pgCheck *)obj)->SetDirty();
+
+	wxTreeItemId item = form->GetBrowser()->GetSelection();
+	if (obj == form->GetBrowser()->GetObject(item))
+	{
+		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+		form->GetSqlPane()->SetReadOnly(false);
+		form->GetSqlPane()->SetText(((pgCheck *)obj)->GetSql(form->GetBrowser()));
+		form->GetSqlPane()->SetReadOnly(true);
+	}
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
+
+	return 0;
+}
+
+
+bool validateCheckFactory::CheckEnable(pgObject *obj)
+{
+	return obj && obj->IsCreatedBy(checkFactory) && obj->CanEdit()
+	       && ((pgCheck *)obj)->GetConnection()->BackendMinimumVersion(9, 2)
+	       && !((pgCheck *)obj)->GetValid();
+}

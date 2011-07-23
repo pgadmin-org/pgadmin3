@@ -21,10 +21,12 @@
 #include "dlg/dlgCheck.h"
 
 #define txtWhere        CTRL_TEXT("txtWhere")
+#define chkDontValidate CTRL_CHECKBOX("chkDontValidate")
 
 
 BEGIN_EVENT_TABLE(dlgCheck, dlgProperty)
 	EVT_TEXT(XRCID("txtWhere"),                 dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkDontValidate"),      dlgCheck::OnChangeValidate)
 END_EVENT_TABLE();
 
 
@@ -43,13 +45,16 @@ dlgCheck::dlgCheck(pgaFactory *f, frmMain *frame, pgCheck *node, pgTable *parent
 
 void dlgCheck::CheckChange()
 {
+	bool enable = true;
 	if (check)
 	{
-		EnableOK(txtComment->GetValue() != check->GetComment());
+		enable = txtComment->GetValue() != check->GetComment();
+		if (connection->BackendMinimumVersion(9, 2) && !check->GetValid() && !chkDontValidate->GetValue())
+			enable = true;
+		EnableOK(enable);
 	}
 	else
 	{
-		bool enable = true;
 		txtComment->Enable(!GetName().IsEmpty());
 		CheckValid(enable, !txtWhere->GetValue().IsEmpty(), _("Please specify condition."));
 		EnableOK(enable);
@@ -86,6 +91,12 @@ int dlgCheck::Go(bool modal)
 
 		txtWhere->SetValue(check->GetDefinition());
 		txtWhere->Disable();
+
+		if (connection->BackendMinimumVersion(9, 2))
+			chkDontValidate->SetValue(!check->GetValid());
+		else
+			chkDontValidate->SetValue(true);
+		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 2) && !check->GetDefinition().IsEmpty() && !check->GetValid());
 	}
 	else
 	{
@@ -96,8 +107,16 @@ int dlgCheck::Go(bool modal)
 			cbClusterSet->Disable();
 			cbClusterSet = 0;
 		}
+		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 2));
 	}
+
 	return dlgProperty::Go(modal);
+}
+
+
+void dlgCheck::OnChangeValidate(wxCommandEvent &ev)
+{
+	CheckChange();
 }
 
 
@@ -114,6 +133,12 @@ wxString dlgCheck::GetSql()
 		sql += wxT("\n  CHECK ") + GetDefinition()
 		       + wxT(";\n");
 	}
+	else if (!chkDontValidate->GetValue())
+	{
+		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+		      + wxT(" VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+	}
+
 	if (!name.IsEmpty())
 		AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name)
 		              + wxT(" ON ") + table->GetQuotedFullIdentifier(), check);
@@ -126,6 +151,9 @@ wxString dlgCheck::GetDefinition()
 	wxString sql;
 
 	sql = wxT("(") + txtWhere->GetValue() + wxT(")");
+
+	if (chkDontValidate->GetValue())
+		sql += wxT(" NOT VALID");
 
 	return sql;
 }

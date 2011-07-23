@@ -444,6 +444,8 @@ wxString pgTable::GetSql(ctlTree *browser)
 						break;
 					case PGM_CHECK:
 						cols_sql += wxT("(") + ((pgCheck *)data)->GetDefinition() + wxT(")");
+						if (GetDatabase()->BackendMinimumVersion(9, 2) && !((pgCheck *)data)->GetValid())
+							cols_sql += wxT(" NOT VALID");
 						break;
 				}
 			}

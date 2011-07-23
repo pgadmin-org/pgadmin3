@@ -28,6 +28,7 @@
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define txtCheck            CTRL_TEXT("txtCheck")
 #define cbCollation         CTRL_COMBOBOX("cbCollation")
+#define chkDontValidate     CTRL_CHECKBOX("chkDontValidate")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
@@ -37,6 +38,8 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txLength"),                     dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkDontValidate"),          dlgDomain::OnChangeValidate)
+	EVT_TEXT(XRCID("txtCheck"),                     dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -84,7 +87,6 @@ int dlgDomain::Go(bool modal)
 
 		txtName->Disable();
 		cbDatatype->Disable();
-		txtCheck->Disable();
 
 		cbCollation->SetValue(domain->GetQuotedCollation());
 		cbCollation->Disable();
@@ -95,6 +97,9 @@ int dlgDomain::Go(bool modal)
 			txtDefault->Disable();
 			chkNotNull->Disable();
 		}
+
+		if (connection->BackendMinimumVersion(9, 2))
+			chkDontValidate->SetValue(!domain->GetValid());
 	}
 	else
 	{
@@ -127,6 +132,11 @@ int dlgDomain::Go(bool modal)
 		}
 	}
 
+	if (connection->BackendMinimumVersion(9, 2))
+		chkDontValidate->Enable(!domain || (domain && !domain->GetValid()));
+	else
+		chkDontValidate->Enable(false);
+
 	return dlgProperty::Go(modal);
 }
 
@@ -145,13 +155,18 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 
 void dlgDomain::CheckChange()
 {
+	bool enable;
+
 	if (domain)
 	{
-		EnableOK(txtDefault->GetValue() != domain->GetDefault()
-		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
+		enable = txtDefault->GetValue() != domain->GetDefault()
 		         || chkNotNull->GetValue() != domain->GetNotNull()
+		         || txtCheck->GetValue() != domain->GetCheck()
 		         || cbOwner->GetValue() != domain->GetOwner()
-		         || txtComment->GetValue() != domain->GetComment());
+		         || txtComment->GetValue() != domain->GetComment();
+		if (connection->BackendMinimumVersion(9, 2) && !domain->GetValid() && !chkDontValidate->GetValue())
+			enable = true;
+		EnableOK(enable);
 	}
 	else
 	{
@@ -189,6 +204,12 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 }
 
 
+void dlgDomain::OnChangeValidate(wxCommandEvent &ev)
+{
+	CheckChange();
+}
+
+
 wxString dlgDomain::GetSql()
 {
 	wxString sql, name;
@@ -214,6 +235,28 @@ wxString dlgDomain::GetSql()
 			else
 				sql += wxT("\n  SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
 		}
+		if (txtCheck->GetValue() != domain->GetCheck())
+		{
+			if (!domain->GetCheck().IsEmpty())
+				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       + wxT(" DROP CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
+
+			if (!txtCheck->GetValue().IsEmpty())
+			{
+				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       + wxT(" ADD ");
+				if (!domain->GetCheck().IsEmpty())
+					sql += wxT("CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
+				sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
+				if (chkDontValidate->GetValue())
+					sql += wxT(" NOT VALID");
+			}
+		}
+		if (chkDontValidate->IsEnabled() && !domain->GetValid() && !chkDontValidate->GetValue())
+		{
+			sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+			       + wxT(" VALIDATE CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName()) + wxT(";\n");
+		}
 		AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 		AppendSchemaChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 	}
@@ -227,15 +270,23 @@ wxString dlgDomain::GetSql()
 		if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 			sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
+		if (chkDontValidate->GetValue())
+			sql += wxT(";\nALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" ADD ");
+
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
 		if (chkNotNull->GetValue())
 			sql += wxT("\n   NOT NULL");
 		if (!txtCheck->GetValue().IsEmpty())
 			sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
+
+		if (chkDontValidate->GetValue())
+			sql += wxT(" NOT VALID");
+
 		sql += wxT(";\n");
 
 		AppendOwnerNew(sql, wxT("DOMAIN ") + name);
 	}
+
 	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
 
 	return sql;

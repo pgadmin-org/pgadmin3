@@ -38,6 +38,8 @@ private:
 	pgCheck *check;
 	pgTable *table;
 
+	void OnChangeValidate(wxCommandEvent &ev);
+
 	DECLARE_EVENT_TABLE()
 };
 

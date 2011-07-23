@@ -24,6 +24,14 @@ public:
 	pgCheckFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+
+	int GetClosedIconId()
+	{
+		return closedId;
+	}
+
+protected:
+	int closedId;
 };
 extern pgCheckFactory checkFactory;
 
@@ -33,6 +41,8 @@ class pgCheck : public pgTableObject
 public:
 	pgCheck(pgTable *newTable, const wxString &newName = wxT(""));
 	~pgCheck();
+
+	int GetIconId();
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
@@ -61,6 +71,14 @@ public:
 	{
 		definition = s;
 	}
+	bool GetValid() const
+	{
+		return valid;
+	}
+	void iSetValid(const bool b)
+	{
+		valid = b;
+	}
 
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	wxString GetConstraint();
@@ -83,9 +101,11 @@ public:
 	{
 		return true;
 	}
+	void Validate(frmMain *form);
 
 private:
 	wxString definition, fkTable, fkSchema;
+	bool valid;
 };
 
 class pgCheckCollection : public pgSchemaObjCollection
@@ -93,6 +113,14 @@ class pgCheckCollection : public pgSchemaObjCollection
 public:
 	pgCheckCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+class validateCheckFactory : public contextActionFactory
+{
+public:
+	validateCheckFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif
