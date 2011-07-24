@@ -1032,9 +1032,9 @@ wxString dlgFunction::GetSql()
 	}
 
 	if (isProcedure)
-		AppendComment(sql, wxT("PROCEDURE ") + schema->GetQuotedPrefix() + qtIdent(GetName()), function);
+		AppendComment(sql, wxT("PROCEDURE ") + name, function);
 	else
-		AppendComment(sql, wxT("FUNCTION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), function);
+		AppendComment(sql, wxT("FUNCTION ") + name, function);
 
 	return sql;
 }
