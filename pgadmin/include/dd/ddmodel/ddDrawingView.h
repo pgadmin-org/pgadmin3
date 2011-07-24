@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #ifndef DDDRAWINGVIEW_H
-#define DDDRAWINGVIEW
+#define DDDRAWINGVIEW_H
 
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 

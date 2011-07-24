@@ -26,26 +26,27 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipItem.h"
 
-ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
+void ddColumnFigure::Init(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
+	setKindId(DDCOLUMNFIGURE);
 	fkSource = sourceFk;
 	usedAsFkDestFor = NULL;
 	setOwnerTable(owner);
 	deactivateGenFkName(); //initializae by default at not generate auto fk name
 	columnText = new ddTextTableItemFigure(columnName, dt_null, this);
-	leftImage = new ddColumnKindIcon(this);
-	centerImage = new ddColumnOptionIcon(this);
+	kindImage = new ddColumnKindIcon(this);
+	optionImage = new ddColumnOptionIcon(this);
 
 
 	//Initialize displaybox and image coords
 	basicDisplayBox.SetPosition(wxPoint(0, 0));
 	basicDisplayBox.SetSize( columnText->displayBox().GetSize());
-	if(leftImage && centerImage)
+	if(kindImage && optionImage)
 	{
-		basicDisplayBox.width += leftImage->displayBox().GetSize().GetWidth() + 3;
-		basicDisplayBox.width += centerImage->displayBox().GetSize().GetWidth() + 3;
-		columnText->displayBox().x += leftImage->displayBox().GetSize().GetWidth() + 2;
-		columnText->displayBox().x += centerImage->displayBox().GetSize().GetWidth() + 3;
+		basicDisplayBox.width += kindImage->displayBox().GetSize().GetWidth() + 3;
+		basicDisplayBox.width += optionImage->displayBox().GetSize().GetWidth() + 3;
+		columnText->displayBox().x += kindImage->displayBox().GetSize().GetWidth() + 2;
+		columnText->displayBox().x += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
@@ -55,25 +56,59 @@ ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRel
 
 	//Set Value default Attributes
 	fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
+
+}
+
+ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
+{
+	Init(columnName, owner, sourceFk);
+}
+
+//Constructor for creation of existing column from storage
+ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddColumnOptionType option, bool isGenFk, bool isPkColumn, wxString colDataType, int p, int s, int ukIdx, ddRelationshipItem *srcFk, ddRelationshipItem *usedAsFk )
+{
+	Init(columnName, owner, srcFk);
+	setColumnOption(option);
+	generateFkName = isGenFk;
+	kindImage->setPrimaryKey(isPkColumn);
+
+	int dtype = columnText->dataTypes().Index(colDataType, false);
+	if(dtype != wxNOT_FOUND)
+	{
+		setDataType((ddDataType)dtype);
+	}
+	else
+	{
+		wxMessageBox(_("Not compatible data type for column found"));
+	}
+
+	columnText->setPrecision(p);
+	columnText->setScale(s);
+	kindImage->setUkIndex(ukIdx);
+
+	usedAsFkDestFor = usedAsFk;
+	if(ownerTable)
+		ownerTable->updateTableSize();
+
 }
 
 ddColumnFigure::~ddColumnFigure()
 {
 	if(columnText)
 		delete columnText;
-	if(leftImage)
-		delete leftImage;
-	if(centerImage)
-		delete centerImage;
+	if(kindImage)
+		delete kindImage;
+	if(optionImage)
+		delete optionImage;
 }
 
 void ddColumnFigure::basicMoveBy(int x, int y)
 {
 	wxhdAbstractFigure::basicMoveBy(x, y);
-	if(leftImage)
-		leftImage->moveBy(x, y);
-	if(centerImage)
-		centerImage->moveBy(x, y);
+	if(kindImage)
+		kindImage->moveBy(x, y);
+	if(optionImage)
+		optionImage->moveBy(x, y);
 	columnText->moveBy(x, y);
 }
 
@@ -82,20 +117,20 @@ void ddColumnFigure::moveTo(int x, int y)
 	wxhdAbstractFigure::moveTo(x, y);
 	int distance = 0;
 
-	if(leftImage)
+	if(kindImage)
 	{
-		leftImage->moveTo(x, y);
-		distance += leftImage->displayBox().GetSize().GetWidth() + 3;
+		kindImage->moveTo(x, y);
+		distance += kindImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
 		distance += 11; //value = 8 + 3
 	}
 
-	if(centerImage)
+	if(optionImage)
 	{
-		centerImage->moveTo(x + distance, y);
-		distance += centerImage->displayBox().GetSize().GetWidth() + 3;
+		optionImage->moveTo(x + distance, y);
+		distance += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
@@ -112,9 +147,9 @@ bool ddColumnFigure::containsPoint(int x, int y)
 
 	if(columnText->containsPoint(x, y))
 		out = true;
-	else if(leftImage->containsPoint(x, y))
+	else if(kindImage->containsPoint(x, y))
 		out = true;
-	else if(centerImage->containsPoint(x, y))
+	else if(optionImage->containsPoint(x, y))
 		out = true;
 
 	return out;
@@ -128,19 +163,19 @@ wxhdRect &ddColumnFigure::getBasicDisplayBox()
 void ddColumnFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	columnText->draw(context, view);
-	if(leftImage)
-		leftImage->draw(context, view);
-	if(centerImage)
-		centerImage->draw(context, view);
+	if(kindImage)
+		kindImage->draw(context, view);
+	if(optionImage)
+		optionImage->draw(context, view);
 }
 
 void ddColumnFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	columnText->drawSelected(context, view);
-	if(leftImage)
-		leftImage->drawSelected(context, view);
-	if(centerImage)
-		centerImage->drawSelected(context, view);
+	if(kindImage)
+		kindImage->drawSelected(context, view);
+	if(optionImage)
+		optionImage->drawSelected(context, view);
 }
 
 wxhdIFigure *ddColumnFigure::findFigure(int x, int y)
@@ -150,11 +185,11 @@ wxhdIFigure *ddColumnFigure::findFigure(int x, int y)
 	if(columnText->containsPoint(x, y))
 		out = columnText;
 
-	if(leftImage && leftImage->containsPoint(x, y))
-		out = leftImage;
+	if(kindImage && kindImage->containsPoint(x, y))
+		out = kindImage;
 
-	if(centerImage && centerImage->containsPoint(x, y))
-		out = centerImage;
+	if(optionImage && optionImage->containsPoint(x, y))
+		out = optionImage;
 
 	return out;
 }
@@ -167,10 +202,10 @@ wxhdITool *ddColumnFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool
 wxhdIFigure *ddColumnFigure::getFigureAt(int pos)
 {
 	if(pos == 0)
-		return (wxhdIFigure *) leftImage;
+		return (wxhdIFigure *) kindImage;
 
 	if(pos == 1)
-		return (wxhdIFigure *) centerImage;
+		return (wxhdIFigure *) optionImage;
 
 	if(pos == 2)
 		return (wxhdIFigure *) columnText;
@@ -190,12 +225,12 @@ void ddColumnFigure::setOwnerTable(ddTableFigure *table)
 
 void ddColumnFigure::displayBoxUpdate()
 {
-	if(leftImage && centerImage)
+	if(kindImage && optionImage)
 	{
 		columnText->displayBoxUpdate();
 		basicDisplayBox.width = columnText->displayBox().GetSize().GetWidth();
-		basicDisplayBox.width += leftImage->displayBox().GetSize().GetWidth() + 3;
-		basicDisplayBox.width += centerImage->displayBox().GetSize().GetWidth() + 3;
+		basicDisplayBox.width += kindImage->displayBox().GetSize().GetWidth() + 3;
+		basicDisplayBox.width += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
@@ -206,69 +241,69 @@ void ddColumnFigure::displayBoxUpdate()
 
 bool ddColumnFigure::isNull()
 {
-	return centerImage->getOption() == null;
+	return optionImage->getOption() == null;
 }
 
 bool ddColumnFigure::isNotNull()
 {
-	return centerImage->getOption() == notnull;
+	return optionImage->getOption() == notnull;
 }
 
 bool ddColumnFigure::isNone()
 {
-	return leftImage->isNone();
+	return kindImage->isNone();
 }
 
 bool ddColumnFigure::isPrimaryKey()
 {
-	return leftImage->isPrimaryKey();
+	return kindImage->isPrimaryKey();
 }
 
 void ddColumnFigure::disablePrimaryKey()
 {
-	leftImage->disablePrimaryKey();
+	kindImage->disablePrimaryKey();
 }
 
 void ddColumnFigure::enablePrimaryKey()
 {
-	leftImage->enablePrimaryKey();
+	kindImage->enablePrimaryKey();
 }
 
 bool ddColumnFigure::isUniqueKey()
 {
-	return leftImage->isUniqueKey();
+	return kindImage->isUniqueKey();
 }
 
 bool ddColumnFigure::isUniqueKey(int uniqueIndex)
 {
-	return leftImage->isUniqueKey(uniqueIndex);
+	return kindImage->isUniqueKey(uniqueIndex);
 }
 
 bool ddColumnFigure::isPlain()
 {
-	return leftImage->isNone();
+	return kindImage->isNone();
 }
 
 void ddColumnFigure::setColumnKindToNone()
 {
-	leftImage->disablePrimaryKey();
-	leftImage->disableUniqueKey();
+	kindImage->disablePrimaryKey();
+	kindImage->disableUniqueKey();
 	//Foreign key cannot be changed by set / toggle functions
 }
 
 void ddColumnFigure::setRightIconForColumn()
 {
-	leftImage->setRightIconForColumn();
+	kindImage->setRightIconForColumn();
 }
 
 void ddColumnFigure::toggleColumnKind(ddColumnType type, wxhdDrawingView *view)
 {
-	leftImage->toggleColumnKind(type, view);
+	kindImage->toggleColumnKind(type, view);
 }
 
 void ddColumnFigure::setColumnOption(ddColumnOptionType type)
 {
-	centerImage->changeIcon(type);
+	optionImage->changeIcon(type);
 }
 
 wxString &ddColumnFigure::getColumnName(bool datatype)
@@ -288,24 +323,17 @@ int ddColumnFigure::getScale()
 
 int ddColumnFigure::getUniqueConstraintIndex()
 {
-	return leftImage->getUniqueConstraintIndex();
+	return kindImage->getUniqueConstraintIndex();
 }
 
 void ddColumnFigure::setUniqueConstraintIndex(int i)
 {
-	leftImage->setUniqueConstraintIndex(i);
+	kindImage->setUniqueConstraintIndex(i);
 }
-
-/*
-ddColumnType ddColumnFigure::getColumnKind()
-{
-	return leftImage->getKind();
-}
-*/
 
 ddColumnOptionType ddColumnFigure::getColumnOption()
 {
-	return centerImage->getOption();
+	return optionImage->getOption();
 }
 
 ddDataType ddColumnFigure::getDataType()
@@ -364,7 +392,7 @@ void ddColumnFigure::setAsUserCreatedFk(ddRelationshipItem *relatedFkItem)
 	//Now fix icons of kind of column
 	if(relatedFkItem == NULL)
 	{
-		leftImage->setRightIconForColumn();
+		kindImage->setRightIconForColumn();
 	}
 }
 
@@ -455,4 +483,10 @@ bool ddColumnFigure::validateColumn(wxString &errors)
 	}
 
 	return out;
+}
+
+//Used by persistence classes
+void ddColumnFigure::setFkSource(ddRelationshipItem *newColumn)
+{
+	fkSource = newColumn;
 }

@@ -28,3 +28,4 @@ EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/figures/module.mk
 
 include $(srcdir)/dd/wxhotdraw/figures/defaultAttributes/module.mk
+include $(srcdir)/dd/wxhotdraw/figures/xml/module.mk

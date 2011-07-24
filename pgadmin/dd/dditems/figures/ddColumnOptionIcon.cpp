@@ -27,6 +27,7 @@
 
 ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner)
 {
+	setKindId(DDCOLUMNOPTIONICON);
 	ownerColumn = owner;
 	colOption = null;
 	icon = wxBitmap(*ddnull_png_img);

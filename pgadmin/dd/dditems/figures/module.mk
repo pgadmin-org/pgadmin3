@@ -21,3 +21,5 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
 	$(srcdir)/dd/dditems/figures/module.mk
+
+include $(srcdir)/dd/dditems/figures/xml/module.mk

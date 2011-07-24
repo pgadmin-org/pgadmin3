@@ -24,6 +24,8 @@ class ddColumnFigure : public wxhdAttributeFigure
 {
 public:
 	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
+	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddColumnOptionType option, bool isGenFk, bool isPkColumn, wxString colDataType, int p = -1, int s = -1, int ukIdx = -1, ddRelationshipItem *sourceFk = NULL, ddRelationshipItem *usedAsFkDestFor = NULL );
+	void Init(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
 	~ddColumnFigure();
 	virtual void basicMoveBy(int x, int y);
 	virtual void moveTo(int x, int y);
@@ -66,18 +68,29 @@ public:
 	void activateGenFkName();
 	void deactivateGenFkName();
 	ddRelationshipItem *getFkSource();
+	void setFkSource(ddRelationshipItem *newColumn);
 	int getPrecision();
 	int getScale();
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 	ddRelationshipItem *getRelatedFkItem();
 	bool validateColumn(wxString &errors);
 	void setTextColour(wxColour colour);
-
-
+	ddColumnKindIcon *getKindImage()
+	{
+		return kindImage;
+	};
+	ddColumnOptionIcon *getOptionImage()
+	{
+		return optionImage;
+	};
+	ddTextTableItemFigure *getColumnText()
+	{
+		return columnText;
+	};
 
 protected:
-	ddColumnKindIcon *leftImage;
-	ddColumnOptionIcon *centerImage;
+	ddColumnKindIcon *kindImage;
+	ddColumnOptionIcon *optionImage;
 	ddTextTableItemFigure *columnText;
 	ddTableFigure *ownerTable;
 	ddRelationshipItem *usedAsFkDestFor;

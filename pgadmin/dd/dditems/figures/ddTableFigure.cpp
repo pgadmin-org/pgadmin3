@@ -57,8 +57,7 @@ All figures title, colums, indexes are store at same array to improve performanc
 	[maxIdxIndex] = last index index
 */
 
-ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
-	wxhdCompositeFigure()
+void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 {
 	setKindId(DDTABLEFIGURE);
 	internalPadding = 2;
@@ -130,6 +129,29 @@ ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortNam
 	updateTableSize();
 }
 
+ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
+	wxhdCompositeFigure()
+{
+	Init(tableName, x, y, shortName);
+}
+
+//Used by persistence classes
+void ddTableFigure::InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw)
+{
+	ukNames = UniqueKeysName;
+	pkName = primaryKeyName;
+	beginDrawCols = bdc;
+	beginDrawIdxs = bdi;
+	maxColIndex = maxcolsi;
+	minIdxIndex = minidxsi;
+	maxIdxIndex = maxidxsi;
+	colsRowsSize = colsrs;
+	colsWindow = colsw;
+	idxsRowsSize = idxsrs;
+	idxsWindow = idxsw;
+	updateTableSize();
+}
+
 ddTableFigure::~ddTableFigure()
 {
 	if(scrollbar)
@@ -140,9 +162,9 @@ ddTableFigure::~ddTableFigure()
 	}
 }
 
-bool ddTableFigure::colNameAvailable(wxString name)
+ddColumnFigure *ddTableFigure::getColByName(wxString name)
 {
-	bool out = true;
+	ddColumnFigure *out = NULL;
 	ddColumnFigure *f;
 
 	wxhdIteratorBase *iterator = figuresEnumerator();
@@ -154,7 +176,7 @@ bool ddTableFigure::colNameAvailable(wxString name)
 		f = (ddColumnFigure *) iterator->Next();
 		if(f->getColumnName(false).IsSameAs(name))
 		{
-			out = false;
+			out = f;
 			break;
 		}
 	}
@@ -179,6 +201,20 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 	colsRowsSize++;
 	calcRectsAreas();
 	recalculateColsPos();
+	updateTableSize();
+}
+
+//WARNING: Function should be called on a table generated from a storage
+void ddTableFigure::syncPositionsAfterLoad()
+{
+	calcRectsAreas();
+	recalculateColsPos();
+}
+
+//WARNING: Columns SHOULD BE ADDED only using this columns if was created as an image from storage one
+void ddTableFigure::addColumnFromStorage(ddColumnFigure *column)
+{
+	add(column);
 }
 
 void ddTableFigure::removeColumn(ddColumnFigure *column)

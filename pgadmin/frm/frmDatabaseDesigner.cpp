@@ -16,6 +16,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/aui/aui.h>
 #include <wx/splitter.h>
+#include <wx/filename.h>
 
 // App headers
 #include "frm/frmMain.h"
@@ -42,6 +43,8 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 
+#include "dd/dditems/figures/xml/ddXmlStorage.h"
+
 // Icons
 #include "images/ddmodel-32.pngc"
 #include "images/file_new.pngc"
@@ -49,6 +52,8 @@
 #include "images/ddRemoveTable2.pngc"
 #include "images/continue.pngc"
 #include "images/help.pngc"
+#include "images/file_save.pngc"
+#include "images/file_open.pngc"
 
 BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_NEW,               frmDatabaseDesigner::OnNewModel)
@@ -56,6 +61,9 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
 	EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
+	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
+	EVT_MENU(MNU_SAVEMODELAS,		frmDatabaseDesigner::OnModelSaveAs)
+	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -63,6 +71,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	: pgFrame(NULL, _title)
 {
 	mainForm = form;
+	changed = false;
 	SetTitle(wxT("Database Designer"));
 	SetIcon(wxIcon(*ddmodel_32_png_ico));
 
@@ -80,7 +89,11 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 	// Set File menu
 	wxMenu *fileMenu = new wxMenu();
-	fileMenu->Append(MNU_NEW, _("&New database design\tCtrl-N"), _("Create a new database design"));
+	fileMenu->Append(MNU_NEW, _("&New model\tCtrl-N"), _("Create a new model"));
+	fileMenu->AppendSeparator();
+	fileMenu->Append(MNU_LOADMODEL, _("&Open model..."), _("Open a model"));
+	fileMenu->Append(MNU_SAVEMODEL, _("&Save model"), _("Save model"));
+	fileMenu->Append(MNU_SAVEMODELAS, _("&Save model as..."), _("Save model as..."));
 	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit database designer window"));
 
@@ -104,11 +117,15 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	// Set toolbar
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
-	toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New database design"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), *table_png_bmp, _("Add empty table to the current model"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New model"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
+	toolBar->AddTool(MNU_LOADMODEL, _("Open model"), *file_open_png_bmp, _("Open a model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVEMODEL, _("Save model"), *file_save_png_bmp, _("Save model"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
+	toolBar->AddTool(MNU_ADDTABLE, _("Add table"), *table_png_bmp, _("Add an empty table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETETABLE, _("Delete table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_ADDCOLUMN, _("Add column"), *table_png_bmp, _("Add a new column to the selected table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate SQL"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
@@ -189,6 +206,8 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 		                                           );
 		design->addTable(newTable);
 		design->refreshDraw();
+		changed = true;
+		setExtendedTitle();
 	}
 	delete newTableDialog;
 }
@@ -197,6 +216,8 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
 	ddDrawingView *v = (ddDrawingView *) design->getEditor()->view();
 	v->deleteSelectedFigures();
+	changed = true;
+	setExtendedTitle();
 }
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
@@ -216,8 +237,12 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			if (answer == wxID_OK)
 			{
 				tmpString = nameDialog.GetValue();
-				if(table->colNameAvailable(tmpString))
+				if(table->getColByName(tmpString) == NULL)
+				{
 					table->addColumn(new ddColumnFigure(tmpString, table));
+					changed = true;
+					setExtendedTitle();
+				}
 				else
 				{
 					wxString msg(wxT("Error trying to add new column '"));
@@ -242,6 +267,8 @@ void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
 	design->eraseModel();
 	sqltext->Clear();
+	changed = false;
+	setExtendedTitle();
 }
 
 
@@ -259,6 +286,77 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 	}
 }
 
+void frmDatabaseDesigner::OnModelSaveAs(wxCommandEvent &event)
+{
+	wxFileDialog openFileDialog( this, _("Save model"), wxEmptyString, wxEmptyString, wxT("*.pgd"),
+	                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+
+	if ( openFileDialog.ShowModal() == wxID_OK )
+	{
+		wxString path;
+		path.append( openFileDialog.GetDirectory() );
+		path.append( wxFileName::GetPathSeparator() );
+		path.append( openFileDialog.GetFilename() );
+		if(!path.Lower().Matches(wxT("*.pgd")))
+			path.append(wxT(".pgd"));
+		lastFile = path;
+		changed = false;
+		setExtendedTitle();
+		design->writeXmlModel(path);
+	}
+}
+
+void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
+{
+	if ( lastFile != wxEmptyString )
+	{
+		design->writeXmlModel(lastFile);
+		changed = false;
+		setExtendedTitle();
+	}
+	else
+	{
+		OnModelSaveAs(event);
+	}
+}
+
+
+void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
+{
+	wxFileDialog openFileDialog( this, _("Open model"), wxEmptyString, wxEmptyString, wxT("*.pgd"),
+	                             wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
+
+	if ( openFileDialog.ShowModal() == wxID_OK )
+	{
+		wxString path;
+		path.append( openFileDialog.GetDirectory() );
+		path.append( wxFileName::GetPathSeparator() );
+		path.append( openFileDialog.GetFilename() );
+		if(!path.Lower().Matches(wxT("*.pgd")))
+			path.append(wxT(".pgd"));
+		design->eraseModel();
+		lastFile = path;
+		design->readXmlModel(path);
+		changed = false;
+		setExtendedTitle();
+	}
+}
+
+void frmDatabaseDesigner::setExtendedTitle()
+{
+	wxString chgStr;
+	if (changed)
+		chgStr = wxT(" *");
+
+	wxString title = wxT("Database Design");
+
+	if (lastFile.IsEmpty())
+		SetTitle( title + chgStr);
+	else
+	{
+		SetTitle( title + wxT(" - [") + lastFile + wxT("]") + chgStr);
+	}
+}
 
 ///////////////////////////////////////////////////////
 

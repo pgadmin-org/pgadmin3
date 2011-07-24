@@ -24,11 +24,15 @@ class ddTableFigure : public wxhdCompositeFigure
 {
 public:
 	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	void InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw);
+	void Init(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
 	~ddTableFigure();
 
 	//add remove items
-	bool colNameAvailable(wxString name);
+	ddColumnFigure *getColByName(wxString name);
 	void addColumn(ddColumnFigure *column);
+	void addColumnFromStorage(ddColumnFigure *column);
+	void syncPositionsAfterLoad();
 	void removeColumn(ddColumnFigure *column);
 
 	//movement
@@ -77,6 +81,44 @@ public:
 	void updateFkObservers();
 	void updateSizeOfObservers();
 	void prepareForDeleteFkColumn(ddColumnFigure *column);
+
+	//ScrollBar persistence related
+	int getBeginDrawCols()
+	{
+		return beginDrawCols;
+	};
+	int getBeginDrawIdxs()
+	{
+		return beginDrawIdxs;
+	};
+	int getMaxColIndex()
+	{
+		return maxColIndex;
+	};
+	int getMinIdxIndex()
+	{
+		return minIdxIndex;
+	};
+	int getMaxIdxIndex()
+	{
+		return maxIdxIndex;
+	};
+	int getColsRowsSize()
+	{
+		return colsRowsSize;
+	};
+	int getColsWindow()
+	{
+		return colsWindow;
+	};
+	int getIdxsRowsSize()
+	{
+		return idxsRowsSize;
+	};
+	int getIdxsWindow()
+	{
+		return idxsWindow;
+	};
 
 protected:
 	//drawing

@@ -29,6 +29,7 @@
 ddTextTableItemFigure::ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner):
 	wxhdSimpleTextFigure(columnName)
 {
+	setKindId(DDTEXTTABLEITEMFIGURE);
 	ownerTable = NULL; //table name item is the only one case of use of this variable
 	oneTimeNoAlias = false;
 	columnType = dataType;

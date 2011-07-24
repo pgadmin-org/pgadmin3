@@ -54,7 +54,8 @@ public:
 	int getUniqueConstraintIndex();
 	void setUniqueConstraintIndex(int i);
 	void setRightIconForColumn();
-
+	void setPrimaryKey(bool value);
+	void setUkIndex(int ukIdx);
 protected:
 
 private:

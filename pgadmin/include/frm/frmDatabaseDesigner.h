@@ -32,16 +32,22 @@ public:
 	~frmDatabaseDesigner();
 	void Go();
 private:
+	bool changed;
+	wxString lastFile;
 	frmMain *mainForm;
 	pgConn *connection;
 	ddDatabaseDesign *design;
 	wxTextCtrl *sqltext;
+	void setExtendedTitle();
 	void OnClose(wxCloseEvent &event);
 	void OnAddTable(wxCommandEvent &event);
 	void OnDeleteTable(wxCommandEvent &event);
 	void OnAddColumn(wxCommandEvent &event);
 	void OnNewModel(wxCommandEvent &event);
 	void OnModelGeneration(wxCommandEvent &event);
+	void OnModelSaveAs(wxCommandEvent &event);
+	void OnModelSave(wxCommandEvent &event);
+	void OnModelLoad(wxCommandEvent &event);
 	wxAuiManager manager;
 	DECLARE_EVENT_TABLE()
 };

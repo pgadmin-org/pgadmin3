@@ -46,7 +46,7 @@ void ddAddColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *v
 		if (answer == wxID_OK)
 		{
 			wxString name = nameDialog.GetValue();
-			if(table->colNameAvailable(name))
+			if(table->getColByName(name) == NULL)
 				table->addColumn(new ddColumnFigure(name, table));
 			else
 			{

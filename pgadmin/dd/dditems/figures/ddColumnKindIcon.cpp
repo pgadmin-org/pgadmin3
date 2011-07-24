@@ -35,6 +35,7 @@
 
 ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 {
+	setKindId(DDCOLUMNKINDICON);
 	ownerColumn = owner;
 	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(*ddprimarykey_png_img);
@@ -416,4 +417,17 @@ void ddColumnKindIcon::enablePrimaryKey()
 	isPk = true;
 	getOwnerColumn()->getOwnerTable()->updateFkObservers();
 	setRightIconForColumn();
+}
+
+//Only used for figures created from storage
+void ddColumnKindIcon::setPrimaryKey(bool value)
+{
+	isPk = value;
+	setRightIconForColumn();
+}
+
+//Only used for figures created from storage
+void ddColumnKindIcon::setUkIndex(int ukIdx)
+{
+	ukIndex = ukIdx;
 }

@@ -80,6 +80,15 @@ public:
 	ddTableFigure *getStartTable();
 	ddTableFigure *getEndTable();
 	void changeFkOSTextColor(wxColour originalColour, wxColour fkColour, bool reset = false);
+	int getUkIndex();
+	actionKind getOnUpdateAction();
+	actionKind getOnDeleteAction();
+	bool getMatchSimple();
+	columnsHashMap &getItemsHashMap()
+	{
+		return chm;
+	};
+	void initRelationValues(ddTableFigure *source, ddTableFigure *destination, int ukIdx, wxString constraint, actionKind onUpdate, actionKind onDelete, bool simpleMatch, bool identifying, bool oneToMany, bool mandatory, bool fromPk);
 
 protected:
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
@@ -87,7 +96,6 @@ protected:
 
 private:
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
-	wxArrayString strings;
 	bool fkFromPk;
 	bool fkMandatory;
 	bool fkOneToMany;

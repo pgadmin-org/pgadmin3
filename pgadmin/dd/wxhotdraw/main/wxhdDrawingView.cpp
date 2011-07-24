@@ -344,13 +344,12 @@ void wxhdDrawingView::onMotion(wxMouseEvent &event)
 		if(event.Dragging())
 		{
 			drawingEditor->tool()->mouseDrag(ddEvent);
+			this->Refresh();			//only a dragging event on montion will change model
 		}
 		else
 		{
 			drawingEditor->tool()->mouseMove(ddEvent);
 		}
-
-		this->Refresh();
 	}
 }
 

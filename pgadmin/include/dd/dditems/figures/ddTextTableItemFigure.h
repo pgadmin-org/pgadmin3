@@ -57,6 +57,10 @@ public:
 	virtual ddColumnFigure *getOwnerColumn();
 	virtual void setOwnerColumn(ddColumnFigure *column);
 	virtual void setShowDataType(bool value);
+	virtual bool getShowDataType()
+	{
+		return showDataType;
+	};
 	wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void displayBoxUpdate();
 	int getTextWidth();
@@ -66,9 +70,9 @@ public:
 	void setOwnerTable(ddTableFigure *table);  //only used by columns working as table title figure for setAlias method
 	int getPrecision();
 	int getScale();
-protected:
 	void setPrecision(int value);
 	void setScale(int value);
+protected:
 	ddColumnFigure *ownerColumn;
 	ddTableFigure *ownerTable;
 	wxString colAlias;

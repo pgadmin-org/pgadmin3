@@ -12,9 +12,13 @@
 #ifndef DDDATABASEDESIGN_H
 #define DDDATABASEDESIGN_H
 
+#include <libxml/xmlwriter.h>
+
 #include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+
+WX_DECLARE_STRING_HASH_MAP( wxString , tablesMappingHashMap );
 
 class ddDatabaseDesign : public wxObject
 {
@@ -32,13 +36,21 @@ public:
 	bool validateModel(wxString &errors);
 	wxString getNewTableName();
 	ddTableFigure *getSelectedTable();
-	bool containsTable(wxString tableName);
+	ddTableFigure *getTable(wxString tableName);
+	bool writeXmlModel(wxString file);
+	bool readXmlModel(wxString file);
 
+	wxString getTableId(wxString tableName);
+	void addTableToMapping(wxString IdKey, wxString tableName);
+	wxString getTableName(wxString Id);
 
 protected:
-
+	tablesMappingHashMap mappingNameToId;
+	tablesMappingHashMap mappingIdToName;
 private:
 	wxhdDrawingEditor *draw;
 	wxhdITool *tool;
+	xmlTextWriterPtr xmlWriter;
+
 };
 #endif

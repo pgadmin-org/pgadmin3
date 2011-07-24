@@ -31,6 +31,7 @@ ddRelationshipFigure::ddRelationshipFigure():
 	fkMandatory = true;
 	fkOneToMany = true;
 	fkIdentifying = false;
+	matchSimple = false;
 	ukIndex = -1;
 	disconnectedEndTable = NULL;
 	paintingFkColumns = false;
@@ -163,7 +164,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+								fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
 							}
 							else
 							{
@@ -208,7 +209,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+								fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
 							}
 							else
 							{
@@ -606,12 +607,12 @@ void ddRelationshipFigure::removeForeignKeys()
 			{
 				wxString key = it->first;
 				fkColumnRelItem = it->second;
-				if(fkColumnRelItem->destinationTable->includes(fkColumnRelItem->fkColumn))
+				if(fkColumnRelItem->getDestinationTable()->includes(fkColumnRelItem->fkColumn))
 				{
 					//Remove fk column only if that column is automatically generated
 					if(fkColumnRelItem->isAutomaticallyGenerated())
 					{
-						fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+						fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
 					} //is an existing column use as fk
 					else
 					{
@@ -826,4 +827,45 @@ void ddRelationshipFigure::changeFkOSTextColor(wxColour originalColour, wxColour
 		}
 	}
 
+}
+
+//Used by persistence classes
+int ddRelationshipFigure::getUkIndex()
+{
+	return ukIndex;
+}
+
+//Used by persistence classes
+actionKind ddRelationshipFigure::getOnUpdateAction()
+{
+	return onUpdateAction;
+}
+
+//Used by persistence classes
+actionKind ddRelationshipFigure::getOnDeleteAction()
+{
+	return onDeleteAction;
+}
+
+//Used by persistence classes
+bool ddRelationshipFigure::getMatchSimple()
+{
+	return matchSimple;
+}
+
+//Used by persistence classes
+void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFigure *destination, int ukIdx, wxString constraint, actionKind onUpdate, actionKind onDelete, bool simpleMatch, bool identifying, bool oneToMany, bool mandatory, bool fromPk )
+{
+	ukIndex = ukIdx;
+	fkFromPk = fromPk;
+	fkMandatory = mandatory;
+	fkOneToMany = oneToMany;
+	fkIdentifying = identifying;
+	matchSimple = simpleMatch;
+	onUpdateAction = onUpdate;
+	onDeleteAction = onDelete;
+	constraintName = constraint;
+
+	wxhdLineConnection::connectStart(source->connectorAt(getStartPoint().x, getStartPoint().y));
+	wxhdLineConnection::connectEnd(destination->connectorAt(getEndPoint().x, getEndPoint().y));
 }
