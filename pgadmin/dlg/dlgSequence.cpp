@@ -19,6 +19,7 @@
 
 #include "schema/pgSchema.h"
 #include "schema/pgSequence.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 #define txtIncrement        CTRL_TEXT("txtIncrement")
@@ -53,6 +54,7 @@ dlgSequence::dlgSequence(pgaFactory *f, frmMain *frame, pgSequence *node, pgSche
 {
 	schema = sch;
 	sequence = node;
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -68,6 +70,15 @@ int dlgSequence::Go(bool modal)
 		cbOwner->Append(wxEmptyString);
 	AddGroups(cbOwner);
 	AddUsers(cbOwner);
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(sequence);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgSequence::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (sequence)
 	{
@@ -165,6 +176,7 @@ void dlgSequence::OnChangeSize(wxSizeEvent &ev)
 
 void dlgSequence::CheckChange()
 {
+	bool enable = true;
 	wxString name = GetName();
 	bool maxOk = true;
 
@@ -209,7 +221,7 @@ void dlgSequence::CheckChange()
 
 	if (sequence)
 	{
-		EnableOK(maxOk && (name != sequence->GetName()
+		enable = maxOk && (name != sequence->GetName()
 		                   || cbSchema->GetValue() != sequence->GetSchema()->GetName()
 		                   || txtComment->GetValue() != sequence->GetComment()
 		                   || cbOwner->GetValue() != sequence->GetOwner()
@@ -218,11 +230,13 @@ void dlgSequence::CheckChange()
 		                   || txtMax->GetValue() != sequence->GetMaxValue().ToString()
 		                   || txtCache->GetValue() != sequence->GetCacheValue().ToString()
 		                   || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
-		                   || chkCycled->GetValue() != sequence->GetCycled()));
+		                   || chkCycled->GetValue() != sequence->GetCycled());
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
+		EnableOK(enable);
 	}
 	else
 	{
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		EnableOK(enable && maxOk);
 	}
@@ -364,6 +378,14 @@ wxString dlgSequence::GetSql()
 		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("SEQUENCE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;
+}
+
+void dlgSequence::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
 }

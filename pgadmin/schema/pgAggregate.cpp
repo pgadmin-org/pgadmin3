@@ -142,6 +142,9 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 			       + wxT("(") + GetInputTypesList()
 			       + wxT(") IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -196,6 +199,18 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 		properties->AppendYesNoItem(_("System aggregate?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -225,6 +240,12 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	    wxT(        "prorettype AS aggfinaltype, ")
 	    wxT(        "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, ")
 	    wxT(        "agginitval, description");
+
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+	{
+		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=aggfnoid) AS labels");
+		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=aggfnoid) AS providers");
+	}
 
 	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
 	{
@@ -326,6 +347,12 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 					aggregate->iSetQuotedSortOp(collection->GetDatabase()->GetQuotedSchemaPrefix(oprnsp)
 					                            + qtIdent(oprname));
 				}
+			}
+				
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+			{
+				aggregate->iSetProviders(aggregates->GetVal(wxT("providers")));
+				aggregate->iSetLabels(aggregates->GetVal(wxT("labels")));
 			}
 
 			if (browser)

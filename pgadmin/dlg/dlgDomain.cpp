@@ -21,6 +21,7 @@
 #include "schema/pgSchema.h"
 #include "schema/pgDomain.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -55,6 +56,8 @@ dlgDomain::dlgDomain(pgaFactory *f, frmMain *frame, pgDomain *node, pgSchema *sc
 	schema = sch;
 	domain = node;
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	txtLength->Disable();
 	txtPrecision->Disable();
 }
@@ -68,6 +71,15 @@ pgObject *dlgDomain::GetObject()
 
 int dlgDomain::Go(bool modal)
 {
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(domain);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgDomain::OnChange));
+	}
+	else
+		seclabelPage->Disable();
+
 	if (domain)
 	{
 		// edit mode
@@ -155,18 +167,20 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 
 void dlgDomain::CheckChange()
 {
-	bool enable;
+	bool enable = true;
 
 	if (domain)
 	{
 		enable = txtDefault->GetValue() != domain->GetDefault()
+		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
 		         || chkNotNull->GetValue() != domain->GetNotNull()
 		         || txtCheck->GetValue() != domain->GetCheck()
 		         || cbOwner->GetValue() != domain->GetOwner()
 		         || txtComment->GetValue() != domain->GetComment();
 		if (connection->BackendMinimumVersion(9, 2) && !domain->GetValid() && !chkDontValidate->GetValue())
 			enable = true;
-		EnableOK(enable);
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
@@ -176,7 +190,6 @@ void dlgDomain::CheckChange()
 
 		txtPrecision->Enable(isVarPrec && varlen > 0);
 
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
 		CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty()
@@ -185,9 +198,8 @@ void dlgDomain::CheckChange()
 		CheckValid(enable, !txtPrecision->IsEnabled()
 		           || (varprec >= 0 && varprec <= varlen && NumToStr(varprec) == txtPrecision->GetValue()),
 		           _("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
-
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -288,7 +300,14 @@ wxString dlgDomain::GetSql()
 	}
 
 	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("DOMAIN"), name);
 
 	return sql;
 }
 
+void dlgDomain::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

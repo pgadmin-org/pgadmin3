@@ -366,6 +366,9 @@ wxString pgFunction::GetSql(ctlTree *browser)
 			sql += wxT("COMMENT ON FUNCTION ") + qtSig
 			       + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -419,6 +422,18 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendYesNoItem(_("System function?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -603,7 +618,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 	cacheMap typeCache, exprCache;
 
 	pgFunction *function = 0;
-	wxString argNamesCol, argDefsCol, proConfigCol, proType;
+	wxString argNamesCol, argDefsCol, proConfigCol, proType, seclab;
 	if (obj->GetConnection()->BackendMinimumVersion(8, 0))
 		argNamesCol = wxT("proargnames, ");
 	if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) && !obj->GetConnection()->BackendMinimumVersion(8, 4))
@@ -614,11 +629,17 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 		proConfigCol = wxT("proconfig, ");
 	if (obj->GetConnection()->EdbMinimumVersion(8, 1))
 		proType = wxT("protype, ");
+	if (obj->GetConnection()->BackendMinimumVersion(9, 1))
+	{
+		seclab = wxT(",\n")
+				wxT("(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=pr.oid) AS labels,\n")
+				wxT("(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=pr.oid) AS providers");
+	}
 
 	pgSet *functions = obj->GetDatabase()->ExecuteSet(
 	                       wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
 	                       argNamesCol  + argDefsCol + proConfigCol + proType +
-	                       wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
+	                       wxT("       pg_get_userbyid(proowner) as funcowner, description") + seclab + wxT("\n")
 	                       wxT("  FROM pg_proc pr\n")
 	                       wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
 	                       wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
@@ -915,6 +936,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 				wxString cfg = functions->GetVal(wxT("proconfig"));
 				if (!cfg.IsEmpty())
 					FillArray(function->GetConfigList(), cfg.Mid(1, cfg.Length() - 2));
+			}
+
+			if (obj->GetConnection()->BackendMinimumVersion(9, 1))
+			{
+				function->iSetProviders(functions->GetVal(wxT("providers")));
+				function->iSetLabels(functions->GetVal(wxT("labels")));
 			}
 
 			if (browser)

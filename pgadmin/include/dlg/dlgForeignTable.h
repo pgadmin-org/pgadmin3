@@ -14,6 +14,7 @@
 #define __DLG_FOREIGNTABLEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgForeignTable;
 
@@ -38,7 +39,8 @@ public:
 private:
 	pgSchema *schema;
 	pgForeignTable *foreigntable;
-
+	ctlSeclabelPanel *seclabelPage;
+ 
 	void OnMemberAdd(wxCommandEvent &ev);
 	void OnMemberChange(wxCommandEvent &ev);
 	void OnMemberRemove(wxCommandEvent &ev);
@@ -47,6 +49,7 @@ private:
 	void OnSelChangeTypOrLen(wxCommandEvent &ev);
 	void OnChangeMember(wxCommandEvent &ev);
 
+	void OnChange(wxCommandEvent &event);
 	void OnSelChangeOption(wxListEvent &ev);
 	void OnChangeOptionName(wxCommandEvent &ev);
 	void OnAddOption(wxCommandEvent &ev);

@@ -14,6 +14,7 @@
 #define __DLG_AGGREGATEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgAggregate;
@@ -32,7 +33,8 @@ public:
 private:
 	pgSchema *schema;
 	pgAggregate *aggregate;
-
+	ctlSeclabelPanel *seclabelPage;
+ 
 	virtual wxString GetDisplayName()
 	{
 		return GetName() + wxT("(") + GetInputTypesList() + wxT(")");
@@ -42,6 +44,7 @@ private:
 	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+	void OnChange(wxCommandEvent &event);
 	void OnChangeType(wxCommandEvent &ev);
 	void OnChangeTypeBase(wxCommandEvent &ev);
 	void OnChangeTypeState(wxCommandEvent &ev);

@@ -19,6 +19,7 @@
 
 #include "dlg/dlgLanguage.h"
 #include "schema/pgLanguage.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -30,7 +31,7 @@
 
 dlgProperty *pgLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-	return new dlgLanguage(this, frame, (pgLanguage *)node);
+	return new dlgLanguage(this, frame, (pgLanguage *)node, parent);
 }
 
 
@@ -42,10 +43,12 @@ BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-dlgLanguage::dlgLanguage(pgaFactory *f, frmMain *frame, pgLanguage *node)
+dlgLanguage::dlgLanguage(pgaFactory *f, frmMain *frame, pgLanguage *node, pgObject *parent)
 	: dlgSecurityProperty(f, frame, node, wxT("dlgLanguage"), wxT("USAGE"), "U")
 {
 	language = node;
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -59,6 +62,15 @@ int dlgLanguage::Go(bool modal)
 {
 	if (!connection->BackendMinimumVersion(7, 5))
 		txtComment->Disable();
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(language);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgLanguage::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (!language)
 		cbOwner->Append(wxEmptyString);
@@ -159,25 +171,24 @@ void dlgLanguage::OnChangeName(wxCommandEvent &ev)
 
 void dlgLanguage::CheckChange()
 {
-	bool didChange = true;
+	bool enable = true;
 	wxString name = cbName->wxComboBox::GetValue();
 	if (language)
 	{
-		didChange = name != language->GetName()
+		enable = name != language->GetName()
 		            || txtComment->GetValue() != language->GetComment()
 		            || (connection->BackendMinimumVersion(8, 3) && cbOwner->GetValue() != language->GetOwner());
-		EnableOK(didChange);
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
-
-		bool enable = true;
 		bool useTemplate = (cbName->FindString(name) >= 0);
 
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, useTemplate || !cbHandler->GetValue().IsEmpty(), _("Please specify language handler."));
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -218,8 +229,15 @@ wxString dlgLanguage::GetSql()
 
 	sql += GetGrant(wxT("U"), wxT("LANGUAGE ") + qtIdent(name));
 	AppendComment(sql, wxT("LANGUAGE ") + qtIdent(name), 0, language);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("LANGUAGE"), qtIdent(name));
 
 	return sql;
 }
 
 
+void dlgLanguage::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

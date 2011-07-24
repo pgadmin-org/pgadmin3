@@ -14,6 +14,7 @@
 #define __DLG_TYPEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgType;
 
@@ -38,6 +39,9 @@ public:
 private:
 	pgSchema *schema;
 	pgType *type;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 	void OnTypeChange(wxCommandEvent &ev);
 	void OnMemberAdd(wxCommandEvent &ev);
 	void OnMemberChange(wxCommandEvent &ev);

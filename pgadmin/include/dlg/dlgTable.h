@@ -14,6 +14,7 @@
 #define __DLG_TABLEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgTable;
@@ -34,7 +35,10 @@ public:
 private:
 	pgSchema *schema;
 	pgTable *table;
+	ctlSeclabelPanel *seclabelPage;
 	dataTypeCache dtCache;
+ 
+	void OnChange(wxCommandEvent &event);
 
 	void OnOK(wxCommandEvent &ev);
 	void OnChangeTable(wxCommandEvent &ev);

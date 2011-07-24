@@ -14,6 +14,7 @@
 #define __DLG_VIEWPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgView;
@@ -42,7 +43,10 @@ private:
 
 	pgSchema *schema;
 	pgView *view;
+	ctlSeclabelPanel *seclabelPage;
 	wxString oldDefinition;
+ 
+	void OnChange(wxCommandEvent &event);
 
 	DECLARE_EVENT_TABLE()
 };

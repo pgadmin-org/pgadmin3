@@ -32,6 +32,7 @@
 #include "schema/pgForeignKey.h"
 #include "schema/pgIndexConstraint.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 #define stUnlogged      CTRL_STATIC("stUnlogged")
@@ -172,6 +173,8 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 	schema = sch;
 	table = node;
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	btnAddTable->Disable();
 	btnRemoveTable->Disable();
 
@@ -213,6 +216,15 @@ int dlgTable::Go(bool modal)
 	AddUsers(cbOwner);
 	PrepareTablespace(cbTablespace);
 	PopulateDatatypeCache();
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(table);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgTable::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	// new of type combobox
 	wxString typeQuery = wxT("SELECT t.oid, t.typname ")
@@ -1505,6 +1517,9 @@ wxString dlgTable::GetSql()
 	}
 
 	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	if (connection->BackendMinimumVersion(8, 2))
 		sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + tabname);
@@ -1695,24 +1710,25 @@ void dlgTable::OnOK(wxCommandEvent &ev)
 
 void dlgTable::CheckChange()
 {
+	bool enable = true;
 	if (table)
 	{
-		bool changed = false;
+		enable = false;
 		if (connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0)
 		{
-			changed = !GetSql().IsEmpty();
+			enable = !GetSql().IsEmpty();
 		}
-		EnableOK(changed);
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
 		wxString name = GetName();
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0,
 		           _("Please specify columns."));
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -2093,4 +2109,10 @@ void dlgTable::FillAutoVacuumParameters(wxString &setStr, wxString &resetStr,
 			setStr += wxT(",");
 		setStr += wxT("\n  ") + parameter + wxT(" = ") + val;
 	}
+}
+
+
+void dlgTable::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
 }

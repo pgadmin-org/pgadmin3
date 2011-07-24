@@ -21,6 +21,7 @@
 #include "schema/pgSchema.h"
 #include "schema/pgType.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -95,6 +96,9 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 {
 	type = node;
 	schema = sch;
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	lstMembers->CreateColumns(0, _("Member"), _("Data type"), _("Collation"), -1);
 	lstLabels->InsertColumn(0, _("Label"), wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
 
@@ -166,6 +170,15 @@ pgObject *dlgType::GetObject()
 int dlgType::Go(bool modal)
 {
 	pgSet *set;
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(type);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgType::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	FillDatatype(cbDatatype, cbElement);
 
@@ -473,12 +486,14 @@ void dlgType::CheckChange()
 
 	if (type)
 	{
-		EnableOK(enable && (txtName->GetValue() != type->GetName()
+		enable = enable && (txtName->GetValue() != type->GetName()
 		                    || txtComment->GetValue() != type->GetComment()
 		                    || cbSchema->GetValue() != type->GetSchema()->GetName()
 		                    || cbOwner->GetValue() != type->GetOwner()
 		                    || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
-		                    || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1))));
+		                    || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1)));
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
@@ -486,9 +501,9 @@ void dlgType::CheckChange()
 
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, !name.StartsWith(wxT("_")), _("Name may not start with '_'."));
-
-		EnableOK(enable);
 	}
+
+	EnableOK(enable);
 }
 
 
@@ -835,6 +850,9 @@ wxString dlgType::GetSql()
 		sql += wxT(");\n");
 	}
 	AppendComment(sql, wxT("TYPE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), type);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("TYPE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;
 }
@@ -965,4 +983,9 @@ wxString dlgType::GetSqlForTypes()
 	}
 
 	return sql;
+}
+
+void dlgType::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
 }

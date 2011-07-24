@@ -21,7 +21,7 @@
 #include "dlg/dlgView.h"
 #include "schema/pgView.h"
 #include "schema/pgSchema.h"
-
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -46,6 +46,8 @@ dlgView::dlgView(pgaFactory *f, frmMain *frame, pgView *node, pgSchema *sch)
 {
 	schema = sch;
 	view = node;
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -61,6 +63,15 @@ int dlgView::Go(bool modal)
 		cbOwner->Append(wxEmptyString);
 	AddGroups(cbOwner);
 	AddUsers(cbOwner);
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(view);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgView::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (view)
 	{
@@ -99,10 +110,10 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 
 void dlgView::CheckChange()
 {
+	bool enable = true;
 	wxString name = GetName();
 	if(!name.IsEmpty())
 	{
-		bool enable = true;
 		if (view)
 			enable = txtComment->GetValue() != view->GetComment()
 			         || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false)
@@ -110,17 +121,16 @@ void dlgView::CheckChange()
 			         || cbSchema->GetValue() != view->GetSchema()->GetName()
 			         || name != view->GetName();
 		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
-		EnableOK(enable);
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
-		bool enable = true;
-
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
-
-		EnableOK(enable);
 	}
+
+	EnableOK(enable);
 }
 
 
@@ -166,6 +176,10 @@ wxString dlgView::GetSql()
 	sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	AppendComment(sql, wxT("VIEW ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), view);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("VIEW"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
+
 	return sql;
 }
 
@@ -185,3 +199,7 @@ void dlgView::OnApply(wxCommandEvent &ev)
 	view->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
 }
 
+void dlgView::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

@@ -114,6 +114,9 @@ wxString pgForeignTable::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       + GetOwnerSql(9, 1)
 		       + GetCommentSql();
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -182,6 +185,18 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("Columns"), GetTypesList());
 		properties->AppendItem(_("Options"), GetOptionsList());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -330,8 +345,10 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 {
 	pgForeignTable *foreigntable = 0;
 
-	wxString sql =	wxT("SELECT c.oid AS ftoid, c.relname AS ftrelname, pg_get_userbyid(relowner) AS ftowner, ")
-	                wxT("  ftoptions, srvname AS ftsrvname, description\n")
+	wxString sql =	wxT("SELECT c.oid AS ftoid, c.relname AS ftrelname, pg_get_userbyid(relowner) AS ftowner,\n")
+	                wxT("  ftoptions, srvname AS ftsrvname, description,\n")
+	                wxT("  (SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=c.oid) AS labels,\n")
+	                wxT("  (SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=c.oid) AS providers\n")
 	                wxT("  FROM pg_class c\n")
 	                wxT("  JOIN pg_foreign_table ft ON c.oid=ft.ftrelid\n")
 	                wxT("  LEFT OUTER JOIN pg_foreign_server fs ON ft.ftserver=fs.oid\n")
@@ -353,6 +370,8 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 			foreigntable->iSetForeignServer(foreigntables->GetVal(wxT("ftsrvname")));
 			foreigntable->iSetOptions(foreigntables->GetVal(wxT("ftoptions")));
 			foreigntable->iSetComment(foreigntables->GetVal(wxT("description")));
+			foreigntable->iSetProviders(foreigntables->GetVal(wxT("providers")));
+			foreigntable->iSetLabels(foreigntables->GetVal(wxT("labels")));
 
 			if (browser)
 			{

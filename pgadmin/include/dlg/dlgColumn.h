@@ -14,6 +14,7 @@
 #define __DLG_COLUMNPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgColumn;
 class pgTable;
@@ -60,6 +61,9 @@ protected:
 	wxArrayString currentAcl;
 	wxArrayString groups;
 	bool securityChanged;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 	wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
 

@@ -21,6 +21,7 @@
 #include "schema/pgSchema.h"
 #include "schema/pgForeignTable.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -70,6 +71,8 @@ dlgForeignTable::dlgForeignTable(pgaFactory *f, frmMain *frame, pgForeignTable *
 	foreigntable = node;
 	schema = sch;
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	lstMembers->CreateColumns(0, _("Member"), _("Data type"), _("Constraint"), -1);
 
 	queriesToBeSplitted = false;
@@ -93,6 +96,10 @@ pgObject *dlgForeignTable::GetObject()
 
 int dlgForeignTable::Go(bool modal)
 {
+	seclabelPage->SetConnection(connection);
+	seclabelPage->SetObject(foreigntable);
+	this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgForeignTable::OnChange));
+
 	// Fill owner combobox
 	if (!foreigntable)
 		cbOwner->Append(wxT(""));
@@ -224,23 +231,25 @@ void dlgForeignTable::OnSelChangeTypOrLen(wxCommandEvent &ev)
 
 void dlgForeignTable::CheckChange()
 {
+	bool enable = true;
 	if (foreigntable)
 	{
-		EnableOK(txtComment->GetValue() != foreigntable->GetComment()
+		enable = txtComment->GetValue() != foreigntable->GetComment()
 		         || cbSchema->GetValue() != foreigntable->GetSchema()->GetName()
 		         || cbOwner->GetValue() != foreigntable->GetOwner()
 		         || GetSqlForTypes() != wxEmptyString
-		         || GetSql().Length() > 0);
+		         || GetSql().Length() > 0;
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
 		wxString name = GetName();
 
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, cbForeignServer->GetCurrentSelection() >= 0, _("Please specify a foreign server."));
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -557,6 +566,10 @@ wxString dlgForeignTable::GetSql()
 		sql += wxT(";\n");
 	}
 	AppendComment(sql, wxT("FOREIGN TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), foreigntable);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("FOREIGN TABLE "), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
+
 	return sql;
 }
 
@@ -616,4 +629,9 @@ wxString dlgForeignTable::GetSqlForTypes()
 	}
 
 	return sql;
+}
+
+void dlgForeignTable::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
 }

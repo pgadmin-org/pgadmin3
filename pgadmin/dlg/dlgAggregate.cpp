@@ -21,6 +21,7 @@
 #include "schema/pgSchema.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 #include "images/aggregate.pngc"
 
@@ -67,6 +68,7 @@ dlgAggregate::dlgAggregate(pgaFactory *f, frmMain *frame, pgAggregate *node, pgS
 	SetIcon(*aggregate_png_ico);
 	schema = sch;
 	aggregate = node;
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -83,6 +85,15 @@ int dlgAggregate::Go(bool modal)
 
 	if (!connection->BackendMinimumVersion(8, 1))
 		cbSortOp->Disable();
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(aggregate);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgAggregate::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	lstInputTypes->InsertColumn(0, _("Input types"), wxLIST_FORMAT_LEFT, lstInputTypes->GetSize().x - 10);
 
@@ -161,12 +172,15 @@ void dlgAggregate::OnChangeSize(wxSizeEvent &ev)
 
 void dlgAggregate::CheckChange()
 {
-	if (aggregate)
+	bool enable = true;
+ 	if (aggregate)
 	{
-		EnableOK(GetName() != aggregate->GetName()
+		enable = GetName() != aggregate->GetName()
 		         || cbSchema->GetValue() != aggregate->GetSchema()->GetName()
 		         || txtComment->GetValue() != aggregate->GetComment()
-		         || cbOwner->GetValue() != aggregate->GetOwner());
+		         || cbOwner->GetValue() != aggregate->GetOwner();
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
@@ -192,13 +206,11 @@ void dlgAggregate::CheckChange()
 		}
 
 		wxString name = GetName();
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, cbStateType->GetGuessedSelection() >= 0, _("Please select state datatype."));
 		CheckValid(enable, cbStateFunc->GetCurrentSelection() >= 0, _("Please specify state function."));
-
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -367,6 +379,12 @@ wxString dlgAggregate::GetSql()
 	AppendComment(sql, wxT("AGGREGATE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
 	              + wxT("(") + GetInputTypesList()
 	              + wxT(")"), aggregate);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("AGGREGATE"),
+				qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
+	              + wxT("(") + GetInputTypesList()
+	              + wxT(")"));
 
 	return sql;
 }
@@ -463,3 +481,7 @@ wxString dlgAggregate::GetInputTypesOidList()
 	return types;
 }
 
+void dlgAggregate::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

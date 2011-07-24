@@ -158,6 +158,9 @@ wxString pgSequence::GetSql(ctlTree *browser)
 			sql += GetGrant(wxT("rwU"), wxT("TABLE ") + GetQuotedFullIdentifier());
 
 		sql += GetCommentSql();
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -183,6 +186,18 @@ void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendYesNoItem(_("Called?"), GetCalled());
 		properties->AppendYesNoItem(_("System sequence?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -259,16 +274,23 @@ wxString pgSequenceCollection::GetTranslatedMessage(int kindOfMessage) const
 
 pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
+pgSet *sequences;
 	pgSequence *sequence = 0;
-
-	pgSet *sequences;
-	sequences = collection->GetDatabase()->ExecuteSet(
-	                wxT("SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n")
-	                wxT("  FROM pg_class cl\n")
-	                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
-	                wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
-	                + restriction + wxT("\n")
-	                wxT(" ORDER BY relname"));
+	wxString sql;
+	
+	sql = wxT("SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description");
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+	{
+		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=cl.oid) AS labels");
+		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=cl.oid) AS providers");
+	}
+	sql += wxT("\n  FROM pg_class cl\n")
+			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
+			wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
+			+ restriction + wxT("\n")
+			wxT(" ORDER BY relname");
+	
+	sequences = collection->GetDatabase()->ExecuteSet(sql);
 
 	if (sequences)
 	{
@@ -281,6 +303,12 @@ pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			sequence->iSetComment(sequences->GetVal(wxT("description")));
 			sequence->iSetOwner(sequences->GetVal(wxT("seqowner")));
 			sequence->iSetAcl(sequences->GetVal(wxT("relacl")));
+				
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+			{
+				sequence->iSetProviders(sequences->GetVal(wxT("providers")));
+				sequence->iSetLabels(sequences->GetVal(wxT("labels")));
+			}
 
 			if (browser)
 			{

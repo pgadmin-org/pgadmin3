@@ -25,6 +25,7 @@
 #include "frm/frmMain.h"
 #include "schema/pgUser.h"
 #include "schema/pgGroup.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -178,6 +179,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 	else
 		securityPage->Disable();
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -236,6 +238,15 @@ int dlgColumn::Go(bool modal)
 		cbVarname->Enable(false);
 		txtValue->Enable(false);
 	}
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(column);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgColumn::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	cbStorage->Enable(true);
 
@@ -571,6 +582,10 @@ wxString dlgColumn::GetSql()
 
 		AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier()
 					  + wxT(".") + qtIdent(name), column);
+	
+		if (seclabelPage)
+			sql += seclabelPage->GetSqlForSecLabels(wxT("COLUMN"), table->GetQuotedFullIdentifier()
+					  + wxT(".") + qtIdent(name));
 
 		// securityPage will exists only for PG 8.4 and later
 		if (connection->BackendMinimumVersion(8, 4))
@@ -662,6 +677,9 @@ void dlgColumn::CheckChange()
 			         || cbStorage->GetValue() != column->GetStorage()
 			         || dirtyVars;
 
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
+
 		EnableOK(enable || securityChanged);
 	}
 	else
@@ -749,3 +767,8 @@ void dlgColumn::OnVarRemove(wxCommandEvent &ev)
 	}
 }
 
+
+void dlgColumn::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

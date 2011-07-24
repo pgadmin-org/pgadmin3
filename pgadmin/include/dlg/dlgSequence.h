@@ -14,6 +14,7 @@
 #define __DLG_SEQUENCEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgSequence;
@@ -34,6 +35,9 @@ private:
 
 	pgSchema *schema;
 	pgSequence *sequence;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);

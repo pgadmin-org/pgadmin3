@@ -14,13 +14,14 @@
 #define __DLG_SCHEMAPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 
 class dlgSchema : public dlgDefaultSecurityProperty
 {
 public:
-	dlgSchema(pgaFactory *factory, frmMain *frame, pgSchema *db);
+	dlgSchema(pgaFactory *factory, frmMain *frame, pgSchema *node, pgObject *parent);
 	int Go(bool modal);
 
 	void CheckChange();
@@ -30,7 +31,9 @@ public:
 
 private:
 	pgSchema *schema;
+	ctlSeclabelPanel *seclabelPage;
 
+	void OnChange(wxCommandEvent &event);
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);
 #endif

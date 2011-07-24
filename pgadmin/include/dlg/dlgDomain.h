@@ -14,6 +14,7 @@
 #define __DLG_DOMAINPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgDomain;
@@ -35,6 +36,9 @@ private:
 
 	pgSchema *schema;
 	pgDomain *domain;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 	DECLARE_EVENT_TABLE()
 };

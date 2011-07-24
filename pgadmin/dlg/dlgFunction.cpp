@@ -22,6 +22,7 @@
 #include "schema/pgFunction.h"
 #include "schema/pgSchema.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 
@@ -128,6 +129,8 @@ dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSche
 	function = node;
 	isProcedure = false;
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	txtArguments->Disable();
 
 	bool bVal;
@@ -168,6 +171,15 @@ pgObject *dlgFunction::GetObject()
 int dlgFunction::Go(bool modal)
 {
 	isBackendMinVer84 = connection->BackendMinimumVersion(8, 4);
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(function);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgFunction::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (function)
 	{
@@ -569,7 +581,9 @@ void dlgFunction::CheckChange()
 
 	if (function && enable)
 	{
-		EnableOK(!GetSql().IsEmpty());
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
+		EnableOK(enable && !GetSql().IsEmpty());
 	}
 	else
 	{
@@ -1034,7 +1048,12 @@ wxString dlgFunction::GetSql()
 	if (isProcedure)
 		AppendComment(sql, wxT("PROCEDURE ") + name, function);
 	else
+    {
 		AppendComment(sql, wxT("FUNCTION ") + name, function);
+		
+		if (seclabelPage)
+			sql += seclabelPage->GetSqlForSecLabels(wxT("FUNCTION"), name);
+    }
 
 	return sql;
 }
@@ -1045,3 +1064,8 @@ void dlgFunction::OnChangeWindow(wxCommandEvent &ev)
 	CheckChange();
 }
 
+
+void dlgFunction::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

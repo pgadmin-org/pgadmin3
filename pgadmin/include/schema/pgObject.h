@@ -218,6 +218,24 @@ public:
 	{
 		return GetFullName();
 	};
+	void iSetProviders(const wxString &newVal)
+	{
+		providers = newVal;
+	}
+	wxString GetProviders() const
+	{
+		return providers;
+	}
+	void iSetLabels(const wxString &newVal)
+	{
+		labels = newVal;
+	}
+	wxString GetLabels() const
+	{
+		return labels;
+	}
+	wxArrayString GetProviderLabelArray();
+	wxString GetSeqLabelsSql();
 
 	virtual wxMenu *GetNewMenu();
 
@@ -356,6 +374,7 @@ private:
 	wxString name, owner, schema, comment, acl;
 	int type;
 	OID oid, xid;
+	wxString providers, labels;
 
 	friend class pgaFactory;
 };

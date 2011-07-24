@@ -14,6 +14,7 @@
 #define __DLG_FUNCTIONPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgSchema;
 class pgFunction;
@@ -41,7 +42,10 @@ public:
 private:
 	pgSchema *schema;
 	pgFunction *function;
+	ctlSeclabelPanel *seclabelPage;
 	wxArrayString varInfo;
+ 
+	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);

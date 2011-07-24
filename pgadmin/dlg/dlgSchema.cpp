@@ -17,6 +17,7 @@
 #include "utils/misc.h"
 #include "dlg/dlgSchema.h"
 #include "schema/pgSchema.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -26,13 +27,14 @@ END_EVENT_TABLE();
 
 dlgProperty *pgSchemaBaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-	return new dlgSchema(this, frame, (pgSchema *)node);
+	return new dlgSchema(this, frame, (pgSchema *)node, parent);
 }
 
-dlgSchema::dlgSchema(pgaFactory *f, frmMain *frame, pgSchema *node)
+dlgSchema::dlgSchema(pgaFactory *f, frmMain *frame, pgSchema *node, pgObject *parent)
 	: dlgDefaultSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
 {
 	schema = node;
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -45,6 +47,15 @@ pgObject *dlgSchema::GetObject()
 int dlgSchema::Go(bool modal)
 {
 	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(schema);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgSchema::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (!schema)
 		cbOwner->Append(wxT(""));
@@ -102,20 +113,23 @@ void dlgSchema::OnChangeSize(wxSizeEvent &ev)
 
 void dlgSchema::CheckChange()
 {
+	bool enable = true;
 	wxString name = GetName();
+
 	if (schema)
 	{
-		EnableOK(name != schema->GetName() || txtComment->GetValue() != schema->GetComment()
-		         || cbOwner->GetValue() != schema->GetOwner());
+		enable = name != schema->GetName()
+				 || txtComment->GetValue() != schema->GetComment()
+		         || cbOwner->GetValue() != schema->GetOwner();
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
-
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-
-		EnableOK(enable);
 	}
+
+	EnableOK(enable);
 }
 
 
@@ -145,8 +159,15 @@ wxString dlgSchema::GetSql()
 
 	if (connection->BackendMinimumVersion(9, 0) && defaultSecurityChanged)
 		sql += GetDefaultPrivileges(name);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("SCHEMA"), name);
 
 	return sql;
 }
 
 
+void dlgSchema::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

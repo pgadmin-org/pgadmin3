@@ -203,6 +203,9 @@ wxString pgColumn::GetSql(ctlTree *browser)
 
 				if (GetDatabase()->BackendMinimumVersion(8, 4))
 					sql += GetPrivileges();
+		
+				if (GetConnection()->BackendMinimumVersion(9, 1))
+					sql += GetSeqLabelsSql();
 			}
 		}
 	}
@@ -441,6 +444,18 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		}
 
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -509,6 +524,11 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 		    wxT(",\n")
 		    wxT("  EXISTS(SELECT 1 FROM  pg_constraint WHERE conrelid=att.attrelid AND contype='f'")
 		    wxT(" AND att.attnum=ANY(conkey)) As isfk");
+	if (database->BackendMinimumVersion(9, 1))
+	{
+		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=att.attrelid AND sl1.objsubid=att.attnum) AS labels");
+		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=att.attrelid AND sl2.objsubid=att.attnum) AS providers");
+	}
 
 	sql += wxT("\n")
 	       wxT("  FROM pg_attribute att\n")
@@ -622,6 +642,12 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 				if (!columns->GetVal(wxT("collname")).IsEmpty())
 					coll = qtIdent(columns->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(columns->GetVal(wxT("collname")));
 				column->iSetCollation(coll);
+			}
+				
+			if (database->BackendMinimumVersion(9, 1))
+			{
+				column->iSetProviders(columns->GetVal(wxT("providers")));
+				column->iSetLabels(columns->GetVal(wxT("labels")));
 			}
 
 			if (browser)

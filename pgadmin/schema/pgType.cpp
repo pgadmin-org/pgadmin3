@@ -148,6 +148,9 @@ wxString pgType::GetSql(ctlTree *browser)
 		sql += wxT(");\n")
 		       + GetOwnerSql(8, 0)
 		       + GetCommentSql();
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -300,6 +303,18 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		}
 		properties->AppendYesNoItem(_("System type?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -356,11 +371,18 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	if (!settings->GetShowSystemObjects())
 		systemRestriction = wxT("   AND ct.oid IS NULL\n");
 
-	wxString sql =	wxT("SELECT t.oid, t.*, format_type(t.oid, null) AS alias, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n")
-	                wxT("  FROM pg_type t\n")
-	                wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
-	                wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
-	                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n");
+	wxString sql =	wxT("SELECT t.oid, t.*, format_type(t.oid, null) AS alias,\n")
+					wxT("pg_get_userbyid(t.typowner) as typeowner, e.typname as element,\n")
+					wxT("description, ct.oid AS taboid");
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+	{
+		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=t.oid) AS labels");
+		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=t.oid) AS providers");
+	}
+	sql += wxT("\n  FROM pg_type t\n")
+			wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
+			wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
+			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n");
 
 	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
 		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
@@ -425,6 +447,12 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			    storage == wxT("x") ? wxT("EXTENDED") : wxT("unknown"));
 			if (collection->GetConnection()->BackendMinimumVersion(9, 1))
 				type->iSetCollatable(types->GetLong(wxT("typcollation")) == 100);
+			
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+			{
+				type->iSetProviders(types->GetVal(wxT("providers")));
+				type->iSetLabels(types->GetVal(wxT("labels")));
+			}
 
 			if (browser)
 			{

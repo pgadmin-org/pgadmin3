@@ -842,6 +842,126 @@ wxString pgObject::GetPrivilegeGrant(const wxString &allPattern, const wxString 
 }
 
 
+wxArrayString pgObject::GetProviderLabelArray()
+{
+	wxArrayString providersArray, labelsArray, seclabelsArray;
+	wxString currentChar;
+	wxString tmp;
+	bool wrappedInQuotes, antislash;
+	
+	if (labels.IsEmpty())
+		return seclabelsArray;
+	
+	// parse the labels string
+	// we start at 1 and stop at length-1 to get rid of the { and } of the array
+	for (unsigned int index = 1 ; index < labels.Length() - 1 ; index++)
+	{
+		// get current char
+		currentChar = labels.Mid(index, 1);
+
+		// if there is a double quote at the beginning of a label,
+		// the whole label will be wrapped in quotes
+		if (currentChar == wxT("\"") && tmp.IsEmpty())
+			wrappedInQuotes = true;
+		else if (currentChar == wxT("\\") && wrappedInQuotes)
+			antislash = true;
+		else
+		{
+			if ((currentChar == wxT(",") && !wrappedInQuotes && !tmp.IsEmpty())
+			        || (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty()))
+			{
+				// put new label in the array
+				labelsArray.Add(tmp);
+
+				// reinit tmp
+				tmp = wxEmptyString;
+				wrappedInQuotes = false;
+			}
+			else
+				tmp += currentChar;
+			antislash = false;
+		}
+	}
+
+	// last label
+	if (!tmp.IsEmpty())
+	{
+		// put last label in the array
+		labelsArray.Add(tmp);
+	}
+	
+	// reinit tmp
+	tmp = wxEmptyString;
+	wrappedInQuotes = false;
+	
+	// parse the providers string
+	// we start at 1 and stop at length-1 to get rid of the { and } of the array
+	for (unsigned int index = 1 ; index < providers.Length() - 1 ; index++)
+	{
+		// get current char
+		currentChar = providers.Mid(index, 1);
+
+		// if there is a double quote at the beginning of a provider,
+		// the whole provider will be wrapped in quotes
+		if (currentChar == wxT("\"") && tmp.IsEmpty())
+			wrappedInQuotes = true;
+		else if (currentChar == wxT("\\") && wrappedInQuotes)
+			antislash = true;
+		else
+		{
+			if ((currentChar == wxT(",") && !wrappedInQuotes && !tmp.IsEmpty())
+			        || (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty()))
+			{
+				// put new provider in the array
+				providersArray.Add(tmp);
+
+				// reinit tmp
+				tmp = wxEmptyString;
+				wrappedInQuotes = false;
+			}
+			else
+				tmp += currentChar;
+			antislash = false;
+		}
+	}
+
+	// last provider
+	if (!tmp.IsEmpty())
+	{
+		// put last provider in the array
+		providersArray.Add(tmp);
+	}
+	
+	// now, build one wxArrayString from these two
+	for (unsigned int index = 0 ; index < providersArray.GetCount() ; index++)
+	{
+		seclabelsArray.Add(providersArray.Item(index));
+		seclabelsArray.Add(labelsArray.Item(index));
+	}
+	
+	// return the final one
+	return seclabelsArray;
+}
+
+
+wxString pgObject::GetSeqLabelsSql()
+{
+	wxString sql = wxEmptyString;
+	wxArrayString seclabels = GetProviderLabelArray();
+	if (seclabels.GetCount() > 0)
+	{
+		for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+		{
+			sql += wxT("SECURITY LABEL FOR ") + seclabels.Item(index)
+				+ wxT("\n  ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier()
+				+ wxT("\n  IS ") + qtDbString(seclabels.Item(index+1)) + wxT(";\n");
+		}
+	}
+
+	return sql;
+}
+
+
 wxString pgObject::GetPrivileges(const wxString &allPattern, const wxString &str, const wxString &grantOnObject, const wxString &user, const wxString &column)
 {
 	wxString aclWithGrant, aclWithoutGrant;

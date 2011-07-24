@@ -298,6 +298,9 @@ wxString pgSchemaBase::GetSql(ctlTree *browser)
 		sql += wxT("\n") + pgDatabase::GetDefaultPrivileges('r', m_defPrivsOnTables, strName);
 		sql += pgDatabase::GetDefaultPrivileges('S', m_defPrivsOnSeqs, strName);
 		sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, strName);
+		
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 	return sql;
 }
@@ -412,6 +415,18 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			properties->AppendYesNoItem(_("System schema?"), GetSystemObject());
 
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -512,8 +527,13 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
 		}
 		sql += wxT("            ELSE 3 END AS nsptyp,\n")
 		       wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-		       wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-		       wxT("  FROM pg_namespace nsp\n")
+		       wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate");
+		if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+		{
+			sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=nsp.oid) AS labels");
+			sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=nsp.oid) AS providers");
+		}
+		sql += wxT("\n  FROM pg_namespace nsp\n")
 		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
 		       + restr +
 		       wxT(" ORDER BY 1, nspname");
@@ -589,6 +609,12 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
 					schema->iSetDefPrivsOnTables(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='r'"))));
 					schema->iSetDefPrivsOnSeqs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='S'"))));
 					schema->iSetDefPrivsOnFuncs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='f'"))));
+				}
+				
+				if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+				{
+					schema->iSetProviders(schemas->GetVal(wxT("providers")));
+					schema->iSetLabels(schemas->GetVal(wxT("labels")));
 				}
 
 				if (browser)
