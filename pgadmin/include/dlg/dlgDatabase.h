@@ -14,6 +14,7 @@
 #define __DLG_DATABASEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgDatabase;
 
@@ -35,6 +36,9 @@ private:
 	pgDatabase *database;
 	wxArrayString varInfo;
 	bool schemaRestrictionOk;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);

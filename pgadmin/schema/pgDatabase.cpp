@@ -565,6 +565,9 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 		sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, wxT(""));
 
 		sql += GetCommentSql();
+		
+		if (myConn->BackendMinimumVersion(9, 2))
+			sql += GetSeqLabelsSql();
 	}
 	return sql;
 }
@@ -691,6 +694,18 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		if (!GetSchemaRestriction().IsEmpty())
 			properties->AppendItem(_("Schema restriction"), GetSchemaRestriction());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 	if (form && GetCanHint() && !hintShown)
 	{
@@ -717,7 +732,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 	pgSet *databases;
 
-	wxString datcollate, datctype, datconnlimit;
+	wxString datcollate, datctype, datconnlimit, seclabelsql;
 
 	if (collection->GetConnection()->BackendMinimumVersion(8, 1))
 	{
@@ -727,6 +742,11 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	{
 		datctype = wxT(", db.datctype as ctype");
 		datcollate = wxT(", db.datcollate as collate");
+	}
+	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+	{
+		seclabelsql = wxT(",\n(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=db.oid) AS labels")
+					wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers");
 	}
 
 	wxString restr = restriction;
@@ -752,7 +772,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
 		                wxT("current_setting('default_tablespace') AS default_tablespace, \n")
 		                wxT("descr.description\n") +
-		                datconnlimit + datcollate + datctype +
+		                datconnlimit + datcollate + datctype + seclabelsql +
 		                wxT("  FROM pg_database db\n")
 		                wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
 		                wxT("  LEFT OUTER JOIN pg_shdescription descr ON db.oid=descr.objoid\n")
@@ -839,6 +859,12 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 				               + wxT("/Databases/") + name + wxT("/SchemaRestriction"), &value, wxEmptyString);
 
 				database->iSetSchemaRestriction(value);
+			}
+				
+			if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+			{
+				database->iSetProviders(databases->GetVal(wxT("providers")));
+				database->iSetLabels(databases->GetVal(wxT("labels")));
 			}
 
 			// Add the treeview node if required

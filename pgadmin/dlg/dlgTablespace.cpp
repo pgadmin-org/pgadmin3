@@ -21,7 +21,7 @@
 #include "utils/misc.h"
 #include "dlg/dlgTablespace.h"
 #include "schema/pgTablespace.h"
-
+#include "ctl/ctlSeclabelPanel.h"
 
 // pointer to controls
 #define txtLocation     CTRL_TEXT("txtLocation")
@@ -56,6 +56,8 @@ dlgTablespace::dlgTablespace(pgaFactory *f, frmMain *frame, pgTablespace *node)
 	lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 	chkValue->Hide();
 	btnOK->Disable();
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -75,6 +77,15 @@ wxString dlgTablespace::GetHelpPage() const
 
 int dlgTablespace::Go(bool modal)
 {
+	if (connection->BackendMinimumVersion(9, 2))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(tablespace);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgTablespace::OnChange));
+	}
+	else
+		seclabelPage->Disable();
+
 	if (!tablespace)
 		cbOwner->Append(wxEmptyString);
 	AddGroups(cbOwner);
@@ -153,22 +164,24 @@ void dlgTablespace::OnChangeSize(wxSizeEvent &ev)
 
 void dlgTablespace::CheckChange()
 {
+	bool enable = true;
 	if (tablespace)
 	{
-		EnableOK(txtComment->GetValue() != tablespace->GetComment()
+		enable = txtComment->GetValue() != tablespace->GetComment()
 		         || GetName() != tablespace->GetName()
 		         || cbOwner->GetValue() != tablespace->GetOwner()
-		         || dirtyVars);
+		         || dirtyVars;
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
 		wxString name = GetName();
 
-		bool enable = true;
 		CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
 		CheckValid(enable, !txtLocation->GetValue().IsEmpty(), _("Please specify location."));
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -249,6 +262,9 @@ wxString dlgTablespace::GetSql()
 		sql += wxT("\n  LOCATION ") + qtDbString(txtLocation->GetValue())
 		       +  wxT(";\n");
 	}
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLESPACE"), qtIdent(name));
 
 
 	return sql;
@@ -368,3 +384,8 @@ void dlgTablespace::OnVarRemove(wxCommandEvent &ev)
 	}
 }
 
+
+void dlgTablespace::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

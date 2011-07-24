@@ -19,6 +19,7 @@
 #include "dlg/dlgDatabase.h"
 #include "schema/pgDatabase.h"
 #include "ctl/ctlDefaultSecurityPanel.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -86,6 +87,8 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
 	chkValue->Hide();
 
 	dirtyVars = false;
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 pgObject *dlgDatabase::GetObject()
@@ -106,6 +109,15 @@ int dlgDatabase::Go(bool modal)
 {
 	bool createDefPriv = false;
 	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+
+	if (connection->BackendMinimumVersion(9, 2))
+	{	
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(database);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgDatabase::OnChange));
+	}
+	else
+		seclabelPage->Disable();
 
 	if (!database)
 		cbOwner->Append(wxT(""));
@@ -467,6 +479,8 @@ void dlgDatabase::CheckChange()
 		         || cbTablespace->GetValue() != database->GetTablespace()
 		         || connLimit != database->GetConnectionLimit()
 		         || dirtyVars;
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 
 	CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
@@ -667,6 +681,9 @@ wxString dlgDatabase::GetSql()
 		AppendOwnerChange(sql, wxT("DATABASE ") + qtIdent(name));
 
 		AppendComment(sql, wxT("DATABASE"), 0, database);
+	
+		if (seclabelPage)
+			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
 
 		if (connection->BackendMinimumVersion(8, 4))
 		{
@@ -849,6 +866,8 @@ wxString dlgDatabase::GetSql2()
 			else
 				sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
 		}
+		if (seclabelPage)
+			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
 	}
 
 	return sql;
@@ -859,4 +878,9 @@ bool dlgDatabase::GetDisconnectFirst()
 	if (database)
 		return true;
 	return false;
+}
+
+void dlgDatabase::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
 }

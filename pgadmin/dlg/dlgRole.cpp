@@ -18,6 +18,7 @@
 #include "utils/misc.h"
 #include "dlg/dlgRole.h"
 #include "schema/pgRole.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -104,6 +105,8 @@ dlgRole::dlgRole(pgaFactory *f, frmMain *frame, pgRole *node, bool chkLogin)
 	chkValue->Hide();
 	if (chkLogin)
 		chkCanLogin->SetValue(true);
+
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
 
 
@@ -128,6 +131,15 @@ void dlgRole::OnChangeSize(wxSizeEvent &ev)
 
 int dlgRole::Go(bool modal)
 {
+	if (connection->BackendMinimumVersion(9, 2))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(role);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgRole::OnChange));
+	}
+	else
+		seclabelPage->Disable();
+
 	wxString roleSql =
 	    wxT("SELECT rolname\n")
 	    wxT("  FROM pg_roles r\n");
@@ -339,6 +351,7 @@ void dlgRole::OnChangePasswd(wxCommandEvent &ev)
 
 void dlgRole::CheckChange()
 {
+	bool enable = true;
 	bool timEn = datValidUntil->GetValue().IsValid();
 	timValidUntil->Enable(timEn);
 	if (!timEn)
@@ -359,15 +372,15 @@ void dlgRole::CheckChange()
 	if (!role)
 	{
 		wxString name = GetName();
-
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-		EnableOK(enable);
 	}
 	else
 	{
-		EnableOK(!GetSql().IsEmpty());
+		enable = !GetSql().IsEmpty();
+		if (seclabelPage)
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
+	EnableOK(enable);
 }
 
 
@@ -799,7 +812,15 @@ wxString dlgRole::GetSql()
 	}
 
 	AppendComment(sql, wxT("ROLE"), 0, role);
+	
+	if (seclabelPage)
+		sql += seclabelPage->GetSqlForSecLabels(wxT("ROLE"), qtIdent(name));
 
 	return sql;
 }
 
+
+void dlgRole::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

@@ -16,6 +16,7 @@
 #include "dlg/dlgProperty.h"
 #include "ctl/calbox.h"
 #include "ctl/timespin.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgRole;
 
@@ -35,6 +36,9 @@ public:
 private:
 	pgRole *role;
 	wxArrayString varInfo;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 	void OnOK(wxCommandEvent &ev);
 	void OnChangeSuperuser(wxCommandEvent &ev);

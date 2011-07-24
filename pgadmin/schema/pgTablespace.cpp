@@ -170,6 +170,8 @@ wxString pgTablespace::GetSql(ctlTree *browser)
 			sql += wxT("ALTER TABLESPACE ") + GetQuotedFullIdentifier()
 			       +  wxT(" SET (") + variables.Item(i) + wxT(");\n");
 
+		if (GetConnection()->BackendMinimumVersion(9, 2))
+			sql += GetSeqLabelsSql();
 	}
 	return sql;
 }
@@ -198,6 +200,18 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		}
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+				}
+			}
+		}
 	}
 }
 
@@ -250,7 +264,16 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 	wxString tabname;
 
 	pgSet *tablespaces;
-	if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+		tablespaces = collection->GetServer()->ExecuteSet(
+		                  wxT("SELECT ts.oid, spcname, spclocation, spcoptions, ")
+		                  wxT("pg_get_userbyid(spcowner) as spcuser, spcacl, ")
+		                  wxT("pg_catalog.shobj_description(oid, 'pg_tablespace') AS description, ")
+			              wxT("(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, ")
+						  wxT("(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers ")
+		                  wxT("FROM pg_tablespace ts\n")
+		                  + restriction + wxT(" ORDER BY spcname"));
+	else if (collection->GetConnection()->BackendMinimumVersion(8, 5))
 		tablespaces = collection->GetServer()->ExecuteSet(
 		                  wxT("SELECT ts.oid, spcname, spclocation, spcoptions, pg_get_userbyid(spcowner) as spcuser, spcacl, pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
 		                  + restriction + wxT(" ORDER BY spcname"));
@@ -281,6 +304,11 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 				wxString str = tablespaces->GetVal(wxT("spcoptions"));
 				if (!str.IsEmpty())
 					FillArray(tablespace->GetVariables(), str.Mid(1, str.Length() - 2));
+			}
+			if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+			{
+				tablespace->iSetProviders(tablespaces->GetVal(wxT("providers")));
+				tablespace->iSetLabels(tablespaces->GetVal(wxT("labels")));
 			}
 
 			if (browser)

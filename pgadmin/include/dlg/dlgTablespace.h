@@ -14,6 +14,7 @@
 #define __DLG_TABLESPACEPROP
 
 #include "dlg/dlgProperty.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 class pgTablespace;
 
@@ -35,6 +36,9 @@ private:
 	pgTablespace *tablespace;
 	wxArrayString varInfo;
 	bool dirtyVars;
+	ctlSeclabelPanel *seclabelPage;
+ 
+	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);
