@@ -165,6 +165,9 @@ dlgProperty::~dlgProperty()
 
 	if (GetWindowStyle() & wxRESIZE_BORDER)
 		settings->WriteSize(prop, GetSize());
+
+	if (obj)
+		obj->SetWindowPtr(NULL);
 }
 
 
@@ -242,7 +245,7 @@ int dlgProperty::Go(bool modal)
 {
 	wxASSERT(factory != 0);
 
-	pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection());
+	obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection());
 
 	// restore previous position and size, if applicable
 	wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
@@ -1209,6 +1212,9 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 			wxASSERT(factory);
 
 			dlg->InitDialog(frame, node);
+
+			if (currentNode)
+				currentNode->SetWindowPtr(dlg);
 		}
 	}
 	return dlg;
@@ -1223,18 +1229,29 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, pgaFactory 
 		if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
 			return false;
 	}
-	dlgProperty *dlg = CreateDlg(frame, node, true, factory);
+
+	dlgProperty *dlg = NULL;
+
+	if (node)
+		dlg = node->GetWindowPtr();
 
 	if (dlg)
-	{
-		dlg->SetTitle(wxGetTranslation(dlg->factory->GetNewString()));
-
-		dlg->CreateAdditionalPages();
-		dlg->Go();
-		dlg->CheckChange();
-	}
+		dlg->Raise();
 	else
-		wxMessageBox(_("Not implemented."));
+	{
+		dlg = CreateDlg(frame, node, true, factory);
+
+		if (dlg)
+		{
+			dlg->SetTitle(wxGetTranslation(dlg->factory->GetNewString()));
+
+			dlg->CreateAdditionalPages();
+			dlg->Go();
+			dlg->CheckChange();
+		}
+		else
+			wxMessageBox(_("Not implemented."));
+	}
 
 	return true;
 }
@@ -1257,20 +1274,30 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 			return false;
 	}
 
-	dlgProperty *dlg = CreateDlg(frame, node, false);
+	dlgProperty *dlg = NULL;
+
+	if (node)
+		dlg = node->GetWindowPtr();
 
 	if (dlg)
-	{
-		wxString typeName = dlg->factory->GetTypeName();
-		dlg->SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + node->GetFullIdentifier());
-
-		dlg->CreateAdditionalPages();
-		dlg->Go();
-
-		dlg->CheckChange();
-	}
+		dlg->Raise();
 	else
-		wxMessageBox(_("Not implemented."));
+	{
+		dlg = CreateDlg(frame, node, false);
+
+		if (dlg)
+		{
+			wxString typeName = dlg->factory->GetTypeName();
+			dlg->SetTitle(wxString(wxGetTranslation(typeName)) + wxT(" ") + node->GetFullIdentifier());
+
+			dlg->CreateAdditionalPages();
+			dlg->Go();
+
+			dlg->CheckChange();
+		}
+		else
+			wxMessageBox(_("Not implemented."));
+	}
 
 	return true;
 }

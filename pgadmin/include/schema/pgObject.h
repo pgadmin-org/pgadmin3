@@ -351,6 +351,14 @@ public:
 
 	wxString qtDbString(const wxString &str);
 
+	void SetWindowPtr(dlgProperty *dlgprop);
+	dlgProperty *GetWindowPtr()
+	{
+		return dlg;
+	}
+
+	bool CheckOpenDialogs(ctlTree *browser, wxTreeItemId node);
+
 protected:
 	void CreateList3Columns(ctlListView *properties, const wxString &left = _("Object"), const wxString &middle = _("Owner"), const wxString &right = _("Value"));
 	void CreateListColumns(ctlListView *properties, const wxString &left = _("Property"), const wxString &right = _("Value"));
@@ -375,6 +383,7 @@ private:
 	int type;
 	OID oid, xid;
 	wxString providers, labels;
+	dlgProperty *dlg;
 
 	friend class pgaFactory;
 };

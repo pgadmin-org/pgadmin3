@@ -1251,11 +1251,19 @@ wxWindow *disconnectDatabaseFactory::StartDialog(frmMain *form, pgObject *obj)
 	ctlTree *browser = form->GetBrowser();
 	pgDatabase *database = (pgDatabase *)obj;
 
-	database->Disconnect();
-	database->UpdateIcon(browser);
-	browser->DeleteChildren(obj->GetId());
-	browser->SelectItem(browser->GetItemParent(obj->GetId()));
-	form->execSelChange(browser->GetItemParent(obj->GetId()), true);
+	if (obj->CheckOpenDialogs(browser, browser->GetSelection()))
+	{
+		wxString msg = _("There are properties dialogues open for one or more objects that would be refreshed. Please close the properties dialogues and try again.");
+		wxMessageBox(msg, _("Cannot disconnect database"), wxICON_WARNING | wxOK);
+	}
+	else
+	{
+		database->Disconnect();
+		database->UpdateIcon(browser);
+		browser->DeleteChildren(obj->GetId());
+		browser->SelectItem(browser->GetItemParent(obj->GetId()));
+		form->execSelChange(browser->GetItemParent(obj->GetId()), true);
+	}
 
 	return 0;
 }

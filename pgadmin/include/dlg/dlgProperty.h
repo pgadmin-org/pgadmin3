@@ -167,6 +167,7 @@ protected:
 
 	pgConn *connection;
 	pgDatabase *database;
+	pgObject *obj;
 
 	frmMain *mainForm;
 	wxPanel *sqlPane;

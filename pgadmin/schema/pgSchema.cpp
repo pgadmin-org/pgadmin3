@@ -244,8 +244,8 @@ wxMenu *pgSchemaBase::GetNewMenu()
 		}
 		if (settings->GetDisplayOption(_("Foreign Tables")))
 		{
-		    if (GetConnection()->BackendMinimumVersion(9, 1))
-		    	foreignTableFactory.AppendMenu(menu);
+			if (GetConnection()->BackendMinimumVersion(9, 1))
+				foreignTableFactory.AppendMenu(menu);
 		}
 		if (settings->GetDisplayOption(_("Trigger Functions")))
 			triggerFunctionFactory.AppendMenu(menu);

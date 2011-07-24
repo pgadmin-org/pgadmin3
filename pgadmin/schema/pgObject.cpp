@@ -155,6 +155,7 @@ pgObject::pgObject(pgaFactory &_factory, const wxString &newName)
 	expandedKids = false;
 	needReread = false;
 	hintShown = false;
+	dlg = NULL;
 }
 
 
@@ -173,6 +174,7 @@ pgObject::pgObject(int newType, const wxString &newName)
 	expandedKids = false;
 	needReread = false;
 	hintShown = false;
+	dlg = NULL;
 }
 
 
@@ -1069,6 +1071,33 @@ pgConn *pgObject::GetConnection() const
 }
 
 
+bool pgObject::CheckOpenDialogs(ctlTree *browser, wxTreeItemId node)
+{
+	pgObject *obj = browser->GetObject(node);
+	if (obj && obj->GetWindowPtr())
+		return true;
+
+	wxTreeItemIdValue cookie;
+	wxTreeItemId child = browser->GetFirstChild(node, cookie);
+
+	while (child.IsOk())
+	{
+		obj = browser->GetObject(child);
+		if (obj && obj->GetWindowPtr())
+			return true;
+
+		if (browser->IsExpanded(child))
+		{
+			if (CheckOpenDialogs(browser, child))
+				return true;
+		}
+
+		child = browser->GetNextChild(node, cookie);
+	}
+
+	return false;
+}
+
 //////////////////////////////////////////////////////////////
 
 bool pgServerObject::CanDrop()
@@ -1796,4 +1825,8 @@ wxString pgObject::GetPrivilegeName(wxChar privilege)
 	}
 }
 
+void pgObject::SetWindowPtr(dlgProperty *dlgprop)
+{
+	dlg = dlgprop;
+}
 

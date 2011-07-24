@@ -1808,6 +1808,7 @@ wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 		}
 		form->EndMsg(done);
 	}
+
 	return 0;
 }
 
@@ -1854,11 +1855,20 @@ disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *
 
 wxWindow *disconnectServerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	pgServer *server = (pgServer *)obj;
-	server->Disconnect(form);
-	server->UpdateIcon(form->GetBrowser());
-	form->GetBrowser()->DeleteChildren(obj->GetId());
-	form->execSelChange(obj->GetId(), true);
+	if (obj->CheckOpenDialogs(form->GetBrowser(), form->GetBrowser()->GetSelection()))
+	{
+		wxString msg = _("There are properties dialogues open for one or more objects that would be refreshed. Please close the properties dialogues and try again.");
+		wxMessageBox(msg, _("Cannot disconnect database"), wxICON_WARNING | wxOK);
+	}
+	else
+	{
+		pgServer *server = (pgServer *)obj;
+		server->Disconnect(form);
+		server->UpdateIcon(form->GetBrowser());
+		form->GetBrowser()->DeleteChildren(obj->GetId());
+		form->execSelChange(obj->GetId(), true);
+	}
+
 	return 0;
 }
 

@@ -510,70 +510,83 @@ void frmMain::CreateMenus()
 
 void frmMain::Refresh(pgObject *data)
 {
+	bool done = false;
+	pgObject *obj = NULL;
+
 	StartMsg(data->GetTranslatedMessage(REFRESHINGDETAILS));
 	browser->Freeze();
 
 	wxTreeItemId currentItem = data->GetId();
-
-	// Scan the child nodes and make a list of those that are expanded
-	// This is not an exact science as node names may change etc.
-	wxArrayString expandedNodes;
-	GetExpandedChildNodes(currentItem, expandedNodes);
-
-	browser->DeleteChildren(currentItem);
-
-	// refresh information about the object
-	data->SetDirty();
-
-	pgObject *newData = data->Refresh(browser, currentItem);
-
-	bool done = !data->GetConnection() || data->GetConnection()->GetStatus() == PGCONN_OK;
-
-	if (newData != data)
-	{
-		wxLogInfo(wxT("Deleting %s %s for refresh"), data->GetTypeName().c_str(), data->GetQuotedFullIdentifier().c_str());
-
-		if (data == currentObject)
-			currentObject = newData;
-
-		if (newData)
-		{
-			wxLogInfo(wxT("Replacing with new node %s %s for refresh"), newData->GetTypeName().c_str(), newData->GetQuotedFullIdentifier().c_str());
-
-			newData->SetId(currentItem);    // not done automatically
-			browser->SetItemData(currentItem, newData);
-
-			// Update the node text if this is an object, as it may have been renamed
-			if (!newData->IsCollection())
-				browser->SetItemText(currentItem, newData->GetDisplayName());
-
-			delete data;
-		}
-		else
-		{
-			wxLogInfo(wxT("No object to replace: vanished after refresh."));
-
-			// If the connection is dead, just return here
-			if (data->GetConnection()->GetStatus() != PGCONN_OK)
-			{
-				CheckAlive();
-				browser->Thaw();
-				return;
-			}
-
-			wxTreeItemId delItem = currentItem;
-			currentItem = browser->GetItemParent(currentItem);
-			browser->SelectItem(currentItem);
-			browser->Delete(delItem);
-		}
-	}
-
 	if (currentItem)
-	{
-		execSelChange(currentItem, currentItem == browser->GetSelection());
+		obj = browser->GetObject(currentItem);
 
-		// Attempt to expand any child nodes that were previously expanded
-		ExpandChildNodes(currentItem, expandedNodes);
+	if (obj && obj->CheckOpenDialogs(browser, currentItem))
+	{
+		wxString msg = _("There are properties dialogues open for one or more objects that would be refreshed. Please close the properties dialogues and try again.");
+		wxMessageBox(msg, _("Cannot refresh browser"), wxICON_WARNING | wxOK);
+	}
+	else
+	{
+		// Scan the child nodes and make a list of those that are expanded
+		// This is not an exact science as node names may change etc.
+		wxArrayString expandedNodes;
+		GetExpandedChildNodes(currentItem, expandedNodes);
+
+		browser->DeleteChildren(currentItem);
+
+		// refresh information about the object
+		data->SetDirty();
+
+		pgObject *newData = data->Refresh(browser, currentItem);
+
+		done = !data->GetConnection() || data->GetConnection()->GetStatus() == PGCONN_OK;
+
+		if (newData != data)
+		{
+			wxLogInfo(wxT("Deleting %s %s for refresh"), data->GetTypeName().c_str(), data->GetQuotedFullIdentifier().c_str());
+
+			if (data == currentObject)
+				currentObject = newData;
+
+			if (newData)
+			{
+				wxLogInfo(wxT("Replacing with new node %s %s for refresh"), newData->GetTypeName().c_str(), newData->GetQuotedFullIdentifier().c_str());
+
+				newData->SetId(currentItem);    // not done automatically
+				browser->SetItemData(currentItem, newData);
+
+				// Update the node text if this is an object, as it may have been renamed
+				if (!newData->IsCollection())
+					browser->SetItemText(currentItem, newData->GetDisplayName());
+
+				delete data;
+			}
+			else
+			{
+				wxLogInfo(wxT("No object to replace: vanished after refresh."));
+
+				// If the connection is dead, just return here
+				if (data->GetConnection()->GetStatus() != PGCONN_OK)
+				{
+					CheckAlive();
+					browser->Thaw();
+					return;
+				}
+
+				wxTreeItemId delItem = currentItem;
+				currentItem = browser->GetItemParent(currentItem);
+				browser->SelectItem(currentItem);
+				browser->Delete(delItem);
+			}
+		}
+
+		if (currentItem)
+		{
+			execSelChange(currentItem, currentItem == browser->GetSelection());
+
+			// Attempt to expand any child nodes that were previously expanded
+			ExpandChildNodes(currentItem, expandedNodes);
+		}
 	}
 
 	browser->Thaw();
