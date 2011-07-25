@@ -366,7 +366,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
 			sql += wxT("COMMENT ON FUNCTION ") + qtSig
 			       + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 	}
@@ -422,7 +422,7 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendYesNoItem(_("System function?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -430,7 +430,7 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -632,8 +632,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 	if (obj->GetConnection()->BackendMinimumVersion(9, 1))
 	{
 		seclab = wxT(",\n")
-				wxT("(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=pr.oid) AS labels,\n")
-				wxT("(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=pr.oid) AS providers");
+		         wxT("(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=pr.oid) AS labels,\n")
+		         wxT("(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=pr.oid) AS providers");
 	}
 
 	pgSet *functions = obj->GetDatabase()->ExecuteSet(

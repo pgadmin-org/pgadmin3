@@ -34,7 +34,7 @@ private:
 	pgSchema *schema;
 	pgAggregate *aggregate;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	virtual wxString GetDisplayName()
 	{
 		return GetName() + wxT("(") + GetInputTypesList() + wxT(")");

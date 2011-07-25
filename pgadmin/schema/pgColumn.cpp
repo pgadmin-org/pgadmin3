@@ -203,7 +203,7 @@ wxString pgColumn::GetSql(ctlTree *browser)
 
 				if (GetDatabase()->BackendMinimumVersion(8, 4))
 					sql += GetPrivileges();
-		
+
 				if (GetConnection()->BackendMinimumVersion(9, 1))
 					sql += GetSeqLabelsSql();
 			}
@@ -444,7 +444,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		}
 
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -452,7 +452,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -643,7 +643,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 					coll = qtIdent(columns->GetVal(wxT("collnspname"))) + wxT(".") + qtIdent(columns->GetVal(wxT("collname")));
 				column->iSetCollation(coll);
 			}
-				
+
 			if (database->BackendMinimumVersion(9, 1))
 			{
 				column->iSetProviders(columns->GetVal(wxT("providers")));

@@ -119,7 +119,7 @@ void dlgSchema::CheckChange()
 	if (schema)
 	{
 		enable = name != schema->GetName()
-				 || txtComment->GetValue() != schema->GetComment()
+		         || txtComment->GetValue() != schema->GetComment()
 		         || cbOwner->GetValue() != schema->GetOwner();
 		if (seclabelPage)
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
@@ -159,7 +159,7 @@ wxString dlgSchema::GetSql()
 
 	if (connection->BackendMinimumVersion(9, 0) && defaultSecurityChanged)
 		sql += GetDefaultPrivileges(name);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("SCHEMA"), name);
 

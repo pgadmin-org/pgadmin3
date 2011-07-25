@@ -62,7 +62,7 @@ protected:
 	wxArrayString groups;
 	bool securityChanged;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 	wxString GetGrant(const wxString &allPattern, const wxString &grantObject);

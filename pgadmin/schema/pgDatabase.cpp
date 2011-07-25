@@ -565,7 +565,7 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 		sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, wxT(""));
 
 		sql += GetCommentSql();
-		
+
 		if (myConn->BackendMinimumVersion(9, 2))
 			sql += GetSeqLabelsSql();
 	}
@@ -694,7 +694,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		if (!GetSchemaRestriction().IsEmpty())
 			properties->AppendItem(_("Schema restriction"), GetSchemaRestriction());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -702,7 +702,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -746,7 +746,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
 	{
 		seclabelsql = wxT(",\n(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=db.oid) AS labels")
-					wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers");
+		              wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=db.oid) AS providers");
 	}
 
 	wxString restr = restriction;
@@ -860,7 +860,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 				database->iSetSchemaRestriction(value);
 			}
-				
+
 			if (collection->GetConnection()->BackendMinimumVersion(9, 2))
 			{
 				database->iSetProviders(databases->GetVal(wxT("providers")));

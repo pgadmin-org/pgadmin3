@@ -173,7 +173,7 @@ void dlgAggregate::OnChangeSize(wxSizeEvent &ev)
 void dlgAggregate::CheckChange()
 {
 	bool enable = true;
- 	if (aggregate)
+	if (aggregate)
 	{
 		enable = GetName() != aggregate->GetName()
 		         || cbSchema->GetValue() != aggregate->GetSchema()->GetName()
@@ -379,12 +379,12 @@ wxString dlgAggregate::GetSql()
 	AppendComment(sql, wxT("AGGREGATE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
 	              + wxT("(") + GetInputTypesList()
 	              + wxT(")"), aggregate);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("AGGREGATE"),
-				qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
-	              + wxT("(") + GetInputTypesList()
-	              + wxT(")"));
+		                                        qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
+		                                        + wxT("(") + GetInputTypesList()
+		                                        + wxT(")"));
 
 	return sql;
 }

@@ -111,7 +111,7 @@ wxString pgLanguage::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       +  GetOwnerSql(8, 3, wxT("LANGUAGE ") + GetName())
 		       +  GetGrant(wxT("U"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 	}
@@ -136,7 +136,7 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendYesNoItem(_("System language?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -144,7 +144,7 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -202,7 +202,7 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
 			language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
 			language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
-				
+
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
 				language->iSetProviders(languages->GetVal(wxT("providers")));

@@ -1517,7 +1517,7 @@ wxString dlgTable::GetSql()
 	}
 
 	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 

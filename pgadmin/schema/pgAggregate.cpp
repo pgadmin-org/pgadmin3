@@ -142,7 +142,7 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 			       + wxT("(") + GetInputTypesList()
 			       + wxT(") IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 	}
@@ -199,7 +199,7 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 		properties->AppendYesNoItem(_("System aggregate?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -207,7 +207,7 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -348,7 +348,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 					                            + qtIdent(oprname));
 				}
 			}
-				
+
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
 				aggregate->iSetProviders(aggregates->GetVal(wxT("providers")));

@@ -114,7 +114,7 @@ wxString pgForeignTable::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       + GetOwnerSql(9, 1)
 		       + GetCommentSql();
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 	}
@@ -185,7 +185,7 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("Columns"), GetTypesList());
 		properties->AppendItem(_("Options"), GetOptionsList());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -193,7 +193,7 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}

@@ -32,7 +32,7 @@ public:
 private:
 	pgLanguage *language;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 	void OnChangeName(wxCommandEvent &ev);
 #ifdef __WXMAC__

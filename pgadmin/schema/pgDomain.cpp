@@ -118,7 +118,7 @@ wxString pgDomain::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       + GetOwnerSql(7, 4)
 		       + GetCommentSql();
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 	}
@@ -182,7 +182,7 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
 		properties->AppendYesNoItem(_("System domain?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -190,7 +190,7 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -291,7 +291,7 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 			}
 			else
 				domain->iSetCollationOid(0);
-				
+
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
 				domain->iSetProviders(domains->GetVal(wxT("providers")));

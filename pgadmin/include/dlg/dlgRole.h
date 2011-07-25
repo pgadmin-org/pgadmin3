@@ -37,7 +37,7 @@ private:
 	pgRole *role;
 	wxArrayString varInfo;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 	void OnOK(wxCommandEvent &ev);

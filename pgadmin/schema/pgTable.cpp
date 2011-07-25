@@ -653,7 +653,7 @@ wxString pgTable::GetSql(ctlTree *browser)
 			sql += GetGrant(wxT("arwdRxt"));
 
 		sql += GetCommentSql();
-		
+
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += GetSeqLabelsSql();
 
@@ -1061,7 +1061,7 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 				properties->AppendItem(_("Toast auto-vacuum FREEZE table age"), GetToastAutoVacuumFreezeTableAge());
 		}
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -1069,7 +1069,7 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -1649,7 +1649,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 				}
 
 			}
-				
+
 			if (collection->GetConnection()->BackendMinimumVersion(9, 1))
 			{
 				table->iSetProviders(tables->GetVal(wxT("providers")));

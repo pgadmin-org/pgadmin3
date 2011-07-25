@@ -424,7 +424,7 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			wxString item = configList.Item(index);
 			properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
 		}
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -432,7 +432,7 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -524,7 +524,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		if (collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 2))
 		{
 			query += wxT(",\n(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=tab.oid) AS labels")
-						wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=tab.oid) AS providers");
+			         wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=tab.oid) AS providers");
 		}
 		query += wxT(" FROM ") + tabname + wxT(" tab") +
 		         wxT("  LEFT OUTER JOIN pg_db_role_setting setting ON (tab.oid=setting.setrole AND setting.setdatabase=0)\n") +
@@ -580,7 +580,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			wxString cfg = roles->GetVal(wxT("rolconfig"));
 			if (!cfg.IsEmpty())
 				FillArray(role->GetConfigList(), cfg.Mid(1, cfg.Length() - 2));
-				
+
 			if (collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 2))
 			{
 				role->iSetProviders(roles->GetVal(wxT("providers")));

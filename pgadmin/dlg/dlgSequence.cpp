@@ -378,7 +378,7 @@ wxString dlgSequence::GetSql()
 		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("SEQUENCE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 

@@ -40,7 +40,7 @@ private:
 	pgSchema *schema;
 	pgType *type;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 	void OnTypeChange(wxCommandEvent &ev);
 	void OnMemberAdd(wxCommandEvent &ev);

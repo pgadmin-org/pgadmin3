@@ -848,10 +848,10 @@ wxArrayString pgObject::GetProviderLabelArray()
 	wxString currentChar;
 	wxString tmp;
 	bool wrappedInQuotes, antislash;
-	
+
 	if (labels.IsEmpty())
 		return seclabelsArray;
-	
+
 	// parse the labels string
 	// we start at 1 and stop at length-1 to get rid of the { and } of the array
 	for (unsigned int index = 1 ; index < labels.Length() - 1 ; index++)
@@ -889,11 +889,11 @@ wxArrayString pgObject::GetProviderLabelArray()
 		// put last label in the array
 		labelsArray.Add(tmp);
 	}
-	
+
 	// reinit tmp
 	tmp = wxEmptyString;
 	wrappedInQuotes = false;
-	
+
 	// parse the providers string
 	// we start at 1 and stop at length-1 to get rid of the { and } of the array
 	for (unsigned int index = 1 ; index < providers.Length() - 1 ; index++)
@@ -931,14 +931,14 @@ wxArrayString pgObject::GetProviderLabelArray()
 		// put last provider in the array
 		providersArray.Add(tmp);
 	}
-	
+
 	// now, build one wxArrayString from these two
 	for (unsigned int index = 0 ; index < providersArray.GetCount() ; index++)
 	{
 		seclabelsArray.Add(providersArray.Item(index));
 		seclabelsArray.Add(labelsArray.Item(index));
 	}
-	
+
 	// return the final one
 	return seclabelsArray;
 }
@@ -953,8 +953,8 @@ wxString pgObject::GetSeqLabelsSql()
 		for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 		{
 			sql += wxT("SECURITY LABEL FOR ") + seclabels.Item(index)
-				+ wxT("\n  ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier()
-				+ wxT("\n  IS ") + qtDbString(seclabels.Item(index+1)) + wxT(";\n");
+			       + wxT("\n  ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier()
+			       + wxT("\n  IS ") + qtDbString(seclabels.Item(index + 1)) + wxT(";\n");
 		}
 	}
 

@@ -812,7 +812,7 @@ wxString dlgRole::GetSql()
 	}
 
 	AppendComment(sql, wxT("ROLE"), 0, role);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("ROLE"), qtIdent(name));
 

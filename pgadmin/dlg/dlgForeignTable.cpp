@@ -566,7 +566,7 @@ wxString dlgForeignTable::GetSql()
 		sql += wxT(";\n");
 	}
 	AppendComment(sql, wxT("FOREIGN TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), foreigntable);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("FOREIGN TABLE "), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 

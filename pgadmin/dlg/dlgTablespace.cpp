@@ -262,7 +262,7 @@ wxString dlgTablespace::GetSql()
 		sql += wxT("\n  LOCATION ") + qtDbString(txtLocation->GetValue())
 		       +  wxT(";\n");
 	}
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLESPACE"), qtIdent(name));
 

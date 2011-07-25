@@ -37,7 +37,7 @@ private:
 	wxArrayString varInfo;
 	bool dirtyVars;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__

@@ -200,7 +200,7 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		}
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -208,7 +208,7 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -269,8 +269,8 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 		                  wxT("SELECT ts.oid, spcname, spclocation, spcoptions, ")
 		                  wxT("pg_get_userbyid(spcowner) as spcuser, spcacl, ")
 		                  wxT("pg_catalog.shobj_description(oid, 'pg_tablespace') AS description, ")
-			              wxT("(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, ")
-						  wxT("(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers ")
+		                  wxT("(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, ")
+		                  wxT("(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=ts.oid) AS providers ")
 		                  wxT("FROM pg_tablespace ts\n")
 		                  + restriction + wxT(" ORDER BY spcname"));
 	else if (collection->GetConnection()->BackendMinimumVersion(8, 5))

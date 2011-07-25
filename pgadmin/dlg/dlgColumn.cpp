@@ -581,11 +581,11 @@ wxString dlgColumn::GetSql()
 		}
 
 		AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier()
-					  + wxT(".") + qtIdent(name), column);
-	
+		              + wxT(".") + qtIdent(name), column);
+
 		if (seclabelPage)
 			sql += seclabelPage->GetSqlForSecLabels(wxT("COLUMN"), table->GetQuotedFullIdentifier()
-					  + wxT(".") + qtIdent(name));
+			                                        + wxT(".") + qtIdent(name));
 
 		// securityPage will exists only for PG 8.4 and later
 		if (connection->BackendMinimumVersion(8, 4))

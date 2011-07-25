@@ -111,7 +111,7 @@ int dlgDatabase::Go(bool modal)
 	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
 
 	if (connection->BackendMinimumVersion(9, 2))
-	{	
+	{
 		seclabelPage->SetConnection(connection);
 		seclabelPage->SetObject(database);
 		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgDatabase::OnChange));
@@ -681,7 +681,7 @@ wxString dlgDatabase::GetSql()
 		AppendOwnerChange(sql, wxT("DATABASE ") + qtIdent(name));
 
 		AppendComment(sql, wxT("DATABASE"), 0, database);
-	
+
 		if (seclabelPage)
 			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
 

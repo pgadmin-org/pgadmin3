@@ -176,7 +176,7 @@ wxString dlgView::GetSql()
 	sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	AppendComment(sql, wxT("VIEW ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), view);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("VIEW"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 

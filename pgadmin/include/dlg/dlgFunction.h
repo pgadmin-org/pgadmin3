@@ -44,7 +44,7 @@ private:
 	pgFunction *function;
 	ctlSeclabelPanel *seclabelPage;
 	wxArrayString varInfo;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__

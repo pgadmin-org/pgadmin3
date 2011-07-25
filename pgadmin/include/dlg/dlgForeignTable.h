@@ -40,7 +40,7 @@ private:
 	pgSchema *schema;
 	pgForeignTable *foreigntable;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnMemberAdd(wxCommandEvent &ev);
 	void OnMemberChange(wxCommandEvent &ev);
 	void OnMemberRemove(wxCommandEvent &ev);

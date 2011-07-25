@@ -49,13 +49,13 @@ protected:
 	pgObject *object;
 
 	wxButton *btnAddSeclabel, *btnDelSeclabel;
-    wxTextCtrl *txtProvider, *txtSeclabel;
+	wxTextCtrl *txtProvider, *txtSeclabel;
 
 	void OnSeclabelSelChange(wxListEvent &ev);
 	void OnAddSeclabel(wxCommandEvent &ev);
 	void OnDelSeclabel(wxCommandEvent &ev);
-    void OnProviderChange(wxCommandEvent &ev);
-    void OnSeclabelChange(wxCommandEvent &ev);
+	void OnProviderChange(wxCommandEvent &ev);
+	void OnSeclabelChange(wxCommandEvent &ev);
 
 	DECLARE_EVENT_TABLE()
 };

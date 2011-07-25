@@ -172,7 +172,7 @@ wxString pgView::GetSql(ctlTree *browser)
 
 			if (!comments.IsEmpty())
 				sql += comments + wxT("\n");
-		
+
 			if (GetConnection()->BackendMinimumVersion(9, 1))
 				sql += GetSeqLabelsSql();
 		}
@@ -303,7 +303,7 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Definition"), def);
 		properties->AppendYesNoItem(_("System view?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-		
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -311,7 +311,7 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			{
 				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
 				{
-					properties->AppendItem(seclabels.Item(index), seclabels.Item(index+1));
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
 				}
 			}
 		}
@@ -411,21 +411,21 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 {
 	pgView *view = 0;
 	wxString sql = wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-				   wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+	               wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 	{
 		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=c.oid AND sl1.objsubid=0) AS labels");
 		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=c.oid AND sl2.objsubid=0) AS providers");
 	}
 	sql += wxT("\n  FROM pg_class c\n")
-		   wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
-		   wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
-		   wxT("           SELECT r.rulename FROM pg_rewrite r\n")
-		   wxT("            WHERE ((r.ev_class = c.oid)\n")
-		   wxT("              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n")
-		   wxT("   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
-		   + restriction
-		   + wxT(" ORDER BY relname");
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
+	       wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
+	       wxT("           SELECT r.rulename FROM pg_rewrite r\n")
+	       wxT("            WHERE ((r.ev_class = c.oid)\n")
+	       wxT("              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n")
+	       wxT("   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+	       + restriction
+	       + wxT(" ORDER BY relname");
 
 	pgSet *views = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -441,7 +441,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			view->iSetComment(views->GetVal(wxT("description")));
 			view->iSetAcl(views->GetVal(wxT("relacl")));
 			view->iSetDefinition(views->GetVal(wxT("definition")));
-				
+
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
 				view->iSetProviders(views->GetVal(wxT("providers")));

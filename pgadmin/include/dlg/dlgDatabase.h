@@ -37,7 +37,7 @@ private:
 	wxArrayString varInfo;
 	bool schemaRestrictionOk;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__

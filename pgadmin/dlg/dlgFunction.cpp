@@ -1048,12 +1048,12 @@ wxString dlgFunction::GetSql()
 	if (isProcedure)
 		AppendComment(sql, wxT("PROCEDURE ") + name, function);
 	else
-    {
+	{
 		AppendComment(sql, wxT("FUNCTION ") + name, function);
-		
+
 		if (seclabelPage)
 			sql += seclabelPage->GetSqlForSecLabels(wxT("FUNCTION"), name);
-    }
+	}
 
 	return sql;
 }

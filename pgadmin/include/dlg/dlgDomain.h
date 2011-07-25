@@ -37,7 +37,7 @@ private:
 	pgSchema *schema;
 	pgDomain *domain;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 	DECLARE_EVENT_TABLE()

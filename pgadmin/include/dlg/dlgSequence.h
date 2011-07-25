@@ -36,7 +36,7 @@ private:
 	pgSchema *schema;
 	pgSequence *sequence;
 	ctlSeclabelPanel *seclabelPage;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 #ifdef __WXMAC__

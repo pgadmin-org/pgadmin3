@@ -45,7 +45,7 @@ private:
 	pgView *view;
 	ctlSeclabelPanel *seclabelPage;
 	wxString oldDefinition;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 	DECLARE_EVENT_TABLE()

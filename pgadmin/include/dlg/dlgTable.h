@@ -37,7 +37,7 @@ private:
 	pgTable *table;
 	ctlSeclabelPanel *seclabelPage;
 	dataTypeCache dtCache;
- 
+
 	void OnChange(wxCommandEvent &event);
 
 	void OnOK(wxCommandEvent &ev);

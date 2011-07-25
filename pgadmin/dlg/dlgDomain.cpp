@@ -300,7 +300,7 @@ wxString dlgDomain::GetSql()
 	}
 
 	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
-	
+
 	if (seclabelPage)
 		sql += seclabelPage->GetSqlForSecLabels(wxT("DOMAIN"), name);
 
