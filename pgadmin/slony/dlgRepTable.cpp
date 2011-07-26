@@ -124,7 +124,7 @@ int dlgRepTable::Go(bool modal)
 pgObject *dlgRepTable::CreateObject(pgCollection *collection)
 {
 	pgObject *obj = slTableFactory.CreateObjects(collection, 0,
-	                wxT(" WHERE tab_reloid = ") + NumToStr((OID)cbTable->GetClientData(cbTable->GetGuessedSelection())));
+	                wxT(" WHERE tab_reloid = ") + NumToStr((OID)cbTable->wxItemContainer::GetClientData(cbTable->GetGuessedSelection())));
 
 	return obj;
 }
@@ -147,7 +147,7 @@ void dlgRepTable::OnChangeTable(wxCommandEvent &ev)
 
 	if (sel >= 0)
 	{
-		OID relid = (OID)cbTable->GetClientData(sel);
+		OID relid = (OID)cbTable->wxItemContainer::GetClientData(sel);
 
 		pgSet *idx = connection->ExecuteSet(
 		                 wxT("SELECT relname\n")

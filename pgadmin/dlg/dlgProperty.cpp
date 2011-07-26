@@ -700,7 +700,7 @@ void dlgProperty::FillSQLTextfield()
 		wxString tmp;
 		if (cbClusterSet && cbClusterSet->GetSelection() > 0)
 		{
-			replClientData *data = (replClientData *)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+			replClientData *data = (replClientData *)cbClusterSet->wxItemContainer::GetClientData(cbClusterSet->GetSelection());
 			tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
 		}
 		sqlTextField1->SetText(tmp + GetSql());
@@ -953,7 +953,7 @@ wxString dlgProperty::BuildSql(const wxString &sql)
 
 	if (cbClusterSet && cbClusterSet->GetSelection() > 0)
 	{
-		replClientData *data = (replClientData *)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+		replClientData *data = (replClientData *)cbClusterSet->wxItemContainer::GetClientData(cbClusterSet->GetSelection());
 
 		if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
 		{
@@ -2185,7 +2185,7 @@ propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 	else
 		context = false;
 	if (toolbar)
-		toolbar->AddTool(id, _("Properties"), *properties_png_bmp, _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+		toolbar->AddTool(id, wxEmptyString, *properties_png_bmp, _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2208,7 +2208,7 @@ bool propertyFactory::CheckEnable(pgObject *obj)
 createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
 	mnu->Append(id, _("&Create..."),  _("Create a new object of the same type as the selected object."));
-	toolbar->AddTool(id, _("Create"), *create_png_bmp, _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, wxEmptyString, *create_png_bmp, _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2231,7 +2231,7 @@ bool createFactory::CheckEnable(pgObject *obj)
 dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
 	mnu->Append(id, _("&Delete/Drop...\tDel"),  _("Delete/Drop the selected object."));
-	toolbar->AddTool(id, _("Drop..."), *drop_png_bmp, _("Drop the currently selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, wxEmptyString, *drop_png_bmp, _("Drop the currently selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2275,7 +2275,7 @@ refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolba
 	else
 		context = false;
 	if (toolbar)
-		toolbar->AddTool(id, _("Refresh"), *refresh_png_bmp, _("Refresh the selected object."), wxITEM_NORMAL);
+		toolbar->AddTool(id, wxEmptyString, *refresh_png_bmp, _("Refresh the selected object."), wxITEM_NORMAL);
 }
 
 

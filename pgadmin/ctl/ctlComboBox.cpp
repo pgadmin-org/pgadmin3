@@ -96,21 +96,21 @@ long ctlComboBoxFix::GetLongKey(int sel)
 {
 	if (sel < 0)
 		sel = GetSelection();
-	return (long)GetClientData(sel);
+	return (long)wxItemContainer::GetClientData(sel);
 }
 
 OID ctlComboBoxFix::GetOIDKey(int sel)
 {
 	if (sel < 0)
 		sel = GetSelection();
-	return (OID)GetClientData(sel);
+	return (OID)wxItemContainer::GetClientData(sel);
 }
 
 wxString ctlComboBoxFix::GetStringKey(int sel)
 {
 	if (sel < 0)
 		sel = GetSelection();
-	StringClientData *scd = (StringClientData *)GetClientObject(sel);
+	StringClientData *scd = (StringClientData *)wxItemContainer::GetClientObject(sel);
 	if (scd)
 		return scd->str;
 	return wxEmptyString;

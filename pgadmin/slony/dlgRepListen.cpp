@@ -108,9 +108,9 @@ int dlgRepListen::Go(bool modal)
 pgObject *dlgRepListen::CreateObject(pgCollection *collection)
 {
 	pgObject *obj = listenFactory.CreateObjects(collection, 0,
-	                wxT(" WHERE li_origin = ") + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetCurrentSelection())) +
+	                wxT(" WHERE li_origin = ") + NumToStr((OID)cbOrigin->wxItemContainer::GetClientData(cbOrigin->GetCurrentSelection())) +
 	                wxT("   AND li_receiver = ") + NumToStr(node->GetSlId()) +
-	                wxT("   AND li_provider = ") + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetCurrentSelection()))
+	                wxT("   AND li_provider = ") + NumToStr((OID)cbProvider->wxItemContainer::GetClientData(cbProvider->GetCurrentSelection()))
 	                                           );
 
 	return obj;
@@ -150,8 +150,8 @@ wxString dlgRepListen::GetSql()
 		// create mode
 
 		sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storelisten(")
-		      + NumToStr((OID)cbOrigin->GetClientData(cbOrigin->GetCurrentSelection())) + wxT(", ")
-		      + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetCurrentSelection())) + wxT(", ")
+		      + NumToStr((OID)cbOrigin->wxItemContainer::GetClientData(cbOrigin->GetCurrentSelection())) + wxT(", ")
+		      + NumToStr((OID)cbProvider->wxItemContainer::GetClientData(cbProvider->GetCurrentSelection())) + wxT(", ")
 		      + NumToStr(node->GetSlId()) + wxT(");");
 	}
 

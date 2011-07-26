@@ -103,7 +103,7 @@ int dlgRepPath::Go(bool modal)
 pgObject *dlgRepPath::CreateObject(pgCollection *collection)
 {
 	pgObject *obj = pathFactory.CreateObjects(collection, 0,
-	                wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->GetClientData(cbServer->GetCurrentSelection())) +
+	                wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->wxItemContainer::GetClientData(cbServer->GetCurrentSelection())) +
 	                wxT("   AND pa_client = ") + NumToStr(node->GetSlId()));
 
 	return obj;
@@ -145,7 +145,7 @@ wxString dlgRepPath::GetSql()
 	if (sel >= 0)
 	{
 		sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storepath(")
-		      + NumToStr((OID)cbServer->GetClientData(sel)) + wxT(", ")
+		      + NumToStr((OID)cbServer->wxItemContainer::GetClientData(sel)) + wxT(", ")
 		      + NumToStr(node->GetSlId()) + wxT(", ")
 		      + qtDbString(txtConnInfo->GetValue()) + wxT(", ")
 		      + NumToStr(StrToLong(txtConnRetry->GetValue())) + wxT(");");

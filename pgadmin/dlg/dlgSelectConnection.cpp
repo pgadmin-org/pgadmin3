@@ -105,7 +105,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent &ev)
 	int sel = cbServer->GetCurrentSelection();
 	if (sel >= 0)
 	{
-		remoteServer = (pgServer *)cbServer->GetClientData(sel);
+		remoteServer = (pgServer *)cbServer->wxItemContainer::GetClientData(sel);
 
 		if (!remoteServer->GetConnected())
 		{

@@ -122,6 +122,7 @@ END_EVENT_TABLE()
 //----------------------------------------------------------------------------
 
 #ifdef __WXMAC__
+#if !wxCHECK_VERSION(2, 9, 0)
 
 #include <wx/fontdlg.h>
 #include <wx/richtext/richtextbuffer.h>
@@ -200,6 +201,7 @@ int wxRichTextFontDialog::ShowModal()
 
 }
 
+#endif
 #endif
 
 //----------------------------------------------------------------------------

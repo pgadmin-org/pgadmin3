@@ -117,17 +117,17 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	// Set toolbar
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
-	toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_NEW, wxEmptyString, *file_new_png_bmp, _("New model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_LOADMODEL, _("Open model"), *file_open_png_bmp, _("Open a model"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_SAVEMODEL, _("Save model"), *file_save_png_bmp, _("Save model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_LOADMODEL, wxEmptyString, *file_open_png_bmp, _("Open a model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVEMODEL, wxEmptyString, *file_save_png_bmp, _("Save model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_ADDTABLE, _("Add table"), *table_png_bmp, _("Add an empty table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_DELETETABLE, _("Delete table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_ADDCOLUMN, _("Add column"), *table_png_bmp, _("Add a new column to the selected table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate SQL"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_ADDTABLE, wxEmptyString, *table_png_bmp, _("Add an empty table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETETABLE, wxEmptyString, wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_ADDCOLUMN, wxEmptyString, *table_png_bmp, _("Add a new column to the selected table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_GENERATEMODEL, wxEmptyString, *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_HELP, wxEmptyString, *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
 
 	// Add the database designer
@@ -324,7 +324,7 @@ void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
 void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 {
 	wxFileDialog openFileDialog( this, _("Open model"), wxEmptyString, wxEmptyString, wxT("*.pgd"),
-	                             wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
+	                             wxFD_OPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
 
 	if ( openFileDialog.ShowModal() == wxID_OK )
 	{
@@ -378,7 +378,7 @@ wxWindow *databaseDesignerBaseFactory::StartDialogDesigner(frmMain *form, pgObje
 databaseDesignerFactory::databaseDesignerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : databaseDesignerBaseFactory(list)
 {
 	mnu->Append(id, _("&Database Designer\tCtrl-F"), _("Create database designs"));
-	toolbar->AddTool(id, _("Database Designer\tCtrl-F"), wxBitmap(*ddmodel_32_png_img), _("Create database designs."), wxITEM_NORMAL);
+	toolbar->AddTool(id, wxEmptyString, wxBitmap(*ddmodel_32_png_img), _("Create database designs."), wxITEM_NORMAL);
 }
 
 

@@ -109,10 +109,10 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	recentFileMenu = new wxMenu();
 
 	fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
-	toolBar->AddTool(MNU_OPEN, _("Open"), *file_open_png_bmp, _("Open file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_OPEN, wxEmptyString, *file_open_png_bmp, _("Open file"), wxITEM_NORMAL);
 
 	fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
-	toolBar->AddTool(MNU_SAVE, _("Save"), *file_save_png_bmp, _("Save file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVE, wxEmptyString, *file_save_png_bmp, _("Save file"), wxITEM_NORMAL);
 
 	fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
 
@@ -122,7 +122,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	// File Menu
 
 	fileMenu->Append(MNU_EXECUTE, _("Reload server"),   _("Reload Server to apply configuration changes."));
-	toolBar->AddTool(MNU_EXECUTE, _("Reload server"), *query_execute_png_bmp, _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXECUTE, wxEmptyString, *query_execute_png_bmp, _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
 
 	fileMenu->AppendSeparator();
 	toolBar->AddSeparator();
@@ -131,10 +131,10 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit configuration tool"));
 
 	editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_UNDO, _("Undo"), *edit_undo_png_bmp, _("Undo last action"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_UNDO, wxEmptyString, *edit_undo_png_bmp, _("Undo last action"), wxITEM_NORMAL);
 	editMenu->AppendSeparator();
 	editMenu->Append(MNU_DELETE, _("&Delete\tDEL"), _("Delete current row"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_DELETE, _("Delete"), *delete_png_bmp, _("Delete current row"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETE, wxEmptyString, *delete_png_bmp, _("Delete current row"), wxITEM_NORMAL);
 
 	toolBar->AddSeparator();
 
@@ -142,7 +142,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the helpfile."));
 
 	helpMenu->Append(MNU_HINT, _("Hints"), _("Display helpful hints on current object."));
-	toolBar->AddTool(MNU_HINT, _("Hints"), *hint2_png_bmp,   _("Display helpful hints on current object."));
+	toolBar->AddTool(MNU_HINT, wxEmptyString, *hint2_png_bmp,   _("Display helpful hints on current object."));
 	helpMenu->Append(MNU_HELP, _("&Configuration Help\tF1"),      _("Display help on configuration options."));
 	helpMenu->AppendSeparator();
 
@@ -173,7 +173,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	wxAcceleratorTable accel(3, entries);
 	SetAcceleratorTable(accel);
 
-	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp,      _("Display help on configuration options."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_HELP, wxEmptyString, *help_png_bmp,      _("Display help on configuration options."), wxITEM_NORMAL);
 	toolBar->Realize();
 
 	UpdateRecentFiles();

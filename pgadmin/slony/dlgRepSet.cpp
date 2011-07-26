@@ -188,7 +188,7 @@ wxString dlgRepSetMerge::GetSql()
 {
 	wxString sql;
 	wxString addId = NumToStr(set->GetSlId());
-	wxString toId = NumToStr((long)cbTargetID->GetClientData(cbTargetID->GetCurrentSelection()));
+	wxString toId = NumToStr((long)cbTargetID->wxItemContainer::GetClientData(cbTargetID->GetCurrentSelection()));
 	wxString prefix = cluster->GetSchemaPrefix();
 
 	if (set->GetSubscriptionCount() > 0)
@@ -323,7 +323,7 @@ void dlgRepSetMove::CheckChange()
 
 wxString dlgRepSetMove::GetSql()
 {
-	wxString toId = NumToStr((long)cbTargetNode->GetClientData(cbTargetNode->GetCurrentSelection()));
+	wxString toId = NumToStr((long)cbTargetNode->wxItemContainer::GetClientData(cbTargetNode->GetCurrentSelection()));
 
 	wxString sql =
 	    wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("moveset(") +

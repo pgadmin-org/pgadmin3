@@ -113,7 +113,7 @@ void dlgRepClusterBase::OnChangeServer(wxCommandEvent &ev)
 	int sel = cbServer->GetCurrentSelection();
 	if (sel >= 0)
 	{
-		remoteServer = (pgServer *)cbServer->GetClientData(sel);
+		remoteServer = (pgServer *)cbServer->wxItemContainer::GetClientData(sel);
 
 		if (!remoteServer->GetConnected())
 		{
@@ -773,7 +773,7 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
 			done = remoteConn->ExecuteVoid(
 			           wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
 			           txtNodeID->GetValue() + wxT(", ") +
-			           NumToStr((long)cbAdminNode->GetClientData(cbAdminNode->GetCurrentSelection())) + wxT(", ") +
+			           NumToStr((long)cbAdminNode->wxItemContainer::GetClientData(cbAdminNode->GetCurrentSelection())) + wxT(", ") +
 			           qtDbString(wxT("host=") + database->GetServer()->GetName() +
 			                      wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
 			                      wxT(" dbname=") + database->GetName()) + wxT(", ")
@@ -812,7 +812,7 @@ void dlgRepCluster::CheckChange()
 	if (cluster)
 	{
 		int sel = cbAdminNode->GetCurrentSelection();
-		bool changed = (sel >= 0 && (long)cbAdminNode->GetClientData() != cluster->GetAdminNodeID());
+		bool changed = (sel >= 0 && (long)cbAdminNode->wxEvtHandler::GetClientData() != cluster->GetAdminNodeID());
 
 		EnableOK(changed || txtComment->GetValue() != cluster->GetComment());
 	}
@@ -921,7 +921,7 @@ wxString dlgRepCluster::GetSql()
 		int sel = cbAdminNode->GetCurrentSelection();
 		if (sel >= 0)
 		{
-			long id = (long)cbAdminNode->GetClientData(sel);
+			long id = (long)cbAdminNode->wxItemContainer::GetClientData(sel);
 			if (id != cluster->GetAdminNodeID())
 				settings->WriteLong(wxT("Replication/") + cluster->GetName() + wxT("/AdminNode"), id);
 		}

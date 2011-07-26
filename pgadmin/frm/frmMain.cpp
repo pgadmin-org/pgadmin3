@@ -1353,9 +1353,9 @@ pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTo
 	if (toolbar)
 	{
 		if (bigIcon)
-			toolbar->AddTool(id, _("SQL Help"), *help2_png_bmp, _("Display help on SQL commands."));
+			toolbar->AddTool(id, wxEmptyString, *help2_png_bmp, _("Display help on SQL commands."));
 		else
-			toolbar->AddTool(id, _("SQL Help"), *help_png_bmp, _("Display help on SQL commands."));
+			toolbar->AddTool(id, wxEmptyString, *help_png_bmp, _("Display help on SQL commands."));
 	}
 }
 

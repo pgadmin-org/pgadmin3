@@ -434,7 +434,7 @@ bool dlgDatabase::executeDDLSql(const wxString &strSql)
 		wxString tmp;
 		if (cbClusterSet && cbClusterSet->GetSelection() > 0)
 		{
-			replClientData *data = (replClientData *)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+			replClientData *data = (replClientData *)cbClusterSet->wxItemContainer::GetClientData(cbClusterSet->GetSelection());
 
 			if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
 			{

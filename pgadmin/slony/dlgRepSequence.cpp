@@ -107,7 +107,7 @@ int dlgRepSequence::Go(bool modal)
 pgObject *dlgRepSequence::CreateObject(pgCollection *collection)
 {
 	pgObject *obj = slSequenceFactory.CreateObjects(collection, 0,
-	                wxT(" WHERE seq_reloid = ") + NumToStr((OID)cbSequence->GetClientData(cbSequence->GetGuessedSelection())));
+	                wxT(" WHERE seq_reloid = ") + NumToStr((OID)cbSequence->wxItemContainer::GetClientData(cbSequence->GetGuessedSelection())));
 
 	return obj;
 }

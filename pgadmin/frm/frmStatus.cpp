@@ -271,15 +271,15 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	// Set up toolbar
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
-	toolBar->AddTool(MNU_REFRESH, _("Refresh"), *readdata_png_bmp, _("Refresh"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_REFRESH, wxEmptyString, *readdata_png_bmp, _("Refresh"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_COPY, _("Copy"), *clip_copy_png_bmp, _("Copy selected text to clipboard"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_COPY_QUERY, _("Open query tool"), *clip_copy_png_bmp, _("Open the query tool with the selected query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY, wxEmptyString, *clip_copy_png_bmp, _("Copy selected text to clipboard"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY_QUERY, wxEmptyString, *clip_copy_png_bmp, _("Open the query tool with the selected query"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_CANCEL, _("Cancel"), *query_cancel_png_bmp, _("Cancel query"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_TERMINATE, _("Terminate"), *terminate_backend_png_bmp, _("Terminate backend"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_COMMIT, _("Commit"), *storedata_png_bmp, _("Commit transaction"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_ROLLBACK, _("Rollback"), *delete_png_bmp, _("Rollback transaction"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_CANCEL, wxEmptyString, *query_cancel_png_bmp, _("Cancel query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_TERMINATE, wxEmptyString, *terminate_backend_png_bmp, _("Terminate backend"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COMMIT, wxEmptyString, *storedata_png_bmp, _("Commit transaction"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_ROLLBACK, wxEmptyString, *delete_png_bmp, _("Rollback transaction"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	cbLogfiles = new wxComboBox(toolBar, CTL_LOGCBO, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL,
 	                            wxCB_READONLY | wxCB_DROPDOWN);
@@ -1745,7 +1745,7 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 			while (newfiles--)
 			{
 				addLogLine(_("pgadmin:Logfile rotated."), false);
-				wxDateTime *ts = (wxDateTime *)cbLogfiles->GetClientData(pos++);
+				wxDateTime *ts = (wxDateTime *)cbLogfiles->wxItemContainer::GetClientData(pos++);
 				wxASSERT(ts != 0);
 
 				addLogFile(ts, skipFirst);
@@ -2316,7 +2316,7 @@ void frmStatus::emptyLogfileCombo()
 
 	while (cbLogfiles->GetCount())
 	{
-		wxDateTime *dt = (wxDateTime *)cbLogfiles->GetClientData(0);
+		wxDateTime *dt = (wxDateTime *)cbLogfiles->wxItemContainer::GetClientData(0);
 		if (dt)
 			delete dt;
 		cbLogfiles->Delete(0);
@@ -2374,7 +2374,7 @@ void frmStatus::OnLoadLogfile(wxCommandEvent &event)
 		showCurrent = (pos == 0);
 		isCurrent = showCurrent || (pos == lastPos);
 
-		wxDateTime *ts = (wxDateTime *)cbLogfiles->GetClientData(showCurrent ? lastPos : pos);
+		wxDateTime *ts = (wxDateTime *)cbLogfiles->wxItemContainer::GetClientData(showCurrent ? lastPos : pos);
 		wxASSERT(ts != 0);
 
 		if (ts != NULL && (!logfileTimestamp.IsValid() || *ts != logfileTimestamp))

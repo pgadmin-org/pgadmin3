@@ -484,7 +484,7 @@ hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *too
 	if (toolbar)
 	{
 		const wxBitmap &bmp = (bigTool ? *hint_png_bmp : *hint2_png_bmp);
-		toolbar->AddTool(id, _("Hints"), bmp, _("Display helpful hints on current object."));
+		toolbar->AddTool(id, wxEmptyString, bmp, _("Display helpful hints on current object."));
 	}
 }
 
