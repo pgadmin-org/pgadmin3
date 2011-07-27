@@ -31,14 +31,12 @@ EXTRA_DIST = \
 	$(top_srcdir)/stringmerge \
         $(top_srcdir)/docs/Docs.vcproj \
         $(top_srcdir)/docs/builddocs.bat \
-        $(top_srcdir)/docs/en_US/*.css \
         $(top_srcdir)/docs/en_US/*.rst \
-        $(top_srcdir)/docs/en_US/conf.py.in
+        $(top_srcdir)/docs/en_US/conf.py.in \
+	$(top_srcdir)/docs/en_US/images/*.png 
 
 TMP_docs = \
-	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
 	$(top_srcdir)/docs/en_US/hints/*.html \
-	$(top_srcdir)/docs/en_US/images/*.png \
 	$(top_srcdir)/docs/cs_CZ/*.css \
 	$(top_srcdir)/docs/cs_CZ/*.html \
 	$(top_srcdir)/docs/cs_CZ/pgadmin3.hh* \
