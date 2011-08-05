@@ -231,7 +231,7 @@ void dlgSequence::CheckChange()
 		                   || txtCache->GetValue() != sequence->GetCacheValue().ToString()
 		                   || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
 		                   || chkCycled->GetValue() != sequence->GetCycled());
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 		EnableOK(enable);
 	}
@@ -379,7 +379,7 @@ wxString dlgSequence::GetSql()
 
 	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("SEQUENCE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;

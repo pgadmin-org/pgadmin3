@@ -583,7 +583,7 @@ wxString dlgColumn::GetSql()
 		AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier()
 		              + wxT(".") + qtIdent(name), column);
 
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			sql += seclabelPage->GetSqlForSecLabels(wxT("COLUMN"), table->GetQuotedFullIdentifier()
 			                                        + wxT(".") + qtIdent(name));
 
@@ -677,7 +677,7 @@ void dlgColumn::CheckChange()
 			         || cbStorage->GetValue() != column->GetStorage()
 			         || dirtyVars;
 
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 
 		EnableOK(enable || securityChanged);

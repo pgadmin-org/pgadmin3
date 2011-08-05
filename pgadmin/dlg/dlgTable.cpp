@@ -1518,7 +1518,7 @@ wxString dlgTable::GetSql()
 
 	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	if (connection->BackendMinimumVersion(8, 2))
@@ -1718,7 +1718,7 @@ void dlgTable::CheckChange()
 		{
 			enable = !GetSql().IsEmpty();
 		}
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else

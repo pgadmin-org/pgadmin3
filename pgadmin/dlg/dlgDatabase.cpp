@@ -479,7 +479,7 @@ void dlgDatabase::CheckChange()
 		         || cbTablespace->GetValue() != database->GetTablespace()
 		         || connLimit != database->GetConnectionLimit()
 		         || dirtyVars;
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 
@@ -682,7 +682,7 @@ wxString dlgDatabase::GetSql()
 
 		AppendComment(sql, wxT("DATABASE"), 0, database);
 
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
 
 		if (connection->BackendMinimumVersion(8, 4))
@@ -866,7 +866,7 @@ wxString dlgDatabase::GetSql2()
 			else
 				sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
 		}
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
 	}
 

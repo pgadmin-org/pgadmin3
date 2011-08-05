@@ -239,7 +239,7 @@ void dlgForeignTable::CheckChange()
 		         || cbOwner->GetValue() != foreigntable->GetOwner()
 		         || GetSqlForTypes() != wxEmptyString
 		         || GetSql().Length() > 0;
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -567,7 +567,7 @@ wxString dlgForeignTable::GetSql()
 	}
 	AppendComment(sql, wxT("FOREIGN TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), foreigntable);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("FOREIGN TABLE "), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;

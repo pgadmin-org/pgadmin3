@@ -171,7 +171,7 @@ void dlgTablespace::CheckChange()
 		         || GetName() != tablespace->GetName()
 		         || cbOwner->GetValue() != tablespace->GetOwner()
 		         || dirtyVars;
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -263,7 +263,7 @@ wxString dlgTablespace::GetSql()
 		       +  wxT(";\n");
 	}
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TABLESPACE"), qtIdent(name));
 
 

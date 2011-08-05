@@ -179,7 +179,7 @@ void dlgAggregate::CheckChange()
 		         || cbSchema->GetValue() != aggregate->GetSchema()->GetName()
 		         || txtComment->GetValue() != aggregate->GetComment()
 		         || cbOwner->GetValue() != aggregate->GetOwner();
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -380,7 +380,7 @@ wxString dlgAggregate::GetSql()
 	              + wxT("(") + GetInputTypesList()
 	              + wxT(")"), aggregate);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("AGGREGATE"),
 		                                        qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
 		                                        + wxT("(") + GetInputTypesList()

@@ -492,7 +492,7 @@ void dlgType::CheckChange()
 		                    || cbOwner->GetValue() != type->GetOwner()
 		                    || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
 		                    || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1)));
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -851,7 +851,7 @@ wxString dlgType::GetSql()
 	}
 	AppendComment(sql, wxT("TYPE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), type);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TYPE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;

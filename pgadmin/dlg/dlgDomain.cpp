@@ -179,7 +179,7 @@ void dlgDomain::CheckChange()
 		         || txtComment->GetValue() != domain->GetComment();
 		if (connection->BackendMinimumVersion(9, 2) && !domain->GetValid() && !chkDontValidate->GetValue())
 			enable = true;
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -301,7 +301,7 @@ wxString dlgDomain::GetSql()
 
 	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("DOMAIN"), name);
 
 	return sql;

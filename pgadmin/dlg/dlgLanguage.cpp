@@ -178,7 +178,7 @@ void dlgLanguage::CheckChange()
 		enable = name != language->GetName()
 		         || txtComment->GetValue() != language->GetComment()
 		         || (connection->BackendMinimumVersion(8, 3) && cbOwner->GetValue() != language->GetOwner());
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -230,7 +230,7 @@ wxString dlgLanguage::GetSql()
 	sql += GetGrant(wxT("U"), wxT("LANGUAGE ") + qtIdent(name));
 	AppendComment(sql, wxT("LANGUAGE ") + qtIdent(name), 0, language);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("LANGUAGE"), qtIdent(name));
 
 	return sql;

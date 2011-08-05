@@ -377,7 +377,7 @@ void dlgRole::CheckChange()
 	else
 	{
 		enable = !GetSql().IsEmpty();
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	EnableOK(enable);
@@ -813,7 +813,7 @@ wxString dlgRole::GetSql()
 
 	AppendComment(sql, wxT("ROLE"), 0, role);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("ROLE"), qtIdent(name));
 
 	return sql;

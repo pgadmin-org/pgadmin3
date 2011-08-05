@@ -581,7 +581,7 @@ void dlgFunction::CheckChange()
 
 	if (function && enable)
 	{
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 		EnableOK(enable && !GetSql().IsEmpty());
 	}
@@ -1051,7 +1051,7 @@ wxString dlgFunction::GetSql()
 	{
 		AppendComment(sql, wxT("FUNCTION ") + name, function);
 
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			sql += seclabelPage->GetSqlForSecLabels(wxT("FUNCTION"), name);
 	}
 

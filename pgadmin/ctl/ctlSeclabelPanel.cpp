@@ -183,6 +183,8 @@ void ctlSeclabelPanel::OnSeclabelSelChange(wxListEvent &ev)
 
 wxString ctlSeclabelPanel::GetSqlForSecLabels(wxString objecttype, wxString objectname)
 {
+	wxASSERT(connection != NULL);
+
 	wxString sql;
 	wxArrayString seclabels;
 	unsigned int indexList;

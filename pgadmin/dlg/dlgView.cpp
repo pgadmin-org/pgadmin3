@@ -121,7 +121,7 @@ void dlgView::CheckChange()
 			         || cbSchema->GetValue() != view->GetSchema()->GetName()
 			         || name != view->GetName();
 		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
-		if (seclabelPage)
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
@@ -177,7 +177,7 @@ wxString dlgView::GetSql()
 
 	AppendComment(sql, wxT("VIEW ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), view);
 
-	if (seclabelPage)
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("VIEW"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	return sql;
