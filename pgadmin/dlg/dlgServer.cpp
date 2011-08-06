@@ -430,7 +430,7 @@ int dlgServer::Go(bool modal)
 	{
 		SetTitle(_("Add server"));
 		cbGroup->SetValue(_("Servers"));
-		wxString colour = wxT("#FFFFFF");
+		wxString colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX);
 		colourPicker->SetColour(colour);
 	}
 

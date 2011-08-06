@@ -1346,7 +1346,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		if (colour.IsEmpty())
 		{
 			wxColour cColour;
-			cColour.Set(wxT("#FFFFFF"));
+			cColour.Set(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX));
 			colour = cColour.GetAsString(wxC2S_HTML_SYNTAX);
 		}
 
