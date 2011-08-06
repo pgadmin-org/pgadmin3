@@ -275,9 +275,15 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 		if (!orderBy.IsEmpty())
 		{
 			if (pkAscending)
+			{
+				orderBy.Replace(wxT(","), wxT(" ASC,"));
 				orderBy += wxT(" ASC");
+			}
 			else
+			{
+				orderBy.Replace(wxT(","), wxT(" DESC,"));
 				orderBy += wxT(" DESC");
+			}
 		}
 	}
 	else if (obj->GetMetaType() == PGM_VIEW)
