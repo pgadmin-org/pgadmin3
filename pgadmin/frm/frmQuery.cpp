@@ -1368,6 +1368,9 @@ void frmQuery::setExtendedTitle()
 	{
 		SetTitle(title + wxT(" - [") + lastPath + wxT("]") + chgStr);
 	}
+
+	toolBar->EnableTool(MNU_SAVE, changed);
+	fileMenu->Enable(MNU_SAVE, changed);
 }
 
 bool frmQuery::relatesToWindow(wxWindow *which, wxWindow *related)
