@@ -339,6 +339,7 @@ public:
 protected:
 	editGridFactoryBase(menuFactoryList *list) : contextActionFactory(list)
 	{
+		pkAscending = true;
 		rowlimit = 0;
 	}
 	wxWindow *ViewData(frmMain *form, pgObject *obj, bool filter);
