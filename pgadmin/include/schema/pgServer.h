@@ -41,7 +41,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newService = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
+	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newService = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX), const wxString &group = wxEmptyString);
 	~pgServer();
 	int GetIconId();
 
