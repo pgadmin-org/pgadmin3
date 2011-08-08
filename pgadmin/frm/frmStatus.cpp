@@ -2368,13 +2368,12 @@ int frmStatus::fillLogfileCombo()
 void frmStatus::OnLoadLogfile(wxCommandEvent &event)
 {
 	int pos = cbLogfiles->GetCurrentSelection();
-	int lastPos = cbLogfiles->GetCount() - 1;
 	if (pos >= 0)
 	{
 		showCurrent = (pos == 0);
-		isCurrent = showCurrent || (pos == lastPos);
+		isCurrent = showCurrent || (pos == 1);
 
-		wxDateTime *ts = (wxDateTime *)cbLogfiles->GetClientData(showCurrent ? lastPos : pos);
+		wxDateTime *ts = (wxDateTime *)cbLogfiles->wxItemContainer::GetClientData(showCurrent ? 1 : pos);
 		wxASSERT(ts != 0);
 
 		if (ts != NULL && (!logfileTimestamp.IsValid() || *ts != logfileTimestamp))
