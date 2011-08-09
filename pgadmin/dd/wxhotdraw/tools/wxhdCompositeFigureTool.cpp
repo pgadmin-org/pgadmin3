@@ -19,8 +19,8 @@
 #include "dd/wxhotdraw/figures/wxhdCompositeFigure.h"
 
 
-wxhdCompositeFigureTool::wxhdCompositeFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdFigureTool(editor, fig, dt)
+wxhdCompositeFigureTool::wxhdCompositeFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
+	wxhdFigureTool(view, fig, dt)
 {
 	delegateTool = NULL;
 }
@@ -66,15 +66,15 @@ void wxhdCompositeFigureTool::mouseDown(wxhdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 	wxhdCompositeFigure *cfigure = (wxhdCompositeFigure *) getFigure();
-	wxhdIFigure *figure = cfigure->findFigure(x, y);
+	wxhdIFigure *figure = cfigure->findFigure(event.getView()->getIdx(), x, y);
 
 	if(figure)
 	{
-		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), getDefaultTool()));
+		setDelegateTool(event.getView(), figure->CreateFigureTool(event.getView(), getDefaultTool()));
 	}
 	else
 	{
-		setDelegateTool(getDefaultTool());
+		setDelegateTool(event.getView(), getDefaultTool());
 	}
 
 	if(delegateTool)
@@ -83,27 +83,27 @@ void wxhdCompositeFigureTool::mouseDown(wxhdMouseEvent &event)
 	}
 }
 
-void wxhdCompositeFigureTool::activate()
+void wxhdCompositeFigureTool::activate(wxhdDrawingView *view)
 {
 	if(delegateTool)
 	{
-		delegateTool->activate();
+		delegateTool->activate(view);
 	}
 }
 
-void wxhdCompositeFigureTool::deactivate()
+void wxhdCompositeFigureTool::deactivate(wxhdDrawingView *view)
 {
 	if(delegateTool)
 	{
-		delegateTool->deactivate();
+		delegateTool->deactivate(view);
 	}
 }
 
-void wxhdCompositeFigureTool::setDelegateTool(wxhdITool *tool)
+void wxhdCompositeFigureTool::setDelegateTool(wxhdDrawingView *view, wxhdITool *tool)
 {
 	if(delegateTool)
 	{
-		delegateTool->deactivate();
+		delegateTool->deactivate(view);
 		delete delegateTool;
 		delegateTool = NULL;
 	}
@@ -111,7 +111,7 @@ void wxhdCompositeFigureTool::setDelegateTool(wxhdITool *tool)
 	delegateTool = tool;
 	if(delegateTool)
 	{
-		delegateTool->activate();
+		delegateTool->activate(view);
 	}
 }
 

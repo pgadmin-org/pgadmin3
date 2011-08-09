@@ -29,19 +29,19 @@ wxhdRectangleFigure::~wxhdRectangleFigure()
 
 void wxhdRectangleFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawRectangle(copy);
 }
 
 void wxhdRectangleFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawRectangle(copy);
 }
 
-void wxhdRectangleFigure::setRectangle(wxhdRect &rect)
+void wxhdRectangleFigure::setRectangle(wxhdMultiPosRect &rect)
 {
 	basicDisplayBox = rect;
 }

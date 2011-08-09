@@ -18,7 +18,7 @@ class ddColumnFigure;
 
 enum ddColumnType
 {
-	pk = 0,
+	pk = 321,
 	uk,
 	none,
 	noaction  //no action kind means column type don't have right now a useful value
@@ -26,7 +26,7 @@ enum ddColumnType
 
 enum
 {
-	MNU_DDCTPKEY = 0,
+	MNU_DDCTPKEY = 321,
 	MNU_DDCTUKEY
 };
 

@@ -22,8 +22,8 @@
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
 #include "dd/wxhotdraw/tools/wxhdMenuTool.h"
 
-wxhdPolyLineFigureTool::wxhdPolyLineFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdFigureTool(editor, fig, dt)
+wxhdPolyLineFigureTool::wxhdPolyLineFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
+	wxhdFigureTool(view, fig, dt)
 {
 }
 
@@ -40,14 +40,15 @@ void wxhdPolyLineFigureTool::mouseDown(wxhdMouseEvent &event)
 	if(event.LeftDClick())
 	{
 		wxhdPolyLineFigure *connection = (wxhdPolyLineFigure *) figure;
-		connection->splitSegment(x, y);
-		getDrawingEditor()->view()->clearSelection();
-		getDrawingEditor()->view()->addToSelection(figure);
-		wxhdIHandle *handle = getDrawingEditor()->view()->findHandle(x, y);
-		getDrawingEditor()->view()->SetCursor(handle->createCursor());
+		connection->splitSegment(event.getView()->getIdx(), x, y);
+		event.getView()->getDrawing()->clearSelection();
+		event.getView()->getDrawing()->addToSelection(figure);
+		wxhdIHandle *handle = event.getView()->findHandle(event.getView()->getIdx(), x, y);
+		event.getView()->SetCursor(handle->createCursor());
 		if(defaultTool)
 			delete defaultTool;
-		defaultTool = new wxhdHandleTrackerTool(getDrawingEditor(), handle);
+		defaultTool = new wxhdHandleTrackerTool(event.getView(), handle);
+		event.getView()->notifyChanged();
 	}
 	defaultTool->mouseDown(event);
 }

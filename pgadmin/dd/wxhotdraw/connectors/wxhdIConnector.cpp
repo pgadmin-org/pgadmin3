@@ -45,22 +45,22 @@ void wxhdIConnector::draw(wxBufferedDC &context)
 {
 }
 
-wxhdRect &wxhdIConnector::getDisplayBox()
+wxhdMultiPosRect &wxhdIConnector::getDisplayBox()
 {
 	return figureOwner->displayBox();
 }
 
-bool wxhdIConnector::containsPoint(int x, int y)
+bool wxhdIConnector::containsPoint(int posIdx, int x, int y)
 {
-	return figureOwner->containsPoint(x, y);
+	return figureOwner->containsPoint(posIdx, x, y);
 }
 
-wxhdPoint wxhdIConnector::findStart(wxhdLineConnection *connection)
+wxhdPoint wxhdIConnector::findStart(int posIdx, wxhdLineConnection *connection)
 {
-	return getDisplayBox().center();
+	return getDisplayBox().center(posIdx);
 }
 
-wxhdPoint wxhdIConnector::findEnd(wxhdLineConnection *connection)
+wxhdPoint wxhdIConnector::findEnd(int posIdx, wxhdLineConnection *connection)
 {
-	return getDisplayBox().center();
+	return getDisplayBox().center(posIdx);
 }

@@ -21,17 +21,16 @@
 
 class wxhdDrawingEditor;
 
-wxhdCanvasMenuTool::wxhdCanvasMenuTool(wxhdDrawingEditor *editor, wxhdITool *dt):
-	wxhdAbstractTool(editor)
+wxhdCanvasMenuTool::wxhdCanvasMenuTool(wxhdDrawingView *view, wxhdITool *dt):
+	wxhdAbstractTool(view)
 {
 	defaultTool = dt;
-	canvasEditor = editor;
-	canvasEditor->view()->setCanvasMenuTool(NULL);
+	ownerView->setCanvasMenuTool(NULL);
 }
 
 wxhdCanvasMenuTool::~wxhdCanvasMenuTool()
 {
-	canvasEditor->view()->setCanvasMenuTool(NULL);
+	ownerView->setCanvasMenuTool(NULL);
 	if(defaultTool)
 		delete defaultTool;
 }
@@ -45,12 +44,12 @@ void wxhdCanvasMenuTool::mouseDown(wxhdMouseEvent &event)
 	if(event.RightDown())
 	{
 		wxMenu menu;
-		getDrawingEditor()->view()->setCanvasMenuTool(this);
-		createMenu(menu);
-		getDrawingEditor()->view()->connectPopUpMenu(menu);
+		event.getView()->setCanvasMenuTool(this);
+		createViewMenu(event.getView(), menu);
+		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		getDrawingEditor()->view()->PopupMenu(&menu, p);
+		event.getView()->PopupMenu(&menu, p);
 		return;
 	}
 
@@ -72,12 +71,12 @@ void wxhdCanvasMenuTool::mouseMove(wxhdMouseEvent &event)
 	defaultTool->mouseMove(event);
 }
 
-void wxhdCanvasMenuTool::createMenu(wxMenu &mnu)
+void wxhdCanvasMenuTool::createViewMenu(wxhdDrawingView *view, wxMenu &mnu)
 {
-	getDrawingEditor()->createMenu(mnu);
+	view->createViewMenu(mnu);
 }
 
 void wxhdCanvasMenuTool::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
 {
-	getDrawingEditor()->OnGenericPopupClick(event, view);
+	view->OnGenericViewPopupClick(event);
 }

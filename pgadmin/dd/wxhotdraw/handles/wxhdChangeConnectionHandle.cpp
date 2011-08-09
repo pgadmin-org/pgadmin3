@@ -38,7 +38,7 @@ wxhdChangeConnectionHandle::~wxhdChangeConnectionHandle()
 void wxhdChangeConnectionHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 
-	wxhdRect copy = getDisplayBox();
+	wxhdRect copy = getDisplayBox(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
 	copy.Deflate(2, 2);
@@ -62,38 +62,42 @@ void wxhdChangeConnectionHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVi
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 	wxhdPoint p = wxhdPoint(x, y);
-	wxhdIFigure *figure = findConnectableFigure(x, y, view->getDrawing());
+	wxhdIFigure *figure = findConnectableFigure(view->getIdx(), x, y, view->getDrawing());
 	targetFigure = figure;
-	wxhdIConnector *target = findConnectionTarget(x, y, view->getDrawing());
+	wxhdIConnector *target = findConnectionTarget(view->getIdx(), x, y, view->getDrawing());
 	if(target)
 	{
-		p = target->getDisplayBox().center();
+		p = target->getDisplayBox().center(view->getIdx());
 	}
-	setPoint(p);
-	connection->updateConnection();
+	setPoint(view->getIdx(), p);
+	connection->updateConnection(view->getIdx());
+	if(view)
+		view->Refresh();
 }
 
 void wxhdChangeConnectionHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	wxhdIConnector *target = findConnectionTarget(x, y, view->getDrawing());
+	wxhdIConnector *target = findConnectionTarget(view->getIdx(), x, y, view->getDrawing());
 	if(!target)
 	{
 		target = originalTarget;
 	}
 	connect(target, view);
-	connection->updateConnection();
+	connection->updateConnection(view->getIdx());
+	if(view)
+		view->Refresh();
 }
 
 
-wxhdIFigure *wxhdChangeConnectionHandle::findConnectableFigure (int x, int y, wxhdDrawing *drawing)
+wxhdIFigure *wxhdChangeConnectionHandle::findConnectableFigure (int posIdx, int x, int y, wxhdDrawing *drawing)
 {
 	wxhdIFigure *out = NULL;
 	wxhdIteratorBase *iterator = drawing->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
 		wxhdIFigure *figure = (wxhdIFigure *) iterator->Next();
-		if(figure->containsPoint(x, y) && isConnectionPossible(figure))
+		if(figure->containsPoint(posIdx, x, y) && isConnectionPossible(figure))
 		{
 			out = figure;
 			break;
@@ -102,11 +106,11 @@ wxhdIFigure *wxhdChangeConnectionHandle::findConnectableFigure (int x, int y, wx
 	delete iterator;
 	return out;
 }
-wxhdIConnector *wxhdChangeConnectionHandle::findConnectionTarget(int x, int y, wxhdDrawing *drawing)
+wxhdIConnector *wxhdChangeConnectionHandle::findConnectionTarget(int posIdx, int x, int y, wxhdDrawing *drawing)
 {
-	wxhdIFigure *target = findConnectableFigure(x, y, drawing);
+	wxhdIFigure *target = findConnectableFigure(posIdx, x, y, drawing);
 	if(target)
-		return target->connectorAt(x, y);
+		return target->connectorAt(posIdx, x, y);
 	else
 		return NULL;
 }

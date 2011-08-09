@@ -14,6 +14,7 @@
 
 #include "dd/wxhotdraw/figures/xml/wxhdStorage.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
+#include <ctl/ctlAuiNotebook.h>
 
 class ddXmlStorage : public wxhdStorage
 {
@@ -24,6 +25,7 @@ public:
 	static bool Read(xmlTextReaderPtr reader);
 	static bool Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
 	static void setModel(ddDatabaseDesign *sourceDesign);
+	static void setNotebook(ctlAuiNotebook *notebook);
 	static wxString getModelDTD();
 
 	//Write xml info Database Designer Related
@@ -34,6 +36,9 @@ public:
 	static void WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item);
+	static void WriteLocal(	xmlTextWriterPtr writer, wxhdDrawing *diagram);
+	static void StarDiagrams( xmlTextWriterPtr writer);
+	static void EndDiagrams( xmlTextWriterPtr writer);
 	static void StartModel( xmlTextWriterPtr writer, ddDatabaseDesign *design);
 	static void EndModel( xmlTextWriterPtr writer);
 	static bool processResult(int value);
@@ -45,14 +50,17 @@ public:
 
 	//Read xml info Database Designer Related
 	static void selectReader(xmlTextReaderPtr reader);
+	static void checkVersion(xmlTextReaderPtr reader);
 	static ddTableFigure *getTable(xmlTextReaderPtr reader);
 	static ddColumnFigure *getColumn(xmlTextReaderPtr reader, ddTableFigure *colOwner);
 	static ddRelationshipFigure *getRelationship(xmlTextReaderPtr reader);
 	static ddRelationshipItem *getRelationshipItem(xmlTextReaderPtr reader, ddRelationshipFigure *itemOwner, ddTableFigure *source, ddTableFigure *destination);
+	static void initDiagrams(xmlTextReaderPtr reader);
 	static void initialModelParse(xmlTextReaderPtr reader);
 
 private:
 
 	static ddDatabaseDesign *design;
+	static ctlAuiNotebook *tabs;
 };
 #endif

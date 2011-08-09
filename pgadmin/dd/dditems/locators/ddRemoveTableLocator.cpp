@@ -26,13 +26,13 @@ ddRemoveTableLocator::~ddRemoveTableLocator()
 {
 }
 
-wxhdPoint &ddRemoveTableLocator::locate(wxhdIFigure *owner)
+wxhdPoint &ddRemoveTableLocator::locate(int posIdx, wxhdIFigure *owner)
 {
 	if(owner)
 	{
 		ddTableFigure *table = (ddTableFigure *) owner;
-		int x = table->displayBox().x + table->displayBox().width - 10; //(8+2)
-		int y = table->displayBox().y + 6;
+		int x = table->displayBox().x[posIdx] + table->displayBox().width - 10; //(8+2)
+		int y = table->displayBox().y[posIdx] + 6;
 
 		locatePoint.x = x;
 		locatePoint.y = y;

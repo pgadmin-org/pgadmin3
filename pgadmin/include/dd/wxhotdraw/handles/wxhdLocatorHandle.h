@@ -24,7 +24,7 @@ public:
 	wxhdLocatorHandle(wxhdIFigure *owner, wxhdILocator *locator);
 	~wxhdLocatorHandle();
 
-	virtual wxhdPoint &locate();
+	virtual wxhdPoint &locate(int posIdx);
 	virtual wxhdILocator *locator();
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);

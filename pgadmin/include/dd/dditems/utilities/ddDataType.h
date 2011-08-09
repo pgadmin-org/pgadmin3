@@ -14,7 +14,7 @@
 
 enum ddMenuColumn
 {
-	add_column = 0,
+	add_column = 321,
 	del_column,
 	ren_column,
 	change_datatype

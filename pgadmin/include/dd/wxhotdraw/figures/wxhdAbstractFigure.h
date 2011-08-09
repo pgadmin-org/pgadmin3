@@ -27,18 +27,18 @@ public:
 	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void drawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual bool includes(wxhdIFigure *figure);
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
-	virtual void moveBy(int x, int y);
-	virtual void basicMoveBy(int x, int y);
-	virtual void moveTo(int x, int y);
-	virtual bool containsPoint(int x, int y);
-	virtual void onFigureChanged(wxhdIFigure *figure);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
+	virtual void moveBy(int posIdx, int x, int y);
+	virtual void basicMoveBy(int posIdx, int x, int y);
+	virtual void moveTo(int posIdx, int x, int y);
+	virtual bool containsPoint(int posIdx, int x, int y);
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure);
 
 protected:
 	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	void willChange();
-	void changed();
+	void changed(int posIdx);
 	void invalidate();
 	wxColour fillColor, lineColor;
 	double lineWidth;

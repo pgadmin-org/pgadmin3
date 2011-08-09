@@ -18,11 +18,10 @@
 #include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-wxhdDragTrackerTool::wxhdDragTrackerTool(wxhdDrawingEditor *editor, wxhdIFigure *anchor)
-	: wxhdAbstractTool(editor)
+wxhdDragTrackerTool::wxhdDragTrackerTool(wxhdDrawingView *view, wxhdIFigure *anchor)
+	: wxhdAbstractTool(view)
 {
 	hasMovedValue = false;
-	view = editor->view();
 	anchorFigure = anchor;
 }
 
@@ -48,12 +47,12 @@ void wxhdDragTrackerTool::mouseDown(wxhdMouseEvent &event)
 
 		if(event.m_shiftDown)
 		{
-			view->toggleSelection(anchorFigure);
+			event.getView()->getDrawing()->toggleSelection(anchorFigure);
 		}
-		else if(!view->isFigureSelected(anchorFigure))
+		else if(!event.getView()->getDrawing()->isFigureSelected(anchorFigure))
 		{
-			view->clearSelection();
-			view->addToSelection(anchorFigure);
+			event.getView()->getDrawing()->clearSelection();
+			event.getView()->getDrawing()->addToSelection(anchorFigure);
 		}
 	}
 }
@@ -83,11 +82,12 @@ void wxhdDragTrackerTool::mouseDrag(wxhdMouseEvent &event)
 		if (hasMoved())
 		{
 			wxhdIFigure *tmp = NULL;
-			wxhdIteratorBase *iterator = view->selectionFigures();
+			wxhdIteratorBase *iterator = event.getView()->getDrawing()->selectionFigures();
 			while(iterator->HasNext())
 			{
 				tmp = (wxhdIFigure *)iterator->Next();
-				tmp->moveBy(x - lastX, y - lastY);
+				tmp->moveBy(event.getView()->getIdx(), x - lastX, y - lastY);
+				event.getView()->notifyChanged();
 			}
 			delete iterator;
 		}

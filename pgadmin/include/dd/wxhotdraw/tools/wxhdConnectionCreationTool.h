@@ -19,7 +19,7 @@
 class wxhdConnectionCreationTool : public wxhdAbstractTool
 {
 public:
-	wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure);
+	wxhdConnectionCreationTool(wxhdDrawingView *view, wxhdLineConnection *figure);
 	~wxhdConnectionCreationTool();
 
 	virtual void mouseDrag(wxhdMouseEvent &event);

@@ -22,11 +22,11 @@
 
 class wxhdDrawingEditor;
 
-wxhdMenuTool::wxhdMenuTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdFigureTool(editor, fig, dt)
+wxhdMenuTool::wxhdMenuTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
+	wxhdFigureTool(view, fig, dt)
 {
 	menuFigure = (wxhdAbstractMenuFigure *) this->getFigure();
-	editor->view()->setMenuToolFigure(NULL);
+	ownerView->setMenuToolFigure(NULL);
 }
 
 wxhdMenuTool::~wxhdMenuTool()
@@ -42,26 +42,26 @@ void wxhdMenuTool::mouseDown(wxhdMouseEvent &event)
 	if(menuFigure->menuEnabled() && event.RightDown())
 	{
 		wxMenu menu;
-		getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
+		event.getView()->setMenuToolFigure(menuFigure);
 		menuFigure->createMenu(menu);
-		getDrawingEditor()->view()->connectPopUpMenu(menu);
+		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		getDrawingEditor()->view()->PopupMenu(&menu, p);
+		event.getView()->PopupMenu(&menu, p);
 		return;
 	}
 
 	getDefaultTool()->mouseDown(event);
 }
 
-void wxhdMenuTool::activate()
+void wxhdMenuTool::activate(wxhdDrawingView *view)
 {
-	wxhdFigureTool::activate();
+	wxhdFigureTool::activate(view);
 }
 
-void wxhdMenuTool::deactivate()
+void wxhdMenuTool::deactivate(wxhdDrawingView *view)
 {
-	wxhdFigureTool::deactivate();
+	wxhdFigureTool::deactivate(view);
 }
 
 void wxhdMenuTool::mouseDrag(wxhdMouseEvent &event)

@@ -14,7 +14,7 @@
 
 #include "wx/dcbuffer.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
 class wxhdDrawingView;
@@ -29,14 +29,14 @@ public:
 
 	static const int size = 4;
 
-	virtual bool containsPoint(int x, int y);
+	virtual bool containsPoint(int posIdx, int x, int y);
 	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view) = 0;
-	virtual wxhdPoint &locate() = 0;
+	virtual wxhdPoint &locate(int posIdx) = 0;
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 	virtual wxCursor createCursor() = 0;
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdRect &getDisplayBox(int posIdx);
 protected:
 	virtual wxhdIFigure *getOwner();
 	wxhdRect displayBox;

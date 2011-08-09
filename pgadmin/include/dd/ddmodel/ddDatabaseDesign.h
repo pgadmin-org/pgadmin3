@@ -13,42 +13,53 @@
 #define DDDATABASEDESIGN_H
 
 #include <libxml/xmlwriter.h>
+#include <ctl/ctlAuiNotebook.h>
 
-#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+
+class ddModelBrowser;
 
 WX_DECLARE_STRING_HASH_MAP( wxString , tablesMappingHashMap );
 
 class ddDatabaseDesign : public wxObject
 {
 public:
-	ddDatabaseDesign(wxWindow *parent);
+	ddDatabaseDesign(wxWindow *parent,  wxWindow *frmOwner);
 	~ddDatabaseDesign();
-	wxhdDrawingView *getView();
-	wxhdDrawingEditor *getEditor();
-	void addTable(wxhdIFigure *figure);
-	void removeTable(wxhdIFigure *figure);
-	void setTool(wxhdITool *tool);
-	void refreshDraw();
-	void eraseModel();
+	wxhdDrawingView *getView(int diagramIndex);
+	ddDrawingEditor *getEditor();
+	void addTableToModel(wxhdIFigure *figure);
+	void addTableToView(int diagramIndex, wxhdIFigure *figure);
+	void removeTable(int diagramIndex, wxhdIFigure *figure);
+	wxhdDrawing *createDiagram(wxWindow *owner, wxString name, bool fromXml);
+	void deleteDiagram(int diagramIndex, bool deleteView = true);
+	void refreshDraw(int diagramIndex);
+	void eraseDiagram(int diagramIndex);
+	void emptyModel();
+	wxString generateDiagram(int diagramIndex);
 	wxString generateModel();
 	bool validateModel(wxString &errors);
 	wxString getNewTableName();
-	ddTableFigure *getSelectedTable();
+	ddTableFigure *getSelectedTable(int diagramIndex);
 	ddTableFigure *getTable(wxString tableName);
 	bool writeXmlModel(wxString file);
-	bool readXmlModel(wxString file);
+	bool readXmlModel(wxString file, ctlAuiNotebook *notebook);
 
 	wxString getTableId(wxString tableName);
 	void addTableToMapping(wxString IdKey, wxString tableName);
 	wxString getTableName(wxString Id);
-
+	void registerBrowser(ddModelBrowser *browser);
+	void refreshBrowser();
+	static wxString getVersionXML();
 protected:
 	tablesMappingHashMap mappingNameToId;
 	tablesMappingHashMap mappingIdToName;
 private:
-	wxhdDrawingEditor *draw;
+	ddModelBrowser *attachedBrowser;
+	int diagramCounter;
+	ddDrawingEditor *editor;
 	wxhdITool *tool;
 	xmlTextWriterPtr xmlWriter;
 

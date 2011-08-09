@@ -20,22 +20,22 @@ class wxhdLineConnection : public wxhdPolyLineFigure
 {
 public:
 	wxhdLineConnection();
-	wxhdLineConnection(wxhdIFigure *figure1, wxhdIFigure *figure2);
+	wxhdLineConnection(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2);
 	~wxhdLineConnection();
 
 	virtual void connectStart(wxhdIConnector *start, wxhdDrawingView *view = NULL);
 	virtual void connectEnd(wxhdIConnector *end, wxhdDrawingView *view = NULL);
 	virtual void disconnectStart(wxhdDrawingView *view = NULL);
 	virtual void disconnectEnd(wxhdDrawingView *view = NULL);
-	virtual void updateConnection();
+	virtual void updateConnection(int posIdx);
 	virtual bool canConnectStart(wxhdIFigure *figure);
 	virtual bool canConnectEnd(wxhdIFigure *figure);
 	virtual bool canConnect();
-	virtual void setPointAt (int index, int x, int y);
+	virtual void setPointAt (int posIdx, int index, int x, int y);
 	virtual wxhdCollection *handlesEnumerator();
-	virtual void basicMoveBy(int x, int y);
+	virtual void basicMoveBy(int posIdx, int x, int y);
 
-	virtual void onFigureChanged(wxhdIFigure *figure);
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure);
 
 	virtual wxhdIConnector *getStartConnector();
 	virtual wxhdIConnector *getEndConnector();
@@ -45,8 +45,8 @@ public:
 	virtual wxhdIFigure *getEndFigure();
 	virtual wxhdIHandle *getStartHandle();
 	virtual wxhdIHandle *getEndHandle();
-	virtual void addPoint (int x, int y);
-	virtual void insertPointAt (int index, int x, int y);
+	virtual void addPoint (int posIdx, int x, int y);
+	virtual void insertPointAt (int posIdx, int index, int x, int y);
 
 protected:
 	virtual void updateHandlesIndexes();

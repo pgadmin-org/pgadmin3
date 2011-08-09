@@ -73,12 +73,12 @@ void wxhdITool::keyUp(wxhdKeyEvent &event)
 {
 }
 
-void wxhdITool::activate()
+void wxhdITool::activate(wxhdDrawingView *view)
 {
 	activatedValue = true;
 }
 
-void wxhdITool::deactivate()
+void wxhdITool::deactivate(wxhdDrawingView *view)
 {
 	activatedValue = false;
 }

@@ -42,10 +42,17 @@ void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *vi
 	if(getOwner()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo))
 	{
 		ddRelationshipFigure *fkConnection = new ddRelationshipFigure();
+		//Check figure available positions for diagrams, add at least needed to allow initialization of the class
+		int i, start;
+		start = fkConnection->displayBox().CountPositions();
+		for(i = start; i < (view->getIdx() + 1); i++)
+		{
+			fkConnection->AddPosForNewDiagram();
+		}
 		fkConnection->setStartTerminal(new ddRelationshipTerminal(fkConnection, false));
 		fkConnection->setEndTerminal(new ddRelationshipTerminal(fkConnection, true));
-		wxhdConnectionCreationTool *conn = new wxhdConnectionCreationTool(view->editor(), fkConnection);
-		view->editor()->setTool(conn);
+		wxhdConnectionCreationTool *conn = new wxhdConnectionCreationTool(view, fkConnection);
+		view->setTool(conn);
 		// Simulate button down to start connection of foreign key
 		wxMouseEvent e(wxEVT_LEFT_DOWN);
 		e.m_x = event.GetPosition().x;
@@ -55,6 +62,7 @@ void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *vi
 		conn->mouseDown(evento);
 		ddTableFigure *table = (ddTableFigure *) getOwner();
 		table->setSelectFkDestMode(true);
+		view->notifyChanged();
 	}
 }
 

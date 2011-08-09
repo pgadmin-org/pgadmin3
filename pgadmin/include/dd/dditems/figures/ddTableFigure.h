@@ -19,51 +19,65 @@
 
 class ddScrollBarHandle;
 class ddRelationshipFigure;
+class wxhdDrawing;
 
 class ddTableFigure : public wxhdCompositeFigure
 {
 public:
 	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName = wxEmptyString);
 	void InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw);
 	void Init(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	wxhdMultiPosRect &getBasicDisplayBox();
 	~ddTableFigure();
+
+	//Diagrams related functions
+	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
 
 	//add remove items
 	ddColumnFigure *getColByName(wxString name);
-	void addColumn(ddColumnFigure *column);
+	void addColumn(int posIdx, ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);
-	void syncPositionsAfterLoad();
-	void removeColumn(ddColumnFigure *column);
+	void syncInternalsPosAt(int posIdx, int x, int y);
+	void syncInternalsPosAt(wxArrayInt &x, wxArrayInt &y);
+	void removeColumn(int posIdx, ddColumnFigure *column);
 
 	//movement
-	virtual void basicMoveBy(int x, int y);
+	void manuallyNotifyChange(int posIdx)
+	{
+		changed(posIdx);
+	};
+	virtual void basicMoveBy(int posIdx, int x, int y);
 
 	//show messages to set fk destination
 	void setSelectFkDestMode(bool value);
 
 	//delete hack tables
-	void processDeleteAlert(wxhdDrawingView *view);
+	void processDeleteAlert(wxhdDrawing *drawing);
 
 	//columns scrolls
-	void updateTableSize();
-	void recalculateColsPos();
+	void updateTableSize(bool notifyChange = true);
+	void recalculateColsPos(int posIdx);
 	void setColsRowsWindow(int num);
-	wxhdRect &getColsSpace();
-	wxhdRect &getFullSpace();
-	wxhdRect &getTitleRect();
+	wxhdMultiPosRect &getColsSpace();
+	wxhdMultiPosRect &getFullSpace();
+	wxhdMultiPosRect &getTitleRect();
 	int getTotalColumns();
 	int getColumnsWindow();
 	int getTopColWindowIndex();
-	void setColumnsWindow(int value, bool maximize = false);
-	void columnsWindowUp();
-	void columnsWindowDown();
+	void setColumnsWindow(int posIdx, int value, bool maximize = false);
+	void columnsWindowUp(int posIdx);
+	void columnsWindowDown(int posIdx);
 	int getColDefaultHeight(wxFont font);
 
 	//metadata
 	wxString getTableName();
 	void setShortTableName(wxString shortName);
 	wxString getShortTableName();
-	wxString generateSQL();
+	wxString generateSQLCreate();
+	wxString generateSQLAlterPks();
+	wxString generateSQLAlterFks();
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);
@@ -127,8 +141,8 @@ protected:
 
 private:
 	//Main Rectangle Sizes
-	wxhdRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
-	wxhdRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
+	wxhdMultiPosRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
+	wxhdMultiPosRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
 
 	//Rectangle item counters
 	int colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
@@ -154,7 +168,7 @@ private:
 	//methods
 	int getHeightFontMetric(wxString text, wxFont font);
 	int getFiguresMaxWidth();
-	void calcRectsAreas();
+	void calcInternalSubAreas(int posIdx);
 
 	//pk uk(s)
 	wxString pkName;

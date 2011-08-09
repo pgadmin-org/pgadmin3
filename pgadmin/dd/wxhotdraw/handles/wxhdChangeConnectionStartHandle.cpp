@@ -27,9 +27,9 @@ wxhdChangeConnectionStartHandle::~wxhdChangeConnectionStartHandle()
 {
 }
 
-wxhdPoint &wxhdChangeConnectionStartHandle::locate()
+wxhdPoint &wxhdChangeConnectionStartHandle::locate(int posIdx)
 {
-	return connection->getStartPoint();
+	return connection->getStartPoint(posIdx);
 }
 
 wxhdIConnector *wxhdChangeConnectionStartHandle::target()
@@ -59,7 +59,7 @@ bool wxhdChangeConnectionStartHandle::isConnectionPossible(wxhdIFigure *figure)
 	}
 }
 
-void wxhdChangeConnectionStartHandle::setPoint(wxhdPoint p)
+void wxhdChangeConnectionStartHandle::setPoint(int posIdx, wxhdPoint p)
 {
-	connection->setStartPoint(p);
+	connection->setStartPoint(posIdx, p);
 }

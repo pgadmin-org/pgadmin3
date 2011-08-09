@@ -30,9 +30,9 @@ public:
 	wxhdStickyRectangleConnector(wxhdIFigure *owner, wxhdPoint p);
 	~wxhdStickyRectangleConnector();
 	virtual void setAngle(float newAngle);
-	virtual void updateAnchor(wxhdPoint p);
-	virtual wxhdPoint getAnchor();
-	virtual wxhdPoint chop(wxhdIFigure *target, wxhdPoint point);
+	virtual void updateAnchor(int posIdx, wxhdPoint p);
+	virtual wxhdPoint getAnchor(int posIdx);
+	virtual wxhdPoint chop(int posIdx, wxhdIFigure *target, wxhdPoint point);
 	virtual void draw(wxBufferedDC &context);
 protected:
 	float angle;

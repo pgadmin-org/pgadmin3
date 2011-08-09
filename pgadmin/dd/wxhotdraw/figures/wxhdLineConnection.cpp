@@ -32,20 +32,28 @@ wxhdLineConnection::wxhdLineConnection():
 	changeConnEndHandle = NULL;
 }
 
-wxhdLineConnection::wxhdLineConnection(wxhdIFigure *figure1, wxhdIFigure *figure2):
+wxhdLineConnection::wxhdLineConnection(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2):
 	wxhdPolyLineFigure()
 {
+	//Check figure available positions for diagrams, add at least needed to allow initialization of the class
+	int i, start;
+	start = basicDisplayBox.CountPositions();
+	for(i = start; i < (posIdx + 1); i++)
+	{
+		AddPosForNewDiagram();
+	}
+
 	startConnector = NULL;
 	endConnector = NULL;
 
 	if(figure1)
 	{
-		connectStart(figure1->connectorAt(0, 0));
+		connectStart(figure1->connectorAt(posIdx, 0, 0));
 	}
 
 	if(figure2)
 	{
-		connectEnd(figure2->connectorAt(0, 0));
+		connectEnd(figure2->connectorAt(posIdx, 0, 0));
 	}
 }
 
@@ -139,15 +147,15 @@ wxhdIFigure *wxhdLineConnection::getEndFigure()
 	return NULL;
 }
 
-void wxhdLineConnection::updateConnection()
+void wxhdLineConnection::updateConnection(int posIdx)
 {
 	if(startConnector)
 	{
-		setStartPoint(startConnector->findStart(this));
+		setStartPoint(posIdx, startConnector->findStart(posIdx, this));
 	}
 	if(endConnector)
 	{
-		setEndPoint(endConnector->findEnd(this));
+		setEndPoint(posIdx, endConnector->findEnd(posIdx, this));
 	}
 }
 
@@ -169,10 +177,10 @@ wxhdIHandle *wxhdLineConnection::getEndHandle()
 	return changeConnEndHandle;
 }
 
-void wxhdLineConnection::basicMoveBy(int x, int y)
+void wxhdLineConnection::basicMoveBy(int posIdx, int x, int y)
 {
-	wxhdPolyLineFigure::basicMoveBy(x, y);
-	updateConnection();
+	wxhdPolyLineFigure::basicMoveBy(posIdx, x, y);
+	updateConnection(posIdx);
 }
 
 bool wxhdLineConnection::canConnect()
@@ -180,10 +188,10 @@ bool wxhdLineConnection::canConnect()
 	return false;
 }
 
-void wxhdLineConnection::setPointAt (int index, int x, int y)
+void wxhdLineConnection::setPointAt (int posIdx, int index, int x, int y)
 {
-	wxhdPolyLineFigure::setPointAt(index, x, y);
-	updateConnection();
+	wxhdPolyLineFigure::setPointAt(posIdx, index, x, y);
+	updateConnection(posIdx);
 }
 
 wxhdCollection *wxhdLineConnection::handlesEnumerator()
@@ -208,63 +216,76 @@ void wxhdLineConnection::disconnectFigure (wxhdIConnector *connector)
 	}
 }
 
-void wxhdLineConnection::onFigureChanged(wxhdIFigure *figure)
+void wxhdLineConnection::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
-	updateConnection();
+	updateConnection(posIdx);
 }
 
-void wxhdLineConnection::addPoint (int x, int y)
+void wxhdLineConnection::addPoint (int posIdx, int x, int y)
 {
 	willChange();
-	points->addItem((wxhdObject *) new wxhdPoint(x, y) );
+	points[posIdx]->addItem((wxhdObject *) new wxhdPoint(x, y) );
 	//Update handles
-	if(points->count() == 1)
+	if(points[posIdx]->count() == 1)
 	{
 		//first point add start handle
-		handles->addItem(getStartHandle());
+		if(handles->count() == 0)
+			handles->addItem(getStartHandle());
 	}
-	else if(points->count() == 2)
+	else if(points[posIdx]->count() == 2)
 	{
 		//second point add end handle
-		handles->addItem(getEndHandle());
+		if(handles->count() == 1)
+			handles->addItem(getEndHandle());
 	}
-	else if(points->count() > 2)
+	else if(points[posIdx]->count() > 2)
 	{
-		//third and above point, add a polylinehandle before end handle
-		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(0), 0), handles->count() - 1);
+		//Locate maximum index if there is need for one new handle then added it
+		if( getMaximunIndex() > handles->count() )
+		{
+			//third and above point, add a polylinehandle before end handle
+			handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(0), 0), handles->count() - 1);
+		}
 	}
 	updateHandlesIndexes();
-	changed();
+	changed(posIdx);
 }
 
-void wxhdLineConnection::insertPointAt (int index, int x, int y)
+void wxhdLineConnection::insertPointAt (int posIdx, int index, int x, int y)
 {
 	willChange();
-	points->insertAtIndex((wxhdObject *) new wxhdPoint(x, y), index);
+	points[posIdx]->insertAtIndex((wxhdObject *) new wxhdPoint(x, y), index);
 	//Update handles
-	if(index == 0)
+	//Is there need of a new handle if is first point
+	if(index == 0 && handles->count() == 0 )
 	{
 		//add a new handle "normal" for a point in next position 0,1 in 1... in 0 startHandle is not moved
 		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), 1);
 	}
-	else if(index == (points->count() - 1)) //last point
+	else if(index == (points[posIdx]->count() - 1) &&  handles->count() < getMaximunIndex() ) //last point
 	{
 		//add a new handle "normal" for a point in before last item position
-		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), (points->count() - 1));
+		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), (points[posIdx]->count() - 1));
 	}
-	else
+	else if(handles->count() < getMaximunIndex())
 	{
 		//add handle at index
 		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), index);
 	}
 	updateHandlesIndexes();
-	changed();
+	changed(posIdx);
 }
 
+//Update points between start and end, because start and end don't have index (is other kind of handle)
 void wxhdLineConnection::updateHandlesIndexes()
 {
 	wxhdPolyLineHandle *h = NULL;
-	for(int i = 1; i < handles->count() - 1; i++)
+
+	//Get maximun point position in a collection of points
+	int maxPosition = getMaximunIndex();
+
+	//Update Handles indexes
+	for(int i = 1; i < maxPosition - 1; i++)
 	{
 		h = (wxhdPolyLineHandle *) handles->getItemAt(i);
 		h->setIndex(i);

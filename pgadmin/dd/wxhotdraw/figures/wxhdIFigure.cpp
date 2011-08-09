@@ -27,7 +27,11 @@ wxhdIFigure::wxhdIFigure()
 {
 	handles = new wxhdCollection(new wxhdArrayCollection());
 	observers = new wxhdCollection(new wxhdArrayCollection());
-	selected = false;
+	unsigned int i;
+	for(i = 0; i < MAXPOS; i++)
+	{
+		selected.Add(false);
+	}
 	connector = NULL;
 	basicDisplayBox.SetSize(wxSize(0, 0));
 }
@@ -45,19 +49,25 @@ wxhdIFigure::~wxhdIFigure()
 	}
 }
 
-wxhdRect &wxhdIFigure::displayBox()
+void wxhdIFigure::AddPosForNewDiagram()
+{
+	basicDisplayBox.addNewXYPosition();
+	selected.Add(false);
+}
+
+void wxhdIFigure::RemovePosOfDiagram(int posIdx)
+{
+	basicDisplayBox.removeXYPosition(posIdx);
+}
+
+wxhdMultiPosRect &wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();
 }
 
-wxhdRect &wxhdIFigure::getBasicDisplayBox()
+wxhdMultiPosRect &wxhdIFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
-}
-
-bool wxhdIFigure::containsPoint (int x, int y)
-{
-	return false;
 }
 
 void wxhdIFigure::draw (wxBufferedDC &context, wxhdDrawingView *view)
@@ -92,30 +102,22 @@ void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 	}
 }
 
-void wxhdIFigure::moveBy (int x, int y)
-{
-}
-
-void wxhdIFigure::moveTo(int x, int y)
-{
-}
-
-wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
 
-bool wxhdIFigure::isSelected()
+bool wxhdIFigure::isSelected(int posIdx)
 {
-	return selected;
+	return selected[posIdx];
 }
 
-void wxhdIFigure::setSelected(bool value)
+void wxhdIFigure::setSelected(int posIdx, bool value)
 {
-	selected = value;
+	selected[posIdx] = value;
 }
 
-wxhdIConnector *wxhdIFigure::connectorAt (int x, int y)
+wxhdIConnector *wxhdIFigure::connectorAt (int posIdx, int x, int y)
 {
 	if(!connector)
 		connector = new wxhdChopBoxConnector(this);
@@ -127,14 +129,14 @@ bool wxhdIFigure::includes(wxhdIFigure *figure)
 	return (this == figure);
 }
 
-void wxhdIFigure::onFigureChanged(wxhdIFigure *figure)
+void wxhdIFigure::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
 
 	wxhdIteratorBase *iterator = observers->createIterator();
 	while(iterator->HasNext())
 	{
 		wxhdIFigure *o = (wxhdIFigure *) iterator->Next();
-		o->onFigureChanged(this);
+		o->onFigureChanged(posIdx, this);
 	}
 	delete iterator;
 }

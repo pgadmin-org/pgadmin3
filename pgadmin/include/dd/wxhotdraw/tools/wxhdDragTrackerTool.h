@@ -22,7 +22,7 @@
 class wxhdDragTrackerTool : public wxhdAbstractTool
 {
 public:
-	wxhdDragTrackerTool(wxhdDrawingEditor *editor, wxhdIFigure *anchor);
+	wxhdDragTrackerTool(wxhdDrawingView *view, wxhdIFigure *anchor);
 	~wxhdDragTrackerTool();
 
 	void setLastCoords(int x, int y);
@@ -37,7 +37,6 @@ protected:
 
 private:
 	int lastX, lastY;
-	wxhdDrawingView *view;
 
 };
 #endif

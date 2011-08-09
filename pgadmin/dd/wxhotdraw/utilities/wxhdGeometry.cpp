@@ -16,7 +16,7 @@
 
 // App headers
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
 //
@@ -82,11 +82,21 @@ int wxhdGeometry::max(int a, int b)
 }
 
 //Gets the angle of a point relative to a rectangle.
+double wxhdGeometry::angleFromPoint(int posIdx, wxhdMultiPosRect r, wxhdPoint point)
+{
+	return angleFromPoint(r.getwxhdRect(posIdx), point);
+}
+
 double wxhdGeometry::angleFromPoint(wxhdRect r, wxhdPoint point)
 {
 	double rx = point.x - r.center().x;
 	double ry = point.y - r.center().y;
 	return atan2 (ry * r.width, rx * r.height);
+}
+
+wxhdPoint wxhdGeometry::edgePointFromAngle(int posIdx, wxhdMultiPosRect r, double angle)
+{
+	return edgePointFromAngle(r.getwxhdRect(posIdx), angle);
 }
 
 //Gets the point on a rectangle that corresponds to the given angle.

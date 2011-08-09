@@ -19,6 +19,7 @@
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/wxhotdraw/tools/wxhdSimpleTextTool.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 
 // dummy image
 #include "images/ddnull.pngc"
@@ -26,7 +27,7 @@
 wxhdSimpleTextFigure::wxhdSimpleTextFigure(wxString textString)
 {
 	textEditable = false;
-	font = settings->GetSystemFont();
+	font = wxhdFontAttribute::defaultFont;
 	padding = 2;
 	setText(textString);
 	showMenu = false;
@@ -79,27 +80,27 @@ void wxhdSimpleTextFigure::recalculateDisplayBox()
 
 void wxhdSimpleTextFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawText(getText(true), copy.GetPosition());
 }
 
 void wxhdSimpleTextFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawText(getText(true), copy.GetPosition());
 }
 
-void wxhdSimpleTextFigure::basicMoveBy(int x, int y)
+void wxhdSimpleTextFigure::basicMoveBy(int posIdx, int x, int y)
 {
-	displayBox().x += x;
-	displayBox().y += y;
+	displayBox().x[posIdx] += x;
+	displayBox().y[posIdx] += y;
 }
 
-wxhdITool *wxhdSimpleTextFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdSimpleTextFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
-	return textEditable ? new wxhdSimpleTextTool(editor, this, defaultTool) : defaultTool;
+	return textEditable ? new wxhdSimpleTextTool(view, this, defaultTool) : defaultTool;
 }
 
 void wxhdSimpleTextFigure::setEditable(bool value)

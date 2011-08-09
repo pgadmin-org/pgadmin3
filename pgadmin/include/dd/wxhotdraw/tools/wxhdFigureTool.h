@@ -18,7 +18,7 @@
 class wxhdFigureTool : public wxhdAbstractTool
 {
 public:
-	wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
+	wxhdFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt);
 	~wxhdFigureTool();
 	void setDefaultTool(wxhdITool *dt);
 	wxhdITool *getDefaultTool();

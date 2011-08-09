@@ -22,7 +22,7 @@ class wxhdAbstractMenuFigure : public wxhdAttributeFigure
 public:
 	wxhdAbstractMenuFigure();
 	~wxhdAbstractMenuFigure();
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 	virtual void createMenu(wxMenu &mnu) {}
 	virtual void enablePopUp();
 	virtual void disablePopUp();

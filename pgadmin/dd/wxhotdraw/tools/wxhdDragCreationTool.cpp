@@ -17,8 +17,8 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdDragCreationTool.h"
 
-wxhdDragCreationTool::wxhdDragCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype):
-	wxhdCreationTool(editor, prototype)
+wxhdDragCreationTool::wxhdDragCreationTool(wxhdDrawingView *view, wxhdIFigure *prototype):
+	wxhdCreationTool(view, prototype)
 {
 }
 
@@ -31,6 +31,6 @@ void wxhdDragCreationTool::mouseDrag(wxhdMouseEvent &event)
 {
 	if(event.LeftIsDown())
 	{
-		figurePrototype->displayBox().SetPosition(event.GetPosition());
+		figurePrototype->displayBox().SetPosition(event.getView()->getIdx(), event.GetPosition());
 	}
 }

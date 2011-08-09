@@ -24,9 +24,9 @@ public:
 	~wxhdButtonHandle();
 
 	virtual wxCursor createCursor();
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdRect &getDisplayBox(int posIdx);
 	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdPoint &locate();
+	virtual wxhdPoint &locate(int posIdx);
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view) = 0;

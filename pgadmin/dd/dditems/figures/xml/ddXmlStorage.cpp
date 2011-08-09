@@ -12,6 +12,7 @@
 #include "pgAdmin3.h"
 
 
+#include <ctl/ctlAuiNotebook.h>
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
 
@@ -29,11 +30,13 @@
 #include "dd/ddmodel/ddDatabaseDesign.h"
 
 ddDatabaseDesign *ddXmlStorage::design = NULL;
+ctlAuiNotebook *ddXmlStorage::tabs = NULL;
 
 ddXmlStorage::ddXmlStorage():
 	wxhdStorage()
 {
 	design = NULL;
+	tabs = NULL;
 }
 
 #define XML_FROM_WXSTRING(s) ((xmlChar *)(const char *)s.mb_str(wxConvUTF8))
@@ -44,12 +47,16 @@ void ddXmlStorage::setModel(ddDatabaseDesign *sourceDesign)
 	design = sourceDesign;
 }
 
+void ddXmlStorage::setNotebook(ctlAuiNotebook *notebook)
+{
+	tabs = notebook;
+}
+
 void ddXmlStorage::StartModel(xmlTextWriterPtr writer, ddDatabaseDesign *sourceDesign)
 {
 	int tmp;
 	design = sourceDesign;
-	//<!DOCTYPE MODEL ...pgRelationModel.dtd>
-	// but add all dtd to doc instead of url
+	//<!DOCTYPE MODEL ...pgRelationModel.dtd> but add all dtd to doc instead url
 	wxString name = _("MODEL");
 	wxString pubid = _("pgrm");
 	wxString uri = _("pgrm");
@@ -59,6 +66,15 @@ void ddXmlStorage::StartModel(xmlTextWriterPtr writer, ddDatabaseDesign *sourceD
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "MODEL");
 	processResult(tmp);
 
+	//<!ELEMENT VERSION EMPTY>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "VERSION");
+	processResult(tmp);
+	// <!ATTLIST VERSION VERIXLU CDATA #REQUIRED>
+	wxString version = sourceDesign->getVersionXML();
+	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "VERIXLU", XML_FROM_WXSTRING(version) );
+	processResult(tmp);
+	//Close VERSION Element
+	xmlTextWriterEndElement(writer);
 }
 
 void ddXmlStorage::EndModel( xmlTextWriterPtr writer)
@@ -72,7 +88,7 @@ bool ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
 {
 	if(design == NULL)
 	{
-		wxMessageBox(_("Error saving model: no source model"), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("Error saving model: not source model have been set"));
 		return false;
 	}
 
@@ -104,7 +120,7 @@ bool ddXmlStorage::processResult(int value)
 {
 	if (value < 0)
 	{
-		wxMessageBox(_("Failed to write the model file"), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("Fatal Error at libxml for figure persistency"));
 		return false;
 	}
 	return true;
@@ -192,7 +208,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 	int tmp;
 
 	//At TABLES ELEMENT
-	//<!ELEMENT TABLE (Attribute+,COLUMNS,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
+	//<!ELEMENT TABLE (Attribute*,POINTS,TITLE,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW, COLUMNS )>
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "TABLE");
 	processResult(tmp);
 
@@ -201,16 +217,25 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "TableID", XML_FROM_WXSTRING(TableId) );
 	processResult(tmp);
 
-	//Start POINT <!ELEMENT POINT (X,Y)>
-	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
-	//<!ELEMENT X (#PCDATA)>
-	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X", "%d", figure->getBasicDisplayBox().x);
+	//Start POINTS <!ELEMENT POINTS (POINT*)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTS");
 	processResult(tmp);
-	//<!ELEMENT Y (#PCDATA)>
-	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y", "%d", figure->getBasicDisplayBox().y);
-	processResult(tmp);
-	//Close POINT Element
+	int posIdx, positionsCount = figure->getBasicDisplayBox().CountPositions();
+	for(posIdx = 0; posIdx < positionsCount; posIdx++)
+	{
+		//Start POINT <!ELEMENT POINT (X,Y)>
+		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
+		//<!ELEMENT X (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X", "%d", figure->getBasicDisplayBox().x[posIdx]);
+		processResult(tmp);
+		//<!ELEMENT Y (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y", "%d", figure->getBasicDisplayBox().y[posIdx]);
+		processResult(tmp);
+		//Close POINT Element
+		xmlTextWriterEndElement(writer);
+	}
 	xmlTextWriterEndElement(writer);
+	//Close POINTS Element
 
 	//Add Table Title
 	ddColumnFigure *f;
@@ -323,7 +348,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 	int tmp;
 
 	//At RELATIONSHIPS Element
-	//<!ELEMENT RELATIONSHIP (Attributes*, POINTS, RELATIONITEMS, UKINDEX, NAME, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK)>
+	//<!ELEMENT RELATIONSHIP (Attributes*, POINTSRELATION, RELATIONITEMS, UKINDEX, NAME, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK)>
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "RELATIONSHIP");
 
 	//<!ATTLIST RELATIONITEM SourceTableID IDREF #REQUIRED > --> ddTableFigure ID
@@ -337,26 +362,35 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 	processResult(tmp);
 
 	//At RELATIONSHIP Element
-	//Start POINTS <!ELEMENT POINTS (POINT, POINT,POINT*)>
-	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTS");
+
+	//Start POINTSRELATION <!ELEMENT POINTSRELATION (POINTS+)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTSRELATION");
 	wxhdPoint point;
-	for(int i = 0; i < figure->pointCount(); i++)
+
+	for(int posIdx = 0 ; posIdx < figure->pointLinesCount(); posIdx++)
 	{
-		//At POINTS Element
-		//Start POINT <!ELEMENT POINT (X,Y)>
-		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
-		point = figure->pointAt(i);
-		//<!ELEMENT X (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X", "%d", point.x);
-		processResult(tmp);
-		//<!ELEMENT Y (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y", "%d", point.y);
-		processResult(tmp);
-		//Close POINT Element
+		//At POINTSRELATION Element
+		//Start POINTS <!ELEMENT POINTS (POINT*)>
+		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTS");
+		for(int i = 0; i < figure->pointCount(posIdx); i++)
+		{
+			//At POINTS Element
+			//Start POINT <!ELEMENT POINT (X,Y)>
+			tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
+			point = figure->pointAt(posIdx, i);
+			//<!ELEMENT X (#PCDATA)>
+			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X", "%d", point.x);
+			processResult(tmp);
+			//<!ELEMENT Y (#PCDATA)>
+			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y", "%d", point.y);
+			processResult(tmp);
+			//Close POINT Element
+			xmlTextWriterEndElement(writer);
+		}
+		//Close POINTS Element
 		xmlTextWriterEndElement(writer);
 	}
-
-	//Close POINTS Element
+	//Close POINTSRELATION Element
 	xmlTextWriterEndElement(writer);
 
 	//At RELATIONSHIP Element
@@ -457,7 +491,62 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item
 	xmlTextWriterEndElement(writer);
 }
 
-//This is needed because table doesn't have any explicit order when stored
+void ddXmlStorage::StarDiagrams( xmlTextWriterPtr writer)
+{
+	//At MODEL Element
+	//<!ELEMENT DIAGRAMS (DIAGRAM)>
+	xmlTextWriterStartElement(writer, BAD_CAST "DIAGRAMS");
+}
+
+void ddXmlStorage::EndDiagrams( xmlTextWriterPtr writer)
+{
+
+	//Close DIAGRAMS Element
+	xmlTextWriterEndElement(writer);
+}
+
+void ddXmlStorage::WriteLocal(xmlTextWriterPtr writer, wxhdDrawing *diagram)
+{
+	int tmp;
+
+	//At DIAGRAMS Element
+	//<!ELEMENT DIAGRAM (NAME, TABLEREF*)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "DIAGRAM");
+
+	//At DIAGRAM Element
+	//<!ELEMENT NAME (#PCDATA)>
+	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME", "%s", XML_FROM_WXSTRING(diagram->getName()) );
+	processResult(tmp);
+
+	wxhdIteratorBase *iterator = diagram->figuresEnumerator();
+	wxhdIFigure *tmpFigure;
+	ddTableFigure *table;
+
+	while(iterator->HasNext())
+	{
+		tmpFigure = (wxhdIFigure *)iterator->Next();
+		if(tmpFigure->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmpFigure;
+			//<!ELEMENT TABLEREF EMPTY>
+			tmp = xmlTextWriterStartElement(writer, BAD_CAST "TABLEREF");
+
+			//<!ATTLIST TABLEREF TableID IDREF #REQUIRED >  --> ddTableFigure ID
+			wxString TableId = design->getTableId(table->getTableName());
+			tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "TableID", XML_FROM_WXSTRING(TableId) );
+			processResult(tmp);
+
+			//Close TABLEREF Element
+			xmlTextWriterEndElement(writer);
+		}
+	}
+	delete iterator;
+
+	//Close DIAGRAM Element
+	xmlTextWriterEndElement(writer);
+}
+
+//This is needed because table doesn't have any explicit order when stored then I created all first
 void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 {
 	int ret, tmp;
@@ -486,33 +575,30 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 					xmlFree(value);
 				}
 
-				// --> POINT
-				//<!ELEMENT POINT (X,Y)>
-				int x = 0, y = 0;
+				// <!ELEMENT POINTS (POINT*)>
 				wxString tmpInt;
-				tmp = xmlTextReaderRead(reader);	//go POINT
-				tmp = xmlTextReaderRead(reader);	//go X
-				tmp = xmlTextReaderRead(reader);	//go X Value
-				value = xmlTextReaderValue(reader);  //Value of X
-				if(value)
+				tmp = xmlTextReaderRead(reader);	//go to POINTS
+				wxArrayInt x, y;
+				if(getNodeName(reader).IsSameAs(_("POINTS")) && getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )
 				{
-					tmpInt = WXSTRING_FROM_XML(value);
-					x = wxAtoi(tmpInt);
-					xmlFree(value);
-				}
-				tmp = xmlTextReaderRead(reader);	//go to /X
+					tmp = xmlTextReaderRead(reader);	//go POINT
+					do
+					{
+						// --> POINT
+						//<!ELEMENT POINT (X,Y)>
+						tmp = xmlTextReaderRead(reader);	//go X
+						tmp = xmlTextReaderRead(reader);	//go X Value
+						tmp = xmlTextReaderRead(reader);	//go to /X
 
-				tmp = xmlTextReaderRead(reader);	//go Y
-				tmp = xmlTextReaderRead(reader);	//go Y Value
-				value = xmlTextReaderValue(reader);  //Value of Y
-				if(value)
-				{
-					tmpInt = WXSTRING_FROM_XML(value);
-					y = wxAtoi(tmpInt);
-					xmlFree(value);
+						tmp = xmlTextReaderRead(reader);	//go Y
+						tmp = xmlTextReaderRead(reader);	//go Y Value
+						tmp = xmlTextReaderRead(reader);	//go to /Y
+
+						tmp = xmlTextReaderRead(reader);	//go /POINT
+						tmp = xmlTextReaderRead(reader);	//go POINT or /POINTS ?
+					}
+					while(getNodeName(reader).IsSameAs(_("POINT"), false));
 				}
-				tmp = xmlTextReaderRead(reader);	//go to /Y
-				tmp = xmlTextReaderRead(reader);	//go /POINT
 
 				tmp = xmlTextReaderRead(reader);	//go to TITLE
 				tmp = xmlTextReaderRead(reader);	//go to NAME
@@ -539,21 +625,24 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 					tmp = xmlTextReaderRead(reader);	//go to /ALIAS
 					tmp = xmlTextReaderRead(reader);	//go to /TITLE
 				}
-				ddTableFigure *t = new ddTableFigure(tableName, x, y, tableAlias);
-				design->addTable(t);
+				ddTableFigure *t = new ddTableFigure(tableName, -1, -1, tableAlias);
+
+				design->addTableToModel(t);
 			}
 			ret = xmlTextReaderRead(reader);
 		}
 
-		// Once the document has been fully parsed, check the validation results
+		//Once the document has been fully parsed check the validation results
 		if (xmlTextReaderIsValid(reader) != 1)
 		{
-			wxMessageBox(_("Model is not following embedded DTD definition, check it."), _("Error"), wxICON_ERROR);
+			wxMessageBox(_("Model is not following embedded DTD definition, check it.\n"));
 			return;
 		}
 	}
-	//reset reader to beginning of stream
+	//reset reader to begining of stream
 }
+
+
 
 bool ddXmlStorage::Read(xmlTextReaderPtr reader)
 {
@@ -569,16 +658,16 @@ bool ddXmlStorage::Read(xmlTextReaderPtr reader)
 			ret = xmlTextReaderRead(reader);
 		}
 
-		// Once the document has been fully parsed, check the validation results
+		//Once the document has been fully parsed check the validation results
 		if (xmlTextReaderIsValid(reader) != 1)
 		{
-			wxMessageBox(_("Model is not following embedded DTD definition, check it."), _("Error"), wxICON_ERROR);
+			wxMessageBox(_("Model is not following embedded DTD definition, check it.\n"));
 			return false;
 		}
 
 		if (ret != 0)
 		{
-			wxMessageBox(_("Failed to load model file"), _("Error"), wxICON_ERROR);
+			wxMessageBox(_("Failed to load document from disk"));
 			return false;
 		}
 		else
@@ -600,7 +689,6 @@ wxString ddXmlStorage::getNodeName(xmlTextReaderPtr reader)
 	xmlFree(name);
 	return out;
 }
-
 int ddXmlStorage::getNodeType(xmlTextReaderPtr reader)
 {
 	return xmlTextReaderNodeType(reader);
@@ -624,6 +712,10 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 {
 	if(getNodeType(reader) == 1) //libxml 1 for start element
 	{
+		if(getNodeName(reader).IsSameAs(_("VERSION"), false))
+		{
+			checkVersion(reader);
+		}
 		if(getNodeName(reader).IsSameAs(_("MODEL"), false))
 		{
 			//<!ELEMENT MODEL (TABLE+)>
@@ -632,24 +724,64 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 		if(getNodeName(reader).IsSameAs(_("TABLE"), false))
 		{
 			getTable(reader);
-			design->refreshDraw();
 		}
 
 		if(getNodeName(reader).IsSameAs(_("RELATIONSHIP"), false))
 		{
 			ddRelationshipFigure *r = getRelationship(reader);
-			design->addTable(r);
-			design->refreshDraw();
+			design->addTableToModel(r);
 		}
 
+		if(getNodeName(reader).IsSameAs(_("DIAGRAMS"), false))
+		{
+			initDiagrams(reader);
+		}
 	}
 }
 
-// Table isn't created here because fk needs all tables created before assign it
+//Check if version of modeler with xml input is compatible
+void ddXmlStorage::checkVersion(xmlTextReaderPtr reader)
+{
+	/*
+	<!--Version Element-->
+	<!ELEMENT VERSIONXL EMPTY>
+	<!ATTLIST VERSION VERIXLU CDATA #REQUIRED>
+	*/
+	int tmp;
+	wxString Number;
+	xmlChar *value;
+	//<!ATTLIST  VERSIONXL NUMBER CDATA #REQUIRED>
+	tmp = xmlTextReaderHasAttributes(reader);
+	Number = _("VERIXLU");
+	if(tmp)
+	{
+		value = xmlTextReaderGetAttribute(reader, XML_FROM_WXSTRING(Number));
+	}
+
+	if(value)
+	{
+		Number = WXSTRING_FROM_XML(value);
+		xmlFree(value);
+	}
+	if(!Number.IsSameAs(_("1.0")))
+	{
+		wxMessageBox(_("Invalid version of XML file for pgAdmin database designer found"), _("Invalid XML"), wxOK | wxICON_ERROR);
+	}
+}
+
+//Table isn't create here because fk needs all tables created before assign it
 ddTableFigure *ddXmlStorage::getTable(xmlTextReaderPtr reader)
 {
 	/*
-	<!ELEMENT TABLE (Attribute*,POINT,TITLE,UKNAMES?, PKNAME, COLUMNS, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
+	<!ELEMENT POINTS (POINT*)>
+	<!-- POINT Element -->
+	<!ELEMENT POINT (X,Y)>
+	<!ELEMENT X (#PCDATA)>
+	<!ELEMENT Y (#PCDATA)>
+
+
+	<!ELEMENT TABLE (Attribute*,POINTS,TITLE,UKNAMES?, PKNAME, COLUMNS, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
+	<!ELEMENT POINTS (POINT*)>
 	<!ELEMENT COLUMNS (COLUMN*)>
 	<!ELEMENT UKNAMES (UKNAME+)>
 	<!ELEMENT UKNAME (#PCDATA)>
@@ -689,32 +821,47 @@ ddTableFigure *ddXmlStorage::getTable(xmlTextReaderPtr reader)
 	//Element(s) Attribute*
 	// NEED TO IMPLEMENT THIS
 
-	// --> POINT
-	//<!ELEMENT POINT (X,Y)>
-	int x = 0, y = 0;
-	tmp = xmlTextReaderRead(reader);	//go POINT
-	tmp = xmlTextReaderRead(reader);	//go X
-	tmp = xmlTextReaderRead(reader);	//go X Value
-	value = xmlTextReaderValue(reader);  //Value of X
-	if(value)
-	{
-		tmpInt = WXSTRING_FROM_XML(value);
-		x = wxAtoi(tmpInt);
-		xmlFree(value);
-	}
-	tmp = xmlTextReaderRead(reader);	//go to /X
 
-	tmp = xmlTextReaderRead(reader);	//go Y
-	tmp = xmlTextReaderRead(reader);	//go Y Value
-	value = xmlTextReaderValue(reader);  //Value of Y
-	if(value)
+	// -->POINTS
+	// <!ELEMENT POINTS (POINT*)>
+	tmp = xmlTextReaderRead(reader);	//go to POINTS
+	wxArrayInt x, y;
+	if(getNodeName(reader).IsSameAs(_("POINTS")) && getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )
 	{
-		tmpInt = WXSTRING_FROM_XML(value);
-		y = wxAtoi(tmpInt);
-		xmlFree(value);
+		tmp = xmlTextReaderRead(reader);	//go POINT
+		do
+		{
+			// --> POINT
+			//<!ELEMENT POINT (X,Y)>
+			tmp = xmlTextReaderRead(reader);	//go X
+			tmp = xmlTextReaderRead(reader);	//go X Value
+			value = xmlTextReaderValue(reader);  //Value of X
+			if(value)
+			{
+				tmpInt = WXSTRING_FROM_XML(value);
+				x.Add(wxAtoi(tmpInt));
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /X
+
+			tmp = xmlTextReaderRead(reader);	//go Y
+			tmp = xmlTextReaderRead(reader);	//go Y Value
+			value = xmlTextReaderValue(reader);  //Value of Y
+			if(value)
+			{
+				tmpInt = WXSTRING_FROM_XML(value);
+				y.Add(wxAtoi(tmpInt));
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /Y
+			tmp = xmlTextReaderRead(reader);	//go /POINT
+			tmp = xmlTextReaderRead(reader);	//go POINT or /POINTS ?
+		}
+		while(getNodeName(reader).IsSameAs(_("POINT"), false));
 	}
-	tmp = xmlTextReaderRead(reader);	//go to /Y
-	tmp = xmlTextReaderRead(reader);	//go /POINT
+
+	if(!getNodeName(reader).IsSameAs(_("POINTS"), false))
+		processResult(-1);
 
 	// --> TITLE
 	//<!ELEMENT TITLE (NAME,ALIAS?)>
@@ -777,14 +924,17 @@ ddTableFigure *ddXmlStorage::getTable(xmlTextReaderPtr reader)
 	wxString pkName;
 	if(getNodeName(reader).IsSameAs(_("PKNAME")))
 	{
-		tmp = xmlTextReaderRead(reader);	//go to PKNAME Value
-		value = xmlTextReaderValue(reader);  //Value of PKNAME
-		if(value)
+		tmp = xmlTextReaderRead(reader);	//go to PKNAME Value or PKNAME node?
+		if(!getNodeName(reader).IsSameAs(_("PKNAME")))
 		{
-			pkName = WXSTRING_FROM_XML(value);
-			xmlFree(value);
+			value = xmlTextReaderValue(reader);  //Value of PKNAME
+			if(value)
+			{
+				pkName = WXSTRING_FROM_XML(value);
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /PKNAME
 		}
-		tmp = xmlTextReaderRead(reader);	//go to /PKNAME
 	}
 
 	int beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
@@ -909,12 +1059,17 @@ ddTableFigure *ddXmlStorage::getTable(xmlTextReaderPtr reader)
 
 	tmp = xmlTextReaderRead(reader);	//go to COLUMNS
 
-	// Use empty table without columns created at preparsing to fill it with metadata
+	//Use empty table without columns created at preparsing to fill it with metadata
+
 	ddTableFigure *t = design->getTable(tableName);
 	if(t != NULL)
 		t->InitTableValues(ukNames, pkName, beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow);
 	else
-		wxMessageBox(_("Table initial metadata not found"), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("Table initial metadata info not found"));
+
+
+	//CHANGE 300,300 for right value when displaybox metadata will be added
+
 
 	//COLUMNS node have COLUMN children?
 	if(getNodeName(reader).IsSameAs(_("COLUMNS")) && getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )
@@ -934,7 +1089,7 @@ ddTableFigure *ddXmlStorage::getTable(xmlTextReaderPtr reader)
 	}
 
 	tmp = xmlTextReaderRead(reader);	//go to </TABLE>
-	t->syncPositionsAfterLoad();  //synchronize positions
+	t->syncInternalsPosAt(x, y); //synchronize positions
 	t->updateTableSize();
 	return t;
 }
@@ -1089,14 +1244,18 @@ ddColumnFigure *ddXmlStorage::getColumn(xmlTextReaderPtr reader, ddTableFigure *
 ddRelationshipFigure *ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 {
 	/*
-	<!-- Points Element -->
-	<!ELEMENT POINTS (POINT, POINT,POINT*)>
+	<!-- POINTSRELATION Element -->
+	<!ELEMENT POINTSRELATION (POINTS+)>
+	<!-- POINTS Element -->
+	<!ELEMENT POINTS (POINT*)>
+	<!-- POINT Element -->
 	<!ELEMENT POINT (X,Y)>
 	<!ELEMENT X (#PCDATA)>
 	<!ELEMENT Y (#PCDATA)>
 
+
 	<!-- Relationship Element -->
-	<!ELEMENT RELATIONSHIP (Attribute*, POINTS, RELATIONITEMS, UKINDEX, NAME, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK)>
+	<!ELEMENT RELATIONSHIP (Attribute*,POINTSRELATION, UKINDEX, NAME?, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK,RELATIONITEMS)>
 	<!ELEMENT RELATIONITEMS (RELATIONITEM*)>
 	<!ELEMENT ONUPDATE (#PCDATA)>
 	<!ELEMENT ONDELETE (#PCDATA)>
@@ -1148,50 +1307,83 @@ ddRelationshipFigure *ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 	ddRelationshipFigure *relation = new ddRelationshipFigure();
 	relation->setStartTerminal(new ddRelationshipTerminal(relation, false));
 	relation->setEndTerminal(new ddRelationshipTerminal(relation, true));
-	relation->clearPoints();
-
+	relation->clearPoints(0);
+	bool firstPoint = true;
 	// --> ATTRIBUTE*
 	//Element(s) Attribute*
 	// NEED TO IMPLEMENT THIS
 
-	// --> POINTS
-	//<!ELEMENT POINTS (POINT, POINT,POINT*)>
-	int x, y;
+	// --> POINTSRELATION
+	//<!ELEMENT POINTSRELATION (POINTS+)>
+	int x, y, posIdx = 0;
 
-	tmp = xmlTextReaderRead(reader);	//go to POINTS
-	if(getNodeName(reader).IsSameAs(_("POINTS"), false))
+	tmp = xmlTextReaderRead(reader);	//go to POINTSRELATION
+	if(getNodeName(reader).IsSameAs(_("POINTSRELATION"), false))
 	{
-		tmp = xmlTextReaderRead(reader);	//go POINT
+		//only first time inside POINTSRELATION this is needed
+		tmp = xmlTextReaderRead(reader);	//go POINTS
 		do
 		{
-			tmp = xmlTextReaderRead(reader);	//go X
-			tmp = xmlTextReaderRead(reader);	//go X Value
-			value = xmlTextReaderValue(reader);  //Value of X
-			if(value)
+
+			if(!firstPoint)  //because at first time position for diagram exists at relationship yet
 			{
-				tmpInt = WXSTRING_FROM_XML(value);
-				x = wxAtoi(tmpInt);
-				xmlFree(value);
+				relation->AddPosForNewDiagram();
 			}
-			tmp = xmlTextReaderRead(reader);	//go to /X
-
-			tmp = xmlTextReaderRead(reader);	//go Y
-			tmp = xmlTextReaderRead(reader);	//go Y Value
-			value = xmlTextReaderValue(reader);  //Value of Y
-			if(value)
+			else
 			{
-				tmpInt = WXSTRING_FROM_XML(value);
-				y = wxAtoi(tmpInt);
-				xmlFree(value);
+				firstPoint = false;
 			}
-			tmp = xmlTextReaderRead(reader);	//go to /Y
-			tmp = xmlTextReaderRead(reader);	//go /POINT
 
-			relation->addPoint(x, y);
+			if(getNodeName(reader).IsSameAs(_("POINTS")) && getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )
+			{
+				//only first time inside POINTS this is needed
+				tmp = xmlTextReaderRead(reader);	//go POINT
+				do
+				{
+					tmp = xmlTextReaderRead(reader);	//go X
+					tmp = xmlTextReaderRead(reader);	//go X Value
+					value = xmlTextReaderValue(reader);  //Value of X
+					if(value)
+					{
+						tmpInt = WXSTRING_FROM_XML(value);
+						x = wxAtoi(tmpInt);
+						xmlFree(value);
+					}
+					tmp = xmlTextReaderRead(reader);	//go to /X
 
-			tmp = xmlTextReaderRead(reader);	//go to POINT or /POINTS ?
+					tmp = xmlTextReaderRead(reader);	//go Y
+					tmp = xmlTextReaderRead(reader);	//go Y Value
+					value = xmlTextReaderValue(reader);  //Value of Y
+					if(value)
+					{
+						tmpInt = WXSTRING_FROM_XML(value);
+						y = wxAtoi(tmpInt);
+						xmlFree(value);
+					}
+					tmp = xmlTextReaderRead(reader);	//go to /Y
+					tmp = xmlTextReaderRead(reader);	//go /POINT
+					relation->addPoint(posIdx, x, y);
+
+					tmp = xmlTextReaderRead(reader);	//go POINT or /POINTS?
+				}
+				while(getNodeName(reader).IsSameAs(_("POINT"), false) && getNodeType(reader) == 1);
+			}
+			else
+			{
+				if(! (getNodeName(reader).IsSameAs(_("POINTS")) && xmlTextReaderIsEmptyElement(reader))  )
+				{
+					processResult(-1);
+				}
+			}
+			posIdx++;  //change of points array then change view position index
+			tmp = xmlTextReaderRead(reader);	//go POINTS or /POINTSRELATION?
 		}
-		while(getNodeName(reader).IsSameAs(_("POINT"), false));
+		while(getNodeName(reader).IsSameAs(_("POINTS"), false) && getNodeType(reader) == 1);
+	}
+
+	if(!getNodeName(reader).IsSameAs(_("POINTSRELATION"), false))
+	{
+		processResult(-1);
 	}
 
 	// --> UKINDEX
@@ -1348,7 +1540,7 @@ ddRelationshipFigure *ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 
 	tmp = xmlTextReaderRead(reader);	//go to /RELATIONSHIP
 
-	relation->updateConnection();
+	relation->updateConnection(0);
 	return relation;
 }
 
@@ -1441,11 +1633,116 @@ ddRelationshipItem *ddXmlStorage::getRelationshipItem(xmlTextReaderPtr reader, d
 
 }
 
+void ddXmlStorage::initDiagrams(xmlTextReaderPtr reader)
+{
+	/*
+	<!-- DIAGRAMS Element -->
+	<!ELEMENT DIAGRAMS (DIAGRAM)>
+	<!-- DIAGRAM Element -->
+	<!ELEMENT DIAGRAM (NAME, TABLEREF*)>
+	<!-- TABLEREF Element -->
+	<!ELEMENT TABLEREF EMPTY>
+	<!ATTLIST TABLEREF TableID IDREF #REQUIRED >
+	*/
+
+	//At DIAGRAMS Element
+	xmlChar *value = NULL;
+	wxString diagramName;
+	wxhdDrawing *newDiagram;
+	int tmp;
+
+	//<!ELEMENT DIAGRAM (NAME, TABLEREF*)>
+	tmp = xmlTextReaderRead(reader);	//go to DIAGRAM
+	if(getNodeName(reader).IsSameAs(_("DIAGRAM")) && getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )
+	{
+		do
+		{
+			//<!ELEMENT NAME (#PCDATA)>
+			tmp = xmlTextReaderRead(reader);	//go to NAME
+			tmp = xmlTextReaderRead(reader);	//go to NAME Value
+			value = xmlTextReaderValue(reader);  //Value of NAME
+			if(value)
+			{
+				diagramName = WXSTRING_FROM_XML(value);
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /NAME
+
+			if(tabs && design)
+			{
+				newDiagram = design->createDiagram(tabs, diagramName, true);
+				tabs->AddPage(newDiagram->getView(), diagramName);
+			}
+			else
+			{
+				processResult(-1);
+			}
+			//<!-- TABLEREF Element -->
+			//<!ELEMENT TABLEREF EMPTY>
+			tmp = xmlTextReaderRead(reader);	//go to TABLEREF
+			bool firstTime = true;
+			if(getNodeName(reader).IsSameAs(_("TABLEREF")) && xmlTextReaderIsEmptyElement(reader))
+			{
+				wxString TableID, tableName;
+				if(firstTime)
+				{
+					firstTime = false;
+				}
+				else
+				{
+					tmp = xmlTextReaderRead(reader);	//go to TABLEREF
+				}
+				do
+				{
+					//<!ATTLIST TABLEREF TableID IDREF #REQUIRED >
+					tmp = xmlTextReaderHasAttributes(reader);
+					TableID = _("TableID");
+					if(tmp)
+					{
+						value = xmlTextReaderGetAttribute(reader, XML_FROM_WXSTRING(TableID));
+					}
+
+					if(value)
+					{
+						TableID = WXSTRING_FROM_XML(value);
+						xmlFree(value);
+					}
+
+					tableName = design->getTableName(TableID);
+					//Add table to diagram
+					newDiagram->add(design->getTable(tableName));
+					tmp = xmlTextReaderRead(reader);	//go to TABLEREF or /DIAGRAM?
+				}
+				while(getNodeName(reader).IsSameAs(_("TABLEREF"), false));
+			}
+			//After adding a new diagram check for all needed relationships at diagram and add it.
+			if(design)
+			{
+				design->getEditor()->checkRelationshipsConsistency(newDiagram->getView()->getIdx());
+				newDiagram->getView()->Refresh();
+			}
+			else
+			{
+				processResult(-1);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to DIAGRAM or /DIAGRAMS?
+		}
+		while(getNodeName(reader).IsSameAs(_("DIAGRAM"), false));
+	}
+
+
+
+}
+
 //Temporary DTD will change later
 wxString ddXmlStorage::getModelDTD()
 {
 	wxString dtd = wxEmptyString;
-	dtd += _("<!ELEMENT MODEL (TABLE+,RELATIONSHIP*)>");
+	dtd += _("<!ELEMENT MODEL (VERSION,TABLE+,RELATIONSHIP*,DIAGRAMS)>");
+	dtd += _("<!--Version Element-->");
+	dtd += _("<!ELEMENT VERSION EMPTY>");
+	dtd += _("<!ATTLIST VERSION VERIXLU CDATA #REQUIRED>");
+	dtd += _(" ");
 	dtd += _("<!--Atribute Element-->");
 	dtd += _("<!ELEMENT Attribute (#PCDATA)>");
 	dtd += _(" ");
@@ -1479,7 +1776,7 @@ wxString ddXmlStorage::getModelDTD()
 	dtd += _("<!ELEMENT ALIAS (#PCDATA)>");
 	dtd += _(" ");
 	dtd += _("<!-- Table Element -->");
-	dtd += _("<!ELEMENT TABLE (Attribute*,POINT,TITLE,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE,");
+	dtd += _("<!ELEMENT TABLE (Attribute*,POINTS,TITLE,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE,");
 	dtd += _("COLSWINDOW,IDXSROWSSIZE, IDXSWINDOW, COLUMNS )>");
 	dtd += _("<!ELEMENT COLUMNS (COLUMN*)>");
 	dtd += _("<!ELEMENT UKNAMES (UKNAME+)>");
@@ -1510,14 +1807,17 @@ wxString ddXmlStorage::getModelDTD()
 	dtd += _("<!ELEMENT INITIALALIASNAME (#PCDATA)>");
 	dtd += _(" ");
 	dtd += _(" ");
-	dtd += _("<!-- Points Element -->");
-	dtd += _("<!ELEMENT POINTS (POINT, POINT, POINT*)>");
+	dtd += _("<!-- POINTSRELATION Element -->");
+	dtd += _("<!ELEMENT POINTSRELATION (POINTS+)>");
+	dtd += _("<!-- POINTS Element -->");
+	dtd += _("<!ELEMENT POINTS (POINT*)>");
+	dtd += _("<!-- POINT Element -->");
 	dtd += _("<!ELEMENT POINT (X,Y)>");
 	dtd += _("<!ELEMENT X (#PCDATA)>");
 	dtd += _("<!ELEMENT Y (#PCDATA)>");
 	dtd += _(" ");
 	dtd += _(" ");
-	dtd += _("<!ELEMENT RELATIONSHIP (Attribute*, POINTS, UKINDEX, NAME?, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK, RELATIONITEMS)>");
+	dtd += _("<!ELEMENT RELATIONSHIP (Attribute*, POINTSRELATION, UKINDEX, NAME?, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK, RELATIONITEMS)>");
 	dtd += _("<!ELEMENT ONUPDATE (#PCDATA)>");
 	dtd += _("<!ELEMENT ONDELETE (#PCDATA)>");
 	dtd += _("<!ELEMENT MATCHSIMPLE (#PCDATA)>");
@@ -1528,5 +1828,15 @@ wxString ddXmlStorage::getModelDTD()
 	dtd += _(" ");
 	dtd += _("<!ATTLIST RELATIONSHIP SourceTableID IDREF #REQUIRED >");
 	dtd += _("<!ATTLIST RELATIONSHIP DestTableID IDREF #REQUIRED >");
+	dtd += _(" ");
+	dtd += _(" ");
+	dtd += _("<!-- DIAGRAMS Element -->");
+	dtd += _("<!ELEMENT DIAGRAMS (DIAGRAM*)>");
+	dtd += _("<!-- DIAGRAM Element -->");
+	dtd += _("<!ELEMENT DIAGRAM (NAME, TABLEREF*)>");
+	dtd += _("<!-- TABLEREF Element -->");
+	dtd += _("<!ELEMENT TABLEREF EMPTY>");
+	dtd += _("<!ATTLIST TABLEREF TableID IDREF #REQUIRED >");
+
 	return dtd;
 }

@@ -51,7 +51,7 @@ wxhdPoint &ddRelationshipTerminal::draw (wxBufferedDC &context, wxhdPoint &a, wx
 
 		if(ownerFigure->getEndFigure() && ownerFigure->getOneToMany())
 		{
-			wxhdRect r = ownerFigure->getEndFigure()->displayBox();
+			wxhdRect r = ownerFigure->getEndFigure()->displayBox().getwxhdRect(view->getIdx());
 
 			view->CalcScrolledPosition(r.x, r.y, &r.x, &r.y);
 

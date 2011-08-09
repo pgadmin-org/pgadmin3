@@ -11,15 +11,18 @@
 
 #ifndef WXHDIFIGURE_H
 #define WXHDIFIGURE_H
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdCollection.h"
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 
 class wxhdITool;
 class wxhdDrawingEditor;
 class wxhdIConnector;
 class wxhdITool;
+
+WX_DEFINE_ARRAY_INT(bool, wxArrayBool);
 
 class wxhdIFigure : public wxhdObject
 {
@@ -27,36 +30,39 @@ public:
 	wxhdIFigure();
 	~wxhdIFigure();
 
-	virtual wxhdRect &displayBox();
-	virtual wxhdRect &getBasicDisplayBox();
+	virtual wxhdMultiPosRect &displayBox();
+	virtual wxhdMultiPosRect &getBasicDisplayBox();
+	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
 	virtual void draw (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void drawSelected (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual wxhdCollection *handlesEnumerator();
 	virtual void addHandle (wxhdIHandle *handle);
 	virtual void removeHandle (wxhdIHandle *handle);
-	virtual wxhdIConnector *connectorAt (int x, int y);
-	virtual void moveBy(int x, int y);
-	virtual void moveTo(int x, int y);
-	virtual bool containsPoint(int x, int y);
-	virtual bool isSelected();
-	virtual void setSelected(bool value);
+	virtual wxhdIConnector *connectorAt (int posIdx, int x, int y);
+	virtual void moveBy(int posIdx, int x, int y) = 0;
+	virtual void moveTo(int posIdx, int x, int y) = 0;
+	virtual bool containsPoint(int posIdx, int x, int y) = 0;
+	virtual bool isSelected(int posIdx);
+	virtual void setSelected(int posIdx, bool value);
 	virtual bool includes(wxhdIFigure *figure);
 	virtual bool canConnect() = 0;
-	virtual void onFigureChanged(wxhdIFigure *figure) = 0;
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure) = 0;
 	virtual void addObserver (wxhdIFigure *observer);
 	virtual void removeObserver (wxhdIFigure *observer);
 	virtual wxhdIteratorBase *observersEnumerator();
 	virtual void setKindId(int objectId = -1);
 	virtual int getKindId();
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 
 protected:
-	wxhdRect basicDisplayBox;
+	wxhdMultiPosRect basicDisplayBox;
 	wxhdCollection *handles;
 	wxhdCollection *observers;
 	wxhdIConnector *connector;
 private:
-	bool selected;
+	//bool selected;
+	wxArrayBool selected;
 	int kindHiddenId;
 
 };

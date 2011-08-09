@@ -21,10 +21,10 @@ class wxhdChopBoxConnector : public wxhdIConnector
 public:
 	wxhdChopBoxConnector(wxhdIFigure *owner);
 	~wxhdChopBoxConnector();
-	virtual wxhdPoint findStart(wxhdLineConnection *connFigure);
-	virtual wxhdPoint findEnd(wxhdLineConnection *connFigure);
+	virtual wxhdPoint findStart(int posIdx, wxhdLineConnection *connFigure);
+	virtual wxhdPoint findEnd(int posIdx, wxhdLineConnection *connFigure);
 protected:
-	virtual wxhdPoint chop(wxhdIFigure *target, wxhdPoint point);
+	virtual wxhdPoint chop(int posIdx, wxhdIFigure *target, wxhdPoint point);
 private:
 	wxhdPoint point;
 	wxhdRect rect;

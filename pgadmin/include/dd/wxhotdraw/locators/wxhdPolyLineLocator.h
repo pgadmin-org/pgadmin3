@@ -20,7 +20,7 @@ public:
 	wxhdPolyLineLocator(int index);
 	~wxhdPolyLineLocator();
 
-	virtual wxhdPoint &locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
 	virtual void setIndex(int index);
 
 protected:

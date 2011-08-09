@@ -20,8 +20,8 @@
 #include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 
 
-ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdFigureTool(editor, fig, dt)
+ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
+	wxhdFigureTool(view, fig, dt)
 {
 	delegateTool = NULL;
 }
@@ -75,15 +75,15 @@ void ddColumnFigureTool::mouseDown(wxhdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 	ddColumnFigure *cfigure = (ddColumnFigure *) getFigure();
-	wxhdIFigure *figure = cfigure->findFigure(x, y);
+	wxhdIFigure *figure = cfigure->findFigure(event.getView()->getIdx(), x, y);
 
 	if(figure)
 	{
-		setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), getDefaultTool()));
+		setDelegateTool(event.getView(), figure->CreateFigureTool(event.getView(), getDefaultTool()));
 	}
 	else
 	{
-		setDelegateTool(getDefaultTool());
+		setDelegateTool(event.getView(), getDefaultTool());
 	}
 
 	if(delegateTool)
@@ -92,27 +92,27 @@ void ddColumnFigureTool::mouseDown(wxhdMouseEvent &event)
 	}
 }
 
-void ddColumnFigureTool::activate()
+void ddColumnFigureTool::activate(wxhdDrawingView *view)
 {
 	if(delegateTool)
 	{
-		delegateTool->activate();
+		delegateTool->activate(view);
 	}
 }
 
-void ddColumnFigureTool::deactivate()
+void ddColumnFigureTool::deactivate(wxhdDrawingView *view)
 {
 	if(delegateTool)
 	{
-		delegateTool->deactivate();
+		delegateTool->deactivate(view);
 	}
 }
 
-void ddColumnFigureTool::setDelegateTool(wxhdITool *tool)
+void ddColumnFigureTool::setDelegateTool(wxhdDrawingView *view, wxhdITool *tool)
 {
 	if(delegateTool)
 	{
-		delegateTool->deactivate();
+		delegateTool->deactivate(view);
 		delete delegateTool;
 		delegateTool = NULL;
 	}
@@ -120,7 +120,7 @@ void ddColumnFigureTool::setDelegateTool(wxhdITool *tool)
 	delegateTool = tool;
 	if(delegateTool)
 	{
-		delegateTool->activate();
+		delegateTool->activate(view);
 	}
 }
 

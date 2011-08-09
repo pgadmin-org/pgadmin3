@@ -17,8 +17,8 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
-wxhdFigureTool::wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdAbstractTool(editor)
+wxhdFigureTool::wxhdFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
+	wxhdAbstractTool(view)
 {
 	defaultTool = dt;
 	figure = fig;

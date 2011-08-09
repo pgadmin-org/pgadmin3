@@ -28,11 +28,11 @@ wxhdChopBoxConnector::~wxhdChopBoxConnector()
 }
 
 
-wxhdPoint wxhdChopBoxConnector::chop(wxhdIFigure *target, wxhdPoint point)
+wxhdPoint wxhdChopBoxConnector::chop(int posIdx, wxhdIFigure *target, wxhdPoint point)
 {
-	if(target && target->containsPoint(point.x, point.y))
+	if(target && target->containsPoint(posIdx, point.x, point.y))
 	{
-		point = target->displayBox().center();
+		point = target->displayBox().center(posIdx);
 		return point;
 	}
 	else if(!target)
@@ -43,40 +43,40 @@ wxhdPoint wxhdChopBoxConnector::chop(wxhdIFigure *target, wxhdPoint point)
 
 	wxhdGeometry g;
 
-	rect = getDisplayBox();  //hack to avoid linux bug
+	rect = getDisplayBox().getwxhdRect(posIdx);  //hack to avoid linux bug
 	double angle = g.angleFromPoint(rect, point);
 	point = g.edgePointFromAngle(rect, angle);
 	return point;
 }
 
-wxhdPoint wxhdChopBoxConnector::findStart(wxhdLineConnection *connFigure)
+wxhdPoint wxhdChopBoxConnector::findStart(int posIdx, wxhdLineConnection *connFigure)
 {
 	if(!connFigure)
 	{
-		point = getDisplayBox().center();
+		point = getDisplayBox().center(posIdx);
 		return point;
 	}
 
-	if(connFigure->pointCount() < 2)
+	if(connFigure->pointCount(posIdx) < 2)
 	{
-		point = getDisplayBox().center();
+		point = getDisplayBox().center(posIdx);
 		return point;
 	}
 
 	wxhdIFigure *start = connFigure->getStartConnector()->getOwner();
-	point = connFigure->pointAt(1);
-	point = chop(start, point);
+	point = connFigure->pointAt(posIdx, 1);
+	point = chop(posIdx, start, point);
 	return point;
 }
 
-wxhdPoint wxhdChopBoxConnector::findEnd(wxhdLineConnection *connFigure)
+wxhdPoint wxhdChopBoxConnector::findEnd(int posIdx, wxhdLineConnection *connFigure)
 {
 	if(!connFigure)
 	{
-		return getDisplayBox().center();
+		return getDisplayBox().center(posIdx);
 	}
 	wxhdIFigure *end = connFigure->getEndConnector()->getOwner();
-	point = connFigure->pointAt(connFigure->pointCount() - 2);
-	point = chop(end, point);
+	point = connFigure->pointAt(posIdx, connFigure->pointCount(posIdx) - 2);
+	point = chop(posIdx, end, point);
 	return point;
 }

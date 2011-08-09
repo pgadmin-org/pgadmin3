@@ -19,7 +19,7 @@
 class wxhdDragCreationTool : public wxhdCreationTool
 {
 public:
-	wxhdDragCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype);
+	wxhdDragCreationTool(wxhdDrawingView *view, wxhdIFigure *prototype);
 	~wxhdDragCreationTool();
 	virtual void mouseDrag(wxhdMouseEvent &event);
 };

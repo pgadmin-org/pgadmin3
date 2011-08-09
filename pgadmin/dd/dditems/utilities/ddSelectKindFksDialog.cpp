@@ -20,11 +20,15 @@
 // App headers
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+
 
 IMPLEMENT_CLASS( ddSelectKindFksDialog, wxDialog )
 
 BEGIN_EVENT_TABLE( ddSelectKindFksDialog, wxDialog )
 	EVT_BUTTON(wxID_OK, ddSelectKindFksDialog::OnOkButtonClicked)
+	EVT_BUTTON(wxID_CANCEL, ddSelectKindFksDialog::OnCancelButtonClicked)
 	EVT_CHOICE(DDSELECTKINDFK, ddSelectKindFksDialog::OnChoiceFkKind)
 END_EVENT_TABLE()
 
@@ -139,6 +143,12 @@ void ddSelectKindFksDialog::CreateControls()
 	ok = new wxButton ( this, wxID_OK, wxT("&OK"),
 	                    wxDefaultPosition, wxDefaultSize, 0 );
 	okCancelBox->Add(ok, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	// The Cancel button
+
+	cancel = new wxButton ( this, wxID_CANCEL, wxT("&CANCEL"),
+	                        wxDefaultPosition, wxDefaultSize, 0 );
+	okCancelBox->Add(cancel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 }
 
 void ddSelectKindFksDialog::OnChoiceFkKind(wxCommandEvent &event)
@@ -256,6 +266,12 @@ void ddSelectKindFksDialog::OnEnterPressed( wxCommandEvent &event )
 		}
 
 	}
+}
+
+void ddSelectKindFksDialog::OnCancelButtonClicked( wxCommandEvent &event )
+{
+	//Do nothing, just return wxID_CANCEL to don't allow connection
+	event.Skip();
 }
 
 void ddSelectKindFksDialog::OnOkButtonClicked( wxCommandEvent &event )

@@ -20,6 +20,9 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
 
 //Images
 #include "images/ddDeleteTableCursor.pngc"
@@ -45,27 +48,33 @@ void ddRemoveTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVie
 
 void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-
 	if(view && getOwner())
 	{
 		ddTableFigure *table = (ddTableFigure *) getOwner();
-		int answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO | wxNO_DEFAULT, view);
-		if (answer == wxYES)
+		wxhdRemoveDeleteDialog dialog(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), view);
+		int answer = dialog.ShowModal();
+		if (answer == DD_DELETE)
 		{
-			//unselect table
-			if(view->isFigureSelected(table))
-			{
-				view->removeFromSelection(table);
-			}
-			//drop foreign keys with this table as origin or destination
-			table->processDeleteAlert(view);
-			//drop table
-			view->remove(table);
-			if(table)
-			{
-				delete table;
-			}
+			ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+			//Unselect table at all diagrams
+			editor->removeFromAllSelections(table);
+			//Drop foreign keys with this table as origin or destination
+			table->processDeleteAlert(view->getDrawing());
+			//Drop table
+			editor->deleteModelFigure(table);
+			editor->getDesign()->refreshBrowser();
+			editor->checkRelationshipsConsistency(view->getIdx());
+			view->notifyChanged();
 		}
+		else if(answer == DD_REMOVE)
+		{
+			ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+			editor->getExistingDiagram(view->getIdx())->removeFromSelection(table);
+			editor->getExistingDiagram(view->getIdx())->remove(table);
+			editor->checkRelationshipsConsistency(view->getIdx());
+			view->notifyChanged();
+		}
+
 	}
 }
 

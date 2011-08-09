@@ -33,7 +33,7 @@ wxhdBitmapFigure::~wxhdBitmapFigure()
 
 void wxhdBitmapFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	context.DrawBitmap(imageToDraw, copy.GetPosition(), true);
 }
@@ -46,6 +46,7 @@ void wxhdBitmapFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView 
 void wxhdBitmapFigure::changeBitmap(wxBitmap image)
 {
 	imageToDraw = image;
+	//Index doesn't care because width and height are shared in a MultiPosRect
 	this->getBasicDisplayBox().width = imageToDraw.GetWidth();
 	this->getBasicDisplayBox().height = imageToDraw.GetHeight();
 }

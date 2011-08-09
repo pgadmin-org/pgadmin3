@@ -90,7 +90,7 @@ void ddColumnOptionIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		wxhdRect copy = displayBox();
+		wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		context.DrawBitmap(*iconToDraw, copy.GetPosition(), true);
 	}

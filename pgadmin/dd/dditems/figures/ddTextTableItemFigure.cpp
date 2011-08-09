@@ -23,8 +23,11 @@
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddPrecisionScaleDialog.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner):
 	wxhdSimpleTextFigure(columnName)
@@ -82,6 +85,10 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 			else
 				ddType += wxString::Format(wxT("(%d,%d)"), getPrecision(), getScale());
 		}
+		//Fix to serial is integer at automatically generated foreign key
+		if(getDataType() == dt_serial && getOwnerColumn()->isGeneratedForeignKey())
+			ddType = dataTypes()[dt_integer];
+
 		out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
 	}
@@ -105,11 +112,21 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 wxString ddTextTableItemFigure::getType()
 {
 	wxString ddType = dataTypes()[columnType];
-	if(columnType == dt_varchar && getPrecision() > 0)
+
+	bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
+	if( havePrecision && getPrecision() > 0)
 	{
 		ddType.Truncate(ddType.Find(wxT("(")));
-		ddType += wxString::Format(wxT("(%d)"), getPrecision());
+		if(getScale() == -1)
+			ddType += wxString::Format(wxT("(%d)"), getPrecision());
+		else
+			ddType += wxString::Format(wxT("(%d,%d)"), getPrecision(), getScale());
 	}
+
+	//Fix to serial is integer at automatically generated foreign key
+	if(columnType == dt_serial && getOwnerColumn()->isGeneratedForeignKey())
+		ddType = dataTypes()[dt_integer];
+
 	return ddType;
 }
 
@@ -122,6 +139,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 	int answer;
 	int tmpprecision;
 	long tmpvalue;
+	wxhdRemoveDeleteDialog *delremDialog = NULL;
 
 	switch(event.GetId())
 	{
@@ -131,18 +149,23 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			if (answer == wxID_OK)
 			{
 				tmpString = nameDialog->GetValue();
-				getOwnerColumn()->getOwnerTable()->addColumn(new ddColumnFigure(tmpString, getOwnerColumn()->getOwnerTable()));
+				getOwnerColumn()->getOwnerTable()->addColumn(view->getIdx(), new ddColumnFigure(tmpString, getOwnerColumn()->getOwnerTable()));
+				view->notifyChanged();
 			}
 			delete nameDialog;
 			break;
 		case MNU_DELCOLUMN:
 			answer = wxMessageBox(wxT("Are you sure you wish to delete column ") + getText(true) + wxT("?"), wxT("Delete column?"), wxYES_NO | wxNO_DEFAULT, view);
 			if (answer == wxYES)
-				getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
+			{
+				getOwnerColumn()->getOwnerTable()->removeColumn(view->getIdx(), getOwnerColumn());
+				view->notifyChanged();
+			}
 			break;
 		case MNU_AUTONAMCOLUMN:
 			getOwnerColumn()->activateGenFkName();
 			getOwnerColumn()->getFkSource()->syncAutoFkName();
+			view->notifyChanged();
 			break;
 		case MNU_RENAMECOLUMN:
 			nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
@@ -151,12 +174,14 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 				getOwnerColumn()->deactivateGenFkName();
 			setText(nameDialog->GetValue());
 			delete nameDialog;
+			view->notifyChanged();
 			break;
 		case MNU_NOTNULL:
 			if(getOwnerColumn()->isNotNull())
 				getOwnerColumn()->setColumnOption(null);
 			else
 				getOwnerColumn()->setColumnOption(notnull);
+			view->notifyChanged();
 			break;
 		case MNU_PKEY:
 			if(getOwnerColumn()->isPrimaryKey())
@@ -168,33 +193,39 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 				getOwnerColumn()->enablePrimaryKey();
 				getOwnerColumn()->setColumnOption(notnull);
 			}
+			view->notifyChanged();
 			break;
 		case MNU_UKEY:
 			getOwnerColumn()->toggleColumnKind(uk, view);
+			view->notifyChanged();
 			break;
 		case MNU_TYPESERIAL:
 			setDataType(dt_serial);  //Should use setDataType always to set this value to allow fk to work flawlessly
 			recalculateDisplayBox();
 			getOwnerColumn()->displayBoxUpdate();
 			getOwnerColumn()->getOwnerTable()->updateTableSize();
+			view->notifyChanged();
 			break;
 		case MNU_TYPEBOOLEAN:
 			setDataType(dt_boolean);
 			recalculateDisplayBox();
 			getOwnerColumn()->displayBoxUpdate();
 			getOwnerColumn()->getOwnerTable()->updateTableSize();
+			view->notifyChanged();
 			break;
 		case MNU_TYPEINTEGER:
 			setDataType(dt_integer);
 			recalculateDisplayBox();
 			getOwnerColumn()->displayBoxUpdate();
 			getOwnerColumn()->getOwnerTable()->updateTableSize();
+			view->notifyChanged();
 			break;
 		case MNU_TYPEMONEY:
 			setDataType(dt_money);
 			recalculateDisplayBox();
 			getOwnerColumn()->displayBoxUpdate();
 			getOwnerColumn()->getOwnerTable()->updateTableSize();
+			view->notifyChanged();
 			break;
 		case MNU_TYPEVARCHAR:
 			setDataType(dt_varchar);
@@ -210,12 +241,13 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			recalculateDisplayBox();
 			getOwnerColumn()->displayBoxUpdate();
 			getOwnerColumn()->getOwnerTable()->updateTableSize();
+			view->notifyChanged();
 			break;
 		case MNU_TYPEOTHER:
 			answer = wxGetSingleChoiceIndex(wxT("New column datatype"), wxT("Column Datatypes"), dataTypes(), view);
 			if(answer >= 0)
 			{
-
+				view->notifyChanged();
 				if(answer == dt_varchar || answer == dt_bit || answer == dt_char || answer == dt_interval || answer == dt_varbit)
 				{
 					tmpprecision = wxGetNumberFromUser(_("datatype size"),
@@ -257,7 +289,10 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
 			tmpString = wxGetTextFromUser(wxT("New name of primary key:"), getOwnerColumn()->getOwnerTable()->getPkConstraintName(), getOwnerColumn()->getOwnerTable()->getPkConstraintName(), view);
 			if(tmpString.length() > 0)
+			{
 				getOwnerColumn()->getOwnerTable()->setPkConstraintName(tmpString);
+				view->notifyChanged();
+			}
 			break;
 		case MNU_TYPEUKEY_CONSTRAINTNAME:
 			answer = wxGetSingleChoiceIndex(wxT("Select Unique Key constraint to edit name"), wxT("Select Unique Constraint to edit name:"), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(), view);
@@ -265,28 +300,37 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			{
 				tmpString = wxGetTextFromUser(wxT("Change name of Unique Key constraint:"), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Item(answer), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Item(answer), view);
 				if(tmpString.length() > 0)
+				{
 					getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Item(answer) = tmpString;
+					view->notifyChanged();
+				}
 			}
 			break;
 		case MNU_DELTABLE:
-			answer = wxMessageBox(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), wxYES_NO | wxNO_DEFAULT, view);
-			if (answer == wxYES)
+
+			delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), view);
+			answer = delremDialog->ShowModal();
+			ddTableFigure *table = getOwnerColumn()->getOwnerTable();
+			if (answer == DD_DELETE)
 			{
-				ddTableFigure *table = getOwnerColumn()->getOwnerTable();
-				//Unselect table
-				if(view->isFigureSelected(table))
-				{
-					view->removeFromSelection(table);
-				}
+				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+				//Unselect table at all diagrams
+				editor->removeFromAllSelections(table);
 				//Drop foreign keys with this table as origin or destination
-				table->processDeleteAlert(view);
+				table->processDeleteAlert(view->getDrawing());
 				//Drop table
-				view->remove(table);
-				if(table)
-				{
-					delete table;
-				}
+				editor->deleteModelFigure(table);
+				editor->getDesign()->refreshBrowser();
+				view->notifyChanged();
 			}
+			else if(answer == DD_REMOVE)
+			{
+				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+				editor->getExistingDiagram(view->getIdx())->removeFromSelection(table);
+				editor->getExistingDiagram(view->getIdx())->remove(table);
+				view->notifyChanged();
+			}
+			delete delremDialog;
 			break;
 	}
 }
@@ -438,16 +482,16 @@ void ddTextTableItemFigure::setShowDataType(bool value)
 	showDataType = value;
 }
 
-wxhdITool *ddTextTableItemFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *ddTextTableItemFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
 	if(getOwnerColumn())
 	{
-		return textEditable ? new ddColumnTextTool(editor, this, defaultTool, false, wxT("New Column Name"), wxT("Rename Column")) : defaultTool;
+		return textEditable ? new ddColumnTextTool(view, this, defaultTool, false, wxT("New Column Name"), wxT("Rename Column")) : defaultTool;
 	}
 	else
 	{
 		setOneTimeNoAlias();
-		return textEditable ? new ddColumnTextTool(editor, this, defaultTool, false, wxT("New Table Name"), wxT("Rename Table")) : defaultTool;
+		return textEditable ? new ddColumnTextTool(view, this, defaultTool, false, wxT("New Table Name"), wxT("Rename Table")) : defaultTool;
 	}
 }
 

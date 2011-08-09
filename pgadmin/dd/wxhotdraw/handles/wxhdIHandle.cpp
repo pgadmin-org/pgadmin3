@@ -31,9 +31,9 @@ wxhdIFigure *wxhdIHandle::getOwner()
 	return figureOwner;
 }
 
-wxhdRect &wxhdIHandle::getDisplayBox()
+wxhdRect &wxhdIHandle::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = locate();
+	wxhdPoint p = locate(posIdx);
 	displayBox.width = 0;
 	displayBox.height = 0;
 	displayBox.SetPosition(p);
@@ -41,7 +41,7 @@ wxhdRect &wxhdIHandle::getDisplayBox()
 	return displayBox;
 }
 
-bool wxhdIHandle::containsPoint(int x, int y)
+bool wxhdIHandle::containsPoint(int posIdx, int x, int y)
 {
-	return getDisplayBox().Contains(x, y);
+	return getDisplayBox(posIdx).Contains(x, y);
 }

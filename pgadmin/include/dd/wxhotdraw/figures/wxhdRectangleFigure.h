@@ -26,7 +26,7 @@ public:
 	~wxhdRectangleFigure();
 	void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
 	void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
-	void setRectangle(wxhdRect &rect);
+	void setRectangle(wxhdMultiPosRect &rect);
 	void setSize(wxSize &size);
 
 protected:

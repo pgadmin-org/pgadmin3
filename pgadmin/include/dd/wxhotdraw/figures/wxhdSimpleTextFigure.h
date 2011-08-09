@@ -26,10 +26,10 @@ public:
 	virtual bool getEditable();
 	virtual void setFont(wxFont textFont);
 	virtual int getPadding();
-	void basicMoveBy(int x, int y);
+	void basicMoveBy(int posIdx, int x, int y);
 	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 	virtual void createMenu(wxMenu &mnu) {}
 	virtual void enablePopUp();
 	virtual void disablePopUp();

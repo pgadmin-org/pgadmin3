@@ -18,14 +18,14 @@
 class ddColumnFigureTool : public wxhdFigureTool
 {
 public:
-	ddColumnFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
+	ddColumnFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt);
 	~ddColumnFigureTool();
 	virtual void setDefaultTool(wxhdITool *dt);
 	virtual wxhdITool *getDefaultTool();
 	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
-	virtual void activate();
-	virtual void deactivate();
-	virtual void setDelegateTool(wxhdITool *tool);
+	virtual void activate(wxhdDrawingView *view);
+	virtual void deactivate(wxhdDrawingView *view);
+	virtual void setDelegateTool(wxhdDrawingView *view, wxhdITool *tool);
 	virtual wxhdITool *getDelegateTool();
 protected:
 	wxhdITool *delegateTool;

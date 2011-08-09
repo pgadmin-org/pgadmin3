@@ -19,12 +19,12 @@
 class wxhdCreationTool : public wxhdAbstractTool
 {
 public:
-	wxhdCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype);
+	wxhdCreationTool(wxhdDrawingView *view, wxhdIFigure *prototype);
 	~wxhdCreationTool();
 	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual void mouseUp(wxhdMouseEvent &event);
-	virtual void activate();
-	virtual void deactivate();
+	virtual void activate(wxhdDrawingView *view);
+	virtual void deactivate(wxhdDrawingView *view);
 	virtual void setPrototype(wxhdIFigure *prototype);
 	virtual wxhdIFigure *getPrototype();
 

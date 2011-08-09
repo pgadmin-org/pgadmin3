@@ -27,12 +27,12 @@ public:
 
 
 	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdPoint &locate();
+	virtual wxhdPoint &locate(int posIdx);
 	virtual wxCursor createCursor();
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdRect &getDisplayBox(int posIdx);
 protected:
 private:
 	wxhdPoint pointLocate;

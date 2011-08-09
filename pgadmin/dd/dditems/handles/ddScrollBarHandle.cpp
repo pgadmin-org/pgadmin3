@@ -45,9 +45,9 @@ wxCursor ddScrollBarHandle::createCursor()
 }
 
 //avoid to use inflate on this handle
-wxhdRect &ddScrollBarHandle::getDisplayBox()
+wxhdRect &ddScrollBarHandle::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = locate();
+	wxhdPoint p = locate(posIdx);
 	displayBox.width = 11; //as defined at locator
 	displayBox.height = table->getColsSpace().height;
 	displayBox.SetPosition(p);
@@ -56,15 +56,16 @@ wxhdRect &ddScrollBarHandle::getDisplayBox()
 
 void ddScrollBarHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
+	int idx = view->getIdx();
 	context.SetBrush(*wxWHITE_BRUSH);
-	wxPoint copy = getDisplayBox().GetPosition();
+	wxPoint copy = getDisplayBox(idx).GetPosition();
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
-	context.DrawRectangle(copy.x, copy.y, getDisplayBox().width, getDisplayBox().height);
+	context.DrawRectangle(copy.x, copy.y, getDisplayBox(idx).width, getDisplayBox(idx).height);
 	context.DrawBitmap(upBitmap, copy.x + 1, copy.y + 2, true);
-	context.DrawBitmap(downBitmap, copy.x + 1, copy.y + getDisplayBox().height - 2 - downBitmap.GetHeight(), true);
+	context.DrawBitmap(downBitmap, copy.x + 1, copy.y + getDisplayBox(idx).height - 2 - downBitmap.GetHeight(), true);
 
-	barSize.SetHeight((getDisplayBox().height - 12) * 0.45);
-	barSize.SetWidth(getDisplayBox().width - 4);
+	barSize.SetHeight((getDisplayBox(idx).height - 12) * 0.45);
+	barSize.SetWidth(getDisplayBox(idx).width - 4);
 
 	int divBy = (table->getTotalColumns() - table->getColumnsWindow());
 	if(divBy <= 0)
@@ -78,13 +79,15 @@ void ddScrollBarHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 
 void ddScrollBarHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
+	int idx = view->getIdx();
 	int y = event.GetPosition().y;
 	anchorY = y;
-	if( (y > (getDisplayBox().GetPosition().y + 2)) && (y <  (getDisplayBox().GetPosition().y + 2 + 6)) )  //6 image height
-		table->columnsWindowUp();
+	if( (y > (getDisplayBox(idx).GetPosition().y + 2)) && (y <  (getDisplayBox(idx).GetPosition().y + 2 + 6)) )  //6 image height
+		table->columnsWindowUp(idx);
 
-	if( (y > (getDisplayBox().GetPosition().y + getDisplayBox().height - 2 - downBitmap.GetHeight()) ) && (y < (getDisplayBox().GetPosition().y + getDisplayBox().height - 2) ) )
-		table->columnsWindowDown();
+	if( (y > (getDisplayBox(idx).GetPosition().y + getDisplayBox(idx).height - 2 - downBitmap.GetHeight()) ) && (y < (getDisplayBox(idx).GetPosition().y + getDisplayBox(idx).height - 2) ) )
+		table->columnsWindowDown(idx);
+	view->notifyChanged();
 }
 
 void ddScrollBarHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
@@ -100,25 +103,26 @@ void ddScrollBarHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 	{
 		if((anchorY - y) > 0)
 		{
-			table->columnsWindowUp();
+			table->columnsWindowUp(view->getIdx());
 		}
 		else
 		{
-			table->columnsWindowDown();
+			table->columnsWindowDown(view->getIdx());
 		}
 		anchorY = y;
 	}
+	view->notifyChanged();
 }
 
 void ddScrollBarHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-wxhdPoint &ddScrollBarHandle::locate()
+wxhdPoint &ddScrollBarHandle::locate(int posIdx)
 {
 	if(scrollLocator)
 	{
-		pointLocate = scrollLocator->locate(getOwner());
+		pointLocate = scrollLocator->locate(posIdx, getOwner());
 		return pointLocate;
 	}
 	else

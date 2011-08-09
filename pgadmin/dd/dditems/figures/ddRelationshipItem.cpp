@@ -103,7 +103,8 @@ void ddRelationshipItem::syncAutoFkName()
 	if(fkColumn->isGeneratedForeignKey() && fkColumn->isFkNameGenerated() )
 	{
 		fkColumn->setColumnName(autoGenerateNameForFk());
-		ownerRel->updateConnection();
+		//Update all connections, but need to be notified to all views only doing it right now for first view
+		ownerRel->updateConnection(0);
 	}
 }
 

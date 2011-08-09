@@ -15,8 +15,10 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dd/wxhotdraw/utilities/wxhdGeometry.cpp \
 	$(srcdir)/dd/wxhotdraw/utilities/wxhdKeyEvent.cpp \
 	$(srcdir)/dd/wxhotdraw/utilities/wxhdMouseEvent.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdMultiPosRect.cpp \
 	$(srcdir)/dd/wxhotdraw/utilities/wxhdPoint.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/wxhdRect.cpp
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdRect.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/utilities/module.mk

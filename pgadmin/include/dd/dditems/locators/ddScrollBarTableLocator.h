@@ -21,7 +21,7 @@ public:
 	ddScrollBarTableLocator();
 	~ddScrollBarTableLocator();
 
-	virtual wxhdPoint &locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
 
 protected:
 

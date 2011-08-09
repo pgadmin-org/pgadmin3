@@ -54,9 +54,11 @@ pgadmin3_SOURCES += \
     $(srcdir)/include/images/ddAddForeignKey.png \
     $(srcdir)/include/images/ddDown.png \
     $(srcdir)/include/images/ddforeignkey.png \
+    $(srcdir)/include/images/ddgendiagram.png \
     $(srcdir)/include/images/ddMaximizeTable.png \
     $(srcdir)/include/images/ddMinimizeTable.png \
-    $(srcdir)/include/images/ddnotnull.png \
+	$(srcdir)/include/images/ddnewdiagram.png \
+	$(srcdir)/include/images/ddnotnull.png \
     $(srcdir)/include/images/ddnull.png \
     $(srcdir)/include/images/ddprimaryforeignkey.png \
     $(srcdir)/include/images/ddprimarykey.png \

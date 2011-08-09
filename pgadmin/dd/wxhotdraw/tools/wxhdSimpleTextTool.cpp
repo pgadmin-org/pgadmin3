@@ -22,19 +22,17 @@
 
 class wxhdDrawingEditor;
 
-wxhdSimpleTextTool::wxhdSimpleTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-	wxhdFigureTool(editor, fig, dt)
+wxhdSimpleTextTool::wxhdSimpleTextTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
+	wxhdFigureTool(view, fig, dt)
 {
 	dlgMessage = dialogMessage;
 	dlgCaption = dialogCaption;
 	withoutDialog = fastEdit;
 	showEdit = false;
 	txtFigure = ((wxhdSimpleTextFigure *)this->getFigure());
-	editor->view()->setSimpleTextToolFigure(NULL);
-	edit = getDrawingEditor()->view()->getSimpleTextToolEdit();
-	okButton = getDrawingEditor()->view()->getOkTxt();
-	cancelButton = getDrawingEditor()->view()->getCancelTxt();
-	calculateSizeEntry(editor->view());
+	ownerView->setSimpleTextToolFigure(NULL);
+
+	calculateSizeEntry(ownerView);
 }
 
 wxhdSimpleTextTool::~wxhdSimpleTextTool()
@@ -43,14 +41,14 @@ wxhdSimpleTextTool::~wxhdSimpleTextTool()
 
 void wxhdSimpleTextTool::calculateSizeEntry(wxhdDrawingView *view)
 {
-	if(edit)
+	if(view->getSimpleTextToolEdit())
 	{
-		wxhdPoint p = txtFigure->displayBox().GetPosition();
+		wxhdPoint p = txtFigure->displayBox().GetPosition(view->getIdx());
 		view->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		edit->SetPosition(p);
-		edit->SetSize(txtFigure->displayBox().GetSize());
-		okButton->SetPosition(wxPoint(p.x + edit->GetSize().GetWidth() + 4, p.y));
-		cancelButton->SetPosition(wxPoint(okButton->GetPosition().x + okButton->GetSize().GetWidth() + 4, p.y));
+		view->getSimpleTextToolEdit()->SetPosition(p);
+		view->getSimpleTextToolEdit()->SetSize(txtFigure->displayBox().GetSize());
+		view->getOkTxt()->SetPosition(wxPoint(p.x + view->getSimpleTextToolEdit()->GetSize().GetWidth() + 4, p.y));
+		view->getCancelTxt()->SetPosition(wxPoint(view->getOkTxt()->GetPosition().x + view->getOkTxt()->GetSize().GetWidth() + 4, p.y));
 		//Right now implemented with a hack (function at main view), but source of bug, probably can be tracked.
 	}
 }
@@ -63,12 +61,12 @@ void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent &event)
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
 		wxMenu menu;
-		getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure, true);
+		event.getView()->setSimpleTextToolFigure(txtFigure, true);
 		txtFigure->createMenu(menu);
-		getDrawingEditor()->view()->connectPopUpMenu(menu);
+		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		getDrawingEditor()->view()->PopupMenu(&menu, p);
+		event.getView()->PopupMenu(&menu, p);
 		return;
 	}
 
@@ -77,41 +75,41 @@ void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent &event)
 	{
 		if(withoutDialog)
 		{
-			getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
+			event.getView()->setSimpleTextToolFigure(txtFigure);
 			showEdit = true;
-			edit->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
+			event.getView()->getSimpleTextToolEdit()->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
 			calculateSizeEntry(event.getView());
-			edit->SetFocus();
-			edit->Show();
-			okButton->Show();
-			cancelButton->Show();
+			event.getView()->getSimpleTextToolEdit()->SetFocus();
+			event.getView()->getSimpleTextToolEdit()->Show();
+			event.getView()->getOkTxt()->Show();
+			event.getView()->getCancelTxt()->Show();
 		}
 		else
 		{
-			callDialog();
+			callDialog(event.getView());
 		}
 		return;
 	}
 	getDefaultTool()->mouseDown(event);
 }
 
-void wxhdSimpleTextTool::activate()
+void wxhdSimpleTextTool::activate(wxhdDrawingView *view)
 {
 	showEdit = false;
-	wxhdFigureTool::activate();
+	wxhdFigureTool::activate(view);
 }
 
-void wxhdSimpleTextTool::deactivate()
+void wxhdSimpleTextTool::deactivate(wxhdDrawingView *view)
 {
-	if(edit)
+	if(view->getSimpleTextToolEdit())
 	{
 		// Can't delete this objects because view is the owner of this objects
-		edit->Hide();
-		okButton->Hide();
-		cancelButton->Hide();
-		getDrawingEditor()->view()->setSimpleTextToolFigure(NULL);
+		view->getSimpleTextToolEdit()->Hide();
+		view->getOkTxt()->Hide();
+		view->getCancelTxt()->Hide();
+		view->setSimpleTextToolFigure(NULL);
 	}
-	wxhdFigureTool::deactivate();
+	wxhdFigureTool::deactivate(view);
 }
 
 void wxhdSimpleTextTool::mouseDrag(wxhdMouseEvent &event)
@@ -127,12 +125,13 @@ void wxhdSimpleTextTool::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingV
 	txtFigure->OnGenericPopupClick(event, view);
 }
 
-bool wxhdSimpleTextTool::callDialog()
+bool wxhdSimpleTextTool::callDialog(wxhdDrawingView *view)
 {
-	wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(), getDrawingEditor()->view());
+	wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(), view);
 	if (!sNewValue.IsEmpty())
 	{
 		txtFigure->setText(sNewValue);
+		view->notifyChanged();
 		return true;
 	}
 	else

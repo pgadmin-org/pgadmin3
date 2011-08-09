@@ -23,7 +23,7 @@ public:
 	~ddSouthTableSizeHandle();
 	virtual wxCursor createCursor();
 	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdRect &getDisplayBox(int posIdx);
 	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
 	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);

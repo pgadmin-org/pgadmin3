@@ -21,10 +21,12 @@
 #include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
+wxFont wxhdFontAttribute::defaultFont = wxFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+
 wxhdFontAttribute::wxhdFontAttribute():
 	wxhdAttribute()
 {
-	fontAttributes = settings->GetSystemFont();
+	fontAttributes = defaultFont;
 }
 
 void wxhdFontAttribute::apply(wxBufferedDC &context)

@@ -18,6 +18,7 @@
 #include "dd/dditems/handles/ddMinMaxTableButtonHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 //Images
 #include "images/ddMinMaxCursor.pngc"
@@ -51,7 +52,7 @@ void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 	if(showFirst)
 	{
 		buttonIcon = buttonMaximizeImage;
-		table->setColumnsWindow(1);
+		table->setColumnsWindow(view->getIdx(), 1);
 	}
 	else
 	{
@@ -59,6 +60,7 @@ void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 		table->setColumnsWindow(table->getTotalColumns(), true);
 	}
 	showFirst = !showFirst;
+	view->notifyChanged();
 }
 
 

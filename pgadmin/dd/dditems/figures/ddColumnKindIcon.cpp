@@ -112,7 +112,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		wxhdRect copy = displayBox();
+		wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		//Adding a yellow circle to increase visibility of uk index
 		if(isUniqueKey())
@@ -126,7 +126,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 		//Draw Uk index if needed
 		if(isUniqueKey() && ukIndex > 0)
 		{
-			wxFont font = settings->GetSystemFont();
+			wxFont font = fontAttribute->font();
 			font.SetPointSize(6);
 			context.SetFont(font);
 			wxString inumber = wxString::Format(wxT("%d"), (int)ukIndex + 1);

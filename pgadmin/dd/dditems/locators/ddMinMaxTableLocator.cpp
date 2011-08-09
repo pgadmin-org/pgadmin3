@@ -26,13 +26,13 @@ ddMinMaxTableLocator::~ddMinMaxTableLocator()
 {
 }
 
-wxhdPoint &ddMinMaxTableLocator::locate(wxhdIFigure *owner)
+wxhdPoint &ddMinMaxTableLocator::locate(int posIdx, wxhdIFigure *owner)
 {
 	if(owner)
 	{
 		ddTableFigure *table = (ddTableFigure *) owner;
-		int x = table->displayBox().x + table->displayBox().width - 20; //(8+2)
-		int y = table->displayBox().y + 6;
+		int x = table->displayBox().x[posIdx] + table->displayBox().width - 20; //(8+2)
+		int y = table->displayBox().y[posIdx] + 6;
 
 		locatePoint.x = x;
 		locatePoint.y = y;

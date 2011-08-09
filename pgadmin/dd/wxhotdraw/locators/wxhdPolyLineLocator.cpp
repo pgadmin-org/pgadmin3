@@ -24,17 +24,27 @@ wxhdPolyLineLocator::~wxhdPolyLineLocator()
 {
 }
 
+//This index refers to point index inside collection not the diagram index
 wxhdPolyLineLocator::wxhdPolyLineLocator(int index)
 {
 	indx = index;
 }
 
-wxhdPoint &wxhdPolyLineLocator::locate(wxhdIFigure *owner)
+wxhdPoint &wxhdPolyLineLocator::locate(int posIdx, wxhdIFigure *owner)
 {
-	if(owner)
+	wxhdPolyLineFigure *figure = (wxhdPolyLineFigure *) owner;
+
+	//A Handle at polyline figure without a respetive flexibility point at line
+	//Hack to allow handles of polylines reuse between different versions of same line.
+	if(figure && indx >= (figure->countPointsAt(posIdx) - 1) ) //indx 0 is first, count first is 1
 	{
-		wxhdPolyLineFigure *figure = (wxhdPolyLineFigure *) owner;
-		locatePoint = figure->pointAt(indx);
+		locatePoint.x = -100; //Any negative number that don't allow to the mouse to reach this locator
+		locatePoint.y = -100;
+		return locatePoint;
+	}
+	else if(figure)
+	{
+		locatePoint = figure->pointAt(posIdx, indx);
 		return locatePoint;
 	}
 	else

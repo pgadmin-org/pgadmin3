@@ -39,19 +39,19 @@ void ddColumnFigure::Init(wxString &columnName, ddTableFigure *owner, ddRelation
 
 
 	//Initialize displaybox and image coords
-	basicDisplayBox.SetPosition(wxPoint(0, 0));
+	basicDisplayBox.SetPosition(0, wxPoint(0, 0));
 	basicDisplayBox.SetSize( columnText->displayBox().GetSize());
 	if(kindImage && optionImage)
 	{
 		basicDisplayBox.width += kindImage->displayBox().GetSize().GetWidth() + 3;
 		basicDisplayBox.width += optionImage->displayBox().GetSize().GetWidth() + 3;
-		columnText->displayBox().x += kindImage->displayBox().GetSize().GetWidth() + 2;
-		columnText->displayBox().x += optionImage->displayBox().GetSize().GetWidth() + 3;
+		columnText->displayBox().x[0] += kindImage->displayBox().GetSize().GetWidth() + 2;
+		columnText->displayBox().x[0] += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
 		basicDisplayBox.width += 22; //default value = 1 + 8 + 3 + 8 + 2
-		columnText->displayBox().x += 22;
+		columnText->displayBox().x[0] += 22;
 	}
 
 	//Set Value default Attributes
@@ -102,24 +102,51 @@ ddColumnFigure::~ddColumnFigure()
 		delete optionImage;
 }
 
-void ddColumnFigure::basicMoveBy(int x, int y)
+void ddColumnFigure::AddPosForNewDiagram()
 {
-	wxhdAbstractFigure::basicMoveBy(x, y);
+	//Add position for new displaybox at new diagram
+	wxhdAttributeFigure::AddPosForNewDiagram();
+	//Add position to each figure inside this composite figure
 	if(kindImage)
-		kindImage->moveBy(x, y);
+		kindImage->AddPosForNewDiagram();
 	if(optionImage)
-		optionImage->moveBy(x, y);
-	columnText->moveBy(x, y);
+		optionImage->AddPosForNewDiagram();
+	if(columnText)
+		columnText->AddPosForNewDiagram();
 }
 
-void ddColumnFigure::moveTo(int x, int y)
+void ddColumnFigure::RemovePosOfDiagram(int posIdx)
 {
-	wxhdAbstractFigure::moveTo(x, y);
+	//Remove this position at displaybox of this figure
+	wxhdAttributeFigure::RemovePosOfDiagram(posIdx);
+	//Remove this position at each figure inside this composite figure
+	if(kindImage)
+		kindImage->RemovePosOfDiagram(posIdx);
+	if(optionImage)
+		optionImage->RemovePosOfDiagram(posIdx);
+	if(columnText)
+		columnText->RemovePosOfDiagram(posIdx);
+
+}
+
+void ddColumnFigure::basicMoveBy(int posIdx, int x, int y)
+{
+	wxhdAbstractFigure::basicMoveBy(posIdx, x, y);
+	if(kindImage)
+		kindImage->moveBy(posIdx, x, y);
+	if(optionImage)
+		optionImage->moveBy(posIdx, x, y);
+	columnText->moveBy(posIdx, x, y);
+}
+
+void ddColumnFigure::moveTo(int posIdx, int x, int y)
+{
+	wxhdAbstractFigure::moveTo(posIdx, x, y);
 	int distance = 0;
 
 	if(kindImage)
 	{
-		kindImage->moveTo(x, y);
+		kindImage->moveTo(posIdx, x, y);
 		distance += kindImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
@@ -129,7 +156,7 @@ void ddColumnFigure::moveTo(int x, int y)
 
 	if(optionImage)
 	{
-		optionImage->moveTo(x + distance, y);
+		optionImage->moveTo(posIdx, x + distance, y);
 		distance += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
@@ -137,25 +164,25 @@ void ddColumnFigure::moveTo(int x, int y)
 		distance += 11; //value = 8 + 3
 	}
 
-	columnText->moveTo(x + distance, y);
+	columnText->moveTo(posIdx, x + distance, y);
 }
 
 
-bool ddColumnFigure::containsPoint(int x, int y)
+bool ddColumnFigure::containsPoint(int posIdx, int x, int y)
 {
 	bool out = false;
 
-	if(columnText->containsPoint(x, y))
+	if(columnText->containsPoint(posIdx, x, y))
 		out = true;
-	else if(kindImage->containsPoint(x, y))
+	else if(kindImage->containsPoint(posIdx, x, y))
 		out = true;
-	else if(optionImage->containsPoint(x, y))
+	else if(optionImage->containsPoint(posIdx, x, y))
 		out = true;
 
 	return out;
 }
 
-wxhdRect &ddColumnFigure::getBasicDisplayBox()
+wxhdMultiPosRect &ddColumnFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
@@ -178,25 +205,25 @@ void ddColumnFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *v
 		optionImage->drawSelected(context, view);
 }
 
-wxhdIFigure *ddColumnFigure::findFigure(int x, int y)
+wxhdIFigure *ddColumnFigure::findFigure(int posIdx, int x, int y)
 {
 	wxhdIFigure *out = NULL;
 
-	if(columnText->containsPoint(x, y))
+	if(columnText->containsPoint(posIdx, x, y))
 		out = columnText;
 
-	if(kindImage && kindImage->containsPoint(x, y))
+	if(kindImage && kindImage->containsPoint(posIdx, x, y))
 		out = kindImage;
 
-	if(optionImage && optionImage->containsPoint(x, y))
+	if(optionImage && optionImage->containsPoint(posIdx, x, y))
 		out = optionImage;
 
 	return out;
 }
 
-wxhdITool *ddColumnFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *ddColumnFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
-	return new ddColumnFigureTool(editor, this, defaultTool);
+	return new ddColumnFigureTool(view, this, defaultTool);
 }
 
 wxhdIFigure *ddColumnFigure::getFigureAt(int pos)
@@ -414,7 +441,7 @@ void ddColumnFigure::deactivateGenFkName()
 wxString ddColumnFigure::generateSQL()
 {
 	wxString tmp;
-	tmp = getColumnName();
+	tmp = wxT("\"") + getColumnName() + wxT("\"");
 	tmp += wxT(" ");
 	tmp += columnText->getType();
 	return tmp;

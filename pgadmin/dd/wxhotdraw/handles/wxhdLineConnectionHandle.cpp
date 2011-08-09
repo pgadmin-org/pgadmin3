@@ -20,6 +20,7 @@
 #include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 wxhdLineConnectionHandle::wxhdLineConnectionHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index):
 	wxhdPolyLineHandle(figure, loc, index)
@@ -32,14 +33,14 @@ void wxhdLineConnectionHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView 
 	wxhdPolyLineFigure *figure = (wxhdPolyLineFigure *) getOwner();
 	//eliminate all handles in the middle of a straight line
 
-	if( figure->pointCount() > 2 && getIndex() != 0 && getIndex() != (figure->pointCount() - 1) )
+	if( figure->pointCount(view->getIdx()) > 2 && getIndex() != 0 && getIndex() != (figure->pointCount(view->getIdx()) - 1) )
 	{
-		wxhdPoint p1 = figure->pointAt(getIndex() - 1);
-		wxhdPoint p2 = figure->pointAt(getIndex() + 1);
+		wxhdPoint p1 = figure->pointAt(view->getIdx(), getIndex() - 1);
+		wxhdPoint p2 = figure->pointAt(view->getIdx(), getIndex() + 1);
 		wxhdGeometry g;
 		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
 		{
-			figure->removePointAt(getIndex());
+			figure->removePointAt(view->getIdx(), getIndex());
 		}
 	}
 }

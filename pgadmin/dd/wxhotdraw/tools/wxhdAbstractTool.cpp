@@ -17,11 +17,11 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-wxhdAbstractTool::wxhdAbstractTool(wxhdDrawingEditor *editor)
+wxhdAbstractTool::wxhdAbstractTool(wxhdDrawingView *view)
 {
 	anchorX = 0;
 	anchorY = 0;
-	ownerEditor = editor;
+	ownerView = view;
 }
 
 wxhdAbstractTool::~wxhdAbstractTool()
@@ -60,8 +60,8 @@ void wxhdAbstractTool::setAnchorCoords(int x, int y)
 	anchorY = y;
 }
 
-wxhdDrawingEditor *wxhdAbstractTool::getDrawingEditor()
+wxhdDrawingView *wxhdAbstractTool::getDrawingView()
 {
-	return ownerEditor;
+	return ownerView;
 }
 

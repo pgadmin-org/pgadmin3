@@ -31,36 +31,33 @@ enum
 class wxhdDrawingView : public wxScrolledWindow
 {
 public:
-	wxhdDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing);
+	wxhdDrawingView(int diagram, wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing);
 	~wxhdDrawingView();
-	virtual void add(wxhdIFigure *figure);
-	virtual void remove(wxhdIFigure *figure);
-	virtual void removeAll();
-	virtual void addToSelection(wxhdIFigure *figure);
-	virtual void addToSelection(wxhdCollection *figures);
-	virtual void removeFromSelection(wxhdIFigure *figure);
-	virtual void deleteSelectedFigures();
-	virtual void toggleSelection(wxhdIFigure *figure);
-	virtual void clearSelection();
+
 	virtual void ScrollToMakeVisible(wxhdPoint p);
 	virtual void ScrollToMakeVisible (wxhdRect r);
-	virtual wxhdIHandle *findHandle(double x, double y);
+	virtual wxhdIHandle *findHandle(int posIdx, double x, double y);
 	virtual wxhdDrawing *getDrawing();
-	virtual bool isFigureSelected(wxhdIFigure *figure);
+
 	void onPaint(wxPaintEvent &event);
 	void onEraseBackGround(wxEraseEvent &event);
-	virtual wxhdIteratorBase *selectionFigures();
 	virtual void onMouseDown(wxMouseEvent &event);
 	virtual void onMouseUp(wxMouseEvent &event);
 	virtual void onMotion(wxMouseEvent &event);
 	virtual void onKeyDown(wxKeyEvent &event);
 	virtual void onKeyUp(wxKeyEvent &event);
-	virtual wxhdRect getVisibleArea();
-	virtual wxhdRect getVirtualSize();
+	virtual wxhdMultiPosRect getVisibleArea();
+	virtual wxhdMultiPosRect getVirtualSize();
 	virtual bool AcceptsFocus () const;
 	wxhdDrawingEditor *editor();
 	wxSize canvasSize;
 
+	//Hack To allow right click menu at canvas without a figure
+	virtual void createViewMenu(wxMenu &mnu);
+	virtual void OnGenericViewPopupClick(wxCommandEvent &event);
+	//Hack to allow a different tool for each view
+	wxhdITool *tool();
+	void setTool(wxhdITool *tool);
 	//Hack to avoid selection rectangle drawing bug
 	void setSelRect(wxhdRect &selectionRect);
 	void disableSelRectDraw();
@@ -79,13 +76,25 @@ public:
 	void connectPopUpMenu(wxMenu &mnu);
 	//Hack to allow use (events) of wxmenu inside a tool without a figure, Generic Way
 	void setCanvasMenuTool(wxhdCanvasMenuTool *menuTool);
+	//Hack to allow use of a figure into multiple diagrams.
+	int getIdx()
+	{
+		return diagramIndex;
+	}
+	void syncIdx(int newDiagramIndex)
+	{
+		diagramIndex = newDiagramIndex;
+	};
+	void notifyChanged();
 protected:
-
+	int diagramIndex;
 private:
 	DECLARE_EVENT_TABLE()
-	wxhdCollection *selection;
 	wxhdDrawing *drawing;
 	wxhdDrawingEditor *drawingEditor;
+
+	//Hack to allow a different tool for each view
+	wxhdITool *_tool;
 
 	//Hack to allow auto scrolling when dragging mouse.
 	wxhdPoint startDrag;

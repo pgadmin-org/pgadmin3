@@ -41,27 +41,27 @@ wxCursor wxhdButtonHandle::createCursor()
 	return wxCursor(wxCURSOR_PENCIL);
 }
 
-wxhdRect &wxhdButtonHandle::getDisplayBox()
+wxhdRect &wxhdButtonHandle::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = locate();
+	wxhdPoint p = locate(posIdx);
 	displayBox.SetPosition(p);
 	return displayBox;
 }
 
 void wxhdButtonHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxPoint copy = getDisplayBox().GetPosition();
+	wxPoint copy = getDisplayBox(view->getIdx()).GetPosition();
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 	if(buttonIcon.IsOk())
 		context.DrawBitmap(buttonIcon, copy.x, copy.y, true);
 }
 
 
-wxhdPoint &wxhdButtonHandle::locate()
+wxhdPoint &wxhdButtonHandle::locate(int posIdx)
 {
 	if(bLocator)
 	{
-		pointLocate = bLocator->locate(getOwner());
+		pointLocate = bLocator->locate(posIdx, getOwner());
 		return pointLocate;
 	}
 	else

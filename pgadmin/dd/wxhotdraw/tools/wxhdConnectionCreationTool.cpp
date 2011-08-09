@@ -19,8 +19,8 @@
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-wxhdConnectionCreationTool::wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure):
-	wxhdAbstractTool(editor)
+wxhdConnectionCreationTool::wxhdConnectionCreationTool(wxhdDrawingView *view, wxhdLineConnection *figure):
+	wxhdAbstractTool(view)
 {
 	toolConnection = figure;
 	toolConnection->disconnectStart();
@@ -39,7 +39,7 @@ void wxhdConnectionCreationTool::mouseDrag(wxhdMouseEvent &event)
 	if(handle && event.LeftIsDown())
 	{
 		dragged = true;
-		handle->invokeStep(event, getDrawingEditor()->view());
+		handle->invokeStep(event, event.getView());
 	}
 }
 
@@ -50,31 +50,31 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 	{
 		numClicks++;
 		int x = event.getScrolledPosX(), y = event.getScrolledPosY();
-		wxhdDrawingView *view = getDrawingEditor()->view();
-		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+		wxhdDrawingView *view = event.getView();
+		wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 
 		if(figure)
 		{
 			if(numClicks == 1) //first mouse click to select start/end figure
 			{
-				toolConnection->setEndPoint(wxhdPoint(x, y));
-				toolConnection->setStartPoint(wxhdPoint(x, y));
-				toolConnection->connectStart(figure->connectorAt(x, y));
-				toolConnection->updateConnection();
-				view->add(toolConnection);
-				view->clearSelection();
-				view->addToSelection(toolConnection);
+				toolConnection->setEndPoint(view->getIdx(), wxhdPoint(x, y));
+				toolConnection->setStartPoint(view->getIdx(), wxhdPoint(x, y));
+				toolConnection->connectStart(figure->connectorAt(view->getIdx(), x, y));
+				toolConnection->updateConnection(view->getIdx());
+				view->editor()->addDiagramFigure(view->getIdx(), toolConnection);
+				view->getDrawing()->clearSelection();
+				view->getDrawing()->addToSelection(toolConnection);
 				handle = toolConnection->getEndHandle();
 			}
 			else if(numClicks > 1) //second mouse click to select end figure only
 			{
-				toolConnection->setEndPoint(wxhdPoint(x, y));
-				toolConnection->updateConnection();
+				toolConnection->setEndPoint(view->getIdx(), wxhdPoint(x, y));
+				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 		}
 		else
 		{
-			getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+			event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 		}
 	}
 }
@@ -88,26 +88,29 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 		{
 			if(!dragged && numClicks == 1) //mouse haven't be dragged and is first click of mouse at this tool
 			{
-				toolConnection->setEndPoint(event.GetPosition());
-				toolConnection->updateConnection();
+				toolConnection->setEndPoint(event.getView()->getIdx(), event.GetPosition());
+				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 			else
 			{
-				handle->invokeEnd(event, getDrawingEditor()->view());
+				handle->invokeEnd(event, event.getView());
 			}
 		}
 
 		if((toolConnection->getEndConnector() == NULL && numClicks > 1) || (toolConnection->getEndConnector() == NULL && dragged)) //Delete connection only if a second click a connection figures isn't found
 		{
+			//check if exists at drawing because automatically integrity check
+			if(event.getView()->getDrawing()->includes(toolConnection))
+				event.getView()->getDrawing()->remove(toolConnection);
+			event.getView()->getDrawing()->clearSelection();
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
-			getDrawingEditor()->view()->remove(toolConnection);
-			getDrawingEditor()->view()->clearSelection();
+			event.getView()->editor()->deleteModelFigure(toolConnection);
 		}
 	}
 	if(dragged || numClicks > 1) //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
 	{
-		getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+		event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 	}
 	else if(!dragged && numClicks == 1) //if not dragged before and is first click then allow to select end, disconnecting it
 	{
@@ -119,19 +122,19 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 void wxhdConnectionCreationTool::mouseMove(wxhdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	wxhdDrawingView *view = getDrawingEditor()->view();
-	wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+	wxhdDrawingView *view = event.getView();
+	wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 	if(figure)
 	{
-		getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_PENCIL));
+		view->SetCursor(wxCursor(wxCURSOR_PENCIL));
 	}
 	else
 	{
-		getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
+		view->SetCursor(wxCursor(wxCURSOR_CROSS));
 	}
 
-	if(handle && numClicks > 0)
+	if(toolConnection && handle && numClicks > 0)
 	{
-		handle->invokeStep(event, getDrawingEditor()->view());
+		handle->invokeStep(event, view);
 	}
 }

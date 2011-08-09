@@ -18,13 +18,13 @@ class ddColumnFigure;
 
 enum ddColumnOptionType
 {
-	null = 0,
+	null = 321,
 	notnull
 };
 
 enum
 {
-	MNU_COLNULL = 0,
+	MNU_COLNULL = 321,
 	MNU_COLNOTNULL
 };
 

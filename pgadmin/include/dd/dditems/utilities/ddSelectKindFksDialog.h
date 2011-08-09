@@ -15,6 +15,8 @@
 #include <wx/statline.h>
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
+class wxhdDrawingView;
+
 enum
 {
 	DDSELECTKINDFKSDIALOG = 10000,
@@ -74,22 +76,23 @@ public:
 	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
 	void OnEnterPressed( wxCommandEvent &event );
 	void OnOkButtonClicked( wxCommandEvent &event );
+	void OnCancelButtonClicked( wxCommandEvent &event );
 
 
 protected:
+	//methods
 	void populateColumnsControls(bool primaryKey, int useUkIndex);
 	void deleteColsControls();
 	void OnChoiceFkKind(wxCommandEvent &event);
+
 	// Data members
 	ddRelationshipFigure *tablesRelation;
 
 	// Dialog controls
 	choicesControlsHashMap choices;
 	wxBoxSizer *topSizer, *linesSizer, *okCancelBox, *colsTopSizer;
-
 	wxChoice *kindFkCtrl;
-
-	wxButton *ok;
+	wxButton *ok, *cancel;
 	wxStaticLine *line;
 
 private:

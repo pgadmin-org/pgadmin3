@@ -22,7 +22,7 @@
 class wxhdHandleTrackerTool : public wxhdAbstractTool
 {
 public:
-	wxhdHandleTrackerTool(wxhdDrawingEditor *editor, wxhdIHandle *anchor);
+	wxhdHandleTrackerTool(wxhdDrawingView *view, wxhdIHandle *anchor);
 	~wxhdHandleTrackerTool();
 
 	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
@@ -33,8 +33,6 @@ protected:
 	wxhdIHandle *anchorHandle;
 
 private:
-
-	wxhdDrawingView *view;
 
 };
 #endif

@@ -18,10 +18,9 @@
 #include "dd/wxhotdraw/tools/wxhdHandleTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-wxhdHandleTrackerTool::wxhdHandleTrackerTool(wxhdDrawingEditor *editor, wxhdIHandle *anchor)
-	: wxhdAbstractTool(editor)
+wxhdHandleTrackerTool::wxhdHandleTrackerTool(wxhdDrawingView *view, wxhdIHandle *anchor)
+	: wxhdAbstractTool(view)
 {
-	view = editor->view();
 	anchorHandle = anchor;
 }
 
@@ -32,15 +31,15 @@ wxhdHandleTrackerTool::~wxhdHandleTrackerTool()
 void wxhdHandleTrackerTool::mouseDown(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseDown(event);
-	anchorHandle->invokeStart(event, view);
+	anchorHandle->invokeStart(event, event.getView());
 }
 
 void wxhdHandleTrackerTool::mouseUp(wxhdMouseEvent &event)
 {
-	anchorHandle->invokeEnd(event, view);
+	anchorHandle->invokeEnd(event, event.getView());
 }
 
 void wxhdHandleTrackerTool::mouseDrag(wxhdMouseEvent &event)
 {
-	anchorHandle->invokeStep(event, view);
+	anchorHandle->invokeStep(event, event.getView());
 }

@@ -4,7 +4,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h -
+// ddTextTableItemFigure.h -
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@
 
 enum
 {
-	MNU_DDADDCOLUMN = 0,
+	MNU_DDADDCOLUMN = 321,
 	MNU_DELCOLUMN,
 	MNU_RENAMECOLUMN,
 	MNU_AUTONAMCOLUMN,
@@ -61,7 +61,7 @@ public:
 	{
 		return showDataType;
 	};
-	wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 	virtual void displayBoxUpdate();
 	int getTextWidth();
 	int getTextHeight();

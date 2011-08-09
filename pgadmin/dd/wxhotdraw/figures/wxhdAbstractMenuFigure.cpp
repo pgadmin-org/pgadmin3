@@ -32,9 +32,9 @@ wxhdAbstractMenuFigure::~wxhdAbstractMenuFigure()
 }
 
 
-wxhdITool *wxhdAbstractMenuFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdAbstractMenuFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
-	return new wxhdMenuTool(editor, this, defaultTool);
+	return new wxhdMenuTool(view, this, defaultTool);
 }
 
 void wxhdAbstractMenuFigure::enablePopUp()

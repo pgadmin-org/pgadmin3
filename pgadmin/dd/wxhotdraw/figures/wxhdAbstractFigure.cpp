@@ -52,7 +52,7 @@ void wxhdAbstractFigure::draw(wxBufferedDC &context, wxhdDrawingView *view)
 
 void wxhdAbstractFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
 	context.SetPen(*wxGREEN_PEN);
@@ -68,7 +68,7 @@ void wxhdAbstractFigure::drawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 
 void wxhdAbstractFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = displayBox();
+	wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
 	context.SetPen(*wxRED_PEN);
@@ -77,33 +77,29 @@ void wxhdAbstractFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingVie
 }
 
 
-wxhdITool *wxhdAbstractFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdAbstractFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
 
-void wxhdAbstractFigure::moveBy(int x, int y)
+void wxhdAbstractFigure::moveBy(int posIdx, int x, int y)
 {
 	willChange();
-	basicMoveBy(x, y);
-	changed();
+	basicMoveBy(posIdx, x, y);
+	changed(posIdx);
 }
 
-void wxhdAbstractFigure::basicMoveBy(int x, int y)
+void wxhdAbstractFigure::basicMoveBy(int posIdx, int x, int y)
 {
-	wxhdRect r = basicDisplayBox;
-	r.x += x;
-	r.y += y;
-	basicDisplayBox = r;
+	basicDisplayBox.x[posIdx] += x;
+	basicDisplayBox.y[posIdx] += y;
 }
 
 
-void wxhdAbstractFigure::moveTo(int x, int y)
+void wxhdAbstractFigure::moveTo(int posIdx, int x, int y)
 {
-	wxhdRect r = basicDisplayBox;
-	r.x = x;
-	r.y = y;
-	basicDisplayBox = r;
+	basicDisplayBox.x[posIdx] = x;
+	basicDisplayBox.y[posIdx] = y;
 }
 
 void wxhdAbstractFigure::willChange()
@@ -111,10 +107,10 @@ void wxhdAbstractFigure::willChange()
 	invalidate();
 }
 
-void wxhdAbstractFigure::changed()
+void wxhdAbstractFigure::changed(int posIdx)
 {
 	invalidate();
-	onFigureChanged(this);
+	onFigureChanged(posIdx, this);
 }
 
 void wxhdAbstractFigure::invalidate()
@@ -122,13 +118,13 @@ void wxhdAbstractFigure::invalidate()
 
 }
 
-bool wxhdAbstractFigure::containsPoint(int x, int y)
+bool wxhdAbstractFigure::containsPoint(int posIdx, int x, int y)
 {
-	return basicDisplayBox.Contains(x, y);
+	return basicDisplayBox.Contains(posIdx, x, y);
 }
 
-void wxhdAbstractFigure::onFigureChanged(wxhdIFigure *figure)
+void wxhdAbstractFigure::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
 	//go to figure procedure to alert observers of changes on this figure
-	wxhdIFigure::onFigureChanged(figure);
+	wxhdIFigure::onFigureChanged(posIdx, figure);
 }

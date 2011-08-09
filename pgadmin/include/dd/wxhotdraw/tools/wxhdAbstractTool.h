@@ -20,7 +20,7 @@
 class wxhdAbstractTool : public wxhdITool
 {
 public:
-	wxhdAbstractTool(wxhdDrawingEditor *editor);
+	wxhdAbstractTool(wxhdDrawingView *view);
 	~wxhdAbstractTool();
 
 	void setAnchorCoords(int x, int y);
@@ -31,12 +31,12 @@ public:
 	virtual void mouseDrag(wxhdMouseEvent &event);
 	virtual void keyDown(wxhdKeyEvent &event);
 	virtual void keyUp(wxhdKeyEvent &event);
-	wxhdDrawingEditor *getDrawingEditor();
+	wxhdDrawingView *getDrawingView();
 
 protected:
 	int anchorX, anchorY;
+	wxhdDrawingView *ownerView;
 private:
-	wxhdDrawingEditor *ownerEditor;
 
 };
 #endif

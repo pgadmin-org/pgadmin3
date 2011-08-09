@@ -28,6 +28,32 @@ wxhdCompositeFigure::wxhdCompositeFigure()
 	figureHandles = new wxhdCollection(new wxhdArrayCollection());
 }
 
+void wxhdCompositeFigure::AddPosForNewDiagram()
+{
+	//Add position for new displaybox at new diagram
+	wxhdAttributeFigure::AddPosForNewDiagram();
+	//Add position to each figure inside this composite figure
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	while(iterator->HasNext())
+	{
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
+		f->AddPosForNewDiagram();
+	}
+	delete iterator;
+}
+
+void wxhdCompositeFigure::RemovePosOfDiagram(int posIdx)
+{
+	wxhdAttributeFigure::RemovePosOfDiagram(posIdx);
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	while(iterator->HasNext())
+	{
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
+		f->RemovePosOfDiagram(posIdx);
+	}
+	delete iterator;
+}
+
 wxhdCompositeFigure::~wxhdCompositeFigure()
 {
 	wxhdIHandle *tmpH;
@@ -52,25 +78,28 @@ wxhdCompositeFigure::~wxhdCompositeFigure()
 		delete figureFigures;
 }
 
-void wxhdCompositeFigure::basicMoveBy(int x, int y)
+void wxhdCompositeFigure::basicMoveBy(int posIdx, int x, int y)
 {
 	wxhdIteratorBase *iterator = figuresEnumerator();
 	while(iterator->HasNext())
 	{
 		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
-		f->moveBy(x, y);
+		f->moveBy(posIdx, x, y);
 	}
+
+	basicDisplayBox.x[posIdx] += x;
+	basicDisplayBox.y[posIdx] += y;
 	delete iterator;
 }
 
-bool wxhdCompositeFigure::containsPoint(int x, int y)
+bool wxhdCompositeFigure::containsPoint(int posIdx, int x, int y)
 {
 	bool out = false;
 	wxhdIteratorBase *iterator = figuresEnumerator();
 	while(iterator->HasNext())
 	{
 		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
-		if(f->containsPoint(x, y))
+		if(f->containsPoint(posIdx, x, y))
 		{
 			out = true; //avoid memory leak
 		}
@@ -90,28 +119,34 @@ wxhdIteratorBase *wxhdCompositeFigure::figuresInverseEnumerator()
 }
 
 //Ignore figures at negative positions
-wxhdRect &wxhdCompositeFigure::getBasicDisplayBox()
+wxhdMultiPosRect &wxhdCompositeFigure::getBasicDisplayBox()
 {
-	basicDisplayBox.SetPosition(wxPoint(0, 0));
 	basicDisplayBox.SetSize(wxSize(0, 0));
-	bool firstFigure = true;
 
+	int posIdx;
 	wxhdIteratorBase *iterator = figuresEnumerator();
-	while(iterator->HasNext())
+	for(posIdx = 0; posIdx < basicDisplayBox.CountPositions(); posIdx++)
 	{
-		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
-		if(firstFigure)
+		basicDisplayBox.SetPosition(posIdx, wxPoint(0, 0));
+		bool firstFigure = true;
+
+		while(iterator->HasNext())
 		{
-			basicDisplayBox.SetPosition( f->displayBox().GetPosition());
-			basicDisplayBox.SetSize( f->displayBox().GetSize());
-			if(f->displayBox().GetPosition().x > 0 && f->displayBox().GetPosition().y > 0)
-				firstFigure = false;
+			wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
+			if(firstFigure)
+			{
+				basicDisplayBox.SetPosition(posIdx, f->displayBox().GetPosition(posIdx));
+				basicDisplayBox.SetSize( f->displayBox().GetSize());
+				if(f->displayBox().GetPosition(posIdx).x > 0 && f->displayBox().GetPosition(posIdx).y > 0)
+					firstFigure = false;
+			}
+			else
+			{
+				if(f->displayBox().GetPosition(posIdx).x > 0 && f->displayBox().GetPosition(posIdx).y > 0)
+					basicDisplayBox.add(posIdx, f->displayBox().getwxhdRect(posIdx) );
+			}
 		}
-		else
-		{
-			if(f->displayBox().GetPosition().x > 0 && f->displayBox().GetPosition().y > 0)
-				basicDisplayBox.add( f->displayBox() );
-		}
+		iterator->ResetIterator();
 	}
 	delete iterator;
 	return basicDisplayBox;
@@ -130,6 +165,13 @@ void wxhdCompositeFigure::add(wxhdIFigure *figure)
 
 	//Add figure
 	figureFigures->addItem(figure);
+	//Check figure available positions for diagrams.
+	int i, start;
+	start = figure->displayBox().CountPositions();
+	for(i = start; i < basicDisplayBox.CountPositions(); i++)
+	{
+		figure->AddPosForNewDiagram();
+	}
 	//Add figure handles
 	wxhdIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
 	while(handlesIterator->HasNext())
@@ -199,14 +241,14 @@ void wxhdCompositeFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingVi
 	delete iterator;
 }
 
-wxhdIFigure *wxhdCompositeFigure::findFigure(int x, int y)
+wxhdIFigure *wxhdCompositeFigure::findFigure(int posIdx, int x, int y)
 {
 	wxhdIFigure *tmp = NULL, *out = NULL;
 	wxhdIteratorBase *iterator = figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
 		tmp = (wxhdIFigure *)iterator->Next();
-		if(tmp->containsPoint(x, y))
+		if(tmp->containsPoint(posIdx, x, y))
 		{
 			out = tmp;
 			break;
@@ -218,12 +260,12 @@ wxhdIFigure *wxhdCompositeFigure::findFigure(int x, int y)
 	return out;
 }
 
-wxhdITool *wxhdCompositeFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdCompositeFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
-	return new wxhdCompositeFigureTool(editor, this, defaultTool);
+	return new wxhdCompositeFigureTool(view, this, defaultTool);
 }
 
-wxhdIFigure *wxhdCompositeFigure::getFigureAt(int pos)
+wxhdIFigure *wxhdCompositeFigure::getFigureAt(int indexOfCollection)
 {
-	return (wxhdIFigure *) figureFigures->getItemAt(pos);
+	return (wxhdIFigure *) figureFigures->getItemAt(indexOfCollection);
 }

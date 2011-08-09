@@ -22,7 +22,7 @@ public:
 	wxhdILocator();
 	~wxhdILocator();
 
-	virtual wxhdPoint &locate(wxhdIFigure *owner) = 0;
+	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner) = 0;
 
 protected:
 	wxhdPoint locatePoint;

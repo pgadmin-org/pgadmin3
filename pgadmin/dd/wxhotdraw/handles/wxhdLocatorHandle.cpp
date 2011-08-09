@@ -29,10 +29,10 @@ wxhdLocatorHandle::~wxhdLocatorHandle()
 		delete loc;
 }
 
-wxhdPoint &wxhdLocatorHandle::locate()
+wxhdPoint &wxhdLocatorHandle::locate(int posIdx)
 {
 	p = wxhdPoint(0, 0);
-	return loc == NULL ? p : loc->locate(getOwner());
+	return loc == NULL ? p : loc->locate(posIdx, getOwner());
 }
 
 wxhdILocator *wxhdLocatorHandle::locator()

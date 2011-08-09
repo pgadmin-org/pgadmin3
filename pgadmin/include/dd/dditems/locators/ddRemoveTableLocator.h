@@ -21,7 +21,7 @@ public:
 	ddRemoveTableLocator();
 	~ddRemoveTableLocator();
 
-	virtual wxhdPoint &locate(wxhdIFigure *owner);
+	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
 
 protected:
 

@@ -62,7 +62,7 @@ void wxhdRect::add (wxhdRect *newRect)
 	add(newRect->GetBottomRight().x , newRect->GetBottomRight().y);
 }
 
-void wxhdRect::add (wxhdRect &newRect)
+void wxhdRect::add (wxhdRect newRect)
 {
 	add(newRect.GetTopLeft().x , newRect.GetTopLeft().y);
 	add(newRect.GetBottomRight().x , newRect.GetBottomRight().y);

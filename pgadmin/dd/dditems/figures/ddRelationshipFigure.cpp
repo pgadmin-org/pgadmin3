@@ -18,9 +18,12 @@
 // App headers
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/figures/ddRelationshipItem.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
+
 
 ddRelationshipFigure::ddRelationshipFigure():
 	wxhdLineConnection()
@@ -41,8 +44,8 @@ ddRelationshipFigure::ddRelationshipFigure():
 	enablePopUp();
 }
 
-ddRelationshipFigure::ddRelationshipFigure(wxhdIFigure *figure1, wxhdIFigure *figure2):
-	wxhdLineConnection(figure1, figure2)
+ddRelationshipFigure::ddRelationshipFigure(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2):
+	wxhdLineConnection(posIdx, figure1, figure2)
 {
 	enablePopUp();
 }
@@ -146,8 +149,8 @@ void ddRelationshipFigure::updateForeignKey()
 				{
 					fkColumnRelItem = new ddRelationshipItem(this, col, endTable, (fkMandatory ? notnull : null), (fkIdentifying ? pk : none) );
 					chm[col->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-					endTable->addColumn(fkColumnRelItem->fkColumn);
-					updateConnection();
+					endTable->addColumn(0, fkColumnRelItem->fkColumn);
+					updateConnection(0);
 				}
 
 				//STEP 1.2a: Delete old Fk columns not pk now or deleted from source fk table.
@@ -164,7 +167,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
+								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);
 							}
 							else
 							{
@@ -173,7 +176,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat = true;
-							updateConnection();
+							updateConnection(0);
 						}
 						if (repeat)
 							break;
@@ -191,8 +194,8 @@ void ddRelationshipFigure::updateForeignKey()
 				{
 					fkColumnRelItem = new ddRelationshipItem(this, col, endTable, (fkMandatory ? notnull : null), (fkIdentifying ? pk : none) );
 					chm[col->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-					endTable->addColumn(fkColumnRelItem->fkColumn);
-					updateConnection();
+					endTable->addColumn(0, fkColumnRelItem->fkColumn);
+					updateConnection(0);
 				}
 
 				//STEP 1.2b: Delete old Fk columns not pk now or deleted from source fk table.
@@ -209,7 +212,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
+								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);
 							}
 							else
 							{
@@ -218,7 +221,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat = true;
-							updateConnection();
+							updateConnection(0);
 						}
 						if (repeat)
 							break;
@@ -351,6 +354,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 	ddTableFigure *startTable = NULL;
 	ddTableFigure *endTable = NULL;
 	wxTextEntryDialog *nameDialog = NULL;
+	wxhdRemoveDeleteDialog *delremDialog = NULL;
 	ddSelectKindFksDialog *mappingDialog = NULL;
 	wxString tmpString;
 
@@ -369,6 +373,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 				setLinePen(wxPen(*wxBLACK, 1, wxSHORT_DASH));
 				setOptionAtForeignKeys(null);
 			}
+			view->notifyChanged();
 			break;
 		case MNU_IDENTIFYINGRELATIONSHIP:
 			fkMandatory = true;
@@ -376,6 +381,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 			fkIdentifying = !fkIdentifying;
 			fkOneToMany = true;
 			updatePkAtFkCols();
+			view->notifyChanged();
 			break;
 		case MNU_FKCONSTRAINTNAME:
 			startTable = (ddTableFigure *) getStartFigure();
@@ -398,74 +404,97 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 			{
 				tmpString = nameDialog->GetValue();
 				constraintName = tmpString;
+				view->notifyChanged();
 			}
 			delete nameDialog;
 			break;
 		case MNU_FKMATCHTYPEFULL:
 			matchSimple = false;
+			view->notifyChanged();
 			break;
 		case MNU_FKMATCHTYPESIMPLE:
 			matchSimple = true;
+			view->notifyChanged();
 			break;
-
 		case MNU_FKONDELETENOACTION:
 			onDeleteAction = FK_ACTION_NO;
+			view->notifyChanged();
 			break;
 		case MNU_FKONDELETERESTRICT:
 			onDeleteAction = FK_RESTRICT;
+			view->notifyChanged();
 			break;
 		case MNU_FKONDELETECASCADE:
 			onDeleteAction = FK_CASCADE;
+			view->notifyChanged();
 			break;
 		case MNU_FKONDELETESETNULL:
 			onDeleteAction = FK_SETNULL;
+			view->notifyChanged();
 			break;
 		case MNU_FKONDELETESETDEFAULT:
 			onDeleteAction = FK_SETDEFAULT;
+			view->notifyChanged();
 			break;
 
 		case MNU_FKONUPDATENOACTION:
 			onUpdateAction = FK_ACTION_NO;
+			view->notifyChanged();
 			break;
 		case MNU_FKONUPDATERESTRICT:
 			onUpdateAction = FK_RESTRICT;
+			view->notifyChanged();
 			break;
 		case MNU_FKONUPDATECASCADE:
 			onUpdateAction = FK_CASCADE;
+			view->notifyChanged();
 			break;
 		case MNU_FKONUPDATESETNULL:
 			onUpdateAction = FK_SETNULL;
+			view->notifyChanged();
 			break;
 		case MNU_FKONUPDATESETDEFAULT:
 			onUpdateAction = FK_SETDEFAULT;
+			view->notifyChanged();
 			break;
-
 		case MNU_1MRELATIONSHIP:
 			fkOneToMany = !fkOneToMany;
+			view->notifyChanged();
 			break;
 		case MNU_DELETERELATIONSHIP:
 			if(getStartFigure() && getEndFigure())
 			{
 				ddTableFigure *t1 = (ddTableFigure *)getStartFigure();
 				ddTableFigure *t2 = (ddTableFigure *)getEndFigure();
-				answer = wxMessageBox(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), wxYES_NO | wxNO_DEFAULT, (wxScrolledWindow *)view);
-				if (answer == wxYES)
+				delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view);
+				answer = delremDialog->ShowModal();
+				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+				if (answer == DD_DELETE)
 				{
-					if(view->isFigureSelected(this))
-						view->removeFromSelection(this);
+					editor->removeFromAllSelections(this);
+					removeForeignKeys();
 					disconnectStart();
 					disconnectEnd();
 					//Hack to autodelete relationship
 					ddRelationshipFigure *r = this;
-					view->remove(this);
 					if(r)
-						delete r;
+						editor->deleteModelFigure(r);
+					editor->getDesign()->refreshBrowser();
+					view->notifyChanged();
 				}
+				else if(answer == DD_REMOVE)
+				{
+					editor->getExistingDiagram(view->getIdx())->removeFromSelection(this);
+					editor->getExistingDiagram(view->getIdx())->remove(this);
+					view->notifyChanged();
+				}
+				delete delremDialog;
 			}
 			break;
 		case MNU_FKEYFROMPKEY:
 			fkFromPk = true;
 			updateForeignKey();
+			view->notifyChanged();
 			break;
 		case MNU_FKEYCUSTOMMAPPING:
 			//disable right now
@@ -476,12 +505,14 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 			*/
 			break;
 		default:
+			//Hack to allow multiple selection of Uk in submenu
 			answer = event.GetId();
-			if( answer >= MNU_FKEYFROMUKEYBASE)  //Hack to allow multiple selection of Uk in submenu
+			if( answer >= MNU_FKEYFROMUKEYBASE)
 			{
 				fkFromPk = false;
 				ukIndex = answer - MNU_FKEYFROMUKEYBASE;
 				updateForeignKey();
+				view->notifyChanged();
 			}
 			break;
 	}
@@ -510,22 +541,45 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 {
 	ddSelectKindFksDialog *mappingDialog = NULL;
 	wxhdLineConnection::connectEnd(end);
-	view->Refresh();
+	if(view)
+		view->Refresh();
+
+	//Hack to allow abort of mapping of Fk
+	int answer = -1; //By default
+
+	//If connecte destination and start figure
 	if(getEndFigure() && getStartFigure())
 	{
 		mappingDialog = new ddSelectKindFksDialog(view, this);
-		mappingDialog->ShowModal();
+		answer = mappingDialog->ShowModal();
 		delete mappingDialog;
-		if(view)
+		if(answer == wxID_OK)
 		{
-			view->AcceptsFocus();
-			view->SetFocus();
+			if(view)
+			{
+				view->AcceptsFocus();
+				view->SetFocus();
+			}
+			updateForeignKey();
 		}
-		updateForeignKey();
 	}
 
+	//Is Start is connected Tell to check consistency
 	if(getStartFigure())
+	{
 		getStartTable()->setSelectFkDestMode(false);
+		ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+		editor->checkAllDigramsRelConsistency();
+	}
+
+	//Hack to Abort Connection because user press cancel button at fk mapping dialog
+	if (answer == wxID_CANCEL)
+	{
+		//By disconnecting both sides I force to delete relationship at ConnectionCreationTool
+		getStartTable()->setSelectFkDestMode(false);
+		this->disconnectStart();
+		this->disconnectEnd();
+	}
 }
 
 bool ddRelationshipFigure::isForeignKeyFromPk()
@@ -587,7 +641,7 @@ void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceC
 		//Mark it as Custom Fk (fk from existing column not an automatic generated)
 		endTablesourceCol->setAsUserCreatedFk(fkColumnRelItem);
 		chm[startTablesourceCol->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-		updateConnection();
+		updateConnection(0);
 	}
 }
 
@@ -612,7 +666,7 @@ void ddRelationshipFigure::removeForeignKeys()
 					//Remove fk column only if that column is automatically generated
 					if(fkColumnRelItem->isAutomaticallyGenerated())
 					{
-						fkColumnRelItem->getDestinationTable()->removeColumn(fkColumnRelItem->fkColumn);
+						fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);
 					} //is an existing column use as fk
 					else
 					{
@@ -679,11 +733,10 @@ wxString ddRelationshipFigure::generateSQL()
 	wxString tmp;
 	if(chm.size() > 0)
 	{
+		tmp = _("ALTER TABLE \"") + ((ddTableFigure *)getEndFigure())->getTableName() + _("\" ADD ");
 		if(!constraintName.IsEmpty())
 		{
-			tmp = _("CONSTRAINT ");
-			tmp += constraintName;
-			tmp += _(" ");
+			tmp += _(" CONSTRAINT ") + constraintName + _(" ");
 		}
 		tmp += wxT("FOREIGN KEY ( ");
 		columnsHashMap::iterator it, end;
@@ -692,7 +745,7 @@ wxString ddRelationshipFigure::generateSQL()
 		{
 			wxString key = it->first;
 			item = it->second;
-			tmp += item->fkColumn->getColumnName();
+			tmp += wxT("\"") + item->fkColumn->getColumnName() + wxT("\"");
 			end = it;
 			end++;
 			if(end != chm.end())
@@ -705,12 +758,12 @@ wxString ddRelationshipFigure::generateSQL()
 			}
 		}
 
-		tmp += wxT(" REFERENCES ") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT(" ( ");
+		tmp += wxT(" REFERENCES \"") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT("\" ( ");
 		for( it = chm.begin(); it != chm.end(); ++it )
 		{
 			wxString key = it->first;
 			item = it->second;
-			tmp += item->original->getColumnName();
+			tmp += wxT("\"") + item->original->getColumnName() + wxT("\"");
 			end = it;
 			end++;
 			if(end != chm.end())
@@ -768,6 +821,7 @@ wxString ddRelationshipFigure::generateSQL()
 				break;
 		}
 
+		tmp += _(";\n");
 	}
 	return tmp;
 }
@@ -866,6 +920,14 @@ void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFig
 	onDeleteAction = onDelete;
 	constraintName = constraint;
 
-	wxhdLineConnection::connectStart(source->connectorAt(getStartPoint().x, getStartPoint().y));
-	wxhdLineConnection::connectEnd(destination->connectorAt(getEndPoint().x, getEndPoint().y));
+	//I need to add two points to relationship if there aren't any points for it a first position
+	int i, start = pointCount(0);
+	for(i = start; i < 2 ; i++)
+	{
+		addPoint(0, -100, -100);
+	}
+
+	//reestablish connections between figures
+	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));
+	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y));
 }

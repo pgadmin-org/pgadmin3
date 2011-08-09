@@ -17,7 +17,7 @@
 
 enum
 {
-	MNU_MANDATORYRELATIONSHIP = 0,
+	MNU_MANDATORYRELATIONSHIP = 321,
 	MNU_IDENTIFYINGRELATIONSHIP,
 	MNU_1MRELATIONSHIP,
 	MNU_DELETERELATIONSHIP,
@@ -56,7 +56,7 @@ class ddRelationshipFigure : public wxhdLineConnection
 {
 public:
 	ddRelationshipFigure();
-	ddRelationshipFigure(wxhdIFigure *figure1, wxhdIFigure *figure2);
+	ddRelationshipFigure(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2);
 	~ddRelationshipFigure();
 	virtual void createMenu(wxMenu &mnu);
 

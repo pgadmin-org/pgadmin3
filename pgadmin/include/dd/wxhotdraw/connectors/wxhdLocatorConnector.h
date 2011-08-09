@@ -23,12 +23,12 @@ class wxhdLocatorConnector : public wxhdIConnector
 public:
 	wxhdLocatorConnector(wxhdIFigure *owner, wxhdILocator *locator);
 	~wxhdLocatorConnector();
-	virtual wxhdPoint findStart(wxhdLineConnection *connection);
-	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
-	virtual bool containsPoint(int x, int y);
+	virtual wxhdPoint findStart(int posIdx, wxhdLineConnection *connection);
+	virtual wxhdPoint findEnd(int posIdx, wxhdLineConnection *connection);
+	virtual bool containsPoint(int posIdx, int x, int y);
 	virtual void draw(wxBufferedDC &context);
-	virtual wxhdPoint locate();
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdPoint locate(int posIdx);
+	virtual wxhdRect &getDisplayBox(int posIdx);
 protected:
 	int size; //standard size connector
 	wxhdRect displayBox;

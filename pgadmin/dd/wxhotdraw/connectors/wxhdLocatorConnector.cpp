@@ -28,33 +28,33 @@ wxhdLocatorConnector::~wxhdLocatorConnector()
 {
 }
 
-wxhdPoint wxhdLocatorConnector::locate()
+wxhdPoint wxhdLocatorConnector::locate(int posIdx)
 {
-	return figureLocator->locate(getOwner());
+	return figureLocator->locate(posIdx, getOwner());
 }
 
 void wxhdLocatorConnector::draw(wxBufferedDC &context)
 {
 }
 
-wxhdRect &wxhdLocatorConnector::getDisplayBox()
+wxhdRect &wxhdLocatorConnector::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = figureLocator->locate(getOwner());
+	wxhdPoint p = figureLocator->locate(posIdx, getOwner());
 	displayBox = wxhdRect(p.x - (size / 2), p.y - (size / 2), size, size);
 	return displayBox;
 }
 
-bool wxhdLocatorConnector::containsPoint(int x, int y)
+bool wxhdLocatorConnector::containsPoint(int posIdx, int x, int y)
 {
-	return getDisplayBox().Contains(x, y);
+	return getDisplayBox(posIdx).Contains(x, y);
 }
 
-wxhdPoint wxhdLocatorConnector::findStart(wxhdLineConnection *connection)
+wxhdPoint wxhdLocatorConnector::findStart(int posIdx, wxhdLineConnection *connection)
 {
-	return getDisplayBox().center();
+	return getDisplayBox(posIdx).center();
 }
 
-wxhdPoint wxhdLocatorConnector::findEnd(wxhdLineConnection *connection)
+wxhdPoint wxhdLocatorConnector::findEnd(int posIdx, wxhdLineConnection *connection)
 {
-	return getDisplayBox().center();
+	return getDisplayBox(posIdx).center();
 }

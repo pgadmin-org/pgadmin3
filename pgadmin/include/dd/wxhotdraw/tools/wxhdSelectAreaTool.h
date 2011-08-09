@@ -22,17 +22,16 @@
 class wxhdSelectAreaTool : public wxhdAbstractTool
 {
 public:
-	wxhdSelectAreaTool(wxhdDrawingEditor *editor);
+	wxhdSelectAreaTool(wxhdDrawingView *view);
 	~wxhdSelectAreaTool();
 
 	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
 	virtual void mouseUp(wxhdMouseEvent &event);
 	virtual void mouseDrag(wxhdMouseEvent &event);
-	void selectFiguresOnRect(bool shiftPressed);
+	void selectFiguresOnRect(bool shiftPressed, wxhdDrawingView *view);
 protected:
-	void drawSelectionRect();
+	void drawSelectionRect(wxhdDrawingView *view);
 private:
-	wxhdDrawingView *view;
 	wxhdRect selectionRect;
 };
 #endif

@@ -25,15 +25,14 @@ class wxhdIConnector : public wxhdObject
 public:
 	wxhdIConnector(wxhdIFigure *owner);
 	~wxhdIConnector();
-	virtual wxhdPoint findStart(wxhdLineConnection *connection);
-	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
-	virtual bool containsPoint(int x, int y);
+	virtual wxhdPoint findStart(int posIdx, wxhdLineConnection *connection);
+	virtual wxhdPoint findEnd(int posIdx, wxhdLineConnection *connection);
+	virtual bool containsPoint(int posIdx, int x, int y);
 	virtual void draw(wxBufferedDC &context);
 	virtual wxhdIFigure *getOwner();
-	virtual wxhdRect &getDisplayBox();
+	virtual wxhdMultiPosRect &getDisplayBox();
 protected:
 	virtual void setOwner(wxhdIFigure *owner);
-	wxhdRect displayBox;
 private:
 	wxhdIFigure *figureOwner;
 

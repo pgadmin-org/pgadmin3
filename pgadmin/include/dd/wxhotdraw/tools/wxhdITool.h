@@ -28,8 +28,8 @@ public:
 	virtual void mouseDrag(wxhdMouseEvent &event);
 	virtual void keyDown(wxhdKeyEvent &event);
 	virtual void keyUp(wxhdKeyEvent &event);
-	virtual void activate();
-	virtual void deactivate();
+	virtual void activate(wxhdDrawingView *view);
+	virtual void deactivate(wxhdDrawingView *view);
 	virtual bool activated();
 	virtual bool undoable();
 
