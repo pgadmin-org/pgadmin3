@@ -18,7 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
 //Images
@@ -54,7 +54,7 @@ void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 }
 
-void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
+void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view)
 {
 	changeIcon((ddColumnOptionType)event.GetId());
 }
@@ -86,17 +86,17 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
 	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
-void ddColumnOptionIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnOptionIcon::basicDraw(wxBufferedDC &context, hdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
+		hdRect copy = displayBox().gethdRect(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		context.DrawBitmap(*iconToDraw, copy.GetPosition(), true);
 	}
 }
 
-void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC &context, hdDrawingView *view)
 {
 	basicDraw(context, view);
 }

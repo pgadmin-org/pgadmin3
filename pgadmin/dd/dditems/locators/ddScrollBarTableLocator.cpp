@@ -26,7 +26,7 @@ ddScrollBarTableLocator::~ddScrollBarTableLocator()
 {
 }
 
-wxhdPoint &ddScrollBarTableLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddScrollBarTableLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

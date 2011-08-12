@@ -12,16 +12,16 @@
 #ifndef DDSCROLLBARTABLELOCATOR_H
 #define DDSCROLLBARTABLELOCATOR_H
 
-#include "dd/wxhotdraw/locators/wxhdILocator.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "hotdraw/locators/hdILocator.h"
+#include "hotdraw/figures/hdIFigure.h"
 
-class ddScrollBarTableLocator : public wxhdILocator
+class ddScrollBarTableLocator : public hdILocator
 {
 public:
 	ddScrollBarTableLocator();
 	~ddScrollBarTableLocator();
 
-	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
+	virtual hdPoint &locate(int posIdx, hdIFigure *owner);
 
 protected:
 

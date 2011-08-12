@@ -17,14 +17,14 @@
 
 // App headers
 #include "dd/ddmodel/ddDrawingView.h"
-#include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
+#include "hotdraw/utilities/hdArrayCollection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 
-ddDrawingView::ddDrawingView(int diagram, wxWindow *ddParent, ddDrawingEditor *editor , wxSize size, wxhdDrawing *drawing)
-	: wxhdDrawingView(diagram, ddParent, editor, size, drawing)
+ddDrawingView::ddDrawingView(int diagram, wxWindow *ddParent, ddDrawingEditor *editor , wxSize size, hdDrawing *drawing)
+	: hdDrawingView(diagram, ddParent, editor, size, drawing)
 {
 }
 
@@ -61,7 +61,7 @@ void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 	}
 }
 
-ddDropTarget::ddDropTarget(ddDatabaseDesign *sourceDesign, wxhdDrawing *targetDrawing)
+ddDropTarget::ddDropTarget(ddDatabaseDesign *sourceDesign, hdDrawing *targetDrawing)
 {
 	target = targetDrawing;
 	source = sourceDesign;

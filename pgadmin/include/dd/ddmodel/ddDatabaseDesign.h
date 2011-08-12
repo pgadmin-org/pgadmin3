@@ -16,7 +16,7 @@
 #include <ctl/ctlAuiNotebook.h>
 
 #include "dd/ddmodel/ddDrawingEditor.h"
-#include "dd/wxhotdraw/tools/wxhdITool.h"
+#include "hotdraw/tools/hdITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 class ddModelBrowser;
@@ -28,12 +28,12 @@ class ddDatabaseDesign : public wxObject
 public:
 	ddDatabaseDesign(wxWindow *parent,  wxWindow *frmOwner);
 	~ddDatabaseDesign();
-	wxhdDrawingView *getView(int diagramIndex);
+	hdDrawingView *getView(int diagramIndex);
 	ddDrawingEditor *getEditor();
-	void addTableToModel(wxhdIFigure *figure);
-	void addTableToView(int diagramIndex, wxhdIFigure *figure);
-	void removeTable(int diagramIndex, wxhdIFigure *figure);
-	wxhdDrawing *createDiagram(wxWindow *owner, wxString name, bool fromXml);
+	void addTableToModel(hdIFigure *figure);
+	void addTableToView(int diagramIndex, hdIFigure *figure);
+	void removeTable(int diagramIndex, hdIFigure *figure);
+	hdDrawing *createDiagram(wxWindow *owner, wxString name, bool fromXml);
 	void deleteDiagram(int diagramIndex, bool deleteView = true);
 	void refreshDraw(int diagramIndex);
 	void eraseDiagram(int diagramIndex);
@@ -60,7 +60,7 @@ private:
 	ddModelBrowser *attachedBrowser;
 	int diagramCounter;
 	ddDrawingEditor *editor;
-	wxhdITool *tool;
+	hdITool *tool;
 	xmlTextWriterPtr xmlWriter;
 
 };

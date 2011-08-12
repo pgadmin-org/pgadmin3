@@ -26,7 +26,7 @@ ddAddFkLocator::~ddAddFkLocator()
 {
 }
 
-wxhdPoint &ddAddFkLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddAddFkLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

@@ -17,18 +17,18 @@
 // App headers
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/wxhotdraw/utilities/wxhdGeometry.h"
-#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "hotdraw/utilities/hdGeometry.h"
+#include "hotdraw/figures/defaultAttributes/hdFontAttribute.h"
+#include "hotdraw/main/hdDrawingView.h"
 
-ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocator *locator):
-	wxhdLocatorHandle(owner, locator)
+ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, hdILocator *locator):
+	hdLocatorHandle(owner, locator)
 {
 }
 
-wxhdRect &ddSouthTableSizeHandle::getDisplayBox(int posIdx)
+hdRect &ddSouthTableSizeHandle::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = locate(posIdx);
+	hdPoint p = locate(posIdx);
 	ddTableFigure *table = (ddTableFigure *) getOwner();
 	displayBox.width = table->getFullSpace().width * 0.5; //as defined at locator
 	displayBox.height = 3;
@@ -42,7 +42,7 @@ wxCursor ddSouthTableSizeHandle::createCursor()
 	return wxCursor(wxCURSOR_SIZENS);
 }
 
-void ddSouthTableSizeHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddSouthTableSizeHandle::draw(wxBufferedDC &context, hdDrawingView *view)
 {
 }
 
@@ -50,23 +50,23 @@ ddSouthTableSizeHandle::~ddSouthTableSizeHandle()
 {
 }
 
-void ddSouthTableSizeHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
+void ddSouthTableSizeHandle::invokeStart(hdMouseEvent &event, hdDrawingView *view)
 {
 	anchorY = event.GetPosition().y;
 }
 
-void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
+void ddSouthTableSizeHandle::invokeStep(hdMouseEvent &event, hdDrawingView *view)
 {
 	int y = event.GetPosition().y;
 	ddTableFigure *table = (ddTableFigure *) getOwner();
-	wxFont font = wxhdFontAttribute::defaultFont;
+	wxFont font = hdFontAttribute::defaultFont;
 	int colOffset = table->getColDefaultHeight(font);
 
 	int divBy = (table->getTotalColumns() - table->getColumnsWindow());
 	if(divBy <= 0)
 		divBy = table->getColumnsWindow();
 
-	wxhdGeometry g;
+	hdGeometry g;
 	if ( g.ddabs(anchorY - y) > colOffset)
 	{
 		if((anchorY - y) > 0)
@@ -85,7 +85,7 @@ void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *
 	view->notifyChanged();
 }
 
-void ddSouthTableSizeHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
+void ddSouthTableSizeHandle::invokeEnd(hdMouseEvent &event, hdDrawingView *view)
 {
 	//hack to update relationship position when table size change
 	ddTableFigure *table = (ddTableFigure *) getOwner();

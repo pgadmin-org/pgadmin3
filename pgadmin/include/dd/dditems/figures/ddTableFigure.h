@@ -11,24 +11,24 @@
 
 #ifndef DDTABLEFIGURE_H
 #define DDTABLEFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdCompositeFigure.h"
-#include "dd/wxhotdraw/figures/wxhdRectangleFigure.h"
-#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
+#include "hotdraw/figures/hdCompositeFigure.h"
+#include "hotdraw/figures/hdRectangleFigure.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
 class ddScrollBarHandle;
 class ddRelationshipFigure;
-class wxhdDrawing;
+class hdDrawing;
 
-class ddTableFigure : public wxhdCompositeFigure
+class ddTableFigure : public hdCompositeFigure
 {
 public:
 	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
 	ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName = wxEmptyString);
 	void InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw);
 	void Init(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
-	wxhdMultiPosRect &getBasicDisplayBox();
+	hdMultiPosRect &getBasicDisplayBox();
 	~ddTableFigure();
 
 	//Diagrams related functions
@@ -54,15 +54,15 @@ public:
 	void setSelectFkDestMode(bool value);
 
 	//delete hack tables
-	void processDeleteAlert(wxhdDrawing *drawing);
+	void processDeleteAlert(hdDrawing *drawing);
 
 	//columns scrolls
 	void updateTableSize(bool notifyChange = true);
 	void recalculateColsPos(int posIdx);
 	void setColsRowsWindow(int num);
-	wxhdMultiPosRect &getColsSpace();
-	wxhdMultiPosRect &getFullSpace();
-	wxhdMultiPosRect &getTitleRect();
+	hdMultiPosRect &getColsSpace();
+	hdMultiPosRect &getFullSpace();
+	hdMultiPosRect &getTitleRect();
 	int getTotalColumns();
 	int getColumnsWindow();
 	int getTopColWindowIndex();
@@ -136,13 +136,13 @@ public:
 
 protected:
 	//drawing
-	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
 
 private:
 	//Main Rectangle Sizes
-	wxhdMultiPosRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
-	wxhdMultiPosRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
+	hdMultiPosRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
+	hdMultiPosRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
 
 	//Rectangle item counters
 	int colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
@@ -154,7 +154,7 @@ private:
 	int beginDrawCols, beginDrawIdxs;
 
 	//Default Figures
-	wxhdRectangleFigure *rectangleFigure;
+	hdRectangleFigure *rectangleFigure;
 	ddTextTableItemFigure *tableTitle;
 
 	//helper variables

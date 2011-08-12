@@ -20,7 +20,7 @@
 
 // App headers
 #include "dd/ddmodel/ddDatabaseDesign.h"
-#include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
+#include "hotdraw/tools/hdSelectionTool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
@@ -46,7 +46,7 @@ ddDrawingEditor *ddDatabaseDesign::getEditor()
 	return editor;
 }
 
-wxhdDrawingView *ddDatabaseDesign::getView(int diagramIndex)
+hdDrawingView *ddDatabaseDesign::getView(int diagramIndex)
 {
 	return editor->getExistingView(diagramIndex);
 }
@@ -56,7 +56,7 @@ void ddDatabaseDesign::registerBrowser(ddModelBrowser *browser)
 	attachedBrowser = browser;
 }
 
-void ddDatabaseDesign::addTableToModel(wxhdIFigure *figure)
+void ddDatabaseDesign::addTableToModel(hdIFigure *figure)
 {
 	editor->addModelFigure(figure);
 	if(attachedBrowser)
@@ -65,7 +65,7 @@ void ddDatabaseDesign::addTableToModel(wxhdIFigure *figure)
 	}
 }
 
-void ddDatabaseDesign::addTableToView(int diagramIndex, wxhdIFigure *figure)
+void ddDatabaseDesign::addTableToView(int diagramIndex, hdIFigure *figure)
 {
 	editor->addDiagramFigure(diagramIndex, figure);
 	if(attachedBrowser)
@@ -82,7 +82,7 @@ void ddDatabaseDesign::refreshBrowser()
 	}
 }
 
-void ddDatabaseDesign::removeTable(int diagramIndex, wxhdIFigure *figure)
+void ddDatabaseDesign::removeTable(int diagramIndex, hdIFigure *figure)
 {
 	editor->removeDiagramFigure(diagramIndex, figure);
 }
@@ -110,13 +110,13 @@ bool ddDatabaseDesign::validateModel(wxString &errors)
 {
 	bool out = true;
 
-	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
-	wxhdIFigure *tmpFigure;
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmpFigure;
 	ddTableFigure *table;
 
 	while(iterator->HasNext())
 	{
-		tmpFigure = (wxhdIFigure *)iterator->Next();
+		tmpFigure = (hdIFigure *)iterator->Next();
 		if(tmpFigure->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmpFigure;
@@ -134,8 +134,8 @@ bool ddDatabaseDesign::validateModel(wxString &errors)
 wxString ddDatabaseDesign::generateModel()
 {
 	wxString out;
-	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
-	wxhdIFigure *tmp;
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmp;
 	ddTableFigure *table;
 	out += wxT(" \n");
 	out += wxT("--\n-- ");
@@ -144,7 +144,7 @@ wxString ddDatabaseDesign::generateModel()
 	out += wxT(" \n");
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			out += wxT(" \n");
@@ -165,7 +165,7 @@ wxString ddDatabaseDesign::generateModel()
 	iterator->ResetIterator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
@@ -184,7 +184,7 @@ wxString ddDatabaseDesign::generateModel()
 	iterator->ResetIterator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
@@ -199,8 +199,8 @@ wxString ddDatabaseDesign::generateModel()
 wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 {
 	wxString out;
-	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
-	wxhdIFigure *tmp;
+	hdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
+	hdIFigure *tmp;
 	ddTableFigure *table;
 	out += wxT(" \n");
 	out += wxT("--\n-- ");
@@ -209,7 +209,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 	out += wxT(" \n");
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			out += wxT(" \n");
@@ -230,7 +230,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 	iterator->ResetIterator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
@@ -249,7 +249,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 	iterator->ResetIterator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
@@ -264,8 +264,8 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 wxString ddDatabaseDesign::getNewTableName()
 {
 	wxString out, tmpStr;
-	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
-	wxhdIFigure *tmp;
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmp;
 	ddTableFigure *table;
 	int indx = 0;
 	bool repeat;
@@ -275,7 +275,7 @@ wxString ddDatabaseDesign::getNewTableName()
 		iterator->ResetIterator();
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
@@ -301,12 +301,12 @@ wxString ddDatabaseDesign::getNewTableName()
 
 ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 {
-	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
-	wxhdIFigure *tmp;
+	hdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
+	hdIFigure *tmp;
 	ddTableFigure *table = NULL;
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if (tmp->isSelected(diagramIndex) && tmp->getKindId() == DDTABLEFIGURE)
 			table = (ddTableFigure *)tmp;
 	}
@@ -317,12 +317,12 @@ ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 ddTableFigure *ddDatabaseDesign::getTable(wxString tableName)
 {
 	ddTableFigure *out = NULL;
-	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
-	wxhdIFigure *tmp;
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
@@ -360,14 +360,14 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 		ddXmlStorage::StartModel(xmlWriter, this);
 		//initialize IDs of tables
 		mappingNameToId.clear();
-		wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
-		wxhdIFigure *tmp;
+		hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+		hdIFigure *tmp;
 		ddTableFigure *table;
 		int nextID = 10;
 
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
@@ -382,7 +382,7 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 		iterator = editor->modelFiguresEnumerator();
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
@@ -397,7 +397,7 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 		iterator = editor->modelFiguresEnumerator();
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 			{
 				relationship = (ddRelationshipFigure *)tmp;
@@ -411,11 +411,11 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 		ddXmlStorage::StarDiagrams(xmlWriter);
 
 		iterator = editor->diagramsEnumerator();
-		wxhdDrawing *tmpDiagram;
+		hdDrawing *tmpDiagram;
 
 		while(iterator->HasNext())
 		{
-			tmpDiagram = (wxhdDrawing *)iterator->Next();
+			tmpDiagram = (hdDrawing *)iterator->Next();
 			ddXmlStorage::WriteLocal(xmlWriter, tmpDiagram);
 		}
 		delete iterator;
@@ -482,9 +482,9 @@ wxString ddDatabaseDesign::getTableName(wxString Id)
 	return tableName;
 }
 
-wxhdDrawing *ddDatabaseDesign::createDiagram(wxWindow *owner, wxString name, bool fromXml)
+hdDrawing *ddDatabaseDesign::createDiagram(wxWindow *owner, wxString name, bool fromXml)
 {
-	wxhdDrawing *drawing = editor->createDiagram(owner, fromXml);
+	hdDrawing *drawing = editor->createDiagram(owner, fromXml);
 	drawing->setName(name);
 	return drawing;
 }

@@ -19,7 +19,7 @@
 // App headers
 #include "dd/dditems/figures/xml/ddXmlStorage.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "hotdraw/figures/hdIFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
@@ -33,7 +33,7 @@ ddDatabaseDesign *ddXmlStorage::design = NULL;
 ctlAuiNotebook *ddXmlStorage::tabs = NULL;
 
 ddXmlStorage::ddXmlStorage():
-	wxhdStorage()
+	hdStorage()
 {
 	design = NULL;
 	tabs = NULL;
@@ -84,7 +84,7 @@ void ddXmlStorage::EndModel( xmlTextWriterPtr writer)
 	design = NULL;
 }
 
-bool ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
+bool ddXmlStorage::Write(xmlTextWriterPtr writer, hdIFigure *figure)
 {
 	if(design == NULL)
 	{
@@ -239,7 +239,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 
 	//Add Table Title
 	ddColumnFigure *f;
-	wxhdIteratorBase *iterator = figure->figuresEnumerator();
+	hdIteratorBase *iterator = figure->figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 
 	//<!ELEMENT TITLE (NAME,ALIAS?)>
@@ -365,7 +365,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 
 	//Start POINTSRELATION <!ELEMENT POINTSRELATION (POINTS+)>
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTSRELATION");
-	wxhdPoint point;
+	hdPoint point;
 
 	for(int posIdx = 0 ; posIdx < figure->pointLinesCount(); posIdx++)
 	{
@@ -505,7 +505,7 @@ void ddXmlStorage::EndDiagrams( xmlTextWriterPtr writer)
 	xmlTextWriterEndElement(writer);
 }
 
-void ddXmlStorage::WriteLocal(xmlTextWriterPtr writer, wxhdDrawing *diagram)
+void ddXmlStorage::WriteLocal(xmlTextWriterPtr writer, hdDrawing *diagram)
 {
 	int tmp;
 
@@ -518,13 +518,13 @@ void ddXmlStorage::WriteLocal(xmlTextWriterPtr writer, wxhdDrawing *diagram)
 	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME", "%s", XML_FROM_WXSTRING(diagram->getName()) );
 	processResult(tmp);
 
-	wxhdIteratorBase *iterator = diagram->figuresEnumerator();
-	wxhdIFigure *tmpFigure;
+	hdIteratorBase *iterator = diagram->figuresEnumerator();
+	hdIFigure *tmpFigure;
 	ddTableFigure *table;
 
 	while(iterator->HasNext())
 	{
-		tmpFigure = (wxhdIFigure *)iterator->Next();
+		tmpFigure = (hdIFigure *)iterator->Next();
 		if(tmpFigure->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmpFigure;
@@ -1648,7 +1648,7 @@ void ddXmlStorage::initDiagrams(xmlTextReaderPtr reader)
 	//At DIAGRAMS Element
 	xmlChar *value = NULL;
 	wxString diagramName;
-	wxhdDrawing *newDiagram;
+	hdDrawing *newDiagram;
 	int tmp;
 
 	//<!ELEMENT DIAGRAM (NAME, TABLEREF*)>

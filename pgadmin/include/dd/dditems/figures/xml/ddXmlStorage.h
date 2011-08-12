@@ -5,25 +5,25 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAbstractFigure.h - Base class for all figures with attributes (line size, fonts and others)
+// hdAbstractFigure.h - Base class for all figures with attributes (line size, fonts and others)
 //
 //////////////////////////////////////////////////////////////////////////
 
 #ifndef DDXMLSTORAGE_H
 #define DDXMLSTORAGE_H
 
-#include "dd/wxhotdraw/figures/xml/wxhdStorage.h"
+#include "hotdraw/figures/xml/hdStorage.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include <ctl/ctlAuiNotebook.h>
 
-class ddXmlStorage : public wxhdStorage
+class ddXmlStorage : public hdStorage
 {
 public:
 	ddXmlStorage();
 
 	//Generic part
 	static bool Read(xmlTextReaderPtr reader);
-	static bool Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
+	static bool Write(xmlTextWriterPtr writer, hdIFigure *figure);
 	static void setModel(ddDatabaseDesign *sourceDesign);
 	static void setNotebook(ctlAuiNotebook *notebook);
 	static wxString getModelDTD();
@@ -36,7 +36,7 @@ public:
 	static void WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item);
-	static void WriteLocal(	xmlTextWriterPtr writer, wxhdDrawing *diagram);
+	static void WriteLocal(	xmlTextWriterPtr writer, hdDrawing *diagram);
 	static void StarDiagrams( xmlTextWriterPtr writer);
 	static void EndDiagrams( xmlTextWriterPtr writer);
 	static void StartModel( xmlTextWriterPtr writer, ddDatabaseDesign *design);

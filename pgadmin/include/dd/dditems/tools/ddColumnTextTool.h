@@ -12,18 +12,18 @@
 #ifndef DDCOLUMNTEXTTOOL_H
 #define DDCOLUMNTEXTTOOL_H
 
-#include "dd/wxhotdraw/tools/wxhdSimpleTextTool.h"
+#include "hotdraw/tools/hdSimpleTextTool.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 
-class ddColumnTextTool : public wxhdSimpleTextTool
+class ddColumnTextTool : public hdSimpleTextTool
 {
 
 public:
-	ddColumnTextTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
+	ddColumnTextTool(hdDrawingView *view, hdIFigure *fig, hdITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
 	~ddColumnTextTool();
-	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
-	virtual bool callDialog(wxhdDrawingView *view);
+	virtual void mouseDown(hdMouseEvent &event);  //Mouse Right Click
+	virtual bool callDialog(hdDrawingView *view);
 	// some events functions are needed but because a bug it were move to main View class as a hack.
 protected:
 private:

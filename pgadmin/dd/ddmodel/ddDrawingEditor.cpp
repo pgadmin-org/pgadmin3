@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdDrawingEditor.cpp - Main class that manages all other classes
+// hdDrawingEditor.cpp - Main class that manages all other classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,22 +20,22 @@
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddDrawingView.h"
-#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "frm/frmDatabaseDesigner.h"
 
 
 ddDrawingEditor::ddDrawingEditor(wxWindow *owner,  wxWindow *frmOwner, ddDatabaseDesign *design)
-	: wxhdDrawingEditor(owner, true)
+	: hdDrawingEditor(owner, true)
 {
 	databaseDesign = design;
 	frm = (frmDatabaseDesigner *) frmOwner;
 }
 
-wxhdDrawing *ddDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
+hdDrawing *ddDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 {
 
-	wxhdDrawing *_tmpModel = new wxhdDrawing(this);
+	hdDrawing *_tmpModel = new hdDrawing(this);
 
 	ddDrawingView *_viewTmp = new ddDrawingView(_diagrams->count(), owner, this, wxSize(1200, 1200), _tmpModel);
 
@@ -52,15 +52,15 @@ wxhdDrawing *ddDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 	{
 		//Add a new position inside each figure to allow use of this new diagram existing figures.
 		int i;
-		wxhdIFigure *tmp;
+		hdIFigure *tmp;
 		for(i = 0; i < _model->count(); i++)
 		{
-			tmp = (wxhdIFigure *) _model->getItemAt(i);
+			tmp = (hdIFigure *) _model->getItemAt(i);
 			tmp->AddPosForNewDiagram();
 		}
 	}
 	//Add Diagram
-	_diagrams->addItem((wxhdObject *) _tmpModel);
+	_diagrams->addItem((hdObject *) _tmpModel);
 	modelChanged = true;
 	return _tmpModel;
 }
@@ -68,23 +68,23 @@ wxhdDrawing *ddDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 
 void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
-	wxhdIFigure *tmp;
+	hdIFigure *tmp;
 	ddTableFigure *table;
 	ddRelationshipFigure *relation;
-	wxhdIteratorBase *iterator;
-	wxhdCollection *tmpSelection;
+	hdIteratorBase *iterator;
+	hdCollection *tmpSelection;
 	int answer;
 	int numbTables = 0;
 	int numbRelationships = 0;
 
 	if (getExistingDiagram(diagramIndex)->countSelectedFigures() == 1)
 	{
-		tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0);
+		tmp = (hdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0);
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			numbTables = 1;
 			table = (ddTableFigure *)tmp;
-			wxhdRemoveDeleteDialog dialog(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), getExistingView(diagramIndex));
+			hdRemoveDeleteDialog dialog(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), getExistingView(diagramIndex));
 			answer = dialog.ShowModal();
 		}
 		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
@@ -92,7 +92,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 			numbRelationships = 1;
 			relation = (ddRelationshipFigure *)tmp;
 			 //Relationship can be delete only NOT REMOVED
-			wxhdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex),false);
+			hdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex),false);
 			answer = dialog2.ShowModal();
 		}
 	}
@@ -102,7 +102,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		iterator = getExistingDiagram(diagramIndex)->selectionFigures();
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDTABLEFIGURE)
 				numbTables++;
 		}
@@ -110,7 +110,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 
 		//Improve messages to display about relationships and tables and only relationship
-		wxhdRemoveDeleteDialog dialog3(
+		hdRemoveDeleteDialog dialog3(
 		    wxString::Format(_("Are you sure you wish to delete %d tables, removing from model related relationships?"), numbTables),
 		    _("Delete tables?"), getExistingView(diagramIndex));
 		answer = dialog3.ShowModal();
@@ -119,14 +119,14 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 	if (answer == DD_DELETE || answer == DD_REMOVE)
 	{
 		modelChanged = true;
-		tmpSelection =  new wxhdCollection(new wxhdArrayCollection());
+		tmpSelection =  new hdCollection(new hdArrayCollection());
 
 		//Preprocess relationships counting and storing at temporary collection
 		numbRelationships = 0;
 		iterator = getExistingDiagram(diagramIndex)->selectionFigures();
 		while(iterator->HasNext())
 		{
-			tmp = (wxhdIFigure *)iterator->Next();
+			tmp = (hdIFigure *)iterator->Next();
 			if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 			{
 				numbRelationships++;
@@ -137,7 +137,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 		while(numbTables > 0)
 		{
-			tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0);
+			tmp = (hdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0);
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
@@ -174,7 +174,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 			iterator = tmpSelection->createIterator();  //getExistingDiagram(diagramIndex)->selectionFigures();
 			while(iterator->HasNext())
 			{
-				tmp = (wxhdIFigure *)iterator->Next();
+				tmp = (hdIFigure *)iterator->Next();
 				//only way a relationship don't exists at diagram is
 				//it had been deleted before by deleting source/destination table that owns it
 				if(getExistingDiagram(diagramIndex)->includes(tmp))
@@ -197,7 +197,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 			while(numbRelationships > 0 && tmpSelection->count() == numbRelationships)
 			{
-				tmp = (wxhdIFigure *) tmpSelection->getItemAt(0);
+				tmp = (hdIFigure *) tmpSelection->getItemAt(0);
 				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 				{
 					relation = (ddRelationshipFigure *)tmp;
@@ -233,16 +233,16 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 void ddDrawingEditor::checkRelationshipsConsistency(int diagramIndex)
 {
-	wxhdIFigure *tmp;
+	hdIFigure *tmp;
 	ddRelationshipFigure *relation;
-	wxhdDrawing *diagram = getExistingDiagram(diagramIndex);
+	hdDrawing *diagram = getExistingDiagram(diagramIndex);
 
 	// First Step Removel all orphan [relations without source or destination] relationships
 	// from DIAGRAM but NOT from MODEL
-	wxhdIteratorBase *iterator = diagram->figuresEnumerator();
+	hdIteratorBase *iterator = diagram->figuresEnumerator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 		{
 			relation = (ddRelationshipFigure *)tmp;
@@ -263,7 +263,7 @@ void ddDrawingEditor::checkRelationshipsConsistency(int diagramIndex)
 	iterator = _model->createIterator();
 	while(iterator->HasNext())
 	{
-		tmp = (wxhdIFigure *)iterator->Next();
+		tmp = (hdIFigure *)iterator->Next();
 		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 		{
 			relation = (ddRelationshipFigure *)tmp;

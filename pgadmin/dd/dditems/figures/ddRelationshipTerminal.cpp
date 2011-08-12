@@ -17,10 +17,10 @@
 
 // App headers
 #include "dd/dditems/figures/ddRelationshipTerminal.h"
-#include "dd/wxhotdraw/utilities/wxhdPoint.h"
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
-#include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "hotdraw/utilities/hdPoint.h"
+#include "hotdraw/utilities/hdRect.h"
+#include "hotdraw/main/hdDrawingView.h"
+#include "hotdraw/utilities/hdGeometry.h"
 
 ddRelationshipTerminal::ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal)
 {
@@ -32,14 +32,14 @@ ddRelationshipTerminal::~ddRelationshipTerminal()
 {
 }
 
-wxhdPoint &ddRelationshipTerminal::draw (wxBufferedDC &context, wxhdPoint &a, wxhdPoint &b, wxhdDrawingView *view)
+hdPoint &ddRelationshipTerminal::draw (wxBufferedDC &context, hdPoint &a, hdPoint &b, hdDrawingView *view)
 {
-	wxhdGeometry g;
-	wxhdPoint points[3];
+	hdGeometry g;
+	hdPoint points[3];
 
 	context.SetPen(terminalLinePen);
 
-	wxhdPoint aCopy = a, bCopy = b;
+	hdPoint aCopy = a, bCopy = b;
 	view->CalcScrolledPosition(aCopy.x, aCopy.y, &aCopy.x, &aCopy.y);
 	view->CalcScrolledPosition(bCopy.x, bCopy.y, &bCopy.x, &bCopy.y);
 
@@ -51,7 +51,7 @@ wxhdPoint &ddRelationshipTerminal::draw (wxBufferedDC &context, wxhdPoint &a, wx
 
 		if(ownerFigure->getEndFigure() && ownerFigure->getOneToMany())
 		{
-			wxhdRect r = ownerFigure->getEndFigure()->displayBox().getwxhdRect(view->getIdx());
+			hdRect r = ownerFigure->getEndFigure()->displayBox().gethdRect(view->getIdx());
 
 			view->CalcScrolledPosition(r.x, r.y, &r.x, &r.y);
 
@@ -143,12 +143,12 @@ wxhdPoint &ddRelationshipTerminal::draw (wxBufferedDC &context, wxhdPoint &a, wx
 				//CENTER of star figure or invalid place, do nothing
 			}
 
-			value = wxhdPoint(XX, YY);
+			value = hdPoint(XX, YY);
 			return value;
 		}
-		value = wxhdPoint(0, 0);
+		value = hdPoint(0, 0);
 		return value;
 	}
-	value = wxhdPoint(0, 0);
+	value = hdPoint(0, 0);
 	return value;
 }

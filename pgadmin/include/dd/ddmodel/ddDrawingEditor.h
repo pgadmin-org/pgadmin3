@@ -5,14 +5,14 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdDrawingEditor.h - Main class that manages all other classes
+// hdDrawingEditor.h - Main class that manages all other classes
 //
 //////////////////////////////////////////////////////////////////////////
 
 #ifndef DDDRAWINGEDITOR_H
 #define DDDRAWINGEDITOR_H
 
-#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+#include "hotdraw/main/hdDrawingEditor.h"
 class frmDatabaseDesigner;
 
 enum
@@ -22,11 +22,11 @@ enum
 
 class ddDatabaseDesign;
 
-class ddDrawingEditor : public wxhdDrawingEditor
+class ddDrawingEditor : public hdDrawingEditor
 {
 public:
 	ddDrawingEditor(wxWindow *owner, wxWindow *frmOwner, ddDatabaseDesign *design);
-	virtual wxhdDrawing *createDiagram(wxWindow *owner, bool fromXml);
+	virtual hdDrawing *createDiagram(wxWindow *owner, bool fromXml);
 	virtual void remOrDelSelFigures(int diagramIndex);
 	void checkRelationshipsConsistency(int diagramIndex);
 	void checkAllDigramsRelConsistency();

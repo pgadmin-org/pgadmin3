@@ -12,31 +12,31 @@
 #ifndef DDSCROLLBARHANDLE_H
 #define DDSCROLLBARHANDLE_H
 
-#include "dd/wxhotdraw/handles/wxhdIHandle.h"
-#include "dd/wxhotdraw/handles/wxhdLocatorHandle.h"
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
-#include "dd/wxhotdraw/utilities/wxhdPoint.h"
+#include "hotdraw/handles/hdIHandle.h"
+#include "hotdraw/handles/hdLocatorHandle.h"
+#include "hotdraw/utilities/hdRect.h"
+#include "hotdraw/utilities/hdPoint.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 
-class ddScrollBarHandle : public wxhdLocatorHandle
+class ddScrollBarHandle : public hdLocatorHandle
 {
 public:
-	ddScrollBarHandle(ddTableFigure *owner, wxhdILocator *scrollBarLocator , wxSize &size);
+	ddScrollBarHandle(ddTableFigure *owner, hdILocator *scrollBarLocator , wxSize &size);
 	~ddScrollBarHandle();
 
 
-	virtual void draw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdPoint &locate(int posIdx);
+	virtual void draw(wxBufferedDC &context, hdDrawingView *view);
+	virtual hdPoint &locate(int posIdx);
 	virtual wxCursor createCursor();
-	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual wxhdRect &getDisplayBox(int posIdx);
+	virtual void invokeStart(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeStep(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeEnd(hdMouseEvent &event, hdDrawingView *view);
+	virtual hdRect &getDisplayBox(int posIdx);
 protected:
 private:
-	wxhdPoint pointLocate;
-	wxhdILocator *scrollLocator;
+	hdPoint pointLocate;
+	hdILocator *scrollLocator;
 	ddTableFigure *table;
 	wxBitmap upBitmap, downBitmap;
 	wxSize barSize;

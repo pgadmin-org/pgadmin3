@@ -21,8 +21,8 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
-#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+#include "hotdraw/main/hdDrawingView.h"
+#include "hotdraw/main/hdDrawingEditor.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/handles/ddAddColButtonHandle.h"
 #include "dd/dditems/locators/ddAddColLocator.h"
@@ -36,10 +36,10 @@
 #include "dd/dditems/locators/ddScrollBarTableLocator.h"
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/locators/ddTableBottomLocator.h"
-#include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "hotdraw/utilities/hdGeometry.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
-#include "dd/wxhotdraw/connectors/wxhdLocatorConnector.h"
-#include "dd/wxhotdraw/main/wxhdDrawing.h"
+#include "hotdraw/connectors/hdLocatorConnector.h"
+#include "hotdraw/main/hdDrawing.h"
 //Images
 #include "images/ddAddColumn.pngc"
 #include "images/ddRemoveColumn.pngc"
@@ -76,7 +76,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	fontSelColorAttribute->fontColor = wxColour(49, 79, 79);
 
 	//Set table size, width and position
-	rectangleFigure = new wxhdRectangleFigure();
+	rectangleFigure = new hdRectangleFigure();
 	rectangleFigure->moveTo(0, x, y);
 	add(rectangleFigure);
 
@@ -93,19 +93,19 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	//Intialize handles
 	wxBitmap image = wxBitmap(*ddAddColumn_png_img);
 	wxSize valueSize = wxSize(8, 8);
-	figureHandles->addItem(new ddAddColButtonHandle((wxhdIFigure *)this, (wxhdILocator *)new ddAddColLocator(), image, valueSize));
+	figureHandles->addItem(new ddAddColButtonHandle((hdIFigure *)this, (hdILocator *)new ddAddColLocator(), image, valueSize));
 	image = wxBitmap(*ddAddForeignKey_png_img);
-	figureHandles->addItem(new ddAddFkButtonHandle((wxhdIFigure *)this, (wxhdILocator *)new ddAddFkLocator(), image, valueSize));
+	figureHandles->addItem(new ddAddFkButtonHandle((hdIFigure *)this, (hdILocator *)new ddAddFkLocator(), image, valueSize));
 	image = wxBitmap(*ddRemoveTable_png_img);
-	figureHandles->addItem(new ddRemoveTableButtonHandle((wxhdIFigure *)this, (wxhdILocator *)new ddRemoveTableLocator(), image, valueSize));
+	figureHandles->addItem(new ddRemoveTableButtonHandle((hdIFigure *)this, (hdILocator *)new ddRemoveTableLocator(), image, valueSize));
 	image = wxBitmap(*ddMinimizeTable_png_img);
 	wxBitmap image2 = wxBitmap(*ddMaximizeTable_png_img);
-	figureHandles->addItem(new ddMinMaxTableButtonHandle((wxhdIFigure *)this, (wxhdILocator *)new ddMinMaxTableLocator(), image, image2, valueSize));
-	figureHandles->addItem(new ddSouthTableSizeHandle(this, (wxhdILocator *)new ddTableBottomLocator()));
+	figureHandles->addItem(new ddMinMaxTableButtonHandle((hdIFigure *)this, (hdILocator *)new ddMinMaxTableLocator(), image, image2, valueSize));
+	figureHandles->addItem(new ddSouthTableSizeHandle(this, (hdILocator *)new ddTableBottomLocator()));
 
 	//Intialize special handle
 	valueSize = wxSize(10, colsRect.GetSize().GetHeight());
-	scrollbar = new ddScrollBarHandle(this, (wxhdILocator *)new ddScrollBarTableLocator(), valueSize);
+	scrollbar = new ddScrollBarHandle(this, (hdILocator *)new ddScrollBarTableLocator(), valueSize);
 
 	//Intialize columns window (min is always 1 in both, with or without cols & indxs)
 	colsRowsSize = 0;
@@ -133,13 +133,13 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 }
 
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
-	wxhdCompositeFigure()
+	hdCompositeFigure()
 {
 	Init(tableName, x, y, shortName);
 }
 
 ddTableFigure::ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName):
-	wxhdCompositeFigure()
+	hdCompositeFigure()
 {
 	Init(tableName, 0, 0, shortName);
 	//Check figure available positions for diagrams, add at least needed to allow initialization of the class
@@ -192,7 +192,7 @@ void ddTableFigure::AddPosForNewDiagram()
 	unScrolledFullSizeRect.addNewXYPosition();
 	unScrolledTitleRect.addNewXYPosition();
 	//Add to all figure figures
-	wxhdCompositeFigure::AddPosForNewDiagram();
+	hdCompositeFigure::AddPosForNewDiagram();
 }
 
 void ddTableFigure::RemovePosOfDiagram(int posIdx)
@@ -208,7 +208,7 @@ void ddTableFigure::RemovePosOfDiagram(int posIdx)
 	unScrolledFullSizeRect.removeXYPosition(posIdx);
 	unScrolledTitleRect.removeXYPosition(posIdx);
 	//remove position at all figure figures
-	wxhdCompositeFigure::RemovePosOfDiagram(posIdx);
+	hdCompositeFigure::RemovePosOfDiagram(posIdx);
 }
 
 ddColumnFigure *ddTableFigure::getColByName(wxString name)
@@ -216,7 +216,7 @@ ddColumnFigure *ddTableFigure::getColByName(wxString name)
 	ddColumnFigure *out = NULL;
 	ddColumnFigure *f;
 
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	iterator->Next(); //Second figure is main title
 
@@ -342,13 +342,13 @@ void ddTableFigure::recalculateColsPos(int posIdx)
 	wxFont font = fontAttribute->font();
 	int defaultHeight = getColDefaultHeight(font);
 
-	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0); //first figure is always Rect
+	hdIFigure *f = (hdIFigure *) figureFigures->getItemAt(0); //first figure is always Rect
 	int horizontalPos = f->displayBox().x[posIdx] + 2;
 	int verticalPos = 0;
 
 	for(int i = 2; i < maxColIndex ; i++)
 	{
-		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
+		f = (hdIFigure *) figureFigures->getItemAt(i); //table title
 		if( (i >= beginDrawCols) && (i <= (colsWindow + beginDrawCols)) ) //Visible to draw
 		{
 			verticalPos = colsRect.y[posIdx] + (defaultHeight * (i - beginDrawCols) + ((i - beginDrawCols) * internalPadding));
@@ -361,7 +361,7 @@ void ddTableFigure::recalculateColsPos(int posIdx)
 
 
 
-void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddTableFigure::basicDraw(wxBufferedDC &context, hdDrawingView *view)
 {
 	int idx = view->getIdx();
 	calcInternalSubAreas(idx);
@@ -377,14 +377,14 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 		calcScrolled = false;
 	}
 
-	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0); //table rectangle
+	hdIFigure *f = (hdIFigure *) figureFigures->getItemAt(0); //table rectangle
 	f->draw(context, view);
-	f = (wxhdIFigure *) figureFigures->getItemAt(1); //table title
+	f = (hdIFigure *) figureFigures->getItemAt(1); //table title
 	f->draw(context, view);
 
 	for(int i = beginDrawCols; i < (colsWindow + beginDrawCols); i++)
 	{
-		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
+		f = (hdIFigure *) figureFigures->getItemAt(i); //table title
 		if(f->displayBox().GetPosition(view->getIdx()).x > 0 && f->displayBox().GetPosition(view->getIdx()).y > 0)
 		{
 			f->draw(context, view);
@@ -444,7 +444,7 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 	}
 }
 
-void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
+void ddTableFigure::basicDrawSelected(wxBufferedDC &context, hdDrawingView *view)
 {
 	int idx = view->getIdx();
 	calcInternalSubAreas(idx);
@@ -460,14 +460,14 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 		calcScrolled = false;
 	}
 
-	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0); //table rectangle
+	hdIFigure *f = (hdIFigure *) figureFigures->getItemAt(0); //table rectangle
 	f->drawSelected(context, view);
-	f = (wxhdIFigure *) figureFigures->getItemAt(1); //table title
+	f = (hdIFigure *) figureFigures->getItemAt(1); //table title
 	f->drawSelected(context, view);
 
 	for(int i = beginDrawCols; i < (colsWindow + beginDrawCols); i++)
 	{
-		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
+		f = (hdIFigure *) figureFigures->getItemAt(i); //table title
 		if(f->displayBox().GetPosition(view->getIdx()).x > 0 && f->displayBox().GetPosition(view->getIdx()).y > 0)
 		{
 			f->drawSelected(context, view);
@@ -498,7 +498,7 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 	context.DrawLine(titleIndxsRect.GetBottomLeft(idx), titleIndxsRect.GetBottomRight(idx));
 }
 
-wxhdMultiPosRect &ddTableFigure::getBasicDisplayBox()
+hdMultiPosRect &ddTableFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
@@ -539,7 +539,7 @@ int ddTableFigure::getColDefaultHeight(wxFont font)
 	}
 	else
 	{
-		wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(1); //table title
+		hdIFigure *f = (hdIFigure *) figureFigures->getItemAt(1); //table title
 		return f->displayBox().height;
 	}
 }
@@ -553,9 +553,9 @@ void ddTableFigure::setSelectFkDestMode(bool value)
 int ddTableFigure::getFiguresMaxWidth()
 {
 	ddColumnFigure *cf;
-	wxhdGeometry g;
+	hdGeometry g;
 
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	int maxWidth = 0;
 	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
@@ -582,7 +582,7 @@ void ddTableFigure::calcInternalSubAreas(int posIdx)
 	wxFont font = fontAttribute->font();
 	int defaultHeight = getColDefaultHeight(font);
 
-	wxhdRect db = basicDisplayBox.getwxhdRect(posIdx);
+	hdRect db = basicDisplayBox.gethdRect(posIdx);
 
 	//*** titleRect
 	float t = font.GetPointSize();
@@ -639,7 +639,7 @@ void ddTableFigure::updateTableSize(bool notifyChange)
 {
 	//Step 0: Recalculate displaybox size, in case of an external modification as change of datatype in a fk from a source (data is stored in original table)
 	ddColumnFigure *cf;
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
 	while(iterator->HasNext())
@@ -659,17 +659,17 @@ void ddTableFigure::updateTableSize(bool notifyChange)
 	}
 }
 
-wxhdMultiPosRect &ddTableFigure::getColsSpace()
+hdMultiPosRect &ddTableFigure::getColsSpace()
 {
 	return unScrolledColsRect;
 }
 
-wxhdMultiPosRect &ddTableFigure::getFullSpace()
+hdMultiPosRect &ddTableFigure::getFullSpace()
 {
 	return unScrolledFullSizeRect;
 }
 
-wxhdMultiPosRect &ddTableFigure::getTitleRect()
+hdMultiPosRect &ddTableFigure::getTitleRect()
 {
 	return unScrolledTitleRect;
 }
@@ -779,7 +779,7 @@ wxArrayString ddTableFigure::getAllColumnsNames()
 	wxArrayString tmp;
 	ddColumnFigure *f;
 	tmp.Clear();
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	iterator->Next(); //Second figure is main title
 
@@ -797,7 +797,7 @@ wxArrayString ddTableFigure::getAllFkSourceColsNames(bool pk, int ukIndex)
 	wxArrayString tmp;
 	ddColumnFigure *f;
 	tmp.Clear();
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	iterator->Next(); //Second figure is main title
 
@@ -822,7 +822,7 @@ wxArrayString ddTableFigure::getAllFkSourceColsNames(bool pk, int ukIndex)
 ddColumnFigure *ddTableFigure::getColumnByName(wxString name)
 {
 	ddColumnFigure *f;
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	iterator->Next(); //Second figure is main title
 
@@ -964,7 +964,7 @@ wxString ddTableFigure::getTableName()
 //set Null on all relationship items with a fk column to be delete or a pk to be removed (pk attribute)
 void ddTableFigure::prepareForDeleteFkColumn(ddColumnFigure *column)
 {
-	wxhdIteratorBase *iterator = observersEnumerator();
+	hdIteratorBase *iterator = observersEnumerator();
 	while(iterator->HasNext())
 	{
 		ddRelationshipFigure *r = (ddRelationshipFigure *) iterator->Next();
@@ -986,7 +986,7 @@ void ddTableFigure::prepareForDeleteFkColumn(ddColumnFigure *column)
 // If start = and is recursive
 void ddTableFigure::updateFkObservers()
 {
-	wxhdIteratorBase *iterator = observersEnumerator();
+	hdIteratorBase *iterator = observersEnumerator();
 	while(iterator->HasNext())
 	{
 		ddRelationshipFigure *r = (ddRelationshipFigure *) iterator->Next();
@@ -1002,7 +1002,7 @@ void ddTableFigure::updateFkObservers()
 void ddTableFigure::updateSizeOfObservers()
 {
 	//For all tables that are observing this table, update their size
-	wxhdIteratorBase *iterator = observersEnumerator();
+	hdIteratorBase *iterator = observersEnumerator();
 	while(iterator->HasNext())
 	{
 		ddRelationshipFigure *r = (ddRelationshipFigure *) iterator->Next();
@@ -1013,9 +1013,9 @@ void ddTableFigure::updateSizeOfObservers()
 }
 
 //drop foreign keys with this table as origin or destination because table is going to be deleted
-void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
+void ddTableFigure::processDeleteAlert(hdDrawing *drawing)
 {
-	wxhdIteratorBase *iterator = observersEnumerator();
+	hdIteratorBase *iterator = observersEnumerator();
 	bool repeatFlag;
 	do
 	{
@@ -1041,7 +1041,7 @@ void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
 void ddTableFigure::basicMoveBy(int posIdx, int x, int y)
 {
 
-	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0);
+	hdIFigure *f = (hdIFigure *) figureFigures->getItemAt(0);
 //Hack to avoid bug in if clause
 	int width =  spaceForMovement.GetWidth();
 	int height =  spaceForMovement.GetHeight();
@@ -1052,7 +1052,7 @@ void ddTableFigure::basicMoveBy(int posIdx, int x, int y)
 
 //limit movemnt of table figures to canvas space
 	if( (left > 0) && (top > 0) && (right < width) && (bottom < height) )
-		wxhdCompositeFigure::basicMoveBy(posIdx, x, y);
+		hdCompositeFigure::basicMoveBy(posIdx, x, y);
 }
 
 //Validate status of table for SQL DDL generation
@@ -1062,7 +1062,7 @@ bool ddTableFigure::validateTable(wxString &errors)
 	wxString tmp = wxEmptyString;
 	ddColumnFigure *f;
 
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	iterator->Next(); //Second figure is main title
 
@@ -1094,7 +1094,7 @@ wxString ddTableFigure::generateSQLCreate()
 	//Columns and table
 	wxString tmp(wxT("CREATE TABLE "));
 	tmp += +wxT("\"") + getTableName() + wxT("\" (\n");
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
 	while(iterator->HasNext())
@@ -1118,7 +1118,7 @@ wxString ddTableFigure::generateSQLCreate()
 wxString ddTableFigure::generateSQLAlterPks()
 {
 	wxString tmp;
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	//Pk, Uk Constraints
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
@@ -1167,7 +1167,7 @@ wxString ddTableFigure::generateSQLAlterPks()
 wxString ddTableFigure::generateSQLAlterFks()
 {
 	wxString tmp;
-	wxhdIteratorBase *iterator = figuresEnumerator();
+	hdIteratorBase *iterator = figuresEnumerator();
 	//Fk Constraint
 	iterator = observersEnumerator();
 	if(!iterator->HasNext())

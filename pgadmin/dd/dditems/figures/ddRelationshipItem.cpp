@@ -18,7 +18,7 @@
 // App headers
 #include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
 ddRelationshipItem::ddRelationshipItem()

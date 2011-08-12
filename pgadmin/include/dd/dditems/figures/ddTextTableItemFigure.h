@@ -14,7 +14,7 @@
 
 #include <wx/arrstr.h>
 
-#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
 enum
@@ -40,7 +40,7 @@ enum
 class ddColumnFigure;
 class ddTableFigure;
 
-class ddTextTableItemFigure : public wxhdSimpleTextFigure
+class ddTextTableItemFigure : public hdSimpleTextFigure
 {
 public:
 	ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner);
@@ -52,7 +52,7 @@ public:
 	virtual void setOneTimeNoAlias();
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
-	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view);
 	virtual void setText(wxString textString);
 	virtual ddColumnFigure *getOwnerColumn();
 	virtual void setOwnerColumn(ddColumnFigure *column);
@@ -61,7 +61,7 @@ public:
 	{
 		return showDataType;
 	};
-	wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
+	hdITool *CreateFigureTool(hdDrawingView *view, hdITool *defaultTool);
 	virtual void displayBoxUpdate();
 	int getTextWidth();
 	int getTextHeight();

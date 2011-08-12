@@ -5,30 +5,30 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnFigureTool.h - Improvement to wxhdFigureTool to work with composite table figures
+// ddColumnFigureTool.h - Improvement to hdFigureTool to work with composite table figures
 //
 //////////////////////////////////////////////////////////////////////////
 
 #ifndef DDCOLUMNFIGURETOOL_H
 #define DDCOLUMNFIGURETOOL_H
 
-#include "dd/wxhotdraw/tools/wxhdFigureTool.h"
+#include "hotdraw/tools/hdFigureTool.h"
 
 
-class ddColumnFigureTool : public wxhdFigureTool
+class ddColumnFigureTool : public hdFigureTool
 {
 public:
-	ddColumnFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt);
+	ddColumnFigureTool(hdDrawingView *view, hdIFigure *fig, hdITool *dt);
 	~ddColumnFigureTool();
-	virtual void setDefaultTool(wxhdITool *dt);
-	virtual wxhdITool *getDefaultTool();
-	virtual void mouseDown(wxhdMouseEvent &event);  //Mouse Right Click
-	virtual void activate(wxhdDrawingView *view);
-	virtual void deactivate(wxhdDrawingView *view);
-	virtual void setDelegateTool(wxhdDrawingView *view, wxhdITool *tool);
-	virtual wxhdITool *getDelegateTool();
+	virtual void setDefaultTool(hdITool *dt);
+	virtual hdITool *getDefaultTool();
+	virtual void mouseDown(hdMouseEvent &event);  //Mouse Right Click
+	virtual void activate(hdDrawingView *view);
+	virtual void deactivate(hdDrawingView *view);
+	virtual void setDelegateTool(hdDrawingView *view, hdITool *tool);
+	virtual hdITool *getDelegateTool();
 protected:
-	wxhdITool *delegateTool;
+	hdITool *delegateTool;
 private:
 };
 #endif

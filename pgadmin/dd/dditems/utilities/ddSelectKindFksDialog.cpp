@@ -20,8 +20,8 @@
 // App headers
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
-#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+#include "hotdraw/main/hdDrawingView.h"
+#include "hotdraw/main/hdDrawingEditor.h"
 
 
 IMPLEMENT_CLASS( ddSelectKindFksDialog, wxDialog )

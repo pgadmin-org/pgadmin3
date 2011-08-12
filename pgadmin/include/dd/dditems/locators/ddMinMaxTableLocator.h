@@ -12,16 +12,16 @@
 #ifndef DDMINMAXTABLELOCATOR_H
 #define DDMINMAXTABLELOCATOR_H
 
-#include "dd/wxhotdraw/locators/wxhdILocator.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "hotdraw/locators/hdILocator.h"
+#include "hotdraw/figures/hdIFigure.h"
 
-class ddMinMaxTableLocator : public wxhdILocator
+class ddMinMaxTableLocator : public hdILocator
 {
 public:
 	ddMinMaxTableLocator();
 	~ddMinMaxTableLocator();
 
-	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
+	virtual hdPoint &locate(int posIdx, hdIFigure *owner);
 
 protected:
 

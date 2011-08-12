@@ -105,7 +105,7 @@ ddColumnFigure::~ddColumnFigure()
 void ddColumnFigure::AddPosForNewDiagram()
 {
 	//Add position for new displaybox at new diagram
-	wxhdAttributeFigure::AddPosForNewDiagram();
+	hdAttributeFigure::AddPosForNewDiagram();
 	//Add position to each figure inside this composite figure
 	if(kindImage)
 		kindImage->AddPosForNewDiagram();
@@ -118,7 +118,7 @@ void ddColumnFigure::AddPosForNewDiagram()
 void ddColumnFigure::RemovePosOfDiagram(int posIdx)
 {
 	//Remove this position at displaybox of this figure
-	wxhdAttributeFigure::RemovePosOfDiagram(posIdx);
+	hdAttributeFigure::RemovePosOfDiagram(posIdx);
 	//Remove this position at each figure inside this composite figure
 	if(kindImage)
 		kindImage->RemovePosOfDiagram(posIdx);
@@ -131,7 +131,7 @@ void ddColumnFigure::RemovePosOfDiagram(int posIdx)
 
 void ddColumnFigure::basicMoveBy(int posIdx, int x, int y)
 {
-	wxhdAbstractFigure::basicMoveBy(posIdx, x, y);
+	hdAbstractFigure::basicMoveBy(posIdx, x, y);
 	if(kindImage)
 		kindImage->moveBy(posIdx, x, y);
 	if(optionImage)
@@ -141,7 +141,7 @@ void ddColumnFigure::basicMoveBy(int posIdx, int x, int y)
 
 void ddColumnFigure::moveTo(int posIdx, int x, int y)
 {
-	wxhdAbstractFigure::moveTo(posIdx, x, y);
+	hdAbstractFigure::moveTo(posIdx, x, y);
 	int distance = 0;
 
 	if(kindImage)
@@ -182,12 +182,12 @@ bool ddColumnFigure::containsPoint(int posIdx, int x, int y)
 	return out;
 }
 
-wxhdMultiPosRect &ddColumnFigure::getBasicDisplayBox()
+hdMultiPosRect &ddColumnFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
 
-void ddColumnFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnFigure::basicDraw(wxBufferedDC &context, hdDrawingView *view)
 {
 	columnText->draw(context, view);
 	if(kindImage)
@@ -196,7 +196,7 @@ void ddColumnFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 		optionImage->draw(context, view);
 }
 
-void ddColumnFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnFigure::basicDrawSelected(wxBufferedDC &context, hdDrawingView *view)
 {
 	columnText->drawSelected(context, view);
 	if(kindImage)
@@ -205,9 +205,9 @@ void ddColumnFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *v
 		optionImage->drawSelected(context, view);
 }
 
-wxhdIFigure *ddColumnFigure::findFigure(int posIdx, int x, int y)
+hdIFigure *ddColumnFigure::findFigure(int posIdx, int x, int y)
 {
-	wxhdIFigure *out = NULL;
+	hdIFigure *out = NULL;
 
 	if(columnText->containsPoint(posIdx, x, y))
 		out = columnText;
@@ -221,21 +221,21 @@ wxhdIFigure *ddColumnFigure::findFigure(int posIdx, int x, int y)
 	return out;
 }
 
-wxhdITool *ddColumnFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
+hdITool *ddColumnFigure::CreateFigureTool(hdDrawingView *view, hdITool *defaultTool)
 {
 	return new ddColumnFigureTool(view, this, defaultTool);
 }
 
-wxhdIFigure *ddColumnFigure::getFigureAt(int pos)
+hdIFigure *ddColumnFigure::getFigureAt(int pos)
 {
 	if(pos == 0)
-		return (wxhdIFigure *) kindImage;
+		return (hdIFigure *) kindImage;
 
 	if(pos == 1)
-		return (wxhdIFigure *) optionImage;
+		return (hdIFigure *) optionImage;
 
 	if(pos == 2)
-		return (wxhdIFigure *) columnText;
+		return (hdIFigure *) columnText;
 
 	return NULL;
 }
@@ -323,7 +323,7 @@ void ddColumnFigure::setRightIconForColumn()
 	kindImage->setRightIconForColumn();
 }
 
-void ddColumnFigure::toggleColumnKind(ddColumnType type, wxhdDrawingView *view)
+void ddColumnFigure::toggleColumnKind(ddColumnType type, hdDrawingView *view)
 {
 	kindImage->toggleColumnKind(type, view);
 }

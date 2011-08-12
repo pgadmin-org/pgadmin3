@@ -11,24 +11,24 @@
 
 #ifndef DDRELATIONSHIPTERMINAL_H
 #define DDRELATIONSHIPTERMINAL_H
-#include "dd/wxhotdraw/figures/wxhdLineTerminal.h"
-#include "dd/wxhotdraw/utilities/wxhdPoint.h"
+#include "hotdraw/figures/hdLineTerminal.h"
+#include "hotdraw/utilities/hdPoint.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
 
 
-class ddRelationshipTerminal : public wxhdLineTerminal
+class ddRelationshipTerminal : public hdLineTerminal
 {
 public:
 	ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal);
 	~ddRelationshipTerminal();
-	virtual wxhdPoint &draw (wxBufferedDC &context, wxhdPoint &a, wxhdPoint &b, wxhdDrawingView *view);
+	virtual hdPoint &draw (wxBufferedDC &context, hdPoint &a, hdPoint &b, hdDrawingView *view);
 protected:
 
 private:
 	double lastFactor;
 	ddRelationshipFigure *ownerFigure;
 	bool endTerminal;
-	wxhdPoint value;
+	hdPoint value;
 };
 #endif

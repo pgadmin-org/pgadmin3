@@ -26,7 +26,7 @@ ddAddColLocator::~ddAddColLocator()
 {
 }
 
-wxhdPoint &ddAddColLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddAddColLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

@@ -26,7 +26,7 @@ ddMinMaxTableLocator::~ddMinMaxTableLocator()
 {
 }
 
-wxhdPoint &ddMinMaxTableLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddMinMaxTableLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

@@ -11,7 +11,7 @@
 
 #ifndef DDRELATIONSHIPFIGURE_H
 #define DDRELATIONSHIPFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdLineConnection.h"
+#include "hotdraw/figures/hdLineConnection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
@@ -52,11 +52,11 @@ class ddRelationshipItem;
 WX_DECLARE_STRING_HASH_MAP( ddRelationshipItem *, columnsHashMap );
 
 
-class ddRelationshipFigure : public wxhdLineConnection
+class ddRelationshipFigure : public hdLineConnection
 {
 public:
 	ddRelationshipFigure();
-	ddRelationshipFigure(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2);
+	ddRelationshipFigure(int posIdx, hdIFigure *figure1, hdIFigure *figure2);
 	~ddRelationshipFigure();
 	virtual void createMenu(wxMenu &mnu);
 
@@ -70,10 +70,10 @@ public:
 	void setOptionAtForeignKeys(ddColumnOptionType type);
 	void updatePkAtFkCols();
 	bool isForeignKeyFromPk();
-	virtual void connectEnd(wxhdIConnector *end, wxhdDrawingView *view = NULL);
-	virtual void connectStart(wxhdIConnector *start, wxhdDrawingView *view = NULL);
-	void disconnectStart(wxhdDrawingView *view = NULL);
-	void disconnectEnd(wxhdDrawingView *view = NULL);
+	virtual void connectEnd(hdIConnector *end, hdDrawingView *view = NULL);
+	virtual void connectStart(hdIConnector *start, hdDrawingView *view = NULL);
+	void disconnectStart(hdDrawingView *view = NULL);
+	void disconnectEnd(hdDrawingView *view = NULL);
 	void setFkFrom(bool primaryKey, int useUkIndex = -1, bool issueUpdateFk = false);
 	wxString generateSQL();
 	wxString getConstraintName();
@@ -91,11 +91,11 @@ public:
 	void initRelationValues(ddTableFigure *source, ddTableFigure *destination, int ukIdx, wxString constraint, actionKind onUpdate, actionKind onDelete, bool simpleMatch, bool identifying, bool oneToMany, bool mandatory, bool fromPk);
 
 protected:
-	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
 
 private:
-	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view);
 	bool fkFromPk;
 	bool fkMandatory;
 	bool fkOneToMany;

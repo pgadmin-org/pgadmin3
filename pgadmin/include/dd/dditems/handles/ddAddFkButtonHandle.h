@@ -12,17 +12,17 @@
 #ifndef DDADDFKBUTTONHANDLE_H
 #define DDADDFKBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
+#include "hotdraw/handles/hdButtonHandle.h"
 
-class ddAddFkButtonHandle : public wxhdButtonHandle
+class ddAddFkButtonHandle : public hdButtonHandle
 {
 public:
-	ddAddFkButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
+	ddAddFkButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
 	~ddAddFkButtonHandle();
 
-	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStart(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeStep(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeEnd(hdMouseEvent &event, hdDrawingView *view);
 	wxCursor createCursor();
 protected:
 

@@ -12,16 +12,16 @@
 #ifndef DDREMOVETABLELOCATOR_H
 #define DDREMOVETABLELOCATOR_H
 
-#include "dd/wxhotdraw/locators/wxhdILocator.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "hotdraw/locators/hdILocator.h"
+#include "hotdraw/figures/hdIFigure.h"
 
-class ddRemoveTableLocator : public wxhdILocator
+class ddRemoveTableLocator : public hdILocator
 {
 public:
 	ddRemoveTableLocator();
 	~ddRemoveTableLocator();
 
-	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
+	virtual hdPoint &locate(int posIdx, hdIFigure *owner);
 
 protected:
 

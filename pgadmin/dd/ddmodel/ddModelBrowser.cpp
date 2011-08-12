@@ -68,13 +68,13 @@ void ddModelBrowser::refreshFromModel()
 	this->DeleteAllItems();
 	createRoot(_("Database Design"));
 
-	wxhdIteratorBase *iterator = ownerDesign->getEditor()->modelFiguresEnumerator();
-	wxhdIFigure *tmpFigure;
+	hdIteratorBase *iterator = ownerDesign->getEditor()->modelFiguresEnumerator();
+	hdIFigure *tmpFigure;
 	ddTableFigure *table;
 
 	while(iterator->HasNext())
 	{
-		tmpFigure = (wxhdIFigure *)iterator->Next();
+		tmpFigure = (hdIFigure *)iterator->Next();
 		if(tmpFigure->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmpFigure;

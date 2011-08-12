@@ -12,17 +12,17 @@
 #ifndef DDREMOVETABLEBUTTONHANDLE_H
 #define DDREMOVETABLEBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
+#include "hotdraw/handles/hdButtonHandle.h"
 
-class ddRemoveTableButtonHandle : public wxhdButtonHandle
+class ddRemoveTableButtonHandle : public hdButtonHandle
 {
 public:
-	ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
+	ddRemoveTableButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size);
 	~ddRemoveTableButtonHandle();
 
-	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStart(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeStep(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeEnd(hdMouseEvent &event, hdDrawingView *view);
 	wxCursor createCursor();
 protected:
 

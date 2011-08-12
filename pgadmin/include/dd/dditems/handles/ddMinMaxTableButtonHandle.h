@@ -12,17 +12,17 @@
 #ifndef DDMINMAXTABLEBUTTONHANDLE_H
 #define DDMINMAXTABLEBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
+#include "hotdraw/handles/hdButtonHandle.h"
 
-class ddMinMaxTableButtonHandle : public wxhdButtonHandle
+class ddMinMaxTableButtonHandle : public hdButtonHandle
 {
 public:
-	ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator , wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
+	ddMinMaxTableButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
 	~ddMinMaxTableButtonHandle();
 
-	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
-	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStart(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeStep(hdMouseEvent &event, hdDrawingView *view);
+	virtual void invokeEnd(hdMouseEvent &event, hdDrawingView *view);
 	wxCursor createCursor();
 protected:
 

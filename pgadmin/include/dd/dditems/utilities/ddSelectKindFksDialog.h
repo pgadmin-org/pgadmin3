@@ -15,7 +15,7 @@
 #include <wx/statline.h>
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
-class wxhdDrawingView;
+class hdDrawingView;
 
 enum
 {
@@ -24,7 +24,7 @@ enum
 	DDCHOICESELECTBASE = 30000
 };
 
-class ddSelectFkKindLine : public wxhdObject
+class ddSelectFkKindLine : public hdObject
 {
 public:
 	wxStaticText *sourceCtrl;

@@ -22,11 +22,11 @@
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
-#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 
 
 ddRelationshipFigure::ddRelationshipFigure():
-	wxhdLineConnection()
+	hdLineConnection()
 {
 	constraintName = wxEmptyString;
 	setKindId(DDRELATIONSHIPFIGURE);
@@ -44,8 +44,8 @@ ddRelationshipFigure::ddRelationshipFigure():
 	enablePopUp();
 }
 
-ddRelationshipFigure::ddRelationshipFigure(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2):
-	wxhdLineConnection(posIdx, figure1, figure2)
+ddRelationshipFigure::ddRelationshipFigure(int posIdx, hdIFigure *figure1, hdIFigure *figure2):
+	hdLineConnection(posIdx, figure1, figure2)
 {
 	enablePopUp();
 }
@@ -133,7 +133,7 @@ void ddRelationshipFigure::updateForeignKey()
 		}
 
 		//STEP 1: Look at all source table columns add and delete fk
-		wxhdIteratorBase *iterator = startTable->figuresEnumerator();
+		hdIteratorBase *iterator = startTable->figuresEnumerator();
 		iterator->Next(); //first figure is main rect
 		iterator->Next(); //second figure is table title
 		while(iterator->HasNext())
@@ -348,13 +348,13 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
 };
 
-void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
+void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view)
 {
 	int answer;
 	ddTableFigure *startTable = NULL;
 	ddTableFigure *endTable = NULL;
 	wxTextEntryDialog *nameDialog = NULL;
-	wxhdRemoveDeleteDialog *delremDialog = NULL;
+	hdRemoveDeleteDialog *delremDialog = NULL;
 	ddSelectKindFksDialog *mappingDialog = NULL;
 	wxString tmpString;
 
@@ -467,7 +467,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 				ddTableFigure *t1 = (ddTableFigure *)getStartFigure();
 				ddTableFigure *t2 = (ddTableFigure *)getEndFigure();
 				 //Relationship can be delete only NOT REMOVED
-				delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view,false);
+				delremDialog = new hdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view,false);
 				answer = delremDialog->ShowModal();
 				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
 				if (answer == DD_DELETE)
@@ -538,10 +538,10 @@ bool ddRelationshipFigure::getMandatory()
 //	relationship is observed by several tables at same time, one is the
 //	owner (start connector table) others are just observers of that
 //	relationship (end connectors table)
-void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view)
+void ddRelationshipFigure::connectEnd(hdIConnector *end, hdDrawingView *view)
 {
 	ddSelectKindFksDialog *mappingDialog = NULL;
-	wxhdLineConnection::connectEnd(end);
+	hdLineConnection::connectEnd(end);
 	if(view)
 		view->Refresh();
 
@@ -605,28 +605,28 @@ void ddRelationshipFigure::setFkFrom(bool primaryKey, int useUkIndex, bool issue
 		updateForeignKey();
 }
 
-void ddRelationshipFigure::connectStart(wxhdIConnector *start, wxhdDrawingView *view)
+void ddRelationshipFigure::connectStart(hdIConnector *start, hdDrawingView *view)
 {
-	wxhdLineConnection::connectStart(start);
+	hdLineConnection::connectStart(start);
 	if(getEndFigure() && getStartFigure())
 		updateForeignKey();
 }
 
-void ddRelationshipFigure::disconnectStart(wxhdDrawingView *view)
+void ddRelationshipFigure::disconnectStart(hdDrawingView *view)
 {
 	paintingFkColumns = false;
 	changeFkOSTextColor( *wxBLACK, *wxBLACK, true );
 	disconnectedEndTable = (ddTableFigure *) getEndFigure();
 	removeForeignKeys();
-	wxhdLineConnection::disconnectStart();
+	hdLineConnection::disconnectStart();
 }
 
-void ddRelationshipFigure::disconnectEnd(wxhdDrawingView *view)
+void ddRelationshipFigure::disconnectEnd(hdDrawingView *view)
 {
 	paintingFkColumns = false;
 	changeFkOSTextColor( *wxBLACK, *wxBLACK, true );
 	disconnectedEndTable = (ddTableFigure *) getEndFigure();
-	wxhdLineConnection::disconnectEnd();
+	hdLineConnection::disconnectEnd();
 	removeForeignKeys();
 }
 
@@ -837,9 +837,9 @@ ddTableFigure *ddRelationshipFigure::getEndTable()
 	return (ddTableFigure *) getEndFigure();
 }
 
-void ddRelationshipFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
+void ddRelationshipFigure::basicDrawSelected(wxBufferedDC &context, hdDrawingView *view)
 {
-	wxhdLineConnection::basicDrawSelected(context, view);
+	hdLineConnection::basicDrawSelected(context, view);
 	if(getEndFigure() && getStartFigure())
 	{
 		paintingFkColumns = true;
@@ -847,9 +847,9 @@ void ddRelationshipFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingV
 	}
 }
 
-void ddRelationshipFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddRelationshipFigure::basicDraw(wxBufferedDC &context, hdDrawingView *view)
 {
-	wxhdLineConnection::basicDraw(context, view);
+	hdLineConnection::basicDraw(context, view);
 	if(getEndFigure() && getStartFigure() && paintingFkColumns)
 	{
 		paintingFkColumns = false;
@@ -929,6 +929,6 @@ void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFig
 	}
 
 	//reestablish connections between figures
-	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));
-	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y));
+	hdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));
+	hdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y));
 }

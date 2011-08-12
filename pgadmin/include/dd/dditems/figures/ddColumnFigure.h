@@ -11,7 +11,7 @@
 
 #ifndef DDCOLUMNFIGURE_H
 #define DDCOLUMNFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
+#include "hotdraw/figures/hdAttributeFigure.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
@@ -20,7 +20,7 @@ class ddTableFigure;
 class ddRelationshipItem;
 
 //Minimal overhead composite figure
-class ddColumnFigure : public wxhdAttributeFigure
+class ddColumnFigure : public hdAttributeFigure
 {
 public:
 	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
@@ -33,12 +33,12 @@ public:
 	virtual void moveTo(int posIdx, int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);
 	virtual bool containsPoint(int posIdx, int x, int y);
-	virtual wxhdMultiPosRect &getBasicDisplayBox();
-	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdIFigure *findFigure(int posIdx, int x, int y);
-	virtual wxhdIFigure *getFigureAt(int pos);
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
+	virtual hdMultiPosRect &getBasicDisplayBox();
+	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
+	virtual hdIFigure *findFigure(int posIdx, int x, int y);
+	virtual hdIFigure *getFigureAt(int pos);
+	virtual hdITool *CreateFigureTool(hdDrawingView *view, hdITool *defaultTool);
 	virtual ddTableFigure *getOwnerTable();
 	void displayBoxUpdate();
 	bool isNull();
@@ -53,7 +53,7 @@ public:
 	void setUniqueConstraintIndex(int i);
 	bool isPlain();
 	void setColumnKindToNone();
-	void toggleColumnKind(ddColumnType type, wxhdDrawingView *view = NULL);
+	void toggleColumnKind(ddColumnType type, hdDrawingView *view = NULL);
 	void setColumnOption(ddColumnOptionType type);
 	void setRightIconForColumn();
 	ddColumnOptionType getColumnOption();

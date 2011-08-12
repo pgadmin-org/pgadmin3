@@ -12,16 +12,16 @@
 #ifndef DDADDFKLOCATOR_H
 #define DDADDFKLOCATOR_H
 
-#include "dd/wxhotdraw/locators/wxhdILocator.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "hotdraw/locators/hdILocator.h"
+#include "hotdraw/figures/hdIFigure.h"
 
-class ddAddFkLocator : public wxhdILocator
+class ddAddFkLocator : public hdILocator
 {
 public:
 	ddAddFkLocator();
 	~ddAddFkLocator();
 
-	virtual wxhdPoint &locate(int posIdx, wxhdIFigure *owner);
+	virtual hdPoint &locate(int posIdx, hdIFigure *owner);
 
 protected:
 

@@ -26,7 +26,7 @@ ddRemoveTableLocator::~ddRemoveTableLocator()
 {
 }
 
-wxhdPoint &ddRemoveTableLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddRemoveTableLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

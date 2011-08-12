@@ -18,7 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
@@ -63,7 +63,7 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
 	item->Check(isUniqueKey());
 }
 
-void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
+void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view)
 {
 	toggleColumnKind((ddColumnType)event.GetId(), view);
 }
@@ -74,7 +74,7 @@ ddColumnFigure *ddColumnKindIcon::getOwnerColumn()
 }
 
 //if columntype attribute (type) is active then disable, is disable then active.
-void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view, bool interaction)
+void ddColumnKindIcon::toggleColumnKind(ddColumnType type, hdDrawingView *view, bool interaction)
 {
 
 	switch(type)
@@ -108,11 +108,11 @@ void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view
 	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
-void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnKindIcon::basicDraw(wxBufferedDC &context, hdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
+		hdRect copy = displayBox().gethdRect(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		//Adding a yellow circle to increase visibility of uk index
 		if(isUniqueKey())
@@ -136,7 +136,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 	}
 }
 
-void ddColumnKindIcon::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
+void ddColumnKindIcon::basicDrawSelected(wxBufferedDC &context, hdDrawingView *view)
 {
 	basicDraw(context, view);
 }
@@ -174,7 +174,7 @@ void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 	ukIndex = i;
 }
 
-bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
+bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, hdDrawingView *view, bool interaction)
 {
 	wxString tmpString;
 	bool isColUk = true;
@@ -268,7 +268,7 @@ void ddColumnKindIcon::syncUkIndexes()
 {
 	ddColumnFigure *col;
 	bool lastUk = true;
-	wxhdIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
+	hdIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
 	iterator->Next(); //First Figure is Main Rect
 	iterator->Next(); //Second Figure is Table Title
 	while(iterator->HasNext())

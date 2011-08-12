@@ -21,16 +21,16 @@
 #include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddPrecisionScaleDialog.h"
-#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner):
-	wxhdSimpleTextFigure(columnName)
+	hdSimpleTextFigure(columnName)
 {
 	setKindId(DDTEXTTABLEITEMFIGURE);
 	ownerTable = NULL; //table name item is the only one case of use of this variable
@@ -89,23 +89,23 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 		if(getDataType() == dt_serial && getOwnerColumn()->isGeneratedForeignKey())
 			ddType = dataTypes()[dt_integer];
 
-		out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
+		out = wxString( hdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
 	}
 	else if( showAlias && getOwnerColumn() == NULL )
 	{
 		if(!oneTimeNoAlias)
-			out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" ( ")) + colAlias + wxString(wxT(" ) ")) );
+			out = wxString( hdSimpleTextFigure::getText() + wxString(wxT(" ( ")) + colAlias + wxString(wxT(" ) ")) );
 		else
 		{
-			out = wxString( wxhdSimpleTextFigure::getText() );
+			out = wxString( hdSimpleTextFigure::getText() );
 			oneTimeNoAlias = false;
 		}
 		return out;
 	}
 	else
 	{
-		return wxhdSimpleTextFigure::getText();
+		return hdSimpleTextFigure::getText();
 	}
 }
 
@@ -131,7 +131,7 @@ wxString ddTextTableItemFigure::getType()
 }
 
 //WARNING: event ID must match enum ddDataType!!! this event was created on view
-void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
+void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog = NULL;
 	ddPrecisionScaleDialog *numericDialog = NULL;
@@ -139,7 +139,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 	int answer;
 	int tmpprecision;
 	long tmpvalue;
-	wxhdRemoveDeleteDialog *delremDialog = NULL;
+	hdRemoveDeleteDialog *delremDialog = NULL;
 
 	switch(event.GetId())
 	{
@@ -308,7 +308,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			break;
 		case MNU_DELTABLE:
 
-			delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), view);
+			delremDialog = new hdRemoveDeleteDialog(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), view);
 			answer = delremDialog->ShowModal();
 			ddTableFigure *table = getOwnerColumn()->getOwnerTable();
 			if (answer == DD_DELETE)
@@ -427,7 +427,7 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 
 void ddTextTableItemFigure::setText(wxString textString)
 {
-	wxhdSimpleTextFigure::setText(textString);
+	hdSimpleTextFigure::setText(textString);
 
 	//Hack to allow column text to submit new size of text signal to tablefigure
 	//and then recalculate displaybox. Helps with fk autorenaming too.
@@ -482,7 +482,7 @@ void ddTextTableItemFigure::setShowDataType(bool value)
 	showDataType = value;
 }
 
-wxhdITool *ddTextTableItemFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
+hdITool *ddTextTableItemFigure::CreateFigureTool(hdDrawingView *view, hdITool *defaultTool)
 {
 	if(getOwnerColumn())
 	{

@@ -11,11 +11,11 @@
 
 #ifndef DDRELATIONSHIPITEM_H
 #define DDRELATIONSHIPITEM_H
-#include "dd/wxhotdraw/figures/wxhdLineConnection.h"
+#include "hotdraw/figures/hdLineConnection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
-class ddRelationshipItem : public wxhdObject
+class ddRelationshipItem : public hdObject
 {
 public:
 	ddRelationshipItem();

@@ -26,7 +26,7 @@ ddTableBottomLocator::~ddTableBottomLocator()
 {
 }
 
-wxhdPoint &ddTableBottomLocator::locate(int posIdx, wxhdIFigure *owner)
+hdPoint &ddTableBottomLocator::locate(int posIdx, hdIFigure *owner)
 {
 	if(owner)
 	{

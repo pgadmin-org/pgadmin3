@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnFigureTool.cpp - Improvement to wxhdFigureTool to work with composite table figures
+// ddColumnFigureTool.cpp - Improvement to hdFigureTool to work with composite table figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,11 +17,11 @@
 // App headers
 #include "dd/dditems/tools/ddColumnFigureTool.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
-#include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
+#include "hotdraw/tools/hdDragTrackerTool.h"
 
 
-ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt):
-	wxhdFigureTool(view, fig, dt)
+ddColumnFigureTool::ddColumnFigureTool(hdDrawingView *view, hdIFigure *fig, hdITool *dt):
+	hdFigureTool(view, fig, dt)
 {
 	delegateTool = NULL;
 }
@@ -29,11 +29,11 @@ ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingView *view, wxhdIFigure *fig, 
 ddColumnFigureTool::~ddColumnFigureTool()
 {
 	//This tool destructor is at compositeTool, because this is only a selection tool and neither tool belongs to it.
-	wxhdITool *tmpDefault = wxhdFigureTool::getDefaultTool();
-	wxhdFigureTool *tmpDelegateDefault;
+	hdITool *tmpDefault = hdFigureTool::getDefaultTool();
+	hdFigureTool *tmpDelegateDefault;
 
-	if(delegateTool->ms_classInfo.IsKindOf(&wxhdFigureTool::ms_classInfo))
-		tmpDelegateDefault = (wxhdFigureTool *)delegateTool;
+	if(delegateTool->ms_classInfo.IsKindOf(&hdFigureTool::ms_classInfo))
+		tmpDelegateDefault = (hdFigureTool *)delegateTool;
 	else
 		tmpDelegateDefault = NULL;
 
@@ -44,22 +44,22 @@ ddColumnFigureTool::~ddColumnFigureTool()
 		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool() == tmpDefault)
 			tmpDelegateDefault->setDefaultTool(NULL);
 
-		//Hack to avoid delete wxhdDragTrackerTool Default twice because this figure is only used inside
-		//a table, and then create a compositeTool and default in both tools is wxhdDragTrackerTool
+		//Hack to avoid delete hdDragTrackerTool Default twice because this figure is only used inside
+		//a table, and then create a compositeTool and default in both tools is hdDragTrackerTool
 		//but I can't hard code this is Composite because that class should remain generic
-		if(tmpDelegateDefault->getDefaultTool()->ms_classInfo.IsKindOf(&wxhdDragTrackerTool::ms_classInfo))
+		if(tmpDelegateDefault->getDefaultTool()->ms_classInfo.IsKindOf(&hdDragTrackerTool::ms_classInfo))
 			tmpDelegateDefault->setDefaultTool(NULL);
 		delete delegateTool;
 	}
 
 }
 
-void ddColumnFigureTool::setDefaultTool(wxhdITool *dt)
+void ddColumnFigureTool::setDefaultTool(hdITool *dt)
 {
-	wxhdFigureTool::setDefaultTool(dt);
+	hdFigureTool::setDefaultTool(dt);
 }
 
-wxhdITool *ddColumnFigureTool::getDefaultTool()
+hdITool *ddColumnFigureTool::getDefaultTool()
 {
 	if(delegateTool)
 	{
@@ -67,15 +67,15 @@ wxhdITool *ddColumnFigureTool::getDefaultTool()
 	}
 	else
 	{
-		return wxhdFigureTool::getDefaultTool();
+		return hdFigureTool::getDefaultTool();
 	}
 }
 
-void ddColumnFigureTool::mouseDown(wxhdMouseEvent &event)
+void ddColumnFigureTool::mouseDown(hdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 	ddColumnFigure *cfigure = (ddColumnFigure *) getFigure();
-	wxhdIFigure *figure = cfigure->findFigure(event.getView()->getIdx(), x, y);
+	hdIFigure *figure = cfigure->findFigure(event.getView()->getIdx(), x, y);
 
 	if(figure)
 	{
@@ -92,7 +92,7 @@ void ddColumnFigureTool::mouseDown(wxhdMouseEvent &event)
 	}
 }
 
-void ddColumnFigureTool::activate(wxhdDrawingView *view)
+void ddColumnFigureTool::activate(hdDrawingView *view)
 {
 	if(delegateTool)
 	{
@@ -100,7 +100,7 @@ void ddColumnFigureTool::activate(wxhdDrawingView *view)
 	}
 }
 
-void ddColumnFigureTool::deactivate(wxhdDrawingView *view)
+void ddColumnFigureTool::deactivate(hdDrawingView *view)
 {
 	if(delegateTool)
 	{
@@ -108,7 +108,7 @@ void ddColumnFigureTool::deactivate(wxhdDrawingView *view)
 	}
 }
 
-void ddColumnFigureTool::setDelegateTool(wxhdDrawingView *view, wxhdITool *tool)
+void ddColumnFigureTool::setDelegateTool(hdDrawingView *view, hdITool *tool)
 {
 	if(delegateTool)
 	{
@@ -124,7 +124,7 @@ void ddColumnFigureTool::setDelegateTool(wxhdDrawingView *view, wxhdITool *tool)
 	}
 }
 
-wxhdITool *ddColumnFigureTool::getDelegateTool()
+hdITool *ddColumnFigureTool::getDelegateTool()
 {
 	return delegateTool;
 }

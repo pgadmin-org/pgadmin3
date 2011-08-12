@@ -12,7 +12,7 @@
 #ifndef DDCOLUMNOPTIONICON_H
 #define DDCOLUMNOPTIONICON_H
 
-#include "dd/wxhotdraw/figures/wxhdAbstractMenuFigure.h"
+#include "hotdraw/figures/hdAbstractMenuFigure.h"
 
 class ddColumnFigure;
 
@@ -28,15 +28,15 @@ enum
 	MNU_COLNOTNULL
 };
 
-class ddColumnOptionIcon : public wxhdAbstractMenuFigure
+class ddColumnOptionIcon : public hdAbstractMenuFigure
 {
 public:
 	ddColumnOptionIcon(ddColumnFigure *owner);
 	~ddColumnOptionIcon();
-	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view = NULL);
+	virtual void OnGenericPopupClick(wxCommandEvent &event, hdDrawingView *view = NULL);
 	virtual void createMenu(wxMenu &mnu);
-	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
 	virtual void changeIcon(ddColumnOptionType type);
 	virtual int getWidth();
 	virtual int getHeight();

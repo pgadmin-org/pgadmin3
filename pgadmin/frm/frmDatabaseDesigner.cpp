@@ -28,12 +28,12 @@
 
 // Designer headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
-#include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
-#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
+#include "hotdraw/figures/hdPolyLineFigure.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/wxhotdraw/figures/wxhdRectangleFigure.h"
-#include "dd/wxhotdraw/figures/wxhdBitmapFigure.h"
-#include "dd/wxhotdraw/tools/wxhdConnectionCreationTool.h"
+#include "hotdraw/figures/hdRectangleFigure.h"
+#include "hotdraw/figures/hdBitmapFigure.h"
+#include "hotdraw/tools/hdConnectionCreationTool.h"
 #include "dd/ddmodel/ddModelBrowser.h"
 
 #include "dd/ddmodel/ddDatabaseDesign.h"
@@ -339,7 +339,7 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 {
 	if (diagrams->GetPageCount() > 0)
 	{
-		wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 
 		ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 		    this,
@@ -385,7 +385,7 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
 	if (diagrams->GetPageCount() > 0)
 	{
-		wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 		view->getDrawing()->deleteSelectedFigures();
 		setModelChanged(true);
 		setExtendedTitle();
@@ -396,7 +396,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
 	if (diagrams->GetPageCount() > 0)
 	{
-		wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 		ddTableFigure *table = design->getSelectedTable(view->getIdx());
 		wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 		int answer;
@@ -445,7 +445,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
-	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 
 	if (changed)
 	{
@@ -486,7 +486,7 @@ void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 {
 	if (diagrams->GetPageCount() > 0)
 	{
-		wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 		wxString errors;
 		if(!design->validateModel(errors))
 		{
@@ -617,7 +617,7 @@ void frmDatabaseDesigner::OnAddDiagram2(wxAuiNotebookEvent &event)
 
 void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)
 {
-	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	int diagramIndex = view->getIdx();
 	diagrams->RemovePage(diagrams->GetSelection());
 	design->deleteDiagram(diagramIndex);
@@ -628,7 +628,7 @@ void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnRenameDiagram(wxCommandEvent &event)
 {
-	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	int diagramIndex = view->getIdx();
 	wxString name = wxGetTextFromUser(_("Rename diagram ") + diagrams->GetPageText(diagramIndex) + _(" to:"), _("Rename diagram..."), diagrams->GetPageText(diagramIndex), this);
 	if(!name.IsEmpty() && !name.IsSameAs(diagrams->GetPageText(diagramIndex), false))
@@ -643,7 +643,7 @@ void frmDatabaseDesigner::OnDeleteDiagramTab(wxAuiNotebookEvent &event)
 {
 	deletedTab = event.GetSelection();
 	wxAuiNotebook *ctrl = (wxAuiNotebook *)event.GetEventObject();
-	wxhdDrawingView *view = (wxhdDrawingView *) ctrl->GetPage(event.GetSelection());
+	hdDrawingView *view = (hdDrawingView *) ctrl->GetPage(event.GetSelection());
 
 	int res = wxMessageBox(wxT("Are you sure you want to delete diagram \"") + view->getDrawing()->getName() + _("\" from model?"),
 	                       wxT("Delete diagram?"),
@@ -687,9 +687,9 @@ void frmDatabaseDesigner::UpdateToolbar()
 
 	if (diagrams->GetPageCount() > 0)
 	{
-		wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 		ddTableFigure *table = design->getSelectedTable(view->getIdx());
-		toolBar->EnableTool(MNU_ADDCOLUMN, table);
+		toolBar->EnableTool(MNU_ADDCOLUMN, table!=NULL);
 	}
 
 	toolBar->EnableTool(MNU_GENERATEMODEL, diagrams->GetPageCount() > 0);
