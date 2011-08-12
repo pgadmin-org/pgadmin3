@@ -91,7 +91,8 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		{
 			numbRelationships = 1;
 			relation = (ddRelationshipFigure *)tmp;
-			wxhdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex));
+			 //Relationship can be delete only NOT REMOVED
+			wxhdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex),false);
 			answer = dialog2.ShowModal();
 		}
 	}
@@ -110,7 +111,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 		//Improve messages to display about relationships and tables and only relationship
 		wxhdRemoveDeleteDialog dialog3(
-		    wxString::Format(_("Are you sure you wish to delete %d tables?"), numbTables),
+		    wxString::Format(_("Are you sure you wish to delete %d tables, removing from model related relationships?"), numbTables),
 		    _("Delete tables?"), getExistingView(diagramIndex));
 		answer = dialog3.ShowModal();
 	}

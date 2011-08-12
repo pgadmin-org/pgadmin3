@@ -29,7 +29,8 @@ public:
 	wxhdRemoveDeleteDialog();
 	wxhdRemoveDeleteDialog(	const wxString &message,
 	                        const wxString &caption = _("Title"),
-	                        wxWindow *parent = NULL
+	                        wxWindow *parent = NULL,
+							bool allowRemove = false
 	                      );
 	~wxhdRemoveDeleteDialog();
 
@@ -52,6 +53,7 @@ public:
 	void OnCancel(wxCommandEvent &WXUNUSED(event));
 
 private:
+	bool allowRemoveButton;
 	wxBoxSizer *topSizer, *messageSizer, *buttonsSizer;
 	wxStaticText *staticText, *staticText2, *staticText3;
 	wxStaticLine *line;

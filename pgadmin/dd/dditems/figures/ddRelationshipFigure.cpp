@@ -466,7 +466,8 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 			{
 				ddTableFigure *t1 = (ddTableFigure *)getStartFigure();
 				ddTableFigure *t2 = (ddTableFigure *)getEndFigure();
-				delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view);
+				 //Relationship can be delete only NOT REMOVED
+				delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view,false);
 				answer = delremDialog->ShowModal();
 				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
 				if (answer == DD_DELETE)

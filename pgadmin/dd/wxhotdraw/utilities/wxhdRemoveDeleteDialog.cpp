@@ -28,9 +28,10 @@ END_EVENT_TABLE()
 
 wxhdRemoveDeleteDialog::wxhdRemoveDeleteDialog(	const wxString &message,
         const wxString &caption,
-        wxWindow *parent
+        wxWindow *parent, bool allowRemove
                                               )
 {
+	allowRemoveButton=allowRemove;
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	Init();
 	Create(parent, wxID_ANY, message, caption);
@@ -136,6 +137,10 @@ void wxhdRemoveDeleteDialog::CreateControls(const wxString &message)
 
 	removeButton = new wxButton ( this, DD_REMOVE, wxT("&Remove from Diagram"),
 	                              wxDefaultPosition, wxDefaultSize, 0 );
+
+	if(!allowRemoveButton)
+		removeButton->Enable(false);
+
 	buttonsSizer->Add(removeButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	deleteButton = new wxButton ( this, DD_DELETE, wxT("&Remove from Model"),
