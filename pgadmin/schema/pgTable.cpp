@@ -1242,7 +1242,7 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 		statistics->AddColumn(_("Autoanalyze counter"));
 	}
 	if (hasSize)
-		statistics->AddColumn(_("Size"));
+		statistics->AddColumn(_("Size"), 50);
 
 	wxString sql = wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
 	if (GetConnection()->BackendMinimumVersion(8, 3))
