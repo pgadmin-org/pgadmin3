@@ -36,13 +36,13 @@ public:
 	void SetColour(const wxString &colour);
 
 	void SetTitle(const wxString &title);
+	void UpdateColour();
 
 private:
 	wxString m_title;
 	wxColour m_colour_clr;
 
 	void Create(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
-	void UpdateColour();
 };
 
 #endif

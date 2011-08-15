@@ -41,6 +41,7 @@ private:
 	void OnResetHints(wxCommandEvent &ev);
 	void OnChangeCopyQuote(wxCommandEvent &ev);
 	void OnChangeSQLUseCustomColour(wxCommandEvent &ev);
+	void OnTreeSelChanged(wxTreeEvent &event);
 	wxString CheckColour(wxString colour);
 	void UpdateColourControls();
 	DECLARE_EVENT_TABLE()

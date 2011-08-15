@@ -20,6 +20,7 @@
 #include <wx/clrpicker.h>
 #include <wx/filepicker.h>
 #include <wx/fontpicker.h>
+#include <wx/treectrl.h>
 
 // App headers
 #include "frm/frmOptions.h"
@@ -35,6 +36,27 @@
 #include <wx/colordlg.h>
 
 #include "images/properties.pngc"
+
+#define BROWSER_ITEM _("Browser")
+#define BROWSER_DISPLAY_ITEM _("Display")
+#define BROWSER_PROPERTIES_ITEM _("Properties")
+#define BROWSER_BINPATH_ITEM _("Binaries paths")
+#define BROWSER_MISC_ITEM _("UI Miscellaneous")
+#define QUERYTOOL_ITEM _("Query tool")
+#define QUERYTOOL_EDITOR_ITEM _("Query editor")
+#define QUERYTOOL_COLOURS_ITEM _("Colours")
+#define QUERYTOOL_RESULTS_ITEM _("Results grid")
+#define QUERYTOOL_FILES_ITEM _("Query file")
+#define QUERYTOOL_FAVOURITES_ITEM _("Favourites")
+#define QUERYTOOL_MACROS_ITEM _("Macros")
+#define QUERYTOOL_HISTORYFILE_ITEM _("History file")
+#define SERVERSTATUS_ITEM _("Server status")
+#define PGAGENT_ITEM _("pgAgent")
+#define MISC_ITEM _("Miscellaneous")
+#define MISC_UI_ITEM _("User Interface")
+#define MISC_HELPPATH_ITEM _("Help paths")
+#define MISC_GURUHINTS_ITEM _("Guru hints")
+#define MISC_LOGGING_ITEM _("Logging")
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
@@ -99,8 +121,27 @@
 #define pickerSQLColour7            CTRL_COLOURPICKER("pickerSQLColour7")
 #define pickerSQLColour10           CTRL_COLOURPICKER("pickerSQLColour10")
 #define pickerSQLColour11           CTRL_COLOURPICKER("pickerSQLColour11")
-#define pickerSQLCaretColour               CTRL_COLOURPICKER("pickerSQLCaretColour")
+#define pickerSQLCaretColour        CTRL_COLOURPICKER("pickerSQLCaretColour")
 #define chkKeywordsInUppercase      CTRL_CHECKBOX("chkKeywordsInUppercase")
+#define menus                		CTRL_TREE("menus")
+#define pnlBrowserDisplay           CTRL_PANEL("pnlBrowserDisplay")
+#define pnlBrowserProperties        CTRL_PANEL("pnlBrowserProperties")
+#define pnlBrowserBinPath         	CTRL_PANEL("pnlBrowserBinPath")
+#define pnlBrowserMisc          	CTRL_PANEL("pnlBrowserMisc")
+#define pnlQueryToolEditor          CTRL_PANEL("pnlQueryToolEditor")
+#define pnlQueryToolColours         CTRL_PANEL("pnlQueryToolColours")
+#define pnlQueryToolResults         CTRL_PANEL("pnlQueryToolResults")
+#define pnlQueryToolFiles          	CTRL_PANEL("pnlQueryToolFiles")
+#define pnlQueryToolFavourites      CTRL_PANEL("pnlQueryToolFavourites")
+#define pnlQueryToolMacros          CTRL_PANEL("pnlQueryToolMacros")
+#define pnlQueryToolHistoryFile     CTRL_PANEL("pnlQueryToolHistoryFile")
+#define pnlServerStatus          	CTRL_PANEL("pnlServerStatus")
+#define pnlPgAgent          		CTRL_PANEL("pnlPgAgent")
+#define pnlMiscUI                	CTRL_PANEL("pnlMiscUI")
+#define pnlMiscHelpPath             CTRL_PANEL("pnlMiscHelpPath")
+#define pnlMiscGuruHints          	CTRL_PANEL("pnlMiscGuruHints")
+#define pnlMiscLogging          	CTRL_PANEL("pnlMiscLogging")
+
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
 	EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -113,6 +154,7 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
 	EVT_BUTTON (wxID_HELP,                                        frmOptions::OnHelp)
 	EVT_BUTTON (wxID_CANCEL,                                      frmOptions::OnCancel)
 	EVT_COMBOBOX(XRCID("cbCopyQuote"),		                      frmOptions::OnChangeCopyQuote)
+	EVT_TREE_SEL_CHANGED(XRCID("menus"),                          frmOptions::OnTreeSelChanged)
 END_EVENT_TABLE()
 
 
@@ -208,13 +250,16 @@ int wxRichTextFontDialog::ShowModal()
 
 frmOptions::frmOptions(frmMain *parent)
 {
+	wxTreeItemId root, node;
+	wxTreeItemIdValue cookie;
+
 	mainForm = parent;
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("frmOptions"));
 
 	// Icon
 	SetIcon(*properties_png_ico);
-	RestorePosition();
+	//RestorePosition();
 
 	wxAcceleratorEntry entries[1];
 
@@ -368,6 +413,57 @@ frmOptions::frmOptions(frmMain *parent)
 
 	wxCommandEvent e;
 	OnChangeCopyQuote(e);
+
+	// Fill the treeview
+	root = menus->AddRoot(_("Options"));
+	
+	node = menus->AppendItem(root, BROWSER_ITEM);
+	menus->AppendItem(node, BROWSER_DISPLAY_ITEM);
+	menus->AppendItem(node, BROWSER_PROPERTIES_ITEM);
+	menus->AppendItem(node, BROWSER_BINPATH_ITEM);
+	menus->AppendItem(node, BROWSER_MISC_ITEM);
+	
+	node = menus->AppendItem(root, QUERYTOOL_ITEM);
+	menus->AppendItem(node, QUERYTOOL_EDITOR_ITEM);
+	menus->AppendItem(node, QUERYTOOL_COLOURS_ITEM);
+	menus->AppendItem(node, QUERYTOOL_RESULTS_ITEM);
+	menus->AppendItem(node, QUERYTOOL_FILES_ITEM);
+	menus->AppendItem(node, QUERYTOOL_FAVOURITES_ITEM);
+	menus->AppendItem(node, QUERYTOOL_MACROS_ITEM);
+	menus->AppendItem(node, QUERYTOOL_HISTORYFILE_ITEM);
+	
+	node = menus->AppendItem(root, SERVERSTATUS_ITEM);
+	
+	node = menus->AppendItem(root, PGAGENT_ITEM);
+	
+	node = menus->AppendItem(root, MISC_ITEM);
+	menus->AppendItem(node, MISC_UI_ITEM);
+	menus->AppendItem(node, MISC_HELPPATH_ITEM);
+	menus->AppendItem(node, MISC_GURUHINTS_ITEM);
+	menus->AppendItem(node, MISC_LOGGING_ITEM);
+	
+	menus->ExpandAllChildren(root);
+	menus->SelectItem(menus->GetFirstChild(root, cookie));
+
+	pnlBrowserDisplay->Show(false);
+	pnlBrowserProperties->Show(false);
+	pnlBrowserBinPath->Show(false);
+	pnlBrowserMisc->Show(false);
+	pnlQueryToolEditor->Show(false);
+	pnlQueryToolColours->Show(false);
+	pnlQueryToolResults->Show(false);
+	pnlQueryToolFiles->Show(false);
+	pnlQueryToolFavourites->Show(false);
+	pnlQueryToolMacros->Show(false);
+	pnlQueryToolHistoryFile->Show(false);
+	pnlServerStatus->Show(false);
+	pnlPgAgent->Show(false);
+	pnlMiscUI->Show(false);
+	pnlMiscHelpPath->Show(false);
+	pnlMiscGuruHints->Show(false);
+	pnlMiscLogging->Show(false);
+
+	pnlBrowserDisplay->GetParent()->Layout();
 }
 
 
@@ -817,3 +913,90 @@ wxString frmOptions::CheckColour(wxString oldColour)
 	return newColour;
 }
 
+void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
+{
+	wxTreeItemId sel = event.GetItem();
+	
+	if (sel)
+	{
+		// Hide everything
+		pnlBrowserDisplay->Show(false);
+		pnlBrowserProperties->Show(false);
+		pnlBrowserBinPath->Show(false);
+		pnlBrowserMisc->Show(false);
+		pnlQueryToolEditor->Show(false);
+		pnlQueryToolColours->Show(false);
+		pnlQueryToolResults->Show(false);
+		pnlQueryToolFiles->Show(false);
+		pnlQueryToolFavourites->Show(false);
+		pnlQueryToolMacros->Show(false);
+		pnlQueryToolHistoryFile->Show(false);
+		pnlServerStatus->Show(false);
+		pnlPgAgent->Show(false);
+		pnlMiscUI->Show(false);
+		pnlMiscHelpPath->Show(false);
+		pnlMiscGuruHints->Show(false);
+		pnlMiscLogging->Show(false);
+
+		// Find the one to show
+		if (menus->GetItemText(sel) == BROWSER_DISPLAY_ITEM)
+			pnlBrowserDisplay->Show(true);
+		else if (menus->GetItemText(sel) == BROWSER_PROPERTIES_ITEM)
+			pnlBrowserProperties->Show(true);
+		else if (menus->GetItemText(sel) == BROWSER_BINPATH_ITEM)
+			pnlBrowserBinPath->Show(true);
+		else if (menus->GetItemText(sel) == BROWSER_MISC_ITEM)
+			pnlBrowserMisc->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_EDITOR_ITEM)
+			pnlQueryToolEditor->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_COLOURS_ITEM)
+		{
+			pnlQueryToolColours->Show(true);
+			pickerSQLBackgroundColour->UpdateColour();
+			pickerSQLForegroundColour->UpdateColour();
+			pickerSQLMarginBackgroundColour->UpdateColour();
+			pickerSQLColour1->UpdateColour();
+			pickerSQLColour2->UpdateColour();
+			pickerSQLColour3->UpdateColour();
+			pickerSQLColour4->UpdateColour();
+			pickerSQLColour5->UpdateColour();
+			pickerSQLColour6->UpdateColour();
+			pickerSQLColour7->UpdateColour();
+			pickerSQLColour10->UpdateColour();
+			pickerSQLColour11->UpdateColour();
+			pickerSQLCaretColour->UpdateColour();
+		}
+		else if (menus->GetItemText(sel) == QUERYTOOL_RESULTS_ITEM)
+			pnlQueryToolResults->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_FILES_ITEM)
+			pnlQueryToolFiles->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_FAVOURITES_ITEM)
+			pnlQueryToolFavourites->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_MACROS_ITEM)
+			pnlQueryToolMacros->Show(true);
+		else if (menus->GetItemText(sel) == QUERYTOOL_HISTORYFILE_ITEM)
+			pnlQueryToolHistoryFile->Show(true);
+		else if (menus->GetItemText(sel) == SERVERSTATUS_ITEM)
+		{
+			pnlServerStatus->Show(true);
+			pickerIdleProcessColour->UpdateColour();
+			pickerActiveProcessColour->UpdateColour();
+			pickerSlowProcessColour->UpdateColour();
+			pickerBlockedProcessColour->UpdateColour();
+		}
+		else if (menus->GetItemText(sel) == PGAGENT_ITEM)
+			pnlPgAgent->Show(true);
+		else if (menus->GetItemText(sel) == MISC_UI_ITEM)
+			pnlMiscUI->Show(true);
+		else if (menus->GetItemText(sel) == MISC_HELPPATH_ITEM)
+			pnlMiscHelpPath->Show(true);
+		else if (menus->GetItemText(sel) == MISC_GURUHINTS_ITEM)
+			pnlMiscGuruHints->Show(true);
+		else if (menus->GetItemText(sel) == MISC_LOGGING_ITEM)
+			pnlMiscLogging->Show(true);
+
+		pnlBrowserDisplay->GetParent()->Layout();
+		// we don't need to call GetParent()->Layout() for all panels
+		// because they all share the same parent
+	}
+}
