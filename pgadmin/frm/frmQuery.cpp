@@ -368,7 +368,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	UpdateRecentFiles();
 
-	wxAcceleratorEntry entries[12];
+	wxAcceleratorEntry entries[13];
 
 	entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
 	entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -379,9 +379,10 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	entries[6].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
 	entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
 	entries[8].Set(wxACCEL_CTRL,                (int)'A',       MNU_SELECTALL);
-	entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
-	entries[10].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
-	entries[11].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
+	entries[9].Set(wxACCEL_CMD,                (int)'A',       MNU_SELECTALL);
+	entries[10].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+	entries[11].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
+	entries[12].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
 
 	wxAcceleratorTable accel(12, entries);
 	SetAcceleratorTable(accel);
