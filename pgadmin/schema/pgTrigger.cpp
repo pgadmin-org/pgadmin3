@@ -390,7 +390,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	wxString trig_sql;
 	trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, CASE WHEN relkind = 'r' THEN TRUE ELSE FALSE END AS parentistable, ")
 	           wxT("  nspname, des.description, l.lanname, p.prosrc, \n")
-	           wxT("  trim(substring(pg_get_triggerdef(t.oid), 'WHEN (.*) EXECUTE PROCEDURE'), '()') AS whenclause\n")
+	           wxT("  substring(pg_get_triggerdef(t.oid), 'WHEN (.*) EXECUTE PROCEDURE') AS whenclause\n")
 	           wxT("  FROM pg_trigger t\n")
 	           wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
 	           wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
@@ -486,7 +486,10 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 			trigger->iSetArguments(args);
 
 			if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 5))
-				trigger->iSetWhen(triggers->GetVal(wxT("whenclause")));
+			{
+				wxString clause = triggers->GetVal(wxT("whenclause"));
+				trigger->iSetWhen(clause.SubString(1, clause.Length() - 2));
+			}
 
 			if (browser)
 			{
