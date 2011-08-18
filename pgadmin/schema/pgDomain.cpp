@@ -135,8 +135,11 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		expandedKids = true;
 		if (GetConnection()->BackendMinimumVersion(7, 4))
 		{
-			pgSet *set = ExecuteSet(
-			                 wxT("SELECT conname, convalidated, pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+            wxString query = wxT("SELECT conname, ");
+		    if (GetConnection()->BackendMinimumVersion(9, 2))
+                query += wxT("convalidated, ");
+            query += wxT("pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr();
+			pgSet *set = ExecuteSet(query);
 			check = wxEmptyString;
 			if (set)
 			{
@@ -153,11 +156,12 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
 					// there may be more than one constraint
 					// but there is only one check constraint
-					if (!set->GetBool(wxT("convalidated")))
-					{
-						iSetCheckConstraintName(set->GetVal(wxT("conname")));
-						iSetValid(false);
-					}
+		            if (GetConnection()->BackendMinimumVersion(9, 2))
+					    if (!set->GetBool(wxT("convalidated")))
+					    {
+					    	iSetCheckConstraintName(set->GetVal(wxT("conname")));
+					    	iSetValid(false);
+					    }
 
 					set->MoveNext();
 				}
