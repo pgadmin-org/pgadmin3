@@ -1,5 +1,5 @@
-Welcome to pgAdmin 1.16's documentation!
-========================================
+pgAdmin III
+===========
 
 Contents:
 
