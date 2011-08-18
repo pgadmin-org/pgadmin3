@@ -30,7 +30,7 @@ public:
 	hdRemoveDeleteDialog(	const wxString &message,
 	                        const wxString &caption = _("Title"),
 	                        wxWindow *parent = NULL,
-							bool allowRemove = false
+							bool allowRemove = true
 	                      );
 	~hdRemoveDeleteDialog();
 
