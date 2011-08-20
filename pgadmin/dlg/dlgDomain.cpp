@@ -283,7 +283,7 @@ wxString dlgDomain::GetSql()
 			sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
 		if (chkDontValidate->GetValue())
-			sql += wxT(";\nALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" ADD ");
+			sql += wxT(";\nALTER DOMAIN ") + name + wxT(" ADD ");
 
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
 		if (chkNotNull->GetValue())
