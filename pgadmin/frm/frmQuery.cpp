@@ -1142,6 +1142,13 @@ void frmQuery::OnSaveHistory(wxCommandEvent &event)
 
 void frmQuery::OnChangeNotebook(wxAuiNotebookEvent &event)
 {
+	// A bug in wxGTK prevents us to show a modal dialog within a
+	// EVT_AUINOTEBOOK_PAGE_CHANGED event
+	// So, we need these three lines of code to work-around it
+	wxWindow *win = wxWindow::GetCapture();
+	if (win)
+		win->ReleaseMouse();
+
 	if(sqlNotebook && sqlNotebook->GetPageCount() >= 2)
 	{
 
