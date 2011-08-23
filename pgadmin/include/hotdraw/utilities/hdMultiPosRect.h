@@ -310,8 +310,8 @@ public:
 	hdMultiPosRect CentreIn(int posIdxThis, const hdMultiPosRect &r, int posIdxr, int dir = wxBOTH) const
 	{
 		return hdMultiPosRect(dir & wxHORIZONTAL ? r.x[posIdxr] + (r.width - width) / 2 : x[posIdxThis],
-		                        dir & wxVERTICAL ? r.y[posIdxr] + (r.height - height) / 2 : y[posIdxThis],
-		                        width, height);
+		                      dir & wxVERTICAL ? r.y[posIdxr] + (r.height - height) / 2 : y[posIdxThis],
+		                      width, height);
 	}
 
 	hdMultiPosRect CenterIn(int posIdxThis, const hdMultiPosRect &r, int posIdxr, int dir = wxBOTH) const

@@ -67,7 +67,7 @@ void ctlColourPicker::UpdateColour()
 {
 	if (!m_colour_clr.IsOk())
 	{
-	wxLogError(wxT("ohoh"));
+		wxLogError(wxT("ohoh"));
 		wxBitmap empty(1, 1);
 		SetBitmapLabel(empty);
 		return;

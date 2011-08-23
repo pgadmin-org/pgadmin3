@@ -29,9 +29,9 @@ END_EVENT_TABLE()
 hdRemoveDeleteDialog::hdRemoveDeleteDialog(	const wxString &message,
         const wxString &caption,
         wxWindow *parent, bool allowRemove
-                                              )
+                                          )
 {
-	allowRemoveButton=allowRemove;
+	allowRemoveButton = allowRemove;
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	Init();
 	Create(parent, wxID_ANY, message, caption);
@@ -68,10 +68,10 @@ void hdRemoveDeleteDialog::Init( )
 
 // Creation
 bool hdRemoveDeleteDialog::Create(	wxWindow *parent,
-                                        wxWindowID id,
-                                        const wxString &caption,
-                                        const wxString &message
-                                   )
+                                    wxWindowID id,
+                                    const wxString &caption,
+                                    const wxString &message
+                                 )
 {
 	wxWindowBase::SetFont(settings->GetSystemFont());
 

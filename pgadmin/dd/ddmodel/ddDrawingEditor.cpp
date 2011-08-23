@@ -91,8 +91,8 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		{
 			numbRelationships = 1;
 			relation = (ddRelationshipFigure *)tmp;
-			 //Relationship can be delete only NOT REMOVED
-			hdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex),false);
+			//Relationship can be delete only NOT REMOVED
+			hdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex), false);
 			answer = dialog2.ShowModal();
 		}
 	}

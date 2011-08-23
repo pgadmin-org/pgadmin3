@@ -689,7 +689,7 @@ void frmDatabaseDesigner::UpdateToolbar()
 	{
 		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 		ddTableFigure *table = design->getSelectedTable(view->getIdx());
-		toolBar->EnableTool(MNU_ADDCOLUMN, table!=NULL);
+		toolBar->EnableTool(MNU_ADDCOLUMN, table != NULL);
 	}
 
 	toolBar->EnableTool(MNU_GENERATEMODEL, diagrams->GetPageCount() > 0);

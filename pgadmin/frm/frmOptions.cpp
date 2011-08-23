@@ -416,13 +416,13 @@ frmOptions::frmOptions(frmMain *parent)
 
 	// Fill the treeview
 	root = menus->AddRoot(_("Options"));
-	
+
 	node = menus->AppendItem(root, BROWSER_ITEM);
 	menus->AppendItem(node, BROWSER_DISPLAY_ITEM);
 	menus->AppendItem(node, BROWSER_PROPERTIES_ITEM);
 	menus->AppendItem(node, BROWSER_BINPATH_ITEM);
 	menus->AppendItem(node, BROWSER_MISC_ITEM);
-	
+
 	node = menus->AppendItem(root, QUERYTOOL_ITEM);
 	menus->AppendItem(node, QUERYTOOL_EDITOR_ITEM);
 	menus->AppendItem(node, QUERYTOOL_COLOURS_ITEM);
@@ -431,17 +431,17 @@ frmOptions::frmOptions(frmMain *parent)
 	menus->AppendItem(node, QUERYTOOL_FAVOURITES_ITEM);
 	menus->AppendItem(node, QUERYTOOL_MACROS_ITEM);
 	menus->AppendItem(node, QUERYTOOL_HISTORYFILE_ITEM);
-	
+
 	node = menus->AppendItem(root, SERVERSTATUS_ITEM);
-	
+
 	node = menus->AppendItem(root, PGAGENT_ITEM);
-	
+
 	node = menus->AppendItem(root, MISC_ITEM);
 	menus->AppendItem(node, MISC_UI_ITEM);
 	menus->AppendItem(node, MISC_HELPPATH_ITEM);
 	menus->AppendItem(node, MISC_GURUHINTS_ITEM);
 	menus->AppendItem(node, MISC_LOGGING_ITEM);
-	
+
 	menus->ExpandAllChildren(root);
 	menus->SelectItem(menus->GetFirstChild(root, cookie));
 
@@ -916,7 +916,7 @@ wxString frmOptions::CheckColour(wxString oldColour)
 void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 {
 	wxTreeItemId sel = event.GetItem();
-	
+
 	if (sel)
 	{
 		// Hide everything
