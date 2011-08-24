@@ -75,6 +75,12 @@ enum
 	NBP_DEPENDENTS
 };
 
+enum
+{
+	REFRESH_OBJECT_NONE = 0,
+	REFRESH_OBJECT_ONLY,
+	REFRESH_OBJECT_AND_CHILDREN
+};
 
 // Class declarations
 class frmMain : public pgFrame

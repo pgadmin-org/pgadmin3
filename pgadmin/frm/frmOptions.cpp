@@ -40,7 +40,7 @@
 #define BROWSER_ITEM _("Browser")
 #define BROWSER_DISPLAY_ITEM _("Display")
 #define BROWSER_PROPERTIES_ITEM _("Properties")
-#define BROWSER_BINPATH_ITEM _("Binaries paths")
+#define BROWSER_BINPATH_ITEM _("Binary paths")
 #define BROWSER_MISC_ITEM _("UI Miscellaneous")
 #define QUERYTOOL_ITEM _("Query tool")
 #define QUERYTOOL_EDITOR_ITEM _("Query editor")
@@ -141,6 +141,7 @@
 #define pnlMiscHelpPath             CTRL_PANEL("pnlMiscHelpPath")
 #define pnlMiscGuruHints          	CTRL_PANEL("pnlMiscGuruHints")
 #define pnlMiscLogging          	CTRL_PANEL("pnlMiscLogging")
+#define cbRefreshOnClick			CTRL_COMBOBOX("cbRefreshOnClick")
 
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
@@ -288,6 +289,7 @@ frmOptions::frmOptions(frmMain *parent)
 	chkSpacesForTabs->SetValue(settings->GetSpacesForTabs());
 	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
 	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
+	cbRefreshOnClick->SetSelection(settings->GetRefreshOnClick());
 
 	wxString copySeparator = settings->GetCopyColSeparator();
 	if (copySeparator == wxT("\t"))
@@ -649,6 +651,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
 	settings->SetHistoryMaxQueries(StrToLong(txtHistoryMaxQueries->GetValue()));
 	settings->SetHistoryMaxQuerySize(StrToLong(txtHistoryMaxQuerySize->GetValue()));
+	settings->SetRefreshOnClick(cbRefreshOnClick->GetSelection());
 
 	wxString copySeparator = cbCopySeparator->GetValue();
 	if (copySeparator == _("Tab"))

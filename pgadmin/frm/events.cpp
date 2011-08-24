@@ -388,6 +388,8 @@ void frmMain::ResetLists()
 
 void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
+	static bool refresh = true;
+
 	if (currentNode)
 	{
 		ResetLists();
@@ -406,6 +408,53 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 	}
 	else
 	{
+		int settingRefreshOnClick = settings->GetRefreshOnClick();
+
+		if (settingRefreshOnClick != REFRESH_OBJECT_NONE
+			&& refresh
+			&& currentObject->GetTypeName() != wxT("Server")
+			&& currentObject->GetTypeName() != wxT("Servers")
+			&& currentObject->GetTypeName() != wxT("Database")
+			&& !currentObject->IsCollection())
+		{
+			refresh = false;
+			
+			if (settingRefreshOnClick == REFRESH_OBJECT_ONLY )
+			{
+				//We can not update the schema, because it would cause an update to the entire tree.
+				if (currentObject->GetTypeName() != wxT("Schema"))
+				{
+					wxTreeItemId currentItem = currentObject->GetId();
+					
+
+					pgObject *newData = currentObject->Refresh(browser, currentItem);
+
+					if (newData != 0)
+					{
+						wxLogInfo(wxT("Replacing with new node %s %s for refresh"), newData->GetTypeName().c_str(), newData->GetQuotedFullIdentifier().c_str());
+
+						browser->DeleteChildren(currentItem);
+						newData->SetId(currentItem);    // not done automatically
+						browser->SetItemData(currentItem, newData);
+
+						// Update the node text if this is an object, as it may have been renamed
+						if (!newData->IsCollection())
+							browser->SetItemText(currentItem, newData->GetDisplayName());
+
+						delete currentObject;
+						currentObject = newData;
+					}
+					else
+						browser->Delete(currentItem);
+				}
+			}
+			else
+				Refresh(currentObject);
+
+			refresh = true;
+		}
+
+
 		if (currentNode)
 		{
 			properties->Freeze();

@@ -669,6 +669,17 @@ public:
 		WriteBool(wxT("IgnoreVersion"), newval);
 	}
 
+	int GetRefreshOnClick() const
+	{
+		int i;
+		Read(wxT("RefreshOnClick"), &i, 0);
+		return i;
+	}
+	void SetRefreshOnClick(const int newval)
+	{
+		WriteInt(wxT("RefreshOnClick"), newval);
+	}
+
 	bool GetShowNotices() const
 	{
 		bool b;
