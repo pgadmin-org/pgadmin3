@@ -142,7 +142,7 @@ wxString pgRule::GetSql(ctlTree *browser)
 		if (!GetEnabled())
 		{
 			sql += wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ")
-				+  wxT("DISABLE RULE ") + GetQuotedIdentifier() + wxT(";\n");
+			       +  wxT("DISABLE RULE ") + GetQuotedIdentifier() + wxT(";\n");
 		}
 
 		if (!GetComment().IsEmpty())

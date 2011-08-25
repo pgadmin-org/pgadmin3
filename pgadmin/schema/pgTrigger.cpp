@@ -207,7 +207,7 @@ wxString pgTrigger::GetSql(ctlTree *browser)
 		if (!GetEnabled())
 		{
 			sql += wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ")
-				+  wxT("DISABLE TRIGGER ") + GetQuotedIdentifier() + wxT(";\n");
+			       +  wxT("DISABLE TRIGGER ") + GetQuotedIdentifier() + wxT(";\n");
 		}
 
 		if (!GetComment().IsEmpty())
