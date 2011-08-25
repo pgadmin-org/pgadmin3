@@ -411,21 +411,21 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 		int settingRefreshOnClick = settings->GetRefreshOnClick();
 
 		if (settingRefreshOnClick != REFRESH_OBJECT_NONE
-			&& refresh
-			&& currentObject->GetTypeName() != wxT("Server")
-			&& currentObject->GetTypeName() != wxT("Servers")
-			&& currentObject->GetTypeName() != wxT("Database")
-			&& !currentObject->IsCollection())
+		        && refresh
+		        && currentObject->GetTypeName() != wxT("Server")
+		        && currentObject->GetTypeName() != wxT("Servers")
+		        && currentObject->GetTypeName() != wxT("Database")
+		        && !currentObject->IsCollection())
 		{
 			refresh = false;
-			
+
 			if (settingRefreshOnClick == REFRESH_OBJECT_ONLY )
 			{
 				//We can not update the schema, because it would cause an update to the entire tree.
 				if (currentObject->GetTypeName() != wxT("Schema"))
 				{
 					wxTreeItemId currentItem = currentObject->GetId();
-					
+
 
 					pgObject *newData = currentObject->Refresh(browser, currentItem);
 
