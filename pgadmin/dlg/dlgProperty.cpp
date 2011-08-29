@@ -805,7 +805,19 @@ void dlgProperty::ShowObject()
 		pgObject *tblobj = mainForm->GetBrowser()->GetObject(owneritem);
 
 		if (tblobj)
+		{
+			dlgProperty *ownDialog = NULL;
+			if (data)
+			{
+				ownDialog = data->GetWindowPtr();
+				data->SetWindowPtr(NULL);
+			}
 			mainForm->Refresh(tblobj);
+			if (data)
+			{
+				data->SetWindowPtr(ownDialog);
+			}
+		}
 
 		// Restore the previous selection...
 		mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);

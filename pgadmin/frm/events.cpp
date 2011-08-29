@@ -850,9 +850,9 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 		if (!data || !data->CanDrop())
 			return false;
 
-		if (data->GetWindowPtr())
+		if (data->CheckOpenDialogs(browser, browser->GetSelection()))
 		{
-			wxString msg = _("There are properties dialogues open for one or more objects that would be refreshed. Please close the properties dialogues and try again.");
+			wxString msg = _("There are properties dialogues open for one or more objects that would be dropped. Please close the properties dialogues and try again.");
 			wxMessageBox(msg, _("Cannot drop object"), wxICON_WARNING | wxOK);
 			return false;
 		}
