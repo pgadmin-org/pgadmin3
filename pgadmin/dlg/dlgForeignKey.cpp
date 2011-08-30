@@ -255,6 +255,7 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
 	                 wxT("   AND nspname=") + qtDbString(nsp) +
 	                 wxT("\n   AND relname=") + qtDbString(tab) +
 	                 wxT("\n   AND attnum > 0\n")
+	                 wxT("\n   AND NOT attisdropped\n")
 	                 wxT("\n ORDER BY attnum"));
 	if (set)
 	{
