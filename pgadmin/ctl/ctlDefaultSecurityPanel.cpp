@@ -364,10 +364,11 @@ void ctlDefaultPrivilegesPanel::OnDelPriv(wxCommandEvent &ev)
 void ctlDefaultPrivilegesPanel::OnAddPriv(wxCommandEvent &ev)
 {
 	wxString strRole, strPriv;
-	bool isPresent = m_currentSelectedPriv != NULL &&
+	bool isPresent = (m_currentSelectedPriv != NULL &&
 	                 ((m_currentSelectedPriv->m_modified &&
 	                   !m_currentSelectedPriv->m_newPriv.IsEmpty()) ||
-	                  (!m_currentSelectedPriv->m_modified));
+	                  (!m_currentSelectedPriv->m_modified)))
+                     || lbPrivileges->FindItem(-1, cbGroups->GetGuessedStringSelection()) >= 0;
 
 	if (allPrivileges && allPrivileges->GetValue())
 	{
@@ -475,6 +476,45 @@ void ctlDefaultPrivilegesPanel::OnPrivSelChange(wxListEvent &ev)
 {
 	if (!cbGroups)
 		return;
+	if (allPrivileges)
+	{
+		allPrivileges->SetValue(false);
+		allPrivilegesGrant->SetValue(false);
+		allPrivilegesGrant->Disable();
+	}
+	long pos = lbPrivileges->GetSelection();
+	if (pos >= 0)
+	{
+		wxString name = lbPrivileges->GetText(pos);
+		wxString value = lbPrivileges->GetText(pos, 1);
+
+		pos = cbGroups->FindString(name);
+		if (pos < 0)
+		{
+			cbGroups->Append(name);
+			pos = cbGroups->GetCount() - 1;
+		}
+		cbGroups->SetSelection(pos);
+
+		int i;
+		for (i = 0 ; i < privilegeCount ; i++)
+		{
+			if (privCheckboxes[i * 2]->GetName() != wxT("DISABLE"))
+			{
+				privCheckboxes[i * 2]->Enable();
+				int index = value.Find(m_privilegeType.m_privileges.GetChar(i));
+				if (index >= 0)
+				{
+					privCheckboxes[i * 2]->SetValue(true);
+					privCheckboxes[i * 2 + 1]->SetValue(value.Mid(index + 1, 1) == wxT("*"));
+				}
+				else
+					privCheckboxes[i * 2]->SetValue(false);
+			}
+			CheckGrantOpt(i);
+		}
+        PrivCheckBoxUpdate(name);
+	}
 	btnAddPriv->Enable();
 }
 
