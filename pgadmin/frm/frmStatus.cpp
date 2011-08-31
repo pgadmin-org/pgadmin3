@@ -1329,7 +1329,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=procpid AND NOT GRANTED)")
 	       wxT(")) AS blockedby, ")
 	       wxT("current_query, ")
-	       wxT("CASE WHEN query_start IS NULL THEN false ELSE query_start + '10 seconds'::interval > now() END AS slowquery ")
+	       wxT("CASE WHEN query_start IS NULL OR current_query LIKE '<IDLE>%' THEN false ELSE query_start < now() - '10 seconds'::interval END AS slowquery ")
 	       wxT("FROM pg_stat_activity ")
 	       wxT("ORDER BY ") + NumToStr((long)statusSortColumn) + statusSortOrder;
 
