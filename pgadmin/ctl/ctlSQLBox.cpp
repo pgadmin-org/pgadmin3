@@ -557,6 +557,7 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent &event)
 {
 	int pos = GetCurrentPos();
 	wxChar ch = GetCharAt(pos - 1);
+	wxChar nextch = GetCharAt(pos);
 	int st = GetStyleAt(pos - 1);
 	int match;
 
@@ -584,6 +585,15 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent &event)
 		match = BraceMatch(pos - 1);
 		if (match != wxSTC_INVALID_POSITION)
 			BraceHighlight(pos - 1, match);
+	}
+	else if ((nextch == '{' || nextch == '}' ||
+	          nextch == '[' || nextch == ']' ||
+	          nextch == '(' || nextch == ')') &&
+	         st != 2 && st != 6 && st != 7)
+	{
+		match = BraceMatch(pos);
+		if (match != wxSTC_INVALID_POSITION)
+			BraceHighlight(pos, match);
 	}
 
 	// Roll back through the doc and highlight any unmatched braces
