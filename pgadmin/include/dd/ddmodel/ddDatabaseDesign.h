@@ -21,6 +21,14 @@
 
 class ddModelBrowser;
 
+enum
+{
+	DDGENCREATE = 6000,
+	DDGENALTER,
+	DDGENDROPCRE,
+	DDGENNOTHING
+};
+
 WX_DECLARE_STRING_HASH_MAP( wxString , tablesMappingHashMap );
 
 class ddDatabaseDesign : public wxObject
@@ -38,8 +46,11 @@ public:
 	void refreshDraw(int diagramIndex);
 	void eraseDiagram(int diagramIndex);
 	void emptyModel();
-	wxString generateDiagram(int diagramIndex);
-	wxString generateModel();
+	wxArrayString getDiagramTables(int diagramIndex);
+	wxString generateDiagram(int diagramIndex, wxString schemaName);
+	wxArrayString getModelTables();
+	wxString generateModel(wxString schemaName);
+	wxString generateList(wxArrayString tables, wxArrayInt options, pgConn *connection = NULL, wxString schemaName = wxEmptyString);
 	bool validateModel(wxString &errors);
 	wxString getNewTableName();
 	ddTableFigure *getSelectedTable(int diagramIndex);
@@ -53,6 +64,9 @@ public:
 	void registerBrowser(ddModelBrowser *browser);
 	void refreshBrowser();
 	static wxString getVersionXML();
+	void markSchemaOn(wxArrayString tables);
+	void unMarkSchemaOnAll();
+
 protected:
 	tablesMappingHashMap mappingNameToId;
 	tablesMappingHashMap mappingIdToName;

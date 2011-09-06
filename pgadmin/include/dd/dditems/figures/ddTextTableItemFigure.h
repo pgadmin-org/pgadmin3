@@ -46,7 +46,7 @@ public:
 	ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner);
 	~ddTextTableItemFigure();
 	virtual wxString &getText(bool extended = false);
-	wxString getType();
+	wxString getType(bool raw = false);
 	virtual void setAlias(wxString alias);
 	virtual wxString getAlias();
 	virtual void setOneTimeNoAlias();

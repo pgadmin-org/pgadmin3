@@ -25,6 +25,7 @@
 #include "schema/pgObject.h"
 #include "schema/pgDatabase.h"
 #include "ctl/ctlSQLBox.h"
+#include "dlg/dlgSelectConnection.h"
 
 // Designer headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
@@ -35,6 +36,8 @@
 #include "hotdraw/figures/hdBitmapFigure.h"
 #include "hotdraw/tools/hdConnectionCreationTool.h"
 #include "dd/ddmodel/ddModelBrowser.h"
+#include "dd/ddmodel/ddDBReverseEngineering.h"
+#include "dd/ddmodel/ddGenerationWizard.h"
 
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddDrawingView.h"
@@ -57,8 +60,10 @@
 #include "images/help.pngc"
 #include "images/file_save.pngc"
 #include "images/file_open.pngc"
+#include "images/conversion.pngc"
 
 BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
+	EVT_COMBOBOX(CTL_DDCONNECTION, frmDatabaseDesigner::OnChangeConnection)
 	EVT_MENU(MNU_NEW,             			  	frmDatabaseDesigner::OnNewModel)
 	EVT_MENU(MNU_ADDTABLE,        			  	frmDatabaseDesigner::OnAddTable)
 	EVT_MENU(MNU_DELETETABLE,      			  	frmDatabaseDesigner::OnDeleteTable)
@@ -71,7 +76,10 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_NEWDIAGRAM,					frmDatabaseDesigner::OnAddDiagram)
 	EVT_MENU(MNU_DELDIAGRAM,					frmDatabaseDesigner::OnDeleteDiagram)
 	EVT_MENU(MNU_RENDIAGRAM,					frmDatabaseDesigner::OnRenameDiagram)
+	EVT_MENU(MNU_TOGGLEDDSQL,					frmDatabaseDesigner::OnToggleSQLWindow)
+	EVT_MENU(MNU_TOGGLEMBROWSER,				frmDatabaseDesigner::OnToggleModelBrowser)
 	EVT_MENU(MNU_CHGFONT,						frmDatabaseDesigner::OnChangeDefaultFont)
+	EVT_MENU(CTL_IMPSCHEMA,					frmDatabaseDesigner::OnImportSchema)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(CTL_DDNOTEBOOK,  frmDatabaseDesigner::OnDeleteDiagramTab)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(CTL_DDNOTEBOOK, frmDatabaseDesigner::OnDeletedDiagramTab)
 	EVT_AUINOTEBOOK_BUTTON(CTL_DDNOTEBOOK,      frmDatabaseDesigner::OnClickDiagramTab)
@@ -85,6 +93,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	mainForm = form;
 	SetTitle(wxT("Database Designer"));
 	SetIcon(wxIcon(*ddmodel_32_png_ico));
+	loading = true;
+	closing = false;
 
 	RestorePosition(100, 100, 600, 500, 450, 300);
 	SetMinSize(wxSize(450, 300));
@@ -106,6 +116,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	fileMenu->Append(MNU_SAVEMODEL, _("&Save Model"), _("Save changes at database design"));
 	fileMenu->Append(MNU_SAVEMODELAS, _("&Save Model As..."), _("Save database design at new file"));
 	fileMenu->AppendSeparator();
+	fileMenu->Append(CTL_IMPSCHEMA, _("&Import Tables..."), _("Import tables from database schema to database designer model"));
+	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit database designer window"));
 
 	// Set Diagram menu
@@ -113,6 +125,13 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	diagramMenu->Append(MNU_NEWDIAGRAM, _("&New model diagram"), _("Create a new diagram"));
 	diagramMenu->Append(MNU_DELDIAGRAM, _("&Delete selected model diagram..."), _("Delete selected diagram"));
 	diagramMenu->Append(MNU_RENDIAGRAM, _("&Rename selected model diagram..."), _("Rename selected diagram"));
+
+	// Set View menu
+	viewMenu = new wxMenu();
+	viewMenu->AppendCheckItem(MNU_TOGGLEMBROWSER, _("&Model Browser"), _("Show / Hide Model Browser Window"));
+	viewMenu->AppendCheckItem(MNU_TOGGLEDDSQL, _("&SQL Window"), _("Show / Hide SQL Window"));
+	viewMenu->Check(MNU_TOGGLEDDSQL, true);
+	viewMenu->Check(MNU_TOGGLEMBROWSER, true);
 
 	// Set Preferences menu
 	preferencesMenu = new wxMenu();
@@ -127,6 +146,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	menuBar = new wxMenuBar();
 	menuBar->Append(fileMenu, _("&File"));
 	menuBar->Append(diagramMenu, _("&Diagram"));
+	menuBar->Append(viewMenu, _("&View"));
 	menuBar->Append(preferencesMenu, _("&Preferences"));
 	menuBar->Append(helpMenu, _("&Help"));
 	SetMenuBar(menuBar);
@@ -153,6 +173,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEDIAGRAM, _("Generate Diagram"), *ddgendiagram_png_bmp, _("Generate SQL for the current diagram"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
+	toolBar->AddTool(CTL_IMPSCHEMA, _("Import Tables from database..."), *conversion_png_ico, _("Import tables from database schema to database designer model"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
 
@@ -173,13 +195,28 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	modelBrowser = new ddModelBrowser(browserPanel, DD_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
 	design->registerBrowser(modelBrowser);
 
-	// Set Sizers
+	// Set browser Sizers
 	browserSizer->Add(modelBrowser, 1, wxEXPAND);
 	browserPanel->SetSizer(browserSizer);
 	browserSizer->SetSizeHints(browserPanel);
 
 	// Add view to notebook
 	diagrams->AddPage(design->createDiagram(diagrams, _("unnamed"), false)->getView(), _("unnamed"));
+
+
+	// Add the database selection bar and schema selector
+	wxSizer *connectionSizer = new wxBoxSizer(wxHORIZONTAL);
+	connectionPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1));
+	cbConnection = new wxBitmapComboBox(connectionPanel, CTL_DDCONNECTION, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), wxArrayString(), wxCB_READONLY | wxCB_DROPDOWN);
+	if(conn)
+		cbConnection->Append(conn->GetName(), CreateBitmap(GetServerColour(conn)), (void *)conn);
+	cbConnection->Append(_("<new connection>"), wxNullBitmap, (void *) NULL);
+
+	connectionSizer->Add(cbConnection, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL, 1);
+	connectionSizer->AddSpacer(5);
+	connectionPanel->SetSizer(connectionSizer);
+	connectionSizer->SetSizeHints(connectionPanel);
+
 
 	// Add the panes
 	manager.AddPane(diagrams,
@@ -190,17 +227,20 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	manager.AddPane(browserPanel,
 	                wxAuiPaneInfo().Left().
 	                Name(wxT("ModelBrowser")).Caption(_("Model Browser")).
-	                CaptionVisible(true).CloseButton(true).
+	                CaptionVisible(true).CloseButton(true).MinimizeButton(true).
 	                MinSize(wxSize(140, 100)).BestSize(wxSize(200, 200)));
 	manager.AddPane(sqltext,
 	                wxAuiPaneInfo().Bottom().
 	                Name(wxT("sqlText")).Caption(_("SQL query")).
-	                CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+	                CaptionVisible(true).CloseButton(true).MaximizeButton(true).MinimizeButton(true).
 	                MinSize(wxSize(200, 100)).BestSize(wxSize(350, 150)));
 	manager.AddPane(toolBar,
 	                wxAuiPaneInfo().Top().
 	                Name(wxT("toolBar")).Caption(_("Tool bar")).
 	                ToolbarPane().
+	                LeftDockable(false).RightDockable(false));
+	manager.AddPane(connectionPanel, wxAuiPaneInfo().Name(wxT("databaseBar"))
+	                .Caption(_("Connection bar")).ToolbarPane().Top().
 	                LeftDockable(false).RightDockable(false));
 
 	// Update the AUI manager
@@ -217,6 +257,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 frmDatabaseDesigner::~frmDatabaseDesigner()
 {
+	closing = true;
+
 	// Save form's position
 	SavePosition();
 
@@ -248,6 +290,15 @@ frmDatabaseDesigner::~frmDatabaseDesigner()
 
 void frmDatabaseDesigner::Go()
 {
+	cbConnection->SetSelection(0L);
+
+	if (connection)
+	{
+		wxCommandEvent event;
+		OnChangeConnection(event);
+	}
+
+	loading = false;
 	Show(true);
 }
 
@@ -280,6 +331,8 @@ void frmDatabaseDesigner::setModelChanged(bool value)
 
 void frmDatabaseDesigner::OnClose(wxCloseEvent &event)
 {
+	closing = true;
+
 	// Ask what to do with old model
 	if (changed)
 	{
@@ -484,19 +537,22 @@ void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 {
-	if (diagrams->GetPageCount() > 0)
+	wxString errors;
+	if(!design->validateModel(errors))
+	{
+		wxMessageDialog dialog(this, errors , wxT("Errors detected in the database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP);
+		dialog.ShowModal();
+	}
+	else
 	{
 		hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
-		wxString errors;
-		if(!design->validateModel(errors))
-		{
-			wxMessageDialog dialog(this, errors , wxT("Errors detected in the database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP);
-			dialog.ShowModal();
-		}
-		else
-		{
-			sqltext->SetText(design->generateDiagram(view->getIdx()));
-		}
+		ddGenerationWizard *generationWizard = new ddGenerationWizard(this, design, connection);
+		//Set pre-select tables [diagram]
+		generationWizard->preSelTables = design->getDiagramTables(view->getIdx());
+		//Call generation wizard
+		generationWizard->RunWizard(generationWizard->GetFirstPage());
+		sqltext->SetText(generationWizard->DDL);
+		delete generationWizard;
 	}
 }
 
@@ -510,7 +566,13 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 	}
 	else
 	{
-		sqltext->SetText(design->generateModel());
+		ddGenerationWizard *generationWizard = new ddGenerationWizard(this, design, connection);
+		//Set pre-select tables [model] disable
+		//generationWizard->preSelTables = design->getModelTables();
+		//Call generation wizard
+		generationWizard->RunWizard(generationWizard->GetFirstPage());
+		sqltext->SetText(generationWizard->DDL);
+		delete generationWizard;
 	}
 }
 
@@ -696,6 +758,133 @@ void frmDatabaseDesigner::UpdateToolbar()
 	toolBar->EnableTool(MNU_GENERATEDIAGRAM, diagrams->GetPageCount() > 0);
 }
 
+
+wxColour frmDatabaseDesigner::GetServerColour(pgConn *connection)
+{
+	wxColour tmp = wxNullColour;
+	if (mainForm != NULL)
+	{
+		ctlTree *browser = mainForm->GetBrowser();
+		wxTreeItemIdValue foldercookie, servercookie;
+		wxTreeItemId folderitem, serveritem;
+		pgObject *object;
+		pgServer *server;
+
+		folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+		while (folderitem)
+		{
+			if (browser->ItemHasChildren(folderitem))
+			{
+				serveritem = browser->GetFirstChild(folderitem, servercookie);
+				while (serveritem)
+				{
+					object = browser->GetObject(serveritem);
+					if (object->IsCreatedBy(serverFactory))
+					{
+						server = (pgServer *)object;
+						if (server->GetConnected() &&
+						        server->GetConnection()->GetHost() == connection->GetHost() &&
+						        server->GetConnection()->GetPort() == connection->GetPort())
+						{
+							tmp = wxColour(server->GetColour());
+						}
+					}
+					serveritem = browser->GetNextChild(folderitem, servercookie);
+				}
+			}
+			folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
+		}
+	}
+	return tmp;
+}
+
+wxBitmap frmDatabaseDesigner::CreateBitmap(const wxColour &colour)
+{
+	const int w = 10, h = 10;
+
+	wxMemoryDC dc;
+	wxBitmap bmp(w, h);
+	dc.SelectObject(bmp);
+	if (colour == wxNullColour)
+		dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW)));
+	else
+		dc.SetBrush(wxBrush(colour));
+	dc.DrawRectangle(0, 0, w, h);
+
+	return bmp;
+}
+
+void frmDatabaseDesigner::OnChangeConnection(wxCommandEvent &event)
+{
+	// On Solaris, this event seems to get fired when the form closes(!!)
+	if(!IsVisible() && !loading)
+		return;
+
+	unsigned int sel = cbConnection->GetSelection();
+	if (sel == cbConnection->GetCount() - 1)
+	{
+		// new Connection
+		dlgSelectConnection dlg(this, mainForm);
+		int rc = dlg.Go(connection, cbConnection);
+		if (rc == wxID_OK)
+		{
+			bool createdNewConn;
+			wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Database Designer");
+			pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
+			if (newconn && createdNewConn)
+			{
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
+				cbConnection->SetSelection(sel);
+				OnChangeConnection(event);
+			}
+			else
+				rc = wxID_CANCEL;
+		}
+		if (rc != wxID_OK)
+		{
+			unsigned int i;
+			for (i = 0 ; i < sel ; i++)
+			{
+				if (cbConnection->GetClientData(i) == connection)
+				{
+					cbConnection->SetSelection(i);
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		connection = (pgConn *)cbConnection->GetClientData(sel);
+		setExtendedTitle();
+	}
+}
+
+void frmDatabaseDesigner::OnImportSchema(wxCommandEvent &WXUNUSED(event))
+{
+	ddDBReverseEngineering *importTableWizard = new ddDBReverseEngineering(this, design, connection);
+	importTableWizard->RunWizard(importTableWizard->GetFirstPage());
+	delete importTableWizard;
+}
+
+void frmDatabaseDesigner::OnToggleModelBrowser(wxCommandEvent &event)
+{
+	if (viewMenu->IsChecked(MNU_TOGGLEMBROWSER))
+		manager.GetPane(wxT("ModelBrowser")).Show(true);
+	else
+		manager.GetPane(wxT("ModelBrowser")).Show(false);
+	manager.Update();
+}
+
+void frmDatabaseDesigner::OnToggleSQLWindow(wxCommandEvent &event)
+{
+	if (viewMenu->IsChecked(MNU_TOGGLEDDSQL))
+		manager.GetPane(wxT("sqlText")).Show(true);
+	else
+		manager.GetPane(wxT("sqlText")).Show(false);
+	manager.Update();
+}
+
 ///////////////////////////////////////////////////////
 
 
@@ -707,6 +896,24 @@ bool databaseDesignerBaseFactory::CheckEnable(pgObject *obj)
 
 wxWindow *databaseDesignerBaseFactory::StartDialogDesigner(frmMain *form, pgObject *obj, const wxString &sql)
 {
+	if(obj)
+	{
+		pgDatabase *db = obj->GetDatabase();
+		wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Database designer");
+		pgConn *conn = NULL;
+		if(db)
+		{
+			conn = db->CreateConn(applicationname);
+			if (conn)
+			{
+				frmDatabaseDesigner *fd = new frmDatabaseDesigner(form, wxEmptyString, conn);
+				fd->Go();
+				return fd;
+			}
+		}
+
+	}
+
 	frmDatabaseDesigner *fd = new frmDatabaseDesigner(form, wxEmptyString, NULL);
 	fd->Go();
 	return fd;

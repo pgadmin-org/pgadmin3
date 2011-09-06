@@ -467,7 +467,12 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawingV
 				ddTableFigure *t1 = (ddTableFigure *)getStartFigure();
 				ddTableFigure *t2 = (ddTableFigure *)getEndFigure();
 				//Relationship can be delete only NOT REMOVED
-				delremDialog = new hdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view, false);
+				delremDialog = new hdRemoveDeleteDialog(
+				    wxString::Format(_("Are you sure you wish to delete relationship between tables %s and %s?"),
+				                     t1->getTableName().c_str(), t2->getTableName().c_str()),
+				    _("Delete relationship?"),
+				    (wxScrolledWindow *)view,
+				    false);
 				answer = delremDialog->ShowModal();
 				ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
 				if (answer == DD_DELETE)
@@ -729,15 +734,20 @@ void ddRelationshipFigure::updatePkAtFkCols()
 		table->updateFkObservers();
 	}
 }
-wxString ddRelationshipFigure::generateSQL()
+wxString ddRelationshipFigure::generateSQL(wxString schemaName)
 {
 	wxString tmp;
 	if(chm.size() > 0)
 	{
-		tmp = _("ALTER TABLE \"") + ((ddTableFigure *)getEndFigure())->getTableName() + _("\" ADD ");
+		tmp = wxT("\nALTER TABLE ");
+		if(!schemaName.IsEmpty())
+			tmp += wxT("\"") + schemaName + wxT("\".");
+		tmp += wxT("\"") + ((ddTableFigure *)getEndFigure())->getTableName() + wxT("\"") ;
+
+		tmp +=  wxT(" ADD ");
 		if(!constraintName.IsEmpty())
 		{
-			tmp += _(" CONSTRAINT ") + constraintName + _(" ");
+			tmp += wxT("CONSTRAINT \"") + constraintName + wxT("\" ");
 		}
 		tmp += wxT("FOREIGN KEY ( ");
 		columnsHashMap::iterator it, end;
@@ -759,7 +769,12 @@ wxString ddRelationshipFigure::generateSQL()
 			}
 		}
 
-		tmp += wxT(" REFERENCES \"") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT("\" ( ");
+		tmp += wxT(" REFERENCES ");
+		if(!schemaName.IsEmpty())
+			tmp += wxT("\"") + schemaName + _("\".");
+		tmp += wxT("\"") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT("\"") ;
+
+		tmp += wxT(" ( ");
 		for( it = chm.begin(); it != chm.end(); ++it )
 		{
 			wxString key = it->first;

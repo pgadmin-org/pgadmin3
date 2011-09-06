@@ -36,10 +36,13 @@
 #include "dd/dditems/locators/ddScrollBarTableLocator.h"
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/locators/ddTableBottomLocator.h"
+#include "dd/ddmodel/ddDBReverseEngineering.h"
 #include "hotdraw/utilities/hdGeometry.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "hotdraw/connectors/hdLocatorConnector.h"
 #include "hotdraw/main/hdDrawing.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
+
 //Images
 #include "images/ddAddColumn.pngc"
 #include "images/ddRemoveColumn.pngc"
@@ -130,6 +133,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 
 	basicDisplayBox.x[0] = x;
 	basicDisplayBox.y[0] = y;
+	belongsToSchema = false;
 }
 
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
@@ -1089,11 +1093,18 @@ bool ddTableFigure::validateTable(wxString &errors)
 }
 
 //Using some options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html, but new options can be added in a future.
-wxString ddTableFigure::generateSQLCreate()
+wxString ddTableFigure::generateSQLCreate(wxString schemaName)
 {
 	//Columns and table
 	wxString tmp(wxT("CREATE TABLE "));
-	tmp += +wxT("\"") + getTableName() + wxT("\" (\n");
+	if(!schemaName.IsEmpty())
+	{
+		tmp += wxT("\"") + schemaName + wxT("\".\"") + getTableName() + wxT("\" (\n");
+	}
+	else
+	{
+		tmp += wxT("\"") + getTableName() + wxT("\" (\n");
+	}
 	hdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
@@ -1115,7 +1126,7 @@ wxString ddTableFigure::generateSQLCreate()
 	return tmp;
 }
 
-wxString ddTableFigure::generateSQLAlterPks()
+wxString ddTableFigure::generateSQLAlterPks(wxString schemaName)
 {
 	wxString tmp;
 	hdIteratorBase *iterator = figuresEnumerator();
@@ -1131,12 +1142,23 @@ wxString ddTableFigure::generateSQLAlterPks()
 	}
 	if(contPk > 0)
 	{
-		tmp += wxT("\n ALTER TABLE ") + getTableName() + _(" ADD ");
+		tmp += wxT("\nALTER TABLE ");
+		if(!schemaName.IsEmpty())
+		{
+			tmp += wxT("\"") + schemaName + wxT("\".\"") + getTableName() + wxT("\"");
+		}
+		else
+		{
+			tmp += wxT("\"") + getTableName() + wxT("\"") ;
+		}
+
+		tmp += wxT(" ADD ");
+
 		if(!pkName.IsEmpty())
 		{
-			tmp += _(" CONSTRAINT ") + pkName;
+			tmp += wxT("CONSTRAINT \"") + pkName + wxT("\" ");
 		}
-		tmp += _(" PRIMARY KEY ( ");
+		tmp += wxT("PRIMARY KEY ( ");
 		iterator->ResetIterator();
 		iterator->Next(); //Fixed Position for table rectangle
 		iterator->Next(); //Fixed Position for table name
@@ -1164,7 +1186,7 @@ wxString ddTableFigure::generateSQLAlterPks()
 	return tmp;
 }
 
-wxString ddTableFigure::generateSQLAlterFks()
+wxString ddTableFigure::generateSQLAlterFks(wxString schemaName)
 {
 	wxString tmp;
 	hdIteratorBase *iterator = figuresEnumerator();
@@ -1181,10 +1203,708 @@ wxString ddTableFigure::generateSQLAlterFks()
 			ddRelationshipFigure *rel = (ddRelationshipFigure *) iterator->Next();
 			if(rel->getStartFigure() != this)
 			{
-				tmp += rel->generateSQL();
+				tmp += rel->generateSQL(schemaName);
 			}
 		}
 	}
 	delete iterator;
 	return tmp;
+}
+
+wxString ddTableFigure::generateSQLAlterUks(wxString schemaName)
+{
+	hdIteratorBase *iterator = figuresEnumerator();
+
+	//Pk, Uk Constraints
+	iterator->Next(); //Fixed Position for table rectangle
+	iterator->Next(); //Fixed Position for table name
+	int MaxUk = -1;
+	while(iterator->HasNext())
+	{
+		ddColumnFigure *column = (ddColumnFigure *) iterator->Next();
+		if(column->isUniqueKey() && column->getUniqueConstraintIndex() > MaxUk)
+			MaxUk = column->getUniqueConstraintIndex();
+	}
+
+	wxString tmp = wxEmptyString;
+	if(MaxUk >= 0)
+	{
+		int i;
+		for(i = 0; i <= MaxUk; i++)
+		{
+			tmp += wxT("\nALTER TABLE ");
+
+			if(!schemaName.IsEmpty())
+				tmp += wxT("\"") + schemaName + wxT("\".");
+			tmp += wxT("\"") + getTableName() + wxT("\"") ;
+
+			tmp += wxT(" ADD ");
+
+			if(!getUkConstraintsNames()[i].IsEmpty())
+			{
+				tmp += wxT("CONSTRAINT \"") + getUkConstraintsNames()[i] + wxT("\" ") ;
+			}
+			tmp += wxT("UNIQUE ( ");
+
+			int countUk = 0;
+			iterator->ResetIterator();
+			iterator->Next(); //Fixed Position for table rectangle
+			iterator->Next(); //Fixed Position for table name
+			while(iterator->HasNext())
+			{
+				ddColumnFigure *column = (ddColumnFigure *) iterator->Next();
+				if(column->getUniqueConstraintIndex() == i)
+					countUk++;
+			}
+
+			iterator->ResetIterator();
+			iterator->Next(); //Fixed Position for table rectangle
+			iterator->Next(); //Fixed Position for table name
+			while(iterator->HasNext())
+			{
+				ddColumnFigure *column = (ddColumnFigure *) iterator->Next();
+				if(column->isUniqueKey() && column->getUniqueConstraintIndex() == i)
+				{
+					tmp += wxT("\"") + column->getColumnName() + wxT("\"");
+					countUk--;
+					if(countUk > 0)
+					{
+						tmp += wxT(", ");
+					}
+				}
+			}
+			tmp += wxT(" ); ");
+		}
+	}
+	delete iterator;
+	return tmp;
+}
+
+wxString ddTableFigure::generateAltersTable(pgConn *connection, wxString schemaName, ddDatabaseDesign *design)
+{
+	wxString out;
+
+	OID oidTable = ddImportDBUtils::getTableOID(connection, schemaName, getTableName());
+	if(oidTable == -1)
+	{
+		wxMessageBox(wxString::Format(_("Cannot build an ALTER TABLE statement for a non existing table (%s.%s)."),
+		                              schemaName.c_str(), getTableName().c_str()), _("Error when trying to get table OID"),  wxICON_ERROR);
+		return wxEmptyString;
+	}
+
+	ddStubTable *dbTable = ddImportDBUtils::getTable(connection, getTableName(), oidTable);
+	if(!dbTable)
+	{
+		wxMessageBox(wxString::Format(_("Cannot reverse engineering table %s.%s."),
+		                              schemaName.c_str(), getTableName().c_str()), _("Error when trying to get stub table"),  wxICON_ERROR);
+		return wxEmptyString;
+	}
+
+	//--------------- DETECT TABLE LEVEL CHANGES
+
+	// Check if TABLE was renamed
+	// **Not supported yet**
+
+	// Check if PRIMARY KEY constraint was renamed
+	// Some models don't set a name for the primary key, so we ignore those models
+	if(this->getPkConstraintName().Len() > 0 && !dbTable->PrimaryKeyName.IsSameAs(this->getPkConstraintName()))
+	{
+		out += wxT("\n");
+		out += wxT("ALTER INDEX \"") + dbTable->PrimaryKeyName + wxT("\" RENAME TO \"") + this->getPkConstraintName() + wxT("\";");
+		out += wxT("\n");
+	}
+
+	// Check if a UNIQUE KEY constraint was renamed
+	// **Not supported yet** (is it possible?)
+
+	//--------------- DETECT COLUMN LEVEL CHANGES
+
+	// Check if A COLUMN was renamed
+	// **Not supported yet**
+
+	// Look for columns that exist in the database but not in the model
+	bool pkRemovedflag = false;
+	bool ukRemoved = false;
+	stubColsHashMap::iterator it;
+	ddStubColumn *item;
+
+	for (it = dbTable->cols.begin(); it != dbTable->cols.end(); ++it)
+	{
+		wxString key = it->first;
+		item = it->second;
+		ddColumnFigure *column = getColumnByName(key);
+
+		// Check for changes at the column
+		if(column)
+		{
+			// Generate ALTER COLUMN statement if needed
+			// Datatype change, length, and precision are checked
+
+			// Temporary conversion fix to datatype of designer should be improved in a future
+			wxString dataType = item->typeColumn->Name();
+			bool sameDatatype = true, sameScale = true, samePrecision = true;
+			int s = -1, p = -1;
+			bool useScale = true, needps = false;
+
+			s = item->typeColumn->Length();
+			p = item->typeColumn->Precision();
+
+			if(dataType.IsSameAs(wxT("character varying"), false))
+			{
+				needps = true;
+				dataType = wxT("varchar(n)");
+			}
+
+			else if(dataType.IsSameAs(wxT("numeric"), false))
+			{
+				needps = true;
+				useScale = false;
+				dataType = wxT("numeric(p,s)");
+			}
+			else if(dataType.IsSameAs(wxT("interval"), false))
+			{
+				needps = true;
+				dataType = wxT("interval(n)");
+			}
+			else if(dataType.IsSameAs(wxT("bit"), false))
+			{
+				needps = true;
+				dataType = wxT("bit(n)");
+			}
+			else if(dataType.IsSameAs(wxT("char"), false))
+			{
+				needps = true;
+				dataType = wxT("char(n)");
+			}
+			else if(dataType.IsSameAs(wxT("varbit"), false))
+			{
+				needps = true;
+				dataType = wxT("varbit(n)");
+			}
+			else if(dataType.IsSameAs(wxT("character"), false))
+			{
+				needps = true;
+				dataType = wxT("char(n)");
+			}
+
+			if(needps)
+			{
+				if(useScale)
+				{
+					samePrecision = column->getPrecision() == s;
+				}
+				else
+				{
+					samePrecision = column->getPrecision() == s;
+					sameScale = column->getScale() == p;
+				}
+			}
+
+
+			sameDatatype = column->getRawDataType().IsSameAs(dataType, false);
+
+			if(!samePrecision || !sameScale || !sameDatatype)
+			{
+				out += wxT("\n");
+				out += wxT("ALTER TABLE ");
+
+				if(!schemaName.IsEmpty())
+					out += wxT("\"") + schemaName + wxT("\".");
+				out += wxT("\"") + getTableName() + wxT("\"") ;
+
+				out	+= wxT(" ALTER COLUMN ") + column->generateSQL(true) + wxT(";");
+				out += wxT("\n");
+			}
+		}
+		else  // DROP COLUMN because it doesn't exist in the model anymore
+		{
+			out += wxT("\n");
+			out += wxT("ALTER TABLE ");
+
+			if(!schemaName.IsEmpty())
+				out += wxT("\"") + schemaName + wxT("\".");
+			out += wxT("\"") + getTableName() + wxT("\"") ;
+
+			out += wxT(" DROP COLUMN \"") + key + wxT("\";");
+			out += wxT("\n");
+			if(item->isPrimaryKey)
+			{
+				pkRemovedflag = true;
+			}
+		}
+	}
+
+	// Look for columns that exist in the model but not in the database
+	hdIteratorBase *iteratorPK = figuresEnumerator();
+	iteratorPK->Next(); //Fixed Position for table rectangle
+	iteratorPK->Next(); //Fixed Position for table name
+
+	bool pkAddedflag = false;
+	while(iteratorPK->HasNext())
+	{
+		ddColumnFigure *column = (ddColumnFigure *) iteratorPK->Next();
+		if(dbTable->cols.find(column->getColumnName()) == dbTable->cols.end())  //Exist in model but not in db
+		{
+			out += wxT("\n");
+			out += wxT("ALTER TABLE ");
+			if(!schemaName.IsEmpty())
+				out += wxT("\"") + schemaName + wxT("\".");
+			out += wxT("\"") + getTableName() + wxT("\"") ;
+			out += wxT(" ADD COLUMN ") + column->generateSQL() + wxT(";");
+			out += wxT("\n");
+			if(column->isPrimaryKey())
+			{
+				pkAddedflag = true;
+			}
+		}
+	}
+
+	// Look for all PRIMARY columns in the database's tables
+	bool pkChanged = false;
+	iteratorPK->ResetIterator();
+	iteratorPK->Next(); //Fixed Position for table rectangle
+	iteratorPK->Next(); //Fixed Position for table name
+	while(iteratorPK->HasNext())
+	{
+		ddColumnFigure *column = (ddColumnFigure *) iteratorPK->Next();
+		if(column->isPrimaryKey())
+		{
+			if(dbTable->cols.find(column->getColumnName()) == dbTable->cols.end())
+			{
+				pkChanged = true;
+			}
+			else
+			{
+				if(!dbTable->cols[column->getColumnName()]->isPrimaryKey)
+				{
+					pkChanged = true;
+				}
+			}
+		}
+	}
+	delete iteratorPK;
+
+	// Look for all PRIMARY columns in the model
+	stubColsHashMap::iterator itCol;
+	ddStubColumn *itemCol;
+	for (itCol = dbTable->cols.begin(); itCol != dbTable->cols.end(); ++itCol)
+	{
+		wxString colStubName = itCol->first;
+		itemCol = itCol->second;
+		if(itemCol->isPrimaryKey)
+		{
+			ddColumnFigure *col = getColumnByName(colStubName);
+			if(col != NULL)
+			{
+				if(!col->isPrimaryKey())
+				{
+					pkChanged = true;
+				}
+			}
+			else
+			{
+				pkChanged = true;
+			}
+		}
+	}
+
+
+	// Handle the addition of a new column to the primary key
+	if(pkAddedflag || pkRemovedflag || pkChanged)
+	{
+		// Drop existing primary key
+		out += wxT("\n");
+		out += wxT("ALTER TABLE ");
+		if(!schemaName.IsEmpty())
+			out += wxT("\"") + schemaName + wxT("\".");
+		out += wxT("\"") + getTableName() + wxT("\"") ;
+		out += wxT(" DROP CONSTRAINT \"") + this->getPkConstraintName() + wxT("\";");
+		// Create the new one
+		out += generateSQLAlterPks(schemaName);
+	}
+
+	// Handle changes from NOT NULL to NULL (always after dropping PK)
+	for (it = dbTable->cols.begin(); it != dbTable->cols.end(); ++it)
+	{
+		wxString key = it->first;
+		item = it->second;
+		ddColumnFigure *column = getColumnByName(key);
+
+		// Check for changes at the column level
+		if(column)
+		{
+			// Generate ALTER COLUMN statement if needed
+			// Datatype change, length and precision are handled.
+
+			// Temporary conversion fix to datatype of designer should be improved in a future
+			wxString dataType = item->typeColumn->Name();
+			bool sameDatatype = true, sameScale = true, samePrecision = true;
+			int s = -1, p = -1;
+
+			// Model has now NULL constraint, so drop the NOT NULL constraint
+			if(column->isNotNull())
+			{
+				if(!item->isNotNull)
+				{
+					out += wxT("\n");
+					out += wxT("ALTER TABLE ");
+					if(!schemaName.IsEmpty())
+						out += wxT("\"") + schemaName + wxT("\".");
+					out += wxT("\"") + getTableName() + wxT("\"") ;
+					out += wxT(" ALTER COLUMN \"") + column->getColumnName() + _("\" SET NOT NULL;");
+					out += wxT("\n");
+				}
+			}
+			else if(!column->isNotNull())
+			{
+				if(item->isNotNull)
+				{
+					out += wxT("\n");
+					out += wxT("ALTER TABLE \"");
+					if(!schemaName.IsEmpty())
+						out += wxT("\"") + schemaName + wxT("\".");
+					out += wxT("\"") + getTableName() + wxT("\"") ;
+					out += wxT("\" ALTER COLUMN \"") + column->getColumnName() + wxT("\" DROP NOT NULL;");
+					out += wxT("\n");
+				}
+			}
+		}
+	}
+
+	// Check UK conditions
+	int i, maxUkn = this->getUkConstraintsNames().Count();
+	for(i = 0; i < maxUkn; i++)
+	{
+		if(this->getUkConstraintsNames()[i].Len() == 0)
+		{
+			wxMessageBox(wxString::Format(_("Some UNIQUE keys on table %s have no name.\nYou should set a name for them, so that pgAdmin can check consistency with the already available database constraints."),
+			                              getTableName().c_str()), _("Trying to build ALTER sentences"),  wxICON_ERROR);
+			return wxEmptyString;
+		}
+	}
+
+	// Search for UNIQUE key deleted from model, but available in the database
+	// Two steps process: first drop then delete from wxarraystring
+	int maxUkStub = dbTable->UniqueKeysNames.Count();
+	for(i = 0; i < maxUkStub; i++)
+	{
+		// Drop UK [in db but not in model]
+		if(this->getUkConstraintsNames().Index(dbTable->UniqueKeysNames[i]) == wxNOT_FOUND)
+		{
+			// Drop it
+			out += wxT("\n");
+			out += wxT("DROP INDEX \"") + dbTable->UniqueKeysNames[i] + wxT("\";");
+			out += wxT("\n");
+
+			// This index metadata is not useful anymore, so erase it at temporary stub table.
+			stubColsHashMap::iterator itDelUkIdx;
+			ddStubColumn *itemDelUkIdx;
+			for (itDelUkIdx = dbTable->cols.begin(); itDelUkIdx != dbTable->cols.end(); ++itDelUkIdx)
+			{
+				wxString keyDelUkIdx = itDelUkIdx->first;
+				itemDelUkIdx = itDelUkIdx->second;
+				if(itemDelUkIdx->uniqueKeyIndex == i)
+				{
+					itemDelUkIdx->uniqueKeyIndex = -1;
+				}
+			}
+		}
+	}
+
+	maxUkStub = dbTable->UniqueKeysNames.Count();
+	for(i = 0; i < maxUkStub; i++)
+	{
+		// Drop UK [in db but not in model]
+		if(this->getUkConstraintsNames().Index(dbTable->UniqueKeysNames[i]) == wxNOT_FOUND)
+		{
+			dbTable->UniqueKeysNames.RemoveAt(i);
+			maxUkStub = dbTable->UniqueKeysNames.Count();
+		}
+	}
+
+	// Search for new UK in model to add ADD CONSTRAINT clause
+	int maxUkModel = this->getUkConstraintsNames().Count();
+	for(i = 0; i < maxUkModel; i++)
+	{
+		// Add UK [in model but not in db]
+		if(dbTable->UniqueKeysNames.Index(this->getUkConstraintsNames()[i]) == wxNOT_FOUND)
+		{
+			// Create it
+			out += wxT("\nALTER TABLE ");
+			if(!schemaName.IsEmpty())
+				out += wxT("\"") + schemaName + wxT("\".");
+			out += wxT("\"") + getTableName() + wxT("\"") ;
+			out += wxT(" ADD ");
+			if(!getUkConstraintsNames()[i].IsEmpty())
+			{
+				out += wxT(" CONSTRAINT \"") + getUkConstraintsNames()[i] + wxT("\" ");
+			}
+			out += wxT(" UNIQUE ( ");
+
+			int countUk = 0;
+			hdIteratorBase *iteratorUk = figuresEnumerator();
+			iteratorUk->Next(); //Fixed Position for table rectangle
+			iteratorUk->Next(); //Fixed Position for table name
+			while(iteratorUk->HasNext())
+			{
+				ddColumnFigure *column = (ddColumnFigure *) iteratorUk->Next();
+				if(column->getUniqueConstraintIndex() == i)
+					countUk++;
+			}
+
+			iteratorUk->ResetIterator();
+			iteratorUk->Next(); //Fixed Position for table rectangle
+			iteratorUk->Next(); //Fixed Position for table name
+			while(iteratorUk->HasNext())
+			{
+				ddColumnFigure *column = (ddColumnFigure *) iteratorUk->Next();
+				if(column->isUniqueKey() && column->getUniqueConstraintIndex() == i)
+				{
+					out += wxT("\"") + column->getColumnName() + wxT("\"");
+					countUk--;
+					if(countUk > 0)
+					{
+						out += wxT(", ");
+					}
+					else
+					{
+						out += wxT(");");
+					}
+				}
+			}
+			delete iteratorUk;
+		}
+	}
+
+	// After delete/create UK, look for changes at existing UK
+	// Unified UK indexes at both dbtable and ddTableFigure [same index at dbtable that in tablefigure]
+	// BUT in table figure exists indexes without an equivalent in dbtable
+	maxUkStub = this->getUkConstraintsNames().Count();
+	for(i = 0; i < maxUkStub; i++)
+	{
+		int oldIndex = dbTable->UniqueKeysNames.Index(this->getUkConstraintsNames()[i]);
+		int newIndex = i;
+
+		if(oldIndex != wxNOT_FOUND)
+		{
+			stubColsHashMap::iterator itDelUkIdx;
+			ddStubColumn *itemDelUkIdx;
+			for (itDelUkIdx = dbTable->cols.begin(); itDelUkIdx != dbTable->cols.end(); ++itDelUkIdx)
+			{
+				wxString keyDelUkIdx = itDelUkIdx->first;
+				itemDelUkIdx = itDelUkIdx->second;
+				if(item->uniqueKeyIndex == oldIndex)
+				{
+					item->uniqueKeyIndex = newIndex;
+				}
+			}
+		}
+	}
+
+	// Generate again those UK that fill one of these conditions:
+	// 1. UK at tablefigure have more columns that at stub
+	// 2. Uk at stub have more column that at tablefigure
+	// Right now, UK constraints have unified indexes (same index at tablefigure and stub)
+	maxUkStub = this->getUkConstraintsNames().Count();
+
+	// for each UK
+	for(i = 0; i < maxUkStub; i++)
+	{
+		// Only for UKs with number unified that exists at both sides [db and tablefigure] [with boundaries check]
+		int boundarie1 = getUkConstraintsNames().Count();
+		int boundarie2 = dbTable->UniqueKeysNames.Count();
+		if( (i < boundarie1) && (i < boundarie2) && getUkConstraintsNames().Index( dbTable->UniqueKeysNames[i]) != wxNOT_FOUND )
+		{
+			// Assumption
+			bool createUkAgain = false;
+
+			// CHECK FIRST CONDITION --->   1. UK at tablefigure have more columns that at stub?
+			hdIteratorBase *iteratorUk = figuresEnumerator();
+			iteratorUk->Next(); //Fixed Position for table rectangle
+			iteratorUk->Next(); //Fixed Position for table name
+
+			while(iteratorUk->HasNext())
+			{
+				ddColumnFigure *column = (ddColumnFigure *) iteratorUk->Next();
+				// For each UK column of the constraint with same index (position i, constraint at getUkConstraintsNames()[] )
+				if(column->getUniqueConstraintIndex() == i)
+				{
+					if(dbTable->cols.find(column->getColumnName()) == dbTable->cols.end())  //found at dbtable that uk column
+					{
+						createUkAgain = true;
+					}
+					else
+					{
+						ddStubColumn *stubCol = dbTable->cols[column->getColumnName()];
+						if(!stubCol->isUniqueKey())
+						{
+							createUkAgain = true;
+						}
+					}
+				}
+			}
+			delete iteratorUk;
+
+			// CHECK SECOND CONDITION --->   UK at stub have more uk column of same index that at tablefigure?
+			stubColsHashMap::iterator itCol;
+			ddStubColumn *itemCol;
+			for (itCol = dbTable->cols.begin(); itCol != dbTable->cols.end(); ++itCol)
+			{
+				bool isAtFigure = false;
+				wxString colStubName = itCol->first;
+				itemCol = itCol->second;
+				if(itemCol->uniqueKeyIndex == i)
+				{
+					ddColumnFigure *colUk = getColumnByName(colStubName);
+					if(colUk == NULL)
+					{
+						createUkAgain = true;
+					}
+					else
+					{
+						if(!colUk->isUniqueKey())
+						{
+							createUkAgain = true;
+						}
+					}
+				}
+			}
+
+			if(createUkAgain)
+			{
+				// Drop it
+				out += wxT("\n");
+				out += wxT("DROP INDEX \"") + dbTable->UniqueKeysNames[i] + wxT("\";");
+				out += wxT("\n");
+
+				// Create it
+				out += wxT("\nALTER TABLE ");
+				if(!schemaName.IsEmpty())
+					out += wxT("\"") + schemaName + wxT("\".");
+				out += wxT("\"") + getTableName() + wxT("\"") ;
+				out += wxT(" ADD ");
+				if(!getUkConstraintsNames()[i].IsEmpty())
+				{
+					out += wxT(" CONSTRAINT \"") + getUkConstraintsNames()[i] + wxT("\" ");
+				}
+				out += wxT(" UNIQUE ( ");
+
+				int countUk = 0;
+				hdIteratorBase *iteratorUk = figuresEnumerator();
+				iteratorUk->Next(); //Fixed Position for table rectangle
+				iteratorUk->Next(); //Fixed Position for table name
+				while(iteratorUk->HasNext())
+				{
+					ddColumnFigure *column = (ddColumnFigure *) iteratorUk->Next();
+					if(column->getUniqueConstraintIndex() == i)
+						countUk++;
+				}
+
+				iteratorUk->ResetIterator();
+				iteratorUk->Next(); //Fixed Position for table rectangle
+				iteratorUk->Next(); //Fixed Position for table name
+				while(iteratorUk->HasNext())
+				{
+					ddColumnFigure *column = (ddColumnFigure *) iteratorUk->Next();
+					if(column->isUniqueKey() && column->getUniqueConstraintIndex() == i)
+					{
+						out += wxT("\"") + column->getColumnName() + wxT("\"");
+						countUk--;
+						if(countUk > 0)
+						{
+							out += wxT(", ");
+						}
+						else
+						{
+							out += wxT(" );");
+						}
+					}
+				}
+				delete iteratorUk;
+			}
+		}
+	}
+
+	// Validate all FKs have a name defined at model
+	hdIteratorBase *iteratorRelations = observersEnumerator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getConstraintName().Len() == 0)	// Add to list, FKs with this table as destination. source ---<| destination
+		{
+			wxMessageBox(wxString::Format(_("Some foreign keys keys on table %s have no name.\nYou should set a name for them, so that pgAdmin can check consistency with the already available database constraints."),
+			                              getTableName().c_str()), _("Trying to build ALTER sentences"),  wxICON_ERROR);
+			return wxEmptyString;
+		}
+	}
+
+	//Check Foreign Keys
+	// FK at model are same (including attributes and columns) at db
+	iteratorRelations->ResetIterator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getEndFigure() == this)	// Only check FK this table as destination. source ---<| destination
+		{
+			// Check relationship from model exists a db?
+			if(ddImportDBUtils::existsFk(connection, dbTable->OIDTable, schemaName, r->getConstraintName(), r->getStartTable()->getTableName()))
+			{
+				// Columns and other properties are exactly the same? if not, then drop and create again
+				if(!ddImportDBUtils::isModelSameDbFk(connection, dbTable->OIDTable, schemaName, r->getConstraintName(), r->getStartTable()->getTableName(), r->getEndTable()->getTableName(), dbTable, r))
+				{
+					// Drop it first
+					out += wxT("\n");
+					out += wxT("ALTER TABLE ");
+					if(!schemaName.IsEmpty())
+						out += wxT("\"") + schemaName + wxT("\".");
+					out += wxT("\"") + this->getTableName() + wxT("\"") ;
+					out += wxT(" DROP CONSTRAINT \"") + r->getConstraintName() + wxT("\";");
+					out += wxT("\n");
+
+					// Then Add it again with changes
+					out += r->generateSQL(schemaName);
+
+				}
+			}
+			else //relationship only exists at model and not in db
+			{
+				//Create because it doesn't exists
+				out += r->generateSQL(schemaName);
+			}
+		}
+	}
+
+	// Check foreign keys available in the database but not in the model
+	// because we need to drop them
+	// First, create a list of FKs at destination table in the model
+	wxArrayString validFks;
+	iteratorRelations->ResetIterator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getEndFigure() == this)	// Add to list, FKs with this table as destination. source ---<| destination
+		{
+			validFks.Add(r->getConstraintName());
+		}
+	}
+	delete iteratorRelations;
+
+	wxArrayString fksToDelete = ddImportDBUtils::getFkAtDbNotInModel(connection, dbTable->OIDTable, schemaName, validFks , design);
+
+	int max = fksToDelete.Count();
+	for(i = 0; i < max; i++)
+	{
+		// Drop it
+		out += wxT("\n");
+		out += wxT("ALTER TABLE ");
+		if(!schemaName.IsEmpty())
+			out += wxT("\"") + schemaName + wxT("\".");
+		out += wxT("\"") + this->getTableName() + wxT("\"") ;
+		out += wxT(" DROP CONSTRAINT \"") + fksToDelete[i] + wxT("\";");
+		out += wxT("\n");
+	}
+
+	if(dbTable)
+		delete dbTable;
+	return out;
 }

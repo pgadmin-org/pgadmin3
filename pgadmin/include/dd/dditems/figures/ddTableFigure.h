@@ -16,6 +16,7 @@
 #include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
 
 class ddScrollBarHandle;
 class ddRelationshipFigure;
@@ -75,9 +76,11 @@ public:
 	wxString getTableName();
 	void setShortTableName(wxString shortName);
 	wxString getShortTableName();
-	wxString generateSQLCreate();
-	wxString generateSQLAlterPks();
-	wxString generateSQLAlterFks();
+	wxString generateSQLCreate(wxString schemaName);
+	wxString generateSQLAlterPks(wxString schemaName);
+	wxString generateSQLAlterFks(wxString schemaName);
+	wxString generateSQLAlterUks(wxString schemaName);
+	wxString generateAltersTable(pgConn *connection, wxString schemaName, ddDatabaseDesign *design);
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);
@@ -134,12 +137,25 @@ public:
 		return idxsWindow;
 	};
 
+	//Temporary alter table instead of create Helper
+	bool getBelongsToSchema()
+	{
+		return belongsToSchema;
+	};
+	void setBelongsToSchema(bool value)
+	{
+		belongsToSchema = value;
+	};
+
 protected:
 	//drawing
 	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
 
 private:
+	//Temporary alter table instead of create Helper
+	bool belongsToSchema;
+
 	//Main Rectangle Sizes
 	hdMultiPosRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
 	hdMultiPosRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;

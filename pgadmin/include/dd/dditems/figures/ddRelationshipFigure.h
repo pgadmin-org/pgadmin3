@@ -75,7 +75,7 @@ public:
 	void disconnectStart(hdDrawingView *view = NULL);
 	void disconnectEnd(hdDrawingView *view = NULL);
 	void setFkFrom(bool primaryKey, int useUkIndex = -1, bool issueUpdateFk = false);
-	wxString generateSQL();
+	wxString generateSQL(wxString schemaName);
 	wxString getConstraintName();
 	ddTableFigure *getStartTable();
 	ddTableFigure *getEndTable();

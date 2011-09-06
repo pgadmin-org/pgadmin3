@@ -56,7 +56,7 @@ void ddColumnFigure::Init(wxString &columnName, ddTableFigure *owner, ddRelation
 
 	//Set Value default Attributes
 	fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
-
+	pgAttNumColNumber = -1;
 }
 
 ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
@@ -79,7 +79,9 @@ ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddCol
 	}
 	else
 	{
-		wxMessageBox(_("Not compatible data type for column found"));
+		wxMessageBox(wxString::Format(_("%s column has a non compatible data type (%s).\n%s will now have the default data type."),
+		                              columnName.c_str(), colDataType.c_str(), columnName.c_str()));
+		setDataType((ddDataType)0);
 	}
 
 	columnText->setPrecision(p);
@@ -338,9 +340,19 @@ wxString &ddColumnFigure::getColumnName(bool datatype)
 	return columnText->getText(datatype);
 }
 
+void ddColumnFigure::setPrecision(int n)
+{
+	columnText->setPrecision(n);
+}
+
 int ddColumnFigure::getPrecision()
 {
 	return columnText->getPrecision();
+}
+
+void ddColumnFigure::setScale(int n)
+{
+	columnText->setScale(n);
 }
 
 int ddColumnFigure::getScale()
@@ -438,11 +450,12 @@ void ddColumnFigure::deactivateGenFkName()
 	generateFkName = false;
 }
 
-wxString ddColumnFigure::generateSQL()
+wxString ddColumnFigure::generateSQL(bool forAlterColumn)
 {
 	wxString tmp;
-	tmp = wxT("\"") + getColumnName() + wxT("\"");
-	tmp += wxT(" ");
+	tmp = wxT("\"") + getColumnName() + wxT("\" ");
+	if(forAlterColumn)
+		tmp += wxT("TYPE ");
 	tmp += columnText->getType();
 	return tmp;
 }
@@ -516,4 +529,10 @@ bool ddColumnFigure::validateColumn(wxString &errors)
 void ddColumnFigure::setFkSource(ddRelationshipItem *newColumn)
 {
 	fkSource = newColumn;
+}
+
+//Used by reverse engineering functions
+wxString ddColumnFigure::getRawDataType()
+{
+	return columnText->getType(true);
 }

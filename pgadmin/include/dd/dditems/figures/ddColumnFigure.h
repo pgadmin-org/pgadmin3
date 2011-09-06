@@ -65,14 +65,16 @@ public:
 	bool isGeneratedForeignKey();
 	bool isUserCreatedForeignKey();
 	bool isForeignKeyFromPk();
-	wxString generateSQL();
+	wxString generateSQL(bool forAlterColumn = false);
 	bool isFkNameGenerated();
 	void activateGenFkName();
 	void deactivateGenFkName();
 	ddRelationshipItem *getFkSource();
 	void setFkSource(ddRelationshipItem *newColumn);
 	int getPrecision();
+	void setPrecision(int n);
 	int getScale();
+	void setScale(int n);
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 	ddRelationshipItem *getRelatedFkItem();
 	bool validateColumn(wxString &errors);
@@ -90,6 +92,12 @@ public:
 		return columnText;
 	};
 
+	/*	Disable right now, it can be useful at the future when db designer will be improved again
+		int getPgAttNumCol() { return pgAttNumColNumber;};
+		void setPgAttNumCol(int attnum) { pgAttNumColNumber = attnum; };
+	*/
+	wxString getRawDataType();
+
 protected:
 	ddColumnKindIcon *kindImage;
 	ddColumnOptionIcon *optionImage;
@@ -97,6 +105,7 @@ protected:
 	ddTableFigure *ownerTable;
 	ddRelationshipItem *usedAsFkDestFor;
 	bool generateFkName;
+	int pgAttNumColNumber;
 
 private:
 	ddRelationshipItem *fkSource;
