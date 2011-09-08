@@ -3048,7 +3048,7 @@ bool sqlTable::Paste()
 		}
 
 		if (inQuotes && text[pos] == quoteChar &&
-		        text[pos + 1] == colSep)
+		        (text[pos + 1] == colSep || text[pos + 1] == '\r' || text[pos + 1] == '\n'))
 		{
 			data.Add(text.Mid(start, pos - start));
 			start = (pos += 2);

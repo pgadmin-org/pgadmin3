@@ -37,6 +37,9 @@ Changes
 
 Date       Dev Ver     Change details
 ---------- --- ------  --------------
+2011-09-08 DP  1.14.0  Fix pasting in the Edit Grid to avoid tacking garbage
+                       onto the end of the last cell if too many fields are
+                       pasted [Robins Tharakan].
 2011-09-04 GL  1.16.0  Highlight the other brace even if the current one is
                        before the caret (request from Andreas).
 2011-08-24 DP  1.16.0  Add options to refresh objects automatically when 
@@ -66,7 +69,7 @@ Date       Dev Ver     Change details
 2011-06-27 GL  1.16.0  Add Database Designer. Patch from Luis Ochoa.
 2011-06-23 MH  1.14.0  Rename "Replication" node and menu to
                        "Slony Replication", and "Use Replication" to
-        		       "Use Slony".
+                       "Use Slony".
 2011-06-23 DP  1.16.0  Allow change of the fill factor. Patch from Thom Brown.
 2011-05-04 MH  1.12.4  Properly show blocked processes when the lock is on
                        transactionid, and show -1 if it's blocking but we
@@ -120,9 +123,9 @@ Date       Dev Ver     Change details
                        type the collation and character type he wants.
 2011-02-10 DP  1.12.3  Fix a datatype issue with a query on EDB Advanced Server
                        [Nikhil S].
-2011-02-04 DP  1.12.3  Set a default schema on the default privileges tab, for 
+2011-02-04 DP  1.12.3  Set a default schema on the default privileges tab, for
                        consistency with the privileges tab [Nikhil S].
-2011-02-04 DP  1.12.3  Fix support for synonyms on functions and procedures in 
+2011-02-04 DP  1.12.3  Fix support for synonyms on functions and procedures in
                        EDB Advanced Server [Nikhil S].
 2011-01-31 DP  1.12.3  Fix a bug in the way that stored procedures and functions
                        are identified in EDB Advanced Server, that could yield
@@ -175,7 +178,7 @@ Date       Dev Ver     Change details
                        Foreign Key.
 2010-11-23 GL  1.12.2  Fix quotation marks used for objects' names during
                        backup.
-2010-11-22 DP  1.12.2  Improve the commenting logic in the SQL text box, to 
+2010-11-22 DP  1.12.2  Improve the commenting logic in the SQL text box, to
                        allow quick commenting of multiple lines in succession
                        and fix some unintuitive behaviour [Nail Samatov].
 2010-11-15 DP  1.14.0  Use the highlighted text in the Query Tool as the default
@@ -211,7 +214,7 @@ Date       Dev Ver     Change details
                        dialog.
 2010-09-28 GL  1.12.1  Fix for log_statement in 7.4.
 2010-09-28 GL  1.12.1  Lots of fixes on my "sort column" patch.
-2010-09-28 DP  1.12.1  Avoid an error when viewing index statistics in 
+2010-09-28 DP  1.12.1  Avoid an error when viewing index statistics in
                        languages other than English.
 2010-09-25 GL  1.12.1  Fix connection color on the query tool
 2010-09-25 GL  1.12.1  Fix the reverse-engineered query for triggers
@@ -260,8 +263,8 @@ Date       Dev Ver     Change details
                        import it in the big roles query.
 2010-07-30 GL  1.14.0  Add support for --quote-all-identifiers CLI option on
                        9.1 pg_dump/pg_dumpall.
-2010-07-29 DP  1.14.0  Load plugins from any .ini file found in a new 
-                       plugins.d directory. This makes it much easier for 
+2010-07-29 DP  1.14.0  Load plugins from any .ini file found in a new
+                       plugins.d directory. This makes it much easier for
                        other software to register itself as a plugin.
 2010-07-28 DP  1.12.0  Ensure the highlight colour in the SQL textboxes will
                        work with the system colours [Benedek László].
@@ -272,7 +275,7 @@ Date       Dev Ver     Change details
 2010-07-24 GL  1.12.0  Make sure menubar's and toolbar's items are
                        enabled/disabled as appropriate when selecting a
                        server's group, per a report from Steffen Kuhn.
-2010-07-21 DP  1.12.0  Ensure the Drop option is shown for rules when 
+2010-07-21 DP  1.12.0  Ensure the Drop option is shown for rules when
                        appropriate.
 2010-07-15 DP  1.12.0  Fix a crash that occured when pressing a key on a text
                        cell in the Edit Grid, when not in Edit mode.
@@ -284,14 +287,14 @@ Date       Dev Ver     Change details
                        dialog creation.
 2010-06-08 AV  1.10.4  Avoid a bug in the package dialog which could prevent
                        a comment being editted.
-2010-06-08 AV  1.10.4  Don't pass values to OUT parameters when invoking 
+2010-06-08 AV  1.10.4  Don't pass values to OUT parameters when invoking
                        pl/pgsql functions in the debugger.
 2010-06-02 GL  1.10.4  Fix the ever-displayed message when modifying multiple
                        times the same object (occurs with exttable, function,
                        package, trigger, per a report from Peter Geoghegan.
 2010-05-27 AV  1.10.4  Use CALL to execute callable statements, not PERFORM.
 2010-05-25 AV  1.12.0  Add support for discovery of 64 bit servers on Windows.
-2010-05-21 AV  1.10.4  Drop package bodies correctly if they only contain 
+2010-05-21 AV  1.10.4  Drop package bodies correctly if they only contain
                        whitespace.
 2010-05-21 AV  1.10.4  Fix a typo in the stored procedure debugger invocation
                        code block.
@@ -330,7 +333,7 @@ Date       Dev Ver     Change details
 2010-04-23 DP  1.12.0  Added support for deferrable unique constraints and
                        primary keys [Ashesh Vashi].
 2010-04-22 DP  1.10.3  Don't offer debugging options to non-superusers on
-                       Postgres Plus Advanced Server < 8.4 which doesn't 
+                       Postgres Plus Advanced Server < 8.4 which doesn't
                        have support for user debugging [Ashesh Vashi]
 2010-04-21 GL  1.10.3  Fix the saving and reverse engineering of parameters for
                        database, table, and function, according to a report
