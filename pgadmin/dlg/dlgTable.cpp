@@ -915,9 +915,8 @@ wxString dlgTable::GetSql()
 				definition = definition.Mid(1).BeforeFirst('"');
 			else
 				definition = definition.BeforeFirst(' ');
-			sql = wxT("ALTER TABLE ") + tabname
-			      + wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
-			      + sql;
+			sql += wxT("ALTER TABLE ") + tabname
+			      + wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
 
 		}
 		// Add the ADD CONSTRAINTs...
