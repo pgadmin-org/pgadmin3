@@ -54,11 +54,11 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 	SetTitle(object->GetTranslatedMessage(BACKUPGLOBALS));
 
 	if (object->GetConnection()->EdbMinimumVersion(8, 0))
-		backupExecutable = edbBackupExecutable;
+		backupExecutable = edbBackupAllExecutable;
 	else if (object->GetConnection()->GetIsGreenplum())
-		backupExecutable = gpBackupExecutable;
+		backupExecutable = gpBackupAllExecutable;
 	else
-		backupExecutable = pgBackupExecutable;
+		backupExecutable = pgBackupAllExecutable;
 
 	wxString val;
 	settings->Read(wxT("frmBackupGlobals/LastFile"), &val, wxEmptyString);
@@ -269,10 +269,10 @@ bool backupGlobalsFactory::CheckEnable(pgObject *obj)
 			return false;
 
 	if (obj->GetConnection() && obj->GetConnection()->EdbMinimumVersion(8, 0))
-		return obj->CanBackupGlobals() && !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
+		return obj->CanBackupGlobals() && !edbBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupAllExecutable, 8, 3);
 	else if (obj->GetConnection() && obj->GetConnection()->GetIsGreenplum())
-		return obj->CanBackupGlobals() && !gpBackupExecutable.IsEmpty() && pgAppMinimumVersion(gpBackupExecutable, 8, 3);
+		return obj->CanBackupGlobals() && !gpBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(gpBackupAllExecutable, 8, 3);
 	else
-		return obj->CanBackupGlobals() && !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
+		return obj->CanBackupGlobals() && !pgBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupAllExecutable, 8, 3);
 }
 

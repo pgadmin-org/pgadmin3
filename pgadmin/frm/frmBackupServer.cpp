@@ -257,10 +257,10 @@ bool backupServerFactory::CheckEnable(pgObject *obj)
 		return false;
 
 	if (obj->GetConnection()->EdbMinimumVersion(8, 0))
-		return !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
+		return !edbBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupAllExecutable, 8, 3);
 	else if (obj->GetConnection()->GetIsGreenplum())
-		return !gpBackupExecutable.IsEmpty() && pgAppMinimumVersion(gpBackupExecutable, 8, 3);
+		return !gpBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(gpBackupAllExecutable, 8, 3);
 	else
-		return !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
+		return !pgBackupAllExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupAllExecutable, 8, 3);
 }
 
