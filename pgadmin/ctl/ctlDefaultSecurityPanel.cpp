@@ -365,10 +365,10 @@ void ctlDefaultPrivilegesPanel::OnAddPriv(wxCommandEvent &ev)
 {
 	wxString strRole, strPriv;
 	bool isPresent = (m_currentSelectedPriv != NULL &&
-	                 ((m_currentSelectedPriv->m_modified &&
-	                   !m_currentSelectedPriv->m_newPriv.IsEmpty()) ||
-	                  (!m_currentSelectedPriv->m_modified)))
-                     || lbPrivileges->FindItem(-1, cbGroups->GetGuessedStringSelection()) >= 0;
+	                  ((m_currentSelectedPriv->m_modified &&
+	                    !m_currentSelectedPriv->m_newPriv.IsEmpty()) ||
+	                   (!m_currentSelectedPriv->m_modified)))
+	                 || lbPrivileges->FindItem(-1, cbGroups->GetGuessedStringSelection()) >= 0;
 
 	if (allPrivileges && allPrivileges->GetValue())
 	{
@@ -513,7 +513,7 @@ void ctlDefaultPrivilegesPanel::OnPrivSelChange(wxListEvent &ev)
 			}
 			CheckGrantOpt(i);
 		}
-        PrivCheckBoxUpdate(name);
+		PrivCheckBoxUpdate(name);
 	}
 	btnAddPriv->Enable();
 }
