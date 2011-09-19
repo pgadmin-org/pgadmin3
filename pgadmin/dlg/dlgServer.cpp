@@ -127,7 +127,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
 		while (groupitem)
 		{
 			firstserver = (pgServer *)browser->GetObject(browser->GetFirstChild(groupitem, servercookie));
-			if (!firstserver->GetGroup().IsEmpty() && firstserver->GetGroup() != _("Servers"))
+			if (firstserver && !firstserver->GetGroup().IsEmpty() && firstserver->GetGroup() != _("Servers"))
 				cbGroup->Append(firstserver->GetGroup());
 			groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
 		}
