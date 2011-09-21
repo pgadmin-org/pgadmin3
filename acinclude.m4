@@ -417,9 +417,9 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		AC_LANG_RESTORE	 
 
 
-		# Solaris needs -lssl for this test
+		# Solaris/Mac need -lssl for this test
 		case "${host}" in
-			*solaris*)
+			*solaris* | *-apple-darwin*)
 		if test "$LIB_SSL" = "yes"
 				then
 					LDFLAGS="$LDFLAGS -L${PG_LIB} -lssl"
