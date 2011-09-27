@@ -108,9 +108,6 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 	cbStorage->Append(wxT("EXTENDED"));
 
 	queriesToBeSplitted = false;
-
-	wxNotifyEvent event;
-	OnTypeChange(event);
 }
 
 
