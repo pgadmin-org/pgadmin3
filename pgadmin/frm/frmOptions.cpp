@@ -260,7 +260,7 @@ frmOptions::frmOptions(frmMain *parent)
 
 	// Icon
 	SetIcon(*properties_png_ico);
-	//RestorePosition();
+	RestorePosition();
 
 	wxAcceleratorEntry entries[1];
 
