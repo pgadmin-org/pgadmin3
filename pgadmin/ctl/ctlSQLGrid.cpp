@@ -47,6 +47,7 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
 	SetLabelFont(fntLabel);
 	SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
 	SetRowLabelSize(50);
+	SetDefaultRowSize(fntCells.GetPointSize() * 2);
 	SetColLabelSize(fntLabel.GetPointSize() * 4);
 	SetDefaultCellOverflow(false);
 
