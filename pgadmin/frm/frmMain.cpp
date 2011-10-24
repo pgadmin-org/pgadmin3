@@ -1062,6 +1062,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 				GetMenuFactories()->CheckMenu((pgObject *)browser->GetItemData(item), GetMenuBar(), (ctlMenuToolbar *)GetToolBar());
 			else
 				GetMenuFactories()->CheckMenu(server, GetMenuBar(), (ctlMenuToolbar *)GetToolBar());
+			browser->SetFocus();
 			return res;
 		}
 		case PGCONN_DNSERR:
