@@ -182,7 +182,7 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Server"), GetForeignServer());
-		properties->AppendItem(_("Columns"), GetTypesList());
+		properties->AppendItem(_("Columns"), GetQuotedTypesList());
 		properties->AppendItem(_("Options"), GetOptionsList());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
@@ -211,7 +211,7 @@ wxString pgForeignTable::GetSelectSql(ctlTree *browser)
 	{
 		if (!columns.IsEmpty())
 			columns += wxT(", ");
-		columns += elements.Item(i);
+		columns += qtIdent(elements.Item(i));
 	}
 
 	wxString sql =
