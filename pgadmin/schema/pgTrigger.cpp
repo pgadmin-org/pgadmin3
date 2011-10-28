@@ -401,7 +401,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
 		trig_sql += wxT("NOT tgisinternal\n");
 	else
-		trig_sql += wxT("NOT tgisconstraint\n");
+		trig_sql += wxT("1=1 \n");
 	if (restriction.IsEmpty())
 		trig_sql += wxT(" AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
 	else
@@ -435,9 +435,9 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 			if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 2))
 			{
 				if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
-					trigger->SetIsConstraint(triggers->GetLong(wxT("tgisinternal")) > 0);
+					trigger->SetIsConstraint(triggers->GetLong(wxT("tgconstraint")) > 0);
 				else
-					trigger->SetIsConstraint(triggers->GetLong(wxT("tgisconstraint")) > 0);
+					trigger->SetIsConstraint(triggers->GetBool(wxT("tgisconstraint")));
 
 				trigger->iSetDeferrable(triggers->GetBool(wxT("tgdeferrable")));
 				trigger->iSetDeferred(triggers->GetBool(wxT("tginitdeferred")));
