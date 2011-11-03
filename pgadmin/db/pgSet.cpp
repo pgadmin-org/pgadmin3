@@ -111,8 +111,8 @@ pgTypClass pgSet::ColTypClass(const int col) const
 	switch (StrToLong(typoid))
 	{
 		case PGOID_TYPE_BOOL:
-			return PGTYPCLASS_BOOL;
-
+			colClasses[col] = PGTYPCLASS_BOOL;
+			break;
 		case PGOID_TYPE_INT8:
 		case PGOID_TYPE_INT2:
 		case PGOID_TYPE_INT4:
