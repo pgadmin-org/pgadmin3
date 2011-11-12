@@ -176,7 +176,7 @@ bool ctlComboBoxFix::SetKey(const wxString &val)
 ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr)
 	: ctlComboBoxFix(wnd, id, pos, siz, attr)
 {
-#ifdef __WXGTK__
+#ifndef __WXGTK__
 	SetEditable(false);
 #endif
 }
