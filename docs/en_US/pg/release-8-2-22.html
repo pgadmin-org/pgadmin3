@@ -1,0 +1,191 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.22</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.23 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2-21.html" title="E.3. Release 8.2.21">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.2. Release 8.2.22">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-22">E.2. Release 8.2.22</h2></div></div></div>
+<div class="note" title="Release Date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release Date</h3>
+<p>2011-09-26</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.21.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.24. Release 8.2">Section E.24, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<p>   The <span class="productname">PostgreSQL</span> community will stop releasing updates
+   for the 8.2.X release series in December 2011.
+   Users are encouraged to update to a newer release branch soon.
+  </p>
+<div class="sect2" title="E.2.1. Migration to Version 8.2.22">
+<div class="titlepage"><div><div><h3 class="title" id="id706261">E.2.1. Migration to Version 8.2.22</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.14,
+    see the release notes for 8.2.14.
+   </p>
+</div>
+<div class="sect2" title="E.2.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id706268">E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Fix multiple bugs in GiST index page split processing (Heikki
+      Linnakangas)
+     </p>
+<p>      The probability of occurrence was low, but these could lead to index
+      corruption.
+     </p>
+</li>
+<li class="listitem">
+<p>      Avoid possibly accessing off the end of memory in <code class="command">ANALYZE</code>
+      (Noah Misch)
+     </p>
+<p>      This fixes a very-low-probability server crash scenario.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix race condition in relcache init file invalidation (Tom Lane)
+     </p>
+<p>      There was a window wherein a new backend process could read a stale init
+      file but miss the inval messages that would tell it the data is stale.
+      The result would be bizarre failures in catalog accesses, typically
+      <span class="quote">&#8220;<span class="quote">could not read block 0 in file ...</span>&#8221;</span> later during startup.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix memory leak at end of a GiST index scan (Tom Lane)
+     </p>
+<p>      Commands that perform many separate GiST index scans, such as
+      verification of a new GiST-based exclusion constraint on a table
+      already containing many rows, could transiently require large amounts of
+      memory due to this leak.
+     </p>
+</li>
+<li class="listitem"><p>      Fix performance problem when constructing a large, lossy bitmap
+      (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix array- and path-creating functions to ensure padding bytes are
+      zeroes (Tom Lane)
+     </p>
+<p>      This avoids some situations where the planner will think that
+      semantically-equal constants are not equal, resulting in poor
+      optimization.
+     </p>
+</li>
+<li class="listitem">
+<p>      Work around gcc 4.6.0 bug that breaks WAL replay (Tom Lane)
+     </p>
+<p>      This could lead to loss of committed transactions after a server crash.
+     </p>
+</li>
+<li class="listitem"><p>      Fix dump bug for <code class="literal">VALUES</code> in a view (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Disallow <code class="literal">SELECT FOR UPDATE/SHARE</code> on sequences (Tom Lane)
+     </p>
+<p>      This operation doesn't work as expected and can lead to failures.
+     </p>
+</li>
+<li class="listitem"><p>      Defend against integer overflow when computing size of a hash table (Tom
+      Lane)
+     </p></li>
+<li class="listitem"><p>      Fix portability bugs in use of credentials control messages for
+      <span class="quote">&#8220;<span class="quote">peer</span>&#8221;</span> authentication (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix typo in <code class="function">pg_srand48</code> seed initialization (Andres Freund)
+     </p>
+<p>      This led to failure to use all bits of the provided seed.  This function
+      is not used on most platforms (only those without <code class="function">srandom</code>),
+      and the potential security exposure from a less-random-than-expected
+      seed seems minimal in any case.
+     </p>
+</li>
+<li class="listitem"><p>      Avoid integer overflow when the sum of <code class="literal">LIMIT</code> and
+      <code class="literal">OFFSET</code> values exceeds 2^63 (Heikki Linnakangas)
+     </p></li>
+<li class="listitem"><p>      Add overflow checks to <code class="type">int4</code> and <code class="type">int8</code> versions of
+      <code class="function">generate_series()</code> (Robert Haas)
+     </p></li>
+<li class="listitem">
+<p>      Fix trailing-zero removal in <code class="function">to_char()</code> (Marti Raudsepp)
+     </p>
+<p>      In a format with <code class="literal">FM</code> and no digit positions
+      after the decimal point, zeroes to the left of the decimal point could
+      be removed incorrectly.
+     </p>
+</li>
+<li class="listitem"><p>      Fix <code class="function">pg_size_pretty()</code> to avoid overflow for inputs close to
+      2^63 (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Fix <span class="application">psql</span>'s counting of script file line numbers during
+      <code class="literal">COPY</code> from a different file (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix <span class="application">pg_restore</span>'s direct-to-database mode for
+      <code class="varname">standard_conforming_strings</code> (Tom Lane)
+     </p>
+<p>      <span class="application">pg_restore</span> could emit incorrect commands when restoring
+      directly to a database server from an archive file that had been made
+      with <code class="varname">standard_conforming_strings</code> set to <code class="literal">on</code>.
+     </p>
+</li>
+<li class="listitem"><p>      Fix write-past-buffer-end and memory leak in <span class="application">libpq</span>'s
+      LDAP service lookup code (Albe Laurenz)
+     </p></li>
+<li class="listitem"><p>      In <span class="application">libpq</span>, avoid failures when using nonblocking I/O
+      and an SSL connection (Martin Pihlak, Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Improve libpq's handling of failures during connection startup
+      (Tom Lane)
+     </p>
+<p>      In particular, the response to a server report of <code class="function">fork()</code>
+      failure during SSL connection startup is now saner.
+     </p>
+</li>
+<li class="listitem"><p>      Make <span class="application">ecpglib</span> write <code class="type">double</code> values with 15 digits
+      precision (Akira Kurosawa)
+     </p></li>
+<li class="listitem">
+<p>      Apply upstream fix for blowfish signed-character bug (CVE-2011-2483)
+      (Tom Lane)
+     </p>
+<p>      <code class="filename">contrib/pg_crypto</code>'s blowfish encryption code could give
+      wrong results on platforms where char is signed (which is most),
+      leading to encrypted passwords being weaker than they should be.
+     </p>
+</li>
+<li class="listitem"><p>      Fix memory leak in <code class="filename">contrib/seg</code> (Heikki Linnakangas)
+     </p></li>
+<li class="listitem"><p>      Fix <code class="function">pgstatindex()</code> to give consistent results for empty
+      indexes (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Allow building with perl 5.14 (Alex Hunsaker)
+     </p></li>
+<li class="listitem">
+<p>      Update configure script's method for probing existence of system
+      functions (Tom Lane)
+     </p>
+<p>      The version of autoconf we used in 8.3 and 8.2 could be fooled by
+      compilers that perform link-time optimization.
+     </p>
+</li>
+<li class="listitem"><p>      Fix assorted issues with build and install file paths containing spaces
+      (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2011i
+      for DST law changes in Canada, Egypt, Russia, Samoa, and South Sudan.
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

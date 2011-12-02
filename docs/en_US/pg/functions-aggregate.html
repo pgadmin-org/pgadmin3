@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>9.15. Aggregate Functions</title>
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.23 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-array.html" title="9.14. Array Functions and Operators">
 <link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="9.15. Aggregate Functions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-aggregate">9.15. Aggregate Functions</h2></div></div></div>
-<a name="id2644350"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
+<a name="id481239"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
    value from a set of input values.  The built-in aggregate functions
    are listed in
    <a class="xref" href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. General-Purpose Aggregate Functions">Table 9.37, &#8220;General-Purpose Aggregate Functions&#8221;</a> and
@@ -40,7 +40,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>       <a name="id2644427"></a>
+<td>       <a name="id481310"></a>
        <code class="function">avg(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -54,7 +54,7 @@
 <td>the average (arithmetic mean) of all input values</td>
 </tr>
 <tr>
-<td>       <a name="id2644488"></a>
+<td>       <a name="id481371"></a>
        <code class="function">bit_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
@@ -65,7 +65,7 @@
 <td>the bitwise AND of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id2644532"></a>
+<td>       <a name="id481414"></a>
        <code class="function">bit_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>, <code class="type">bigint</code>, or
@@ -76,7 +76,7 @@
 <td>the bitwise OR of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id2644576"></a>
+<td>       <a name="id481456"></a>
        <code class="function">bool_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -86,7 +86,7 @@
 <td>true if all input values are true, otherwise false</td>
 </tr>
 <tr>
-<td>       <a name="id2644611"></a>
+<td>       <a name="id481492"></a>
        <code class="function">bool_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -109,7 +109,7 @@
       </td>
 </tr>
 <tr>
-<td>       <a name="id2644689"></a>
+<td>       <a name="id481568"></a>
        <code class="function">every(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -161,7 +161,7 @@
   </p>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<a name="id2644880"></a><a name="id2644885"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
+<a name="id481752"></a><a name="id481758"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
       <code class="function">bool_or</code> correspond to standard SQL aggregates
       <code class="function">every</code> and <code class="function">any</code> or
       <code class="function">some</code>. 
@@ -197,7 +197,7 @@
    In all cases, null is returned if the computation is meaningless,
    for example when <em class="replaceable"><code>N</code></em> is zero.
   </p>
-<a name="id2645006"></a><a name="id2645012"></a><div class="table">
+<a name="id481868"></a><a name="id481874"></a><div class="table">
 <a name="functions-aggregate-statistics-table"></a><p class="title"><b>Table 9.38. Aggregate Functions for Statistics</b></p>
 <div class="table-contents"><table summary="Aggregate Functions for Statistics" border="1">
 <colgroup>
@@ -214,7 +214,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>       <a name="id2645045"></a>
+<td>       <a name="id481905"></a>
        <code class="function">corr(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
       </td>
 <td>       <code class="type">double precision</code>
@@ -224,7 +224,7 @@
 <td>correlation coefficient</td>
 </tr>
 <tr>
-<td>       <a name="id2645086"></a>
+<td>       <a name="id481945"></a>
        <code class="function">covar_pop(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
       </td>
 <td>       <code class="type">double precision</code>
@@ -234,7 +234,7 @@
 <td>population covariance</td>
 </tr>
 <tr>
-<td>       <a name="id2645129"></a>
+<td>       <a name="id481988"></a>
        <code class="function">covar_samp(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
       </td>
 <td>       <code class="type">double precision</code>
@@ -273,7 +273,7 @@
 <td>number of input rows in which both expressions are nonnull</td>
 </tr>
 <tr>
-<td>       <a name="id2645306"></a>
+<td>       <a name="id482163"></a>
        <code class="function">regr_intercept(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
       </td>
 <td>       <code class="type">double precision</code>
@@ -293,7 +293,7 @@
 <td>square of the correlation coefficient</td>
 </tr>
 <tr>
-<td>       <a name="id2645393"></a>
+<td>       <a name="id482249"></a>
        <code class="function">regr_slope(<em class="replaceable"><code>Y</code></em>, , <em class="replaceable"><code>X</code></em>)</code>
       </td>
 <td>       <code class="type">double precision</code>
@@ -339,7 +339,7 @@
       squares</span>&#8221;</span> of the dependent variable)</td>
 </tr>
 <tr>
-<td>       <a name="id2645633"></a>
+<td>       <a name="id482485"></a>
        <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -353,7 +353,7 @@
 </td>
 </tr>
 <tr>
-<td>       <a name="id2645695"></a>
+<td>       <a name="id482546"></a>
        <code class="function">stddev_pop(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -366,7 +366,7 @@
 <td>population standard deviation of the input values</td>
 </tr>
 <tr>
-<td>       <a name="id2645756"></a>
+<td>       <a name="id482606"></a>
        <code class="function">stddev_samp(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -379,7 +379,7 @@
 <td>sample standard deviation of the input values</td>
 </tr>
 <tr>
-<td>       <a name="id2645817"></a>
+<td>       <a name="id482665"></a>
        <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -393,7 +393,7 @@
 </td>
 </tr>
 <tr>
-<td>       <a name="id2645879"></a>
+<td>       <a name="id482727"></a>
        <code class="function">var_pop</code>(<em class="replaceable"><code>expression</code></em>)
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,
@@ -406,7 +406,7 @@
 <td>population variance of the input values (square of the population standard deviation)</td>
 </tr>
 <tr>
-<td>       <a name="id2645941"></a>
+<td>       <a name="id482787"></a>
        <code class="function">var_samp</code>(<em class="replaceable"><code>expression</code></em>)
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">int</code>,

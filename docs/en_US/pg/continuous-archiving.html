@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</title>
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.23 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File System Level Backup">
 <link rel="next" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="continuous-archiving">23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</h2></div></div></div>
-<a name="id2694976"></a><a name="id2694985"></a><a name="id2694994"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id527546"></a><a name="id527555"></a><a name="id527564"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -113,7 +113,8 @@
     character in the command.  The simplest useful command is something
     like
 </p>
-<pre class="programlisting">archive_command = 'cp -i %p /mnt/server/archivedir/%f &lt;/dev/null'</pre>
+<pre class="programlisting">archive_command = 'test ! -f /mnt/server/archivedir/%f &amp;&amp; cp %p /mnt/server/archivedir/%f'  # Unix
+archive_command = 'copy "%p" "C:\\server\\archivedir\\%f"'  # Windows</pre>
 <p>
     which will copy archivable WAL segments to the directory
     <code class="filename">/mnt/server/archivedir</code>.  (This is an example, not a 
@@ -139,17 +140,17 @@
     preserve the integrity of your archive in case of administrator error
     (such as sending the output of two different servers to the same archive
     directory).
-    It is advisable to test your proposed archive command to ensure that it
+   </p>
+<p>    It is advisable to test your proposed archive command to ensure that it
     indeed does not overwrite an existing file, <span class="emphasis"><em>and that it returns
-    nonzero status in this case</em></span>.  We have found that <code class="literal">cp -i</code> does
-    this correctly on some platforms but not others.  If the chosen command
-    does not itself handle this case correctly, you should add a command
-    to test for pre-existence of the archive file.  For example, something
-    like
-</p>
-<pre class="programlisting">archive_command = 'test ! -f .../%f &amp;&amp; cp %p .../%f'</pre>
-<p>
-    works correctly on most Unix variants.
+    nonzero status in this case</em></span>.
+    The example command above for Unix ensures this by including a separate
+    <code class="command">test</code> step.  On some Unix platforms, <code class="command">cp</code> has
+    switches such as <code class="option">-i</code> that can be used to do the same thing
+    less verbosely, but you should not rely on these without verifying that
+    the right exit status is returned.  (In particular, GNU <code class="command">cp</code>
+    will return status zero when <code class="option">-i</code> is used and the target file
+    already exists, which is <span class="emphasis"><em>not</em></span> the desired behavior.)
    </p>
 <p>    While designing your archiving setup, consider what will happen if
     the archive command fails repeatedly because some aspect requires 
@@ -573,7 +574,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </div>
 <div class="sect2" title="23.3.4. Timelines">
 <div class="titlepage"><div><div><h3 class="title" id="backup-timelines">23.3.4. Timelines</h3></div></div></div>
-<a name="id2696479"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id528839"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.

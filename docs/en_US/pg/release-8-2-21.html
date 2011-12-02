@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.3. Release 8.2.21</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.23 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-2-22.html" title="E.2. Release 8.2.22">
+<link rel="next" href="release-8-2-20.html" title="E.4. Release 8.2.20">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.3. Release 8.2.21">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-21">E.3. Release 8.2.21</h2></div></div></div>
+<div class="note" title="Release Date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release Date</h3>
+<p>2011-04-18</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.20.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.24. Release 8.2">Section E.24, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" title="E.3.1. Migration to Version 8.2.21">
+<div class="titlepage"><div><div><h3 class="title" id="id706624">E.3.1. Migration to Version 8.2.21</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.14,
+    see the release notes for 8.2.14.
+   </p>
+</div>
+<div class="sect2" title="E.3.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id706631">E.3.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Avoid potential deadlock during catalog cache initialization
+      (Nikhil Sontakke)
+     </p>
+<p>      In some cases the cache loading code would acquire share lock on a
+      system index before locking the index's catalog.  This could deadlock
+      against processes trying to acquire exclusive locks in the other,
+      more standard order.
+     </p>
+</li>
+<li class="listitem">
+<p>      Fix dangling-pointer problem in <code class="literal">BEFORE ROW UPDATE</code> trigger
+      handling when there was a concurrent update to the target tuple
+      (Tom Lane)
+     </p>
+<p>      This bug has been observed to result in intermittent <span class="quote">&#8220;<span class="quote">cannot
+      extract system attribute from virtual tuple</span>&#8221;</span> failures while trying to
+      do <code class="literal">UPDATE RETURNING ctid</code>.  There is a very small probability
+      of more serious errors, such as generating incorrect index entries for
+      the updated tuple.
+     </p>
+</li>
+<li class="listitem">
+<p>      Disallow <code class="command">DROP TABLE</code> when there are pending deferred trigger
+      events for the table (Tom Lane)
+     </p>
+<p>      Formerly the <code class="command">DROP</code> would go through, leading to
+      <span class="quote">&#8220;<span class="quote">could not open relation with OID nnn</span>&#8221;</span> errors when the
+      triggers were eventually fired.
+     </p>
+</li>
+<li class="listitem"><p>      Fix PL/Python memory leak involving array slices (Daniel Popowich)
+     </p></li>
+<li class="listitem"><p>      Fix <span class="application">pg_restore</span> to cope with long lines (over 1KB) in
+      TOC files (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Put in more safeguards against crashing due to division-by-zero
+      with overly enthusiastic compiler optimization (Aurelien Jarno)
+     </p></li>
+<li class="listitem">
+<p>      Support use of dlopen() in FreeBSD and OpenBSD on MIPS (Tom Lane)
+     </p>
+<p>      There was a hard-wired assumption that this system function was not
+      available on MIPS hardware on these systems.  Use a compile-time test
+      instead, since more recent versions have it.
+     </p>
+</li>
+<li class="listitem"><p>      Fix compilation failures on HP-UX (Heikki Linnakangas)
+     </p></li>
+<li class="listitem"><p>      Fix path separator used by <span class="application">pg_regress</span> on Cygwin
+      (Andrew Dunstan)
+     </p></li>
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2011f
+      for DST law changes in Chile, Cuba, Falkland Islands, Morocco, Samoa,
+      and Turkey; also historical corrections for South Australia, Alaska,
+      and Hawaii.
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

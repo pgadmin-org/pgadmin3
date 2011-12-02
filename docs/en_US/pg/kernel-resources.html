@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>16.4. Managing Kernel Resources</title>
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.21 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.23 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="server-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="server-shutdown.html" title="16.5. Shutting Down the Server">
@@ -21,7 +21,7 @@
   </p>
 <div class="sect2" title="16.4.1. Shared Memory and Semaphores">
 <div class="titlepage"><div><div><h3 class="title" id="sysvipc">16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id2668312"></a><a name="id2668321"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id503165"></a><a name="id503174"></a><p>    Shared memory and semaphores are collectively referred to as
     <span class="quote">&#8220;<span class="quote"><span class="systemitem">System V</span>
     <acronym class="acronym">IPC</acronym></span>&#8221;</span> (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -115,7 +115,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a name="id2668579"></a> The most important
+<br class="table-break"><p>    <a name="id503415"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -266,30 +266,49 @@ options "SEMMNS=240"</pre>
         processes in other jails, preventing the running of postmasters on the
         same port in different jails.)
        </p>
-<p>        <span class="systemitem">FreeBSD</span> versions before 4.0 work like 
-        <span class="systemitem">NetBSD</span> and <span class="systemitem">        OpenBSD</span> (see below).
+<p>        <span class="systemitem">FreeBSD</span> versions before 4.0 work like
+        <span class="systemitem">OpenBSD</span> (see below).
        </p>
 </dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><span xmlns="" class="systemitem">NetBSD</span></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><span class="systemitem">OpenBSD</span></span>
-</dt>
+<dt><span class="term"><span class="systemitem">NetBSD</span></span></dt>
+<dd>
+<p>        In <span class="systemitem">NetBSD</span> 5.0 and later,
+        IPC parameters can be adjusted using <code class="command">sysctl</code>,
+        for example:
+</p>
+<pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>sysctl -w kern.ipc.shmmax=16777216</code></strong></pre>
+<p>
+        To have these settings persist over reboots, modify
+        <code class="filename">/etc/sysctl.conf</code>.
+       </p>
+<p>        You might also want to configure your kernel to lock shared
+        memory into RAM and prevent it from being paged out to swap.
+        This can be accomplished using the <code class="command">sysctl</code>
+        setting <code class="literal">kern.ipc.shm_use_phys</code>.
+       </p>
+<p>        <span class="systemitem">NetBSD</span> versions before 5.0 work like
+        <span class="systemitem">OpenBSD</span> (see below), except that
+        parameters should be set with the keyword <code class="literal">options</code> not
+        <code class="literal">option</code>.
+       </p>
+</dd>
+<dt><span class="term"><span class="systemitem">OpenBSD</span></span></dt>
 <dd>
 <p>        The options <code class="varname">SYSVSHM</code> and <code class="varname">SYSVSEM</code> need
         to be enabled when the kernel is compiled. (They are by
         default.) The maximum size of shared memory is determined by
         the option <code class="varname">SHMMAXPGS</code> (in pages). The following
-        shows an example of how to set the various parameters 
-        (<span class="systemitem">OpenBSD</span> uses <code class="literal">option</code> instead):
+        shows an example of how to set the various parameters:
 </p>
-<pre class="programlisting">options        SYSVSHM
-options        SHMMAXPGS=4096
-options        SHMSEG=256
+<pre class="programlisting">option        SYSVSHM
+option        SHMMAXPGS=4096
+option        SHMSEG=256
 
-options        SYSVSEM
-options        SEMMNI=256
-options        SEMMNS=512
-options        SEMMNU=256
-options        SEMMAP=256</pre>
+option        SYSVSEM
+option        SEMMNI=256
+option        SEMMNS=512
+option        SEMMNU=256
+option        SEMMAP=256</pre>
 <p>
        </p>
 <p>        You might also want to configure your kernel to lock shared
@@ -510,7 +529,7 @@ set semsys:seminfo_semmsl=32</pre>
 <br class="table-break">
 </div>
 <div class="sect2" title="16.4.2. Resource Limits">
-<div class="titlepage"><div><div><h3 class="title" id="id2669922">16.4.2. Resource Limits</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id504714">16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -577,7 +596,7 @@ set semsys:seminfo_semmsl=32</pre>
    </p>
 </div>
 <div class="sect2" title="16.4.3. Linux Memory Overcommit">
-<div class="titlepage"><div><div><h3 class="title" id="id2670107">16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id504872">16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may
