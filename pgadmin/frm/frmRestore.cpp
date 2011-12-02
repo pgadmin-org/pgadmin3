@@ -569,8 +569,8 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 		wxTreeItemId root = ctvObjects->AddRoot(i18nbackup + wxT(" ") + txtFilename->GetValue());
 		wxString currentSchema = wxT("");
 		wxTreeItemId currentSchemaNode;
-		wxTreeItemId schemaNode, lastItem;
-		wxTreeItemIdValue schemaNodeData;
+		wxTreeItemId schemaNode, lastItem, extensionNode;
+		wxTreeItemIdValue schemaNodeData, extensionNodeData;
 		numberOfTOCItems = 0;
 
 		while (line.HasMoreTokens())
@@ -687,6 +687,70 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 				currentSchema = name;
 				lastItem = currentSchemaNode = ctvObjects->AppendItem(root, wxT("Schema ") + name, 1);
 			}
+			else if (type == wxT("EXTENSION") && (schema == wxT("-") || schema.IsEmpty()))
+			{
+				lastItem = ctvObjects->AppendItem(root,
+				                                  owner.IsEmpty() ? wxT("Extension ") + name :
+				                                  wxT("Extension ") + name + wxT("[") + _("owner") + wxT(": ") + owner + wxT("]"), 1);
+			}
+			else if (type == wxT("COMMENT") && name.StartsWith(wxT("EXTENSION ")))
+			{
+				wxString extension = name.SubString(10, name.Length());
+
+				if (ctvObjects->GetItemText(lastItem) == wxT("Extension ") + extension)
+				{
+					extensionNode = lastItem;
+				}
+				else
+				{
+					wxTreeItemId searchStartNode = root;
+
+					if (schema != wxT("-"))
+					{
+						searchStartNode = currentSchemaNode;
+						if (schema != currentSchema)
+						{
+							searchStartNode = ctvObjects->GetFirstChild(root, schemaNodeData);
+							bool found = false;
+							while (searchStartNode.IsOk() && !found)
+							{
+								if (ctvObjects->GetItemText(searchStartNode) == wxT("Schema ") + schema)
+									found = true;
+								else
+									searchStartNode = ctvObjects->GetNextChild(root, schemaNodeData);
+							}
+
+							// Found it?
+							if (!searchStartNode.IsOk())
+							{
+								searchStartNode = schemaNode;
+							}
+							else
+							{
+								searchStartNode = root;
+							}
+						}
+					}
+
+					extensionNode = ctvObjects->GetFirstChild(searchStartNode, extensionNodeData);
+					bool found = false;
+
+					while (extensionNode.IsOk() && !found)
+					{
+						if (ctvObjects->GetItemText(extensionNode) == wxT("Extension ") + extension)
+							found = true;
+						else
+							extensionNode = ctvObjects->GetNextChild(searchStartNode, schemaNodeData);
+					}
+				}
+
+				if (extensionNode.IsOk())
+				{
+					lastItem = ctvObjects->AppendItem(extensionNode,
+					                                  owner.IsEmpty() ? type + wxT(" Extension  ") + extension :
+					                                  type + wxT(" Extension ") + extension + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"), 1);
+				}
+			}
 			else
 			{
 				if (schema != currentSchema)
@@ -715,7 +779,9 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 						wxLogError(_("Schema node not found for object ") + type + wxT(" ") + name + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"));
 					}
 				}
-				lastItem = ctvObjects->AppendItem(currentSchemaNode, type + wxT(" ") + name + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"), 1);
+				lastItem = ctvObjects->AppendItem(currentSchemaNode,
+				                                  owner.IsEmpty() ? type + wxT(" ") + name :
+				                                  type + wxT(" ") + name + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"), 1);
 			}
 			ctvObjects->SetItemData(lastItem, new restoreTreeItemData(numberOfTOCItems, str));
 			numberOfTOCItems++;
