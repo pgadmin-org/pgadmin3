@@ -791,7 +791,10 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 					else if (mode == wxT("3"))
 						mode = wxT("IN OUT");
 					else if (mode == wxT("v"))
+					{
 						mode = wxT("VARIADIC");
+						nArgsIN++;
+					}
 					else if (mode == wxT("t"))
 						mode = wxT("TABLE");
 					else
@@ -845,6 +848,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 				{
 					if (function->GetArgModesArray()[index] == wxT("IN") ||
 					        function->GetArgModesArray()[index] == wxT("INOUT") ||
+					        function->GetArgModesArray()[index] == wxT("VARIADIC") ||
 					        function->GetArgModesArray()[index].IsEmpty())
 					{
 						nArgsIN--;
