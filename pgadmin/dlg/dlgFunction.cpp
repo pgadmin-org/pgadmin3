@@ -822,7 +822,7 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 
 			args += lstArguments->GetText(i, 0);
 		}
-		if (isBackendMinVer84 && !lstArguments->GetText(i, 3).IsEmpty())
+		if (withNames && isBackendMinVer84 && !lstArguments->GetText(i, 3).IsEmpty())
 			args += wxT(" DEFAULT ") + lstArguments->GetText(i, 3);
 	}
 
