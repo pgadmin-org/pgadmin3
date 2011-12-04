@@ -57,7 +57,7 @@ private:
 
 #define DECLARE_INT_LOG_FUNCTION(level)                                  \
 extern void wxVLog##level(const wxChar *szFormat, va_list argptr);       \
-extern void wxLog##level(const wxChar *szFormat, ...) ATTRIBUTE_PRINTF_1
+extern void wxLog##level(const wxChar *szFormat, ...)
 
 DECLARE_INT_LOG_FUNCTION(Notice);
 DECLARE_INT_LOG_FUNCTION(Sql);
