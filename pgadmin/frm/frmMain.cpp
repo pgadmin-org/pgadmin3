@@ -1277,7 +1277,12 @@ void frmMain::StartMsg(const wxString &msg)
 	timermsg.Printf(wxT("%s..."), msg.c_str());
 	wxBeginBusyCursor();
 	stopwatch.Start(0);
-	wxLogStatus(timermsg);
+
+	// Create a copy of the message, with %'s escaped for wxLogStatus
+	wxString logmsg = timermsg;
+	logmsg.Replace(wxT("%"), wxT("%%"));
+	wxLogStatus(logmsg);
+
 	statusBar->SetStatusText(timermsg, 1);
 	statusBar->SetStatusText(wxT(""), 2);
 }
