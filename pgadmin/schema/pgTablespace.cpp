@@ -266,7 +266,7 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 	pgSet *tablespaces;
 	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
 		tablespaces = collection->GetServer()->ExecuteSet(
-		                  wxT("SELECT ts.oid, spcname, spclocation, spcoptions, ")
+		                  wxT("SELECT ts.oid, spcname, pg_catalog.pg_tablespace_location(ts.oid) AS spclocation, spcoptions, ")
 		                  wxT("pg_get_userbyid(spcowner) as spcuser, spcacl, ")
 		                  wxT("pg_catalog.shobj_description(oid, 'pg_tablespace') AS description, ")
 		                  wxT("(SELECT array_agg(label) FROM pg_shseclabel sl1 WHERE sl1.objoid=ts.oid) AS labels, ")
