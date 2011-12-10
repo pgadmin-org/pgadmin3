@@ -329,6 +329,7 @@ int dlgTable::Go(bool modal)
 						pgIndexConstraint *obj = (pgIndexConstraint *)data;
 
 						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+						constraintsDefinition.Add(obj->GetDefinition());
 						previousConstraints.Add(obj->GetQuotedIdentifier()
 						                        + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
 						break;
@@ -338,6 +339,7 @@ int dlgTable::Go(bool modal)
 						pgIndexConstraint *obj = (pgIndexConstraint *)data;
 
 						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+						constraintsDefinition.Add(obj->GetDefinition());
 						previousConstraints.Add(obj->GetQuotedIdentifier()
 						                        + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
 						break;
@@ -352,6 +354,7 @@ int dlgTable::Go(bool modal)
 							def.Replace(wxT("  "), wxT(" "));
 
 						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), def);
+						constraintsDefinition.Add(obj->GetDefinition());
 						previousConstraints.Add(obj->GetQuotedIdentifier()
 						                        + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + def);
 						break;
@@ -361,6 +364,7 @@ int dlgTable::Go(bool modal)
 						pgCheck *obj = (pgCheck *)data;
 
 						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+						constraintsDefinition.Add(obj->GetDefinition());
 						previousConstraints.Add(obj->GetQuotedIdentifier()
 						                        + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
 						break;
@@ -894,7 +898,7 @@ wxString dlgTable::GetSql()
 			wxString conname = qtIdent(lstConstraints->GetItemText(pos));
 			definition = conname;
 			definition += wxT(" ") + GetItemConstraintType(lstConstraints, pos)
-			              + wxT(" ") + lstConstraints->GetText(pos, 1);
+			              + wxT(" ") + constraintsDefinition.Item(pos);
 			index = tmpDef.Index(definition);
 			if (index >= 0)
 				tmpDef.RemoveAt(index);
@@ -1261,7 +1265,7 @@ wxString dlgTable::GetSql()
 		for (pos = 0 ; pos < lstConstraints->GetItemCount() ; pos++)
 		{
 			wxString name = lstConstraints->GetItemText(pos);
-			wxString definition = lstConstraints->GetText(pos, 1);
+			wxString definition = constraintsDefinition.Item(pos);
 
 			if (needComma)
 				sql += wxT(", ");
@@ -1795,6 +1799,7 @@ void dlgTable::OnChangeOfType(wxCommandEvent &ev)
 			{
 				lstColumns->DeleteAllItems();
 				lstConstraints->DeleteAllItems();
+				constraintsDefinition.Clear();
 				hasPK = false;
 				FillConstraint();
 			}
@@ -1831,6 +1836,7 @@ void dlgTable::OnChangeOfType(wxCommandEvent &ev)
 			{
 				lstColumns->DeleteAllItems();
 				lstConstraints->DeleteAllItems();
+				constraintsDefinition.Clear();
 				hasPK = false;
 				FillConstraint();
 			}
@@ -1946,6 +1952,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 				tmpDef.Replace(wxT("\n"), wxT(" "));
 
 				lstConstraints->AppendItem(primaryKeyFactory.GetIconId(), pk.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
 				hasPK = true;
 				FillConstraint();
 			}
@@ -1964,6 +1971,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 					tmpDef.Replace(wxT("  "), wxT(" "));
 
 				lstConstraints->AppendItem(foreignKeyFactory.GetIconId(), fk.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
 			}
 			break;
 		}
@@ -1980,6 +1988,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 					tmpDef.Replace(wxT("  "), wxT(" "));
 
 				lstConstraints->AppendItem(excludeFactory.GetIconId(), ec.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
 			}
 			break;
 		}
@@ -1994,6 +2003,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 				tmpDef.Replace(wxT("\n"), wxT(" "));
 
 				lstConstraints->AppendItem(uniqueFactory.GetIconId(), unq.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
 			}
 			break;
 		}
@@ -2008,6 +2018,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
 				tmpDef.Replace(wxT("\n"), wxT(" "));
 
 				lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
 			}
 			break;
 		}
@@ -2040,6 +2051,7 @@ void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
 	}
 
 	lstConstraints->DeleteItem(pos);
+	constraintsDefinition.RemoveAt(pos);
 	btnRemoveConstr->Disable();
 
 	CheckChange();
