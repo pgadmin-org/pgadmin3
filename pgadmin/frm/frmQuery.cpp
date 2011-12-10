@@ -23,6 +23,7 @@
 #include <wx/timer.h>
 #include <wx/aui/aui.h>
 #include <wx/bmpcbox.h>
+#include <wx/filefn.h>
 
 // App headers
 #include "frm/frmAbout.h"
@@ -2892,32 +2893,49 @@ wxColour frmQuery::GetServerColour(pgConn *connection)
 
 void frmQuery::LoadQueries()
 {
-	xmlTextReaderPtr reader;
+	xmlDocPtr doc;
+	xmlNodePtr cur;
+	xmlChar *key;
 
 	if (!wxFile::Access(settings->GetHistoryFile(), wxFile::read))
 		return;
 
-	reader = xmlReaderForFile((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8), NULL, 0);
-	if (!reader)
+	doc = xmlParseFile((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8));
+	if (doc == NULL)
 	{
 		wxMessageBox(_("Failed to load the history file!"));
+		::wxRemoveFile(settings->GetHistoryFile());
 		return;
 	}
 
-	while (xmlTextReaderRead(reader))
+	cur = xmlDocGetRootElement(doc);
+	if (cur == NULL)
 	{
-		wxString nodename = WXSTRING_FROM_XML(xmlTextReaderConstName(reader));
+		xmlFreeDoc(doc);
+		return;
+	}
 
-		if (nodename == wxT("histoquery"))
+	if (xmlStrcmp(cur->name, (const xmlChar *) "histoqueries"))
+	{
+		wxMessageBox(_("Failed to load the history file!"));
+		xmlFreeDoc(doc);
+		::wxRemoveFile(settings->GetHistoryFile());
+		return;
+	}
+
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL)
+	{
+		if ((!xmlStrcmp(cur->name, (const xmlChar *)"histoquery")))
 		{
-			xmlChar *cont = xmlTextReaderReadString(reader);
+			key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 
-			if (!cont)
+			if (!key)
 				continue;
 
-			if (WXSTRING_FROM_XML(cont) != wxT(""))
+			if (WXSTRING_FROM_XML(key) != wxT(""))
 			{
-				wxString query = WXSTRING_FROM_XML(cont);
+				wxString query = WXSTRING_FROM_XML(key);
 				wxString tmp = query;
 				tmp.Replace(wxT("\n"), wxT(" "));
 				tmp.Replace(wxT("\r"), wxT(" "));
@@ -2925,13 +2943,13 @@ void frmQuery::LoadQueries()
 				histoQueries.Add(query);
 			}
 
-			xmlFree(cont);
+			xmlFree(key);
 		}
+
+		cur = cur->next;
 	}
 
-	xmlTextReaderClose(reader);
-	xmlFreeTextReader(reader);
-	xmlCleanupParser();
+	xmlFreeDoc(doc);
 
 	// Make sure only the maximum query number is enforced
 	if (sqlQueries->GetCount() > (unsigned int)settings->GetHistoryMaxQueries())
