@@ -165,15 +165,15 @@ void frmGrantWizard::Go()
 {
 	chkList->SetFocus();
 
-	wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER");
-	const char *privChar = "arwdRxt";
+	wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,TRUNCATE,RULE,REFERENCES,TRIGGER");
+	const char *privChar = "arwdDRxt";
 
 	switch (object->GetMetaType())
 	{
 		case PGM_DATABASE:
 		case PGM_SCHEMA:
 			privList.Append(wxT(",EXECUTE"));
-			privChar = "arwdRxtX";
+			privChar = "arwdDRxtX";
 			break;
 		case PGM_FUNCTION:
 			privList = wxT("EXECUTE");
@@ -283,7 +283,7 @@ wxString frmGrantWizard::GetSql()
 						tmp = securityPage->GetGrant(wxT("r"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
 					}
 					else
-						tmp = securityPage->GetGrant(wxT("arwdRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
+						tmp = securityPage->GetGrant(wxT("arwdDRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
 					break;
 			}
 

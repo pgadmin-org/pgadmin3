@@ -647,7 +647,9 @@ wxString pgTable::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       + GetOwnerSql(7, 3);
 
-		if (GetConnection()->BackendMinimumVersion(8, 2))
+		if (GetConnection()->BackendMinimumVersion(8, 4))
+			sql += GetGrant(wxT("arwdDxt"));
+		else if (GetConnection()->BackendMinimumVersion(8, 2))
 			sql += GetGrant(wxT("arwdxt"));
 		else
 			sql += GetGrant(wxT("arwdRxt"));

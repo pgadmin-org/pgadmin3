@@ -813,6 +813,7 @@ wxString pgObject::GetPrivilegeGrant(const wxString &allPattern, const wxString 
 		AppendRight(rights, acl, 'r', wxT("SELECT"), column);
 		AppendRight(rights, acl, 'w', wxT("UPDATE"), column);
 		AppendRight(rights, acl, 'a', wxT("INSERT"), column);
+		AppendRight(rights, acl, 'D', wxT("TRUNCATE"), column);
 		AppendRight(rights, acl, 'c', wxT("CONNECT"), column);
 		AppendRight(rights, acl, 'd', wxT("DELETE"), column);
 		AppendRight(rights, acl, 'R', wxT("RULE"), column);
