@@ -126,7 +126,7 @@ int dlgForeignDataWrapper::Go(bool modal)
 	if (fdw)
 	{
 		// edit mode
-		txtName->Disable();
+		txtName->Enable(connection->BackendMinimumVersion(9, 2));
 
 		val = fdw->GetHandlerProc();
 		if (!val.IsEmpty())
@@ -337,6 +337,8 @@ wxString dlgForeignDataWrapper::GetSql()
 	{
 		// edit mode
 		sql = wxEmptyString;
+
+		AppendNameChange(sql);
 
 		if (cbHandler->GetValue() != fdw->GetHandlerProc())
 		{

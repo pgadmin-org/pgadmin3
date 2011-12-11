@@ -79,7 +79,7 @@ int dlgForeignServer::Go(bool modal)
 	if (foreignserver)
 	{
 		// edit mode
-		txtName->Disable();
+		txtName->Enable(connection->BackendMinimumVersion(9, 2));
 		txtType->Disable();
 
 		txtType->SetValue(foreignserver->GetType());
@@ -279,6 +279,8 @@ wxString dlgForeignServer::GetSql()
 	if (foreignserver)
 	{
 		// edit mode
+		AppendNameChange(sql, wxT("SERVER ") + qtIdent(foreignserver->GetName()));
+
 		if (txtVersion->GetValue() != foreignserver->GetVersion())
 		{
 			sql = wxT("ALTER SERVER ") + qtIdent(name)
