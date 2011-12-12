@@ -51,7 +51,8 @@ static void pgNoticeProcessor(void *arg, const char *message)
 
 pgConn::pgConn(const wxString &server, const wxString &service, const wxString &hostaddr, const wxString &database, const wxString &username, const wxString &password,
                int port, const wxString &rolename, int sslmode, OID oid, const wxString &applicationname,
-               const wxString &sslcert, const wxString &sslkey, const wxString &sslrootcert, const wxString &sslcrl)
+               const wxString &sslcert, const wxString &sslkey, const wxString &sslrootcert, const wxString &sslcrl,
+               const bool sslcompression)
 {
 	wxString msg;
 
@@ -70,6 +71,7 @@ pgConn::pgConn(const wxString &server, const wxString &service, const wxString &
 	save_sslkey = sslkey;
 	save_sslrootcert = sslrootcert;
 	save_sslcrl = sslcrl;
+	save_sslcompression = sslcompression;
 
 	memset(features, 0, sizeof(features));
 	majorVersion = 0;
@@ -179,6 +181,14 @@ pgConn::pgConn(const wxString &server, const wxString &service, const wxString &
 		{
 			connstr.Append(wxT(" sslcrl="));
 			connstr.Append(qtConnString(sslcrl));
+		}
+	}
+
+	if (libpqVersion > 9.1 && sslmode != 4)
+	{
+		if (!sslcompression)
+		{
+			connstr.Append(wxT(" sslcompression=0"));
 		}
 	}
 
@@ -344,7 +354,7 @@ pgConn *pgConn::Duplicate()
 {
 	return new pgConn(wxString(save_server), wxString(save_service), wxString(save_hostaddr), wxString(save_database), wxString(save_username), wxString(save_password),
 	                  save_port, save_rolename, save_sslmode, save_oid,
-	                  save_applicationname, save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl);
+	                  save_applicationname, save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl, save_sslcompression);
 }
 
 
@@ -586,6 +596,11 @@ void pgConn::ExamineLibpqVersion()
 			{
 				if (libpqVersion < 8.4)
 					libpqVersion = 8.4;
+			}
+			if (!strcmp(co->keyword, "sslcompression"))
+			{
+				if (libpqVersion < 9.2)
+					libpqVersion = 9.2;
 			}
 			co++;
 		}

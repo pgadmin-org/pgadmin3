@@ -87,7 +87,8 @@ public:
 	       const wxString &database = wxT(""), const wxString &username = wxT(""), const wxString &password = wxT(""),
 	       int port = 5432, const wxString &rolename = wxT(""), int sslmode = 0, OID oid = 0,
 	       const wxString &applicationname = wxT("pgAdmin"),
-	       const wxString &sslcert = wxT(""), const wxString &sslkey = wxT(""), const wxString &sslrootcert = wxT(""), const wxString &sslcrl = wxT(""));
+	       const wxString &sslcert = wxT(""), const wxString &sslkey = wxT(""), const wxString &sslrootcert = wxT(""), const wxString &sslcrl = wxT(""),
+	       const bool sslcompression = true);
 	~pgConn();
 
 	bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -177,6 +178,10 @@ public:
 	wxString GetSSLCrl() const
 	{
 		return save_sslcrl;
+	}
+	bool GetSSLCompression() const
+	{
+		return save_sslcompression;
 	}
 	wxString GetName() const;
 	bool GetNeedUtfConnectString()
@@ -282,6 +287,7 @@ private:
 	wxString save_server, save_service, save_hostaddr, save_database, save_username, save_password, save_rolename, save_applicationname;
 	wxString save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl;
 	int save_port, save_sslmode;
+	bool save_sslcompression;
 	OID save_oid;
 };
 

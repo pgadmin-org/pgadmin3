@@ -424,6 +424,15 @@ public:
 		sslcrl = s;
 	}
 
+	bool GetSSLCompression() const
+	{
+		return sslcompression;
+	}
+	void iSetSSLCompression(const bool b)
+	{
+		sslcompression = b;
+	}
+
 	void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where = wxEmptyString);
 	void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where = wxEmptyString);
 
@@ -445,6 +454,7 @@ private:
 	wxString colour;
 	wxString group;
 	wxString sslcert, sslkey, sslrootcert, sslcrl;
+	bool sslcompression;
 
 	bool inRecovery, replayPaused;
 	wxString receiveLoc, replayLoc, replayTimestamp;

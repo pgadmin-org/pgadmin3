@@ -52,6 +52,7 @@
 #define pickerSSLKey      CTRL_FILEPICKER("pickerSSLKey")
 #define pickerSSLRootCert CTRL_FILEPICKER("pickerSSLRootCert")
 #define pickerSSLCrl      CTRL_FILEPICKER("pickerSSLCrl")
+#define chkSSLCompression CTRL_CHECKBOX("chkSSLCompression")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -77,6 +78,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
 	EVT_FILEPICKER_CHANGED(XRCID("pickerSSLCrl"),      dlgServer::OnChangeFile)
 	EVT_TEXT(XRCID("cbGroup"),                         dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbGroup"),                     dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkSSLCompression"),           dlgProperty::OnChange)
 	EVT_BUTTON(wxID_OK,                                dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -194,6 +196,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		server->SetSSLKey(pickerSSLKey->GetPath());
 		server->SetSSLRootCert(pickerSSLRootCert->GetPath());
 		server->SetSSLCrl(pickerSSLCrl->GetPath());
+		server->iSetSSLCompression(chkSSLCompression->GetValue());
 		wxColour colour = colourPicker->GetColour();
 		wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
 		server->iSetColour(sColour);
@@ -230,6 +233,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 			newserver->SetSSLKey(server->GetSSLKey());
 			newserver->SetSSLRootCert(server->GetSSLRootCert());
 			newserver->SetSSLCrl(server->GetSSLCrl());
+			newserver->iSetSSLCompression(server->GetSSLCompression());
 
 			// Drop the old item
 			// (will also take care of dropping the pgServer item)
@@ -357,6 +361,8 @@ int dlgServer::GoNew()
 
 int dlgServer::Go(bool modal)
 {
+	chkSSLCompression->Disable();
+
 	cbSSL->Append(wxT(" "));
 
 #ifdef SSL
@@ -373,6 +379,11 @@ int dlgServer::Go(bool modal)
 	{
 		cbSSL->Append(_("verify-ca"));
 		cbSSL->Append(_("verify-full"));
+	}
+
+	if (pgConn::GetLibpqVersion() >= 9.2)
+	{
+		chkSSLCompression->Enable();
 	}
 #endif
 
@@ -400,6 +411,8 @@ int dlgServer::Go(bool modal)
 		pickerSSLRootCert->SetPath(server->GetSSLRootCert());
 		pickerSSLCrl->SetPath(server->GetSSLCrl());
 
+		chkSSLCompression->SetValue(server->GetSSLCompression());
+
 		stPassword->Disable();
 		txtPassword->Disable();
 		if (connection)
@@ -423,6 +436,7 @@ int dlgServer::Go(bool modal)
 			pickerSSLKey->Disable();
 			pickerSSLRootCert->Disable();
 			pickerSSLCrl->Disable();
+			chkSSLCompression->Disable();
 			EnableOK(false);
 		}
 	}
@@ -510,7 +524,8 @@ void dlgServer::CheckChange()
 		          || pickerSSLCert->GetPath() != server->GetSSLCert()
 		          || pickerSSLKey->GetPath() != server->GetSSLKey()
 		          || pickerSSLRootCert->GetPath() != server->GetSSLRootCert()
-		          || pickerSSLCrl->GetPath() != server->GetSSLCrl();
+		          || pickerSSLCrl->GetPath() != server->GetSSLCrl()
+		          || chkSSLCompression->GetValue() != server->GetSSLCompression();
 	}
 
 #ifdef __WXMSW__

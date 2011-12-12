@@ -457,7 +457,12 @@ void pgRole::ReassignDropOwnedTo(frmMain *form)
 		                  GetConnection()->GetRole(),
 		                  GetConnection()->GetSslMode(),
 		                  0,
-		                  GetConnection()->GetApplicationName());
+		                  GetConnection()->GetApplicationName(),
+			              GetConnection()->GetSSLCert(),
+			              GetConnection()->GetSSLKey(),
+			              GetConnection()->GetSSLRootCert(),
+			              GetConnection()->GetSSLCrl(),
+			              GetConnection()->GetSSLCompression());
 
 		if (conn->GetStatus() == PGCONN_OK)
 		{

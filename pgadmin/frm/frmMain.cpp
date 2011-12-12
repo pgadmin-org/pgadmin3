@@ -1186,6 +1186,7 @@ void frmMain::StoreServers()
 					settings->Write(key + wxT("SSLKey"), server->GetSSLKey());
 					settings->Write(key + wxT("SSLRootCert"), server->GetSSLRootCert());
 					settings->Write(key + wxT("SSLCrl"), server->GetSSLCrl());
+					settings->WriteBool(key + wxT("SSLCompression"), server->GetSSLCompression());
 
 					pgCollection *coll = browser->FindCollection(databaseFactory, server->GetId());
 					if (coll)

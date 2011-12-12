@@ -188,7 +188,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid, wxString applicationname)
 		dbName = GetDatabaseName();
 		oid = dbOid;
 	}
-	pgConn *conn = new pgConn(GetName(), service, hostaddr, dbName, username, password, port, rolename, ssl, oid, applicationname, sslcert, sslkey, sslrootcert, sslcrl);
+	pgConn *conn = new pgConn(GetName(), service, hostaddr, dbName, username, password, port, rolename, ssl, oid, applicationname, sslcert, sslkey, sslrootcert, sslcrl, sslcompression);
 
 	if (conn && conn->GetStatus() != PGCONN_OK)
 	{
@@ -665,21 +665,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
 		if (database.IsEmpty())
 		{
-			conn = new pgConn(GetName(), service, hostaddr, DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
+			conn = new pgConn(GetName(), service, hostaddr, DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl, sslcompression);
 			if (conn->GetStatus() == PGCONN_OK)
 				database = DEFAULT_PG_DATABASE;
 			else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
 			             wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
 			{
 				delete conn;
-				conn = new pgConn(GetName(), service, hostaddr, wxT("template1"), username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
+				conn = new pgConn(GetName(), service, hostaddr, wxT("template1"), username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl, sslcompression);
 				if (conn && conn->GetStatus() == PGCONN_OK)
 					database = wxT("template1");
 			}
 		}
 		else
 		{
-			conn = new pgConn(GetName(), service, hostaddr, database, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
+			conn = new pgConn(GetName(), service, hostaddr, database, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl, sslcompression);
 			if (!conn)
 			{
 				form->EndMsg(false);
@@ -1044,6 +1044,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			properties->AppendItem(_("SSL Key File"), GetSSLKey());
 			properties->AppendItem(_("SSL Root Certificate File"), GetSSLRootCert());
 			properties->AppendItem(_("SSL Certificate Revocation List"), GetSSLCrl());
+			properties->AppendItem(_("SSL Compression?"), (GetSSLCompression() ? _("yes") : _("no")));
 #endif
 		}
 		if (!serviceId.IsEmpty())
@@ -1290,7 +1291,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	long loop, port, ssl = 0;
 	wxString key, servername, hostaddr, description, service, database, username, lastDatabase, lastSchema;
 	wxString storePwd, rolename, restore, serviceID, discoveryID, dbRestriction, colour;
-	wxString group, sslcert, sslkey, sslrootcert, sslcrl;
+	wxString group, sslcert, sslkey, sslrootcert, sslcrl, sslcompression;
 	pgServer *server = 0;
 
 	wxArrayString discoveredServers;
@@ -1328,6 +1329,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		settings->Read(key + wxT("SSLKey"), &sslkey, wxEmptyString);
 		settings->Read(key + wxT("SSLRootCert"), &sslrootcert, wxEmptyString);
 		settings->Read(key + wxT("SSLCrl"), &sslcrl, wxEmptyString);
+		settings->Read(key + wxT("SSLCompression"), &sslcompression, wxT("true"));
 
 		// Sanitize the colour
 		colour = colour.Trim();
@@ -1377,6 +1379,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		server->SetSSLKey(sslkey);
 		server->SetSSLRootCert(sslrootcert);
 		server->SetSSLCrl(sslcrl);
+		server->iSetSSLCompression(StrToBool(sslcompression));
 
 		found = false;
 		if (browser->ItemHasChildren(obj->GetId()))
