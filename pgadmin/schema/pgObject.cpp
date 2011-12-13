@@ -431,6 +431,9 @@ void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const 
 
 void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &wh)
 {
+	if (this->IsCollection())
+		return;
+
 	wxString where;
 	if (wh.IsEmpty())
 	{
