@@ -501,7 +501,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 					PG_SSL="no"
 				fi
 			else
-				AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
+				AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no], "-lssl")
 			fi
 		fi
 		else
