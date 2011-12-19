@@ -21,7 +21,7 @@ class dlgAddFavourite : public pgDialog
 public:
 	dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites);
 	~dlgAddFavourite();
-	bool AddFavourite(wxString newtext);
+	int AddFavourite(wxString newtext);
 
 private:
 	queryFavouriteFolder *favourites;
@@ -29,6 +29,10 @@ private:
 	void OnCancel(wxCommandEvent &ev);
 	void OnChange(wxCommandEvent &ev);
 	void OnTreeChange(wxTreeEvent &ev);
+	void OnNewFolder(wxCommandEvent &ev);
+
+	bool anythingChanged;
+
 	DECLARE_EVENT_TABLE()
 };
 

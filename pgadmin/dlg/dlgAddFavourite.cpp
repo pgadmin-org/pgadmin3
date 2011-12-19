@@ -31,12 +31,14 @@ BEGIN_EVENT_TABLE(dlgAddFavourite, pgDialog)
 	EVT_TREE_SEL_CHANGED(XRCID("trLocation"),	dlgAddFavourite::OnTreeChange)
 	EVT_BUTTON (wxID_OK,               dlgAddFavourite::OnOK)
 	EVT_BUTTON (wxID_CANCEL,           dlgAddFavourite::OnCancel)
+	EVT_BUTTON (XRCID("btnNewFolder"), dlgAddFavourite::OnNewFolder)
 END_EVENT_TABLE()
 
 
 #define btnOK			CTRL_BUTTON("wxID_OK")
 #define txtTitle		CTRL_TEXT("txtTitle")
 #define trLocation		CTRL_TREE("trLocation")
+#define btnNewFolder	CTRL_BUTTON("btnNewFolder")
 
 
 dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites) :
@@ -45,6 +47,8 @@ dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favouri
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("dlgAddFavourite"));
 	RestorePosition();
+
+	anythingChanged = false;
 
 	this->favourites = favourites;
 
@@ -58,26 +62,51 @@ dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favouri
 	trLocation->Expand(trLocation->GetRootItem());
 }
 
-bool dlgAddFavourite::AddFavourite(wxString newtext)
+int dlgAddFavourite::AddFavourite(wxString newtext)
 {
+	int ret = 1;
 	int r = ShowModal();
 	if (r != wxID_OK)
-		return false;
+	{
+		if (anythingChanged)
+			// Need rollback!
+			ret = -1;
+		else
+			ret = 0;
+	}
 
 	wxString title = txtTitle->GetValue().Trim();
 	if (title.IsEmpty())
-		return false;
+	{
+		if (anythingChanged)
+			// Need rollback!
+			ret = -1;
+		else
+			ret = 0;
+	}
 
 	if (!trLocation->GetSelection().IsOk())
-		return false;
+	{
+		if (anythingChanged)
+			// Need rollback!
+			ret = -1;
+		else
+			ret = 0;
+	}
 
 	queryFavouriteFolder *fld = (queryFavouriteFolder *)favourites->FindTreeItem(trLocation->GetSelection());
 
 	if (!fld)
-		return false;
+	{
+		if (anythingChanged)
+			// Need rollback!
+			ret = -1;
+		else
+			ret = 0;
+	}
 
 	fld->AddNewFavourite(title, newtext);
-	return true;
+	return ret;
 }
 
 dlgAddFavourite::~dlgAddFavourite()
@@ -119,4 +148,37 @@ void dlgAddFavourite::OnTreeChange(wxTreeEvent &ev)
 {
 	wxCommandEvent evt;
 	OnChange(evt);
+}
+
+void dlgAddFavourite::OnNewFolder(wxCommandEvent &ev)
+{
+	if (!trLocation->GetSelection().IsOk())
+		return;
+
+	queryFavouriteItem *item = favourites->FindTreeItem(trLocation->GetSelection());
+	if (!item)
+		return;
+	if (item->GetId() != -2)
+		return;
+
+	wxTextEntryDialog dlg(this, _("Enter name of new folder"), _("Create new favourites folder"));
+	if (dlg.ShowModal() != wxID_OK)
+		return;
+
+	wxString title = dlg.GetValue().Trim();
+	if (title.IsEmpty())
+		return;
+
+	queryFavouriteFolder *fld = (queryFavouriteFolder *)item;
+	if (fld->ContainsFolder(title))
+	{
+		wxMessageBox(_("A folder with the specified name already exists."));
+		return;
+	}
+
+
+	queryFavouriteFolder *newfld = fld->AddNewFolder(dlg.GetValue());
+	newfld->SetTreeId(trLocation->AppendItem(trLocation->GetSelection(), title, 0));
+	trLocation->Expand(fld->GetTreeId());
+	anythingChanged = true;
 }

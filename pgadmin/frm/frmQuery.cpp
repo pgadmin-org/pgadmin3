@@ -1503,10 +1503,15 @@ void frmQuery::OnAddFavourite(wxCommandEvent &event)
 {
 	if (sqlQuery->GetText().Trim().IsEmpty())
 		return;
-	if (dlgAddFavourite(this, favourites).AddFavourite(sqlQuery->GetText()))
+	int r = dlgAddFavourite(this, favourites).AddFavourite(sqlQuery->GetText());
+	if (r == 1)
 	{
 		// Added a favourite, so save
 		queryFavouriteFileProvider::SaveFavourites(favourites);
+	}
+	if (r == 1 || r == -1)
+	{
+		// Changed something requiring rollback
 		mainForm->UpdateAllFavouritesList();
 	}
 }
