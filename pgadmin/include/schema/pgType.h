@@ -19,7 +19,8 @@ enum TYPE_CLASS
 {
 	TYPE_COMPOSITE = 0,
 	TYPE_ENUM,
-	TYPE_EXTERNAL
+	TYPE_EXTERNAL,
+	TYPE_RANGE
 };
 
 class pgTypeFactory : public pgSchemaObjFactory
@@ -241,6 +242,70 @@ public:
 	{
 		return pgSchemaObject::GetSystemObject() || isRecordType;
 	}
+	OID GetSubtypeFunction() const
+	{
+		return rngsubtype;
+	}
+	void iSetSubtypeFunction(const OID d)
+	{
+		rngsubtype = d;
+	}
+	wxString GetSubtypeFunctionStr() const
+	{
+		return rngsubtypestr;
+	}
+	void iSetSubtypeFunctionStr(const wxString s)
+	{
+		rngsubtypestr = s;
+	}
+	OID GetCollationFunction() const
+	{
+		return rngcollation;
+	}
+	void iSetCollationFunction(const OID d)
+	{
+		rngcollation = d;
+	}
+	wxString GetCollationFunctionStr() const
+	{
+		return rngcollationstr;
+	}
+	void iSetCollationFunctionStr(const wxString s)
+	{
+		rngcollationstr = s;
+	}
+	OID GetSubtypeOpClassFunction() const
+	{
+		return rngsubopc;
+	}
+	void iSetSubtypeOpClassFunction(const OID d)
+	{
+		rngsubopc = d;
+	}
+	wxString GetSubtypeOpClassFunctionStr() const
+	{
+		return rngsubopcstr;
+	}
+	void iSetSubtypeOpClassFunctionStr(const wxString s)
+	{
+		rngsubopcstr = s;
+	}
+	wxString GetCanonical() const
+	{
+		return rngcanonical;
+	}
+	void iSetCanonical(const wxString s)
+	{
+		rngcanonical = s;
+	}
+	wxString GetSubtypeDiff() const
+	{
+		return rngsubdiff;
+	}
+	void iSetSubtypeDiff(const wxString s)
+	{
+		rngsubdiff = s;
+	}
 
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	wxString GetSql(ctlTree *browser);
@@ -267,6 +332,8 @@ private:
 	long internalLength;
 	int typeClass;
 	bool passedByValue, isRecordType, collatable, prefered;
+	int rngsubtype, rngcollation, rngsubopc;
+	wxString rngsubtypestr, rngcollationstr, rngsubopcstr, rngcanonical, rngsubdiff;
 	OID relOid;
 };
 

@@ -75,6 +75,8 @@ private:
 	void OnSelChangeTyp(wxCommandEvent &ev);
 	void OnSelChangeTypOrLen(wxCommandEvent &ev);
 	void OnChangeMember(wxCommandEvent &ev);
+	void OnNameChange(wxCommandEvent &ev);
+	void OnSubtypeChange(wxCommandEvent &ev);
 
 	void showDefinition(int panel);
 	wxString GetFullTypeName(int type);

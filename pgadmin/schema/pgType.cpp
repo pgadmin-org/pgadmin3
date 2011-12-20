@@ -115,6 +115,19 @@ wxString pgType::GetSql(ctlTree *browser)
 			sql += wxT(" AS ENUM\n   (");
 			sql += GetQuotedLabelList();
 		}
+		else if (GetTypeClass() == TYPE_RANGE)
+		{
+			sql += wxT(" AS RANGE\n   (")
+			       wxT("SUBTYPE=") + rngsubtypestr;
+			if (!rngsubopcstr.IsEmpty())
+				sql += wxT(",\n    SUBTYPE_OPCLASS=") + rngsubopcstr;
+			if (!rngcollationstr.IsEmpty())
+				sql += wxT(",\n    COLLATION=") + rngcollationstr;
+			if (!rngcanonical.IsEmpty())
+				sql += wxT(",\n    CANONICAL=") + rngcanonical;
+			if (!rngsubdiff.IsEmpty())
+				sql += wxT(",\n    SUBTYPE_DIFF=") + rngsubdiff;
+		}
 		else
 		{
 			sql += wxT("\n   (INPUT=") + qtIdent(GetInputFunction())
@@ -274,6 +287,32 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				delete set;
 			}
 		}
+		else if (GetTypeClass() == TYPE_RANGE)
+		{
+			query = wxT("SELECT rngsubtype, st.typname, ")
+			        wxT("rngcollation, col.collname, ")
+			        wxT("rngsubopc, opc.opcname, ")
+			        wxT("rngcanonical, rngsubdiff\n")
+			        wxT("FROM pg_range\n")
+			        wxT("LEFT JOIN pg_type st ON st.oid=rngsubtype\n")
+			        wxT("LEFT JOIN pg_collation col ON col.oid=rngcollation\n")
+			        wxT("LEFT JOIN pg_opclass opc ON opc.oid=rngsubopc\n")
+			        wxT("WHERE rngtypid=") + GetOidStr();
+			pgSet *set = ExecuteSet(query);
+			if (set)
+			{
+				iSetSubtypeFunction(set->GetLong(wxT("rngsubtype")));
+				iSetSubtypeFunctionStr(set->GetVal(wxT("typname")));
+				iSetCollationFunction(set->GetLong(wxT("rngcollation")));
+				iSetCollationFunctionStr(set->GetVal(wxT("collname")));
+				iSetSubtypeOpClassFunction(set->GetLong(wxT("rngsubopc")));
+				iSetSubtypeOpClassFunctionStr(set->GetVal(wxT("opcname")));
+				if (set->GetVal(wxT("rngcanonical")) != wxT("-"))
+					iSetCanonical(set->GetVal(wxT("rngcanonical")));
+				if (set->GetVal(wxT("rngsubdiff")) != wxT("-"))
+					iSetSubtypeDiff(set->GetVal(wxT("rngsubdiff")));
+			}
+		}
 	}
 
 	if (properties)
@@ -293,6 +332,14 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		if (GetTypeClass() == TYPE_ENUM)
 		{
 			properties->AppendItem(_("Labels"), GetLabelList());
+		}
+		else if (GetTypeClass() == TYPE_RANGE)
+		{
+			properties->AppendItem(_("Subtype"), GetSubtypeFunctionStr());
+			properties->AppendItem(_("Collation"), GetCollationFunctionStr());
+			properties->AppendItem(_("Subtype OpClass"), GetSubtypeOpClassFunctionStr());
+			properties->AppendItem(_("Canonical"), GetCanonical());
+			properties->AppendItem(_("Subtype diff"), GetSubtypeDiff());
 		}
 		else
 		{
@@ -443,6 +490,8 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 				type->iSetTypeClass(TYPE_COMPOSITE);
 			else if (types->GetVal(wxT("typtype")) == wxT("e"))
 				type->iSetTypeClass(TYPE_ENUM);
+			else if (types->GetVal(wxT("typtype")) == wxT("r"))
+				type->iSetTypeClass(TYPE_RANGE);
 			else
 				type->iSetTypeClass(TYPE_EXTERNAL);
 

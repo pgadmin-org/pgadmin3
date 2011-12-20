@@ -61,8 +61,14 @@
 #define pnlDefinitionExtern     CTRL_PANEL("pnlDefinitionExtern")
 #define pnlDefinitionComposite  CTRL_PANEL("pnlDefinitionComposite")
 #define pnlDefinitionEnum       CTRL_PANEL("pnlDefinitionEnum")
+#define pnlDefinitionRange      CTRL_PANEL("pnlDefinitionRange")
 #define chkCollatable           CTRL_CHECKBOX("chkCollatable")
 #define cbCollation             CTRL_COMBOBOX("cbCollation")
+#define cbSubtype               CTRL_COMBOBOX("cbSubtype")
+#define cbSubtypeOpclass        CTRL_COMBOBOX("cbSubtypeOpclass")
+#define cbRngCollation          CTRL_COMBOBOX("cbRngCollation")
+#define cbCanonical             CTRL_COMBOBOX("cbCanonical")
+#define cbSubtypeDiff           CTRL_COMBOBOX("cbSubtypeDiff")
 
 
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
@@ -90,6 +96,9 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtPrecision"),                 dlgType::OnSelChangeTypOrLen)
 	EVT_BUTTON(CTL_ADDPRIV,                         dlgType::OnAddPriv)
 	EVT_BUTTON(CTL_DELPRIV,                         dlgType::OnDelPriv)
+	EVT_TEXT(XRCID("cbSubtype"),                    dlgType::OnSubtypeChange)
+	EVT_COMBOBOX(XRCID("cbSubtype"),                dlgType::OnSubtypeChange)
+	EVT_TEXT(XRCID("txtName"),                      dlgType::OnNameChange)
 #ifdef __WXMAC__
 	EVT_SIZE(                                       dlgType::OnChangeSize)
 #endif
@@ -244,6 +253,7 @@ void dlgType::showDefinition(int panel)
 	pnlDefinitionExtern->Show(false);
 	pnlDefinitionComposite->Show(false);
 	pnlDefinitionEnum->Show(false);
+	pnlDefinitionRange->Show(false);
 
 	switch (panel)
 	{
@@ -256,10 +266,13 @@ void dlgType::showDefinition(int panel)
 		case 2:
 			pnlDefinitionExtern->Show(true);
 			break;
+		case 3:
+			pnlDefinitionRange->Show(true);
+			break;
 	}
 
 	pnlDefinitionComposite->GetParent()->Layout();
-	// we don't need to call GetParent()->Layout() for all three panels
+	// we don't need to call GetParent()->Layout() for all four panels
 	// because they all share the same parent
 }
 
@@ -282,6 +295,7 @@ int dlgType::Go(bool modal)
 {
 	pgSet *set;
 
+	cbRngCollation->Enable(false);
 	if (connection->BackendMinimumVersion(9, 2))
 	{
 		securityPage->SetConnection(connection);
@@ -300,6 +314,29 @@ int dlgType::Go(bool modal)
 			}
 		}
 		securityPage->lbPrivileges->GetParent()->Layout();
+
+		// Load the range combox (the 403 opcmethod is btree)
+		set = connection->ExecuteSet(
+		          wxT("SELECT DISTINCT typ.typname\n")
+		          wxT("  FROM pg_opclass opc\n")
+		          wxT("  JOIN pg_type typ ON opc.opcintype=typ.oid\n")
+		          wxT("  WHERE opc.opcmethod=403\n")
+		          wxT("  ORDER BY typname"));
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				wxString name = qtIdent(set->GetVal(wxT("typname")));
+				cbSubtype->Append(name);
+				set->MoveNext();
+			}
+			delete set;
+		}
+		cbSubtype->SetSelection(0);
+	}
+	else
+	{
+		rdbType->Enable(3, false);
 	}
 
 	if (connection->BackendMinimumVersion(9, 1))
@@ -317,6 +354,7 @@ int dlgType::Go(bool modal)
 	{
 		// fill collation combobox
 		cbCollation->Append(wxEmptyString);
+		cbRngCollation->Append(wxEmptyString);
 		set = connection->ExecuteSet(
 		          wxT("SELECT nspname, collname\n")
 		          wxT("  FROM pg_collation c, pg_namespace n\n")
@@ -328,11 +366,13 @@ int dlgType::Go(bool modal)
 			{
 				wxString name = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("collname")));
 				cbCollation->Append(name);
+				cbRngCollation->Append(name);
 				set->MoveNext();
 			}
 			delete set;
 		}
 		cbCollation->SetSelection(0);
+		cbRngCollation->SetSelection(0);
 	}
 
 	if (type)
@@ -453,6 +493,13 @@ int dlgType::Go(bool modal)
 		elements = type->GetLabelArray();
 		for (i = 0 ; i < elements.GetCount() ; i++)
 			lstLabels->AppendItem(0, elements.Item(i));
+
+		// Load the RANGE informations
+		cbSubtype->SetValue(type->GetSubtypeFunctionStr());
+		cbSubtypeOpclass->SetValue(type->GetSubtypeOpClassFunctionStr());
+		cbRngCollation->SetValue(type->GetCollationFunctionStr());
+		cbCanonical->SetValue(type->GetCanonical());
+		cbSubtypeDiff->SetValue(type->GetSubtypeDiff());
 
 		if (!connection->BackendMinimumVersion(7, 5))
 			cbOwner->Disable();
@@ -595,6 +642,123 @@ void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 }
 
 
+
+void dlgType::OnNameChange(wxCommandEvent &ev)
+{
+	wxString qry;
+	wxString shelltype;
+	pgSet *set;
+
+	cbCanonical->Clear();
+	if (!txtName->GetValue().IsEmpty())
+	{
+		// Grab the shelltype
+		qry = wxT("SELECT oid FROM pg_type WHERE typname='") + qtIdent(txtName->GetValue()) + wxT("'");
+		set = connection->ExecuteSet(qry);
+		if (set)
+		{
+			if (!set->Eof())
+			{
+				shelltype = set->GetVal(wxT("oid"));
+			}
+			delete set;
+		}
+
+		if (!shelltype.IsEmpty())
+		{
+			// Load the canonical functions
+			qry = wxT("SELECT proname, nspname\n")
+			      wxT("  FROM pg_proc\n")
+			      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+			      wxT("  WHERE prorettype=") + shelltype +
+			      wxT("    AND proargtypes='") + shelltype + wxT("'\n")
+			      wxT("  ORDER BY proname\n");
+
+			cbCanonical->Append(wxEmptyString);
+			set = connection->ExecuteSet(qry);
+			if (set)
+			{
+				while (!set->Eof())
+				{
+					wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+					cbCanonical->Append(procname);
+					set->MoveNext();
+				}
+				delete set;
+			}
+			cbCanonical->SetSelection(0);
+		}
+	}
+}
+
+
+void dlgType::OnSubtypeChange(wxCommandEvent &ev)
+{
+	wxString subtypeoid;
+	cbSubtypeOpclass->Clear();
+	cbSubtypeDiff->Clear();
+
+	if (!cbSubtype->GetValue().IsEmpty())
+	{
+		cbSubtypeOpclass->Append(wxEmptyString);
+		pgSet *set = connection->ExecuteSet(
+		                 wxT("SELECT opc.opcname, opc.opcintype\n")
+		                 wxT("  FROM pg_opclass opc\n")
+		                 wxT("  JOIN pg_type typ ON opc.opcintype=typ.oid ")
+		                 wxT("   AND typ.typname='") + cbSubtype->GetValue() + wxT("'\n")
+		                 wxT("  WHERE opc.opcmethod=403\n")
+		                 wxT("  ORDER BY opcname"));
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				wxString name = qtIdent(set->GetVal(wxT("opcname")));
+				subtypeoid = set->GetVal(wxT("opcintype"));
+				cbSubtypeOpclass->Append(name);
+				set->MoveNext();
+			}
+			delete set;
+		}
+		cbSubtypeOpclass->SetSelection(0);
+
+		set = connection->ExecuteSet(
+		          wxT("SELECT typcollation FROM pg_type WHERE typname='") + cbSubtype->GetValue() + wxT("'\n"));
+		if (set)
+		{
+			if (!set->Eof())
+			{
+				cbRngCollation->Enable(set->GetLong(wxT("typcollation")) > 0);
+			}
+			delete set;
+		}
+		else
+		{
+			cbRngCollation->Enable(false);
+		}
+
+		// Load the subtypediff functions (701 is double precision type)
+
+		set = connection->ExecuteSet(
+		          wxT("SELECT proname, nspname\n")
+		          wxT("  FROM pg_proc\n")
+		          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+		          wxT("  WHERE prorettype=701 ")
+		          wxT("    AND proargtypes='") + subtypeoid + wxT("'\n")
+		          wxT("  ORDER BY proname\n"));
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+				cbSubtypeDiff->Append(procname);
+				set->MoveNext();
+			}
+			delete set;
+		}
+	}
+}
+
+
 void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
 {
 	if ((type && connection->BackendMinimumVersion(9, 1)) || !type)
@@ -621,12 +785,16 @@ void dlgType::CheckChange()
 	{
 		CheckValid(enable, lstLabels->GetItemCount() >= 1, _("Please specify at least one label."));
 	}
-	else
+	else if (rdbType->GetSelection() == TYPE_EXTERNAL)
 	{
 		txtLength->Enable(!chkVariable->GetValue());
 		CheckValid(enable, cbInput->GetCurrentSelection() >= 0, _("Please specify input conversion function."));
 		CheckValid(enable, cbOutput->GetCurrentSelection() >= 0, _("Please specify output conversion function."));
 		CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, _("Please specify internal storage length."));
+	}
+	else
+	{
+		CheckValid(enable, cbSubtype->GetCurrentSelection() >= 0, _("Please specify subtype function."));
 	}
 
 	if (type)
@@ -921,7 +1089,7 @@ wxString dlgType::GetSql()
 				sql += connection->qtDbString(lstLabels->GetItemText(i));
 			}
 		}
-		else
+		else if (rdbType->GetSelection() == TYPE_EXTERNAL)
 		{
 			sql += wxT("\n   (INPUT=");
 			AppendQuoted(sql, cbInput->GetValue());
@@ -1001,6 +1169,31 @@ wxString dlgType::GetSql()
 			AppendIfFilled(sql, wxT(",\n    STORAGE="), cbStorage->GetValue());
 			if (connection->BackendMinimumVersion(9, 1) && chkCollatable->GetValue())
 				sql += wxT(",\n    COLLATABLE=true");
+		}
+		else
+		{
+			sql += wxT(" AS RANGE\n   (SUBTYPE=");
+			AppendQuoted(sql, cbSubtype->GetValue());
+			if (!cbSubtypeOpclass->GetValue().IsEmpty())
+			{
+				sql += wxT(", SUBTYPE_OPCLASS=");
+				AppendQuoted(sql, cbSubtypeOpclass->GetValue());
+			}
+			if (!cbRngCollation->GetValue().IsEmpty())
+			{
+				sql += wxT(", COLLATION=");
+				AppendQuoted(sql, cbRngCollation->GetValue());
+			}
+			if (!cbCanonical->GetValue().IsEmpty())
+			{
+				sql += wxT(", CANONICAL=");
+				AppendQuoted(sql, cbCanonical->GetValue());
+			}
+			if (!cbSubtypeDiff->GetValue().IsEmpty())
+			{
+				sql += wxT(", SUBTYPE_DIFF=");
+				AppendQuoted(sql, cbSubtypeDiff->GetValue());
+			}
 		}
 
 		sql += wxT(");\n");
