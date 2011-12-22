@@ -98,6 +98,10 @@ public:
 	{
 		return m_defPrivsOnFuncs;
 	}
+	wxString GetDefPrivsOnTypes()
+	{
+		return m_defPrivsOnTypes;
+	}
 
 	wxString GetPath() const
 	{
@@ -273,7 +277,7 @@ private:
 
 	wxString schemaChanges;
 	wxString schemaRestriction;
-	wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs;
+	wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs, m_defPrivsOnTypes;
 
 	int canDebugPlpgsql, canDebugEdbspl;
 

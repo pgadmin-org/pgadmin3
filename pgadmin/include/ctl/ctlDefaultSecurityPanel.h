@@ -57,14 +57,15 @@ public:
 
 	wxString GetDefaultPrivileges(const wxString &schemaName);
 	void     UpdatePrivilegePages(bool createDefPrivs, const wxString &defPrivsOnTables,
-	                              const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs);
+	                              const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs,
+	                              const wxString &defPrivsOnTypes);
 
 protected:
 	wxNotebook    *nbNotebook;
 	wxArrayString  m_groups;
 	wxArrayString  m_namespaces;
 
-	ctlDefaultPrivilegesPanel *m_defPrivOnTablesPanel, *m_defPrivOnSeqsPanel, *m_defPrivOnFuncsPanel;
+	ctlDefaultPrivilegesPanel *m_defPrivOnTablesPanel, *m_defPrivOnSeqsPanel, *m_defPrivOnFuncsPanel, *m_defPrivOnTypesPanel;
 
 	friend class ctlDefaultPrivilegesPanel;
 	friend class dlgDefaultSecurityProperty;

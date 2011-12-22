@@ -22,6 +22,9 @@
 #include "schema/pgType.h"
 #include "schema/pgDatatype.h"
 #include "ctl/ctlSeclabelPanel.h"
+#include "frm/frmMain.h"
+#include "schema/pgUser.h"
+#include "schema/pgGroup.h"
 
 
 // pointer to controls
@@ -82,6 +85,11 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtMembername"),                dlgType::OnChangeMember)
 	EVT_TEXT(XRCID("txtLength"),                    dlgType::OnSelChangeTypOrLen)
 	EVT_TEXT(XRCID("txtPrecision"),                 dlgType::OnSelChangeTypOrLen)
+	EVT_BUTTON(CTL_ADDPRIV,                         dlgType::OnAddPriv)
+	EVT_BUTTON(CTL_DELPRIV,                         dlgType::OnDelPriv)
+#ifdef __WXMAC__
+	EVT_SIZE(                                       dlgType::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -108,7 +116,110 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 	cbStorage->Append(wxT("EXTENDED"));
 
 	queriesToBeSplitted = false;
+
+	/* Type Privileges */
+	securityChanged = false;
+	if (node)
+		connection = node->GetConnection();
+	securityPage = new ctlSecurityPanel(nbNotebook, wxT("USAGE"), "U", frame->GetImageList());
+	if (connection && connection->BackendMinimumVersion(9, 2) && (!node || node->CanCreate()))
+	{
+		// Fetch Groups Information
+		pgSet *setGrp = connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
+
+		if (setGrp)
+		{
+			while (!setGrp->Eof())
+			{
+				groups.Add(setGrp->GetVal(0));
+				setGrp->MoveNext();
+			}
+			delete setGrp;
+		}
+
+		if (node)
+		{
+			wxString strAcl = node->GetAcl();
+			if (!strAcl.IsEmpty())
+			{
+				wxArrayString aclArray;
+				strAcl = strAcl.Mid(1, strAcl.Length() - 2);
+				getArrayFromCommaSeparatedList(strAcl, aclArray);
+				wxString roleName;
+				for (unsigned int index = 0; index < aclArray.Count(); index++)
+				{
+					wxString strCurrAcl = aclArray[index];
+
+					/*
+					* In rare case, we can have ',' (comma) in the user name.
+					* But, we need to handle them also
+					*/
+					if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
+					{
+						// Check it is start of the ACL
+						if (strCurrAcl[0U] == (wxChar)'"')
+							roleName = strCurrAcl + wxT(",");
+						continue;
+					}
+					else
+						strCurrAcl = roleName + strCurrAcl;
+
+					if (strCurrAcl[0U] == (wxChar)'"')
+						strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length() - 1);
+					roleName = strCurrAcl.BeforeLast('=');
+
+					wxString value = strCurrAcl.Mid(roleName.Length() + 1).BeforeLast('/');
+
+					int icon = userFactory.GetIconId();
+
+					if (roleName.Left(6).IsSameAs(wxT("group ")), false)
+					{
+						icon = groupFactory.GetIconId();
+						roleName = wxT("group ") + qtStrip(roleName.Mid(6));
+					}
+					else if (roleName.IsEmpty())
+					{
+						icon = PGICON_PUBLIC;
+						roleName = wxT("public");
+					}
+					else
+					{
+						roleName = qtStrip(roleName);
+						for (unsigned int index = 0; index < groups.Count(); index++)
+							if (roleName == groups[index])
+							{
+								roleName = wxT("group ") + roleName;
+								icon = groupFactory.GetIconId();
+								break;
+							}
+					}
+
+					securityPage->lbPrivileges->AppendItem(icon, roleName, value);
+					currentAcl.Add(roleName + wxT("=") + value);
+
+					// Reset roleName
+					roleName.Empty();
+				}
+			}
+		}
+	}
+	else
+		securityPage->Disable();
+
 }
+
+
+#ifdef __WXMAC__
+void dlgType::OnChangeSize(wxSizeEvent &ev)
+{
+	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+	                                    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
+	if (GetAutoLayout())
+	{
+		Layout();
+	}
+}
+#endif
 
 
 void dlgType::OnChangeMember(wxCommandEvent &ev)
@@ -167,6 +278,26 @@ pgObject *dlgType::GetObject()
 int dlgType::Go(bool modal)
 {
 	pgSet *set;
+
+	if (connection->BackendMinimumVersion(9, 2))
+	{
+		securityPage->SetConnection(connection);
+
+		if (securityPage->cbGroups)
+		{
+			// Fetch Groups Information
+			for ( unsigned int index = 0; index < groups.Count();)
+				securityPage->cbGroups->Append(wxT("group ") + groups[index++]);
+
+			// Fetch Users Information
+			if (settings->GetShowUsersForPrivileges())
+			{
+				securityPage->stGroup->SetLabel(_("Group/User"));
+				dlgProperty::AddUsers(securityPage->cbGroups);
+			}
+		}
+		securityPage->lbPrivileges->GetParent()->Layout();
+	}
 
 	if (connection->BackendMinimumVersion(9, 1))
 	{
@@ -500,7 +631,7 @@ void dlgType::CheckChange()
 		CheckValid(enable, !name.StartsWith(wxT("_")), _("Name may not start with '_'."));
 	}
 
-	EnableOK(enable);
+	EnableOK(enable || securityChanged);
 }
 
 
@@ -851,6 +982,9 @@ wxString dlgType::GetSql()
 	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("TYPE"), qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
+	// securityPage will exists only for PG 9.2 and later
+	if (connection->BackendMinimumVersion(9, 2))
+		sql += securityPage->GetGrant(wxT("U"), wxT("TYPE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), &currentAcl);
 	return sql;
 }
 
@@ -982,7 +1116,22 @@ wxString dlgType::GetSqlForTypes()
 	return sql;
 }
 
+
 void dlgType::OnChange(wxCommandEvent &event)
 {
+	CheckChange();
+}
+
+
+void dlgType::OnAddPriv(wxCommandEvent &ev)
+{
+	securityChanged = true;
+	CheckChange();
+}
+
+
+void dlgType::OnDelPriv(wxCommandEvent &ev)
+{
+	securityChanged = true;
 	CheckChange();
 }

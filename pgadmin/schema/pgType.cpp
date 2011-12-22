@@ -263,6 +263,8 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
+		if (GetConnection()->BackendMinimumVersion(9, 2))
+			properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Alias"), GetAlias());
 		if (GetTypeClass() == TYPE_COMPOSITE)
 		{
@@ -352,6 +354,9 @@ wxString pgTypeCollection::GetTranslatedMessage(int kindOfMessage) const
 		case REFRESHINGDETAILS:
 			message = _("Refreshing types");
 			break;
+		case GRANTWIZARDTITLE:
+			message = _("Privileges for types");
+			break;
 		case OBJECTSLISTREPORT:
 			message = _("Types list report");
 			break;
@@ -402,6 +407,8 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 			type->iSetOid(types->GetOid(wxT("oid")));
 			type->iSetOwner(types->GetVal(wxT("typeowner")));
+			if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+				type->iSetAcl(types->GetVal(wxT("typacl")));
 			type->iSetAlias(types->GetVal(wxT("alias")));
 			type->iSetComment(types->GetVal(wxT("description")));
 			type->iSetPassedByValue(types->GetBool(wxT("typbyval")));

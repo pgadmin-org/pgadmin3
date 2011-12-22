@@ -108,7 +108,7 @@ wxString dlgDatabase::GetHelpPage() const
 int dlgDatabase::Go(bool modal)
 {
 	bool createDefPriv = false;
-	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs, strDefPrivsOnTypes;
 
 	if (connection->BackendMinimumVersion(9, 2))
 	{
@@ -206,6 +206,8 @@ int dlgDatabase::Go(bool modal)
 			strDefPrivsOnSeqs   = database->GetDefPrivsOnSequences();
 			strDefPrivsOnFuncs  = database->GetDefPrivsOnFunctions();
 		}
+		if (connection->BackendMinimumVersion(9, 2))
+			strDefPrivsOnTypes = database->GetDefPrivsOnTypes();
 
 		if (readOnly)
 		{
@@ -340,7 +342,7 @@ int dlgDatabase::Go(bool modal)
 		}
 	}
 
-	return dlgDefaultSecurityProperty::Go(modal, createDefPriv, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs);
+	return dlgDefaultSecurityProperty::Go(modal, createDefPriv, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs, strDefPrivsOnTypes);
 }
 
 

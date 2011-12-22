@@ -189,6 +189,10 @@ int pgDatabase::Connect()
 			m_defPrivsOnSeqs   = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='S'"));
 			m_defPrivsOnFuncs  = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='f'"));
 		}
+		if (connection()->BackendMinimumVersion(9, 2))
+		{
+			m_defPrivsOnTypes = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='T'"));
+		}
 
 		connected = true;
 	}
@@ -563,6 +567,7 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 		sql += wxT("\n") + pgDatabase::GetDefaultPrivileges('r', m_defPrivsOnTables, wxT(""));
 		sql += pgDatabase::GetDefaultPrivileges('S', m_defPrivsOnSeqs, wxT(""));
 		sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, wxT(""));
+		sql += pgDatabase::GetDefaultPrivileges('T', m_defPrivsOnTypes, wxT(""));
 
 		sql += GetCommentSql();
 
@@ -651,9 +656,14 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 
 		properties->AppendItem(_("Default schema"), defaultSchema);
 
-		properties->AppendItem(_("Default table ACL"), m_defPrivsOnTables);
-		properties->AppendItem(_("Default sequence ACL"), m_defPrivsOnSeqs);
-		properties->AppendItem(_("Default function ACL"), m_defPrivsOnFuncs);
+		if (GetConnection() && GetConnection()->BackendMinimumVersion(9, 0))
+		{
+			properties->AppendItem(_("Default table ACL"), m_defPrivsOnTables);
+			properties->AppendItem(_("Default sequence ACL"), m_defPrivsOnSeqs);
+			properties->AppendItem(_("Default function ACL"), m_defPrivsOnFuncs);
+		}
+		if (GetConnection() && GetConnection()->BackendMinimumVersion(9, 2))
+			properties->AppendItem(_("Default type ACL"), m_defPrivsOnTypes);
 
 		size_t i;
 		wxString username;
@@ -916,6 +926,10 @@ wxString pgDatabase::GetDefaultPrivileges(const wxChar &cType, wxString strDefPr
 			case 'f':
 				strType = wxT("FUNCTIONS");
 				strSupportedPrivs = wxT("X");
+				break;
+			case 'T':
+				strType = wxT("TYPES");
+				strSupportedPrivs = wxT("U");
 				break;
 			default:
 				return wxT("");

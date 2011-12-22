@@ -46,7 +46,7 @@ pgObject *dlgSchema::GetObject()
 
 int dlgSchema::Go(bool modal)
 {
-	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+	wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs, strDefPrivsOnTypes;
 
 	if (connection->BackendMinimumVersion(9, 1))
 	{
@@ -70,6 +70,8 @@ int dlgSchema::Go(bool modal)
 			strDefPrivsOnSeqs   = schema->GetDefPrivsOnSequences();
 			strDefPrivsOnFuncs  = schema->GetDefPrivsOnFunctions();
 		}
+		if (connection->BackendMinimumVersion(9, 2))
+			strDefPrivsOnTypes = schema->GetDefPrivsOnTypes();
 
 		// edit mode
 		if (!connection->BackendMinimumVersion(7, 5))
@@ -86,7 +88,7 @@ int dlgSchema::Go(bool modal)
 		// create mode
 	}
 
-	return dlgDefaultSecurityProperty::Go(modal, true, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs);
+	return dlgDefaultSecurityProperty::Go(modal, true, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs, strDefPrivsOnTypes);
 }
 
 

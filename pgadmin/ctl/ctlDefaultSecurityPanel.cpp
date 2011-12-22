@@ -28,7 +28,8 @@
 
 defaultPrivilegesOn g_defPrivTables('r', wxT("Tables"), wxT("arwdDxt")),
                     g_defPrivSequences('S', wxT("Sequences"), wxT("rwU")),
-                    g_defPrivFunctions('f', wxT("Functions"), wxT("X"));
+                    g_defPrivFunctions('f', wxT("Functions"), wxT("X")),
+                    g_defPrivTypes('T', wxT("Types"), wxT("U"));
 
 defaultPrivilegesOn::defaultPrivilegesOn(const wxChar privType, const wxString &privOn, const wxString &privileges)
 	: m_privilegeType(privType), m_privilegesOn(privOn), m_privileges(privileges) {}
@@ -47,6 +48,10 @@ ctlDefaultSecurityPanel::ctlDefaultSecurityPanel(pgConn *conn, wxNotebook *nb, w
 	m_defPrivOnTablesPanel = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivTables, imgList);
 	m_defPrivOnSeqsPanel   = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivSequences, imgList);
 	m_defPrivOnFuncsPanel  = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivFunctions, imgList);
+	if (conn->BackendMinimumVersion(9, 2))
+		m_defPrivOnTypesPanel  = new ctlDefaultPrivilegesPanel(this, nbNotebook, g_defPrivTypes, imgList);
+	else
+		m_defPrivOnTypesPanel = NULL;
 
 	mainSizer->Add(nbNotebook, 0, wxEXPAND | wxALL, 2);
 
@@ -55,7 +60,7 @@ ctlDefaultSecurityPanel::ctlDefaultSecurityPanel(pgConn *conn, wxNotebook *nb, w
 }
 
 void  ctlDefaultSecurityPanel::UpdatePrivilegePages(bool createDefPrivs, const wxString &defPrivsOnTables,
-        const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs)
+        const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs, const wxString &defPrivsOnTypes)
 {
 	if (!createDefPrivs)
 	{
@@ -65,6 +70,8 @@ void  ctlDefaultSecurityPanel::UpdatePrivilegePages(bool createDefPrivs, const w
 	m_defPrivOnTablesPanel->Update(defPrivsOnTables);
 	m_defPrivOnSeqsPanel->Update(defPrivsOnSeqs);
 	m_defPrivOnFuncsPanel->Update(defPrivsOnFuncs);
+	if (m_defPrivOnTypesPanel)
+		m_defPrivOnTypesPanel->Update(defPrivsOnTypes);
 }
 
 

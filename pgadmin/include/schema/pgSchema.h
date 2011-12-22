@@ -133,6 +133,10 @@ public:
 	{
 		m_defPrivsOnFuncs = privs;
 	}
+	void iSetDefPrivsOnTypes(const wxString &privs)
+	{
+		m_defPrivsOnTypes = privs;
+	}
 
 	wxString GetDefPrivsOnTables()
 	{
@@ -145,6 +149,10 @@ public:
 	wxString GetDefPrivsOnFunctions()
 	{
 		return m_defPrivsOnFuncs;
+	}
+	wxString GetDefPrivsOnTypes()
+	{
+		return m_defPrivsOnTypes;
 	}
 
 	bool HasStats()
@@ -161,7 +169,7 @@ public:
 	}
 
 protected:
-	wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs;
+	wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs, m_defPrivsOnTypes;
 
 private:
 	long schemaTyp;

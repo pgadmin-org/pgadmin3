@@ -2032,14 +2032,16 @@ wxString dlgDefaultSecurityProperty::GetDefaultPrivileges(const wxString &schema
 }
 
 int dlgDefaultSecurityProperty::Go(bool modal, bool createDefPrivs, const wxString &defPrivsOnTables,
-                                   const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs)
+                                   const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs,
+                                   const wxString &defPrivsOnTypes)
 {
 	int res = dlgSecurityProperty::Go(modal);
 
 	if (defaultSecurityPage)
 	{
 		if (createDefPrivs && connection->BackendMinimumVersion(9, 0))
-			defaultSecurityPage->UpdatePrivilegePages(createDefPrivs, defPrivsOnTables, defPrivsOnSeqs, defPrivsOnFuncs);
+			defaultSecurityPage->UpdatePrivilegePages(createDefPrivs, defPrivsOnTables,
+			        defPrivsOnSeqs, defPrivsOnFuncs, defPrivsOnTypes);
 		else
 			defaultSecurityPage->Enable(false);
 	}

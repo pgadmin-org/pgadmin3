@@ -288,7 +288,8 @@ protected:
 	virtual int      Go(bool modal = false, bool createDefPrivs = false,
 	                    const wxString &defPrivsOnTables = wxT(""),
 	                    const wxString &defPrivsOnSeqs   = wxT(""),
-	                    const wxString &defPrivsOnFuncs  = wxT(""));
+	                    const wxString &defPrivsOnFuncs  = wxT(""),
+	                    const wxString &defPrivsOnTypes  = wxT(""));
 
 	virtual wxString GetHelpPage() const;
 
