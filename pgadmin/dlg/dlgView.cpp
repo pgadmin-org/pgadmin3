@@ -25,14 +25,16 @@
 
 
 // pointer to controls
-#define pnlDefinition   CTRL_PANEL("pnlDefinition")
-#define txtSqlBox       CTRL_SQLBOX("txtSqlBox")
+#define pnlDefinition       CTRL_PANEL("pnlDefinition")
+#define txtSqlBox           CTRL_SQLBOX("txtSqlBox")
+#define chkSecurityBarrier  CTRL_CHECKBOX("chkSecurityBarrier")
 
 
 
 BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
 	EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 	EVT_BUTTON(wxID_APPLY,                          dlgView::OnApply)
+	EVT_CHECKBOX(XRCID("chkSecurityBarrier"),       dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -73,12 +75,15 @@ int dlgView::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
+	chkSecurityBarrier->Enable(connection->BackendMinimumVersion(9, 2));
+
 	if (view)
 	{
 		// edit mode
 		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		oldDefinition = view->GetFormattedDefinition();
 		txtSqlBox->SetText(oldDefinition);
+		chkSecurityBarrier->SetValue(view->GetSecurityBarrier() == wxT("true"));
 	}
 	else
 	{
@@ -123,6 +128,20 @@ void dlgView::CheckChange()
 		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
 		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
+		if (connection->BackendMinimumVersion(9, 2))
+		{
+			if (view)
+			{
+				if (chkSecurityBarrier->GetValue())
+					enable = enable || !(view->GetSecurityBarrier() == wxT("true"));
+				else
+					enable = enable || (view->GetSecurityBarrier() == wxT("true"));
+			}
+			else
+			{
+				enable = enable || (chkSecurityBarrier->GetValue());
+			}
+		}
 	}
 	else
 	{
@@ -162,9 +181,24 @@ wxString dlgView::GetSql()
 	{
 		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
 
-		sql += wxT("CREATE OR REPLACE VIEW ") + name + wxT(" AS\n")
+		sql += wxT("CREATE OR REPLACE VIEW ") + name;
+
+		if (connection->BackendMinimumVersion(9, 2) && chkSecurityBarrier->GetValue())
+			sql += wxT(" WITH (security_barrier=true)");
+
+		sql += wxT(" AS\n")
 		       + txtSqlBox->GetText().Trim(true).Trim(false)
 		       + wxT(";\n");
+	}
+	else if (view)
+	{
+		if (connection->BackendMinimumVersion(9, 2))
+		{
+			if (chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() != wxT("true"))
+				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=true);\n");
+			else if (!chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() == wxT("true"))
+				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=false);\n");
+		}
 	}
 
 	if (view)

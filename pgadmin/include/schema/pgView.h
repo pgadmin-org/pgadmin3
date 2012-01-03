@@ -66,6 +66,14 @@ public:
 	{
 		return hasDeleteRule;
 	}
+	wxString GetSecurityBarrier()
+	{
+		return security_barrier;
+	}
+	void iSetSecurityBarrier(const wxString &s)
+	{
+		security_barrier = s;
+	}
 
 	wxMenu *GetNewMenu();
 	wxString GetSql(ctlTree *browser);
@@ -99,6 +107,7 @@ private:
 	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
 	void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
 	bool hasInsertRule, hasUpdateRule, hasDeleteRule;
+	wxString security_barrier;
 };
 
 class pgViewCollection : public pgSchemaObjCollection

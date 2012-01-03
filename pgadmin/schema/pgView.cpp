@@ -131,10 +131,13 @@ wxString pgView::GetSql(ctlTree *browser)
 	{
 		sql = wxT("-- View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
-		      + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
-		      + GetFormattedDefinition()
-		      + wxT("\n\n")
-		      + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+		      + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier();
+		if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
+			sql += wxT(" WITH (security_barrier=") + GetSecurityBarrier() + wxT(")");
+		sql += wxT(" AS \n")
+		       + GetFormattedDefinition()
+		       + wxT("\n\n")
+		       + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
 
 		if (GetConnection()->BackendMinimumVersion(8, 2))
 			sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
@@ -303,6 +306,8 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Definition"), def);
 		properties->AppendYesNoItem(_("System view?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
+			properties->AppendItem(_("Security barrier?"), GetSecurityBarrier());
 
 		if (!GetLabels().IsEmpty())
 		{
@@ -417,6 +422,10 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=c.oid AND sl1.objsubid=0) AS labels");
 		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=c.oid AND sl2.objsubid=0) AS providers");
 	}
+	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+	{
+		sql += wxT(",\nsubstring(array_to_string(c.reloptions, ',') FROM 'security_barrier=([a-z|0-9]*)') AS security_barrier");
+	}
 	sql += wxT("\n  FROM pg_class c\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
 	       wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
@@ -447,7 +456,10 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 				view->iSetProviders(views->GetVal(wxT("providers")));
 				view->iSetLabels(views->GetVal(wxT("labels")));
 			}
-
+			if (collection->GetConnection()->BackendMinimumVersion(9, 2))
+			{
+				view->iSetSecurityBarrier(views->GetVal(wxT("security_barrier")));
+			}
 			if (browser)
 			{
 				collection->AppendBrowserItem(browser, view);
