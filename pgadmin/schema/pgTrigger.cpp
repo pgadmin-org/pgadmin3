@@ -397,11 +397,9 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	           wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
 	           wxT("  LEFT OUTER JOIN pg_proc p ON p.oid=t.tgfoid\n")
 	           wxT("  LEFT OUTER JOIN pg_language l ON l.oid=p.prolang\n")
-	           wxT(" WHERE ");
+	           wxT(" WHERE tgconstraint=0");
 	if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
-		trig_sql += wxT("NOT tgisinternal\n");
-	else
-		trig_sql += wxT("1=1 \n");
+		trig_sql += wxT(" AND NOT tgisinternal\n");
 	if (restriction.IsEmpty())
 		trig_sql += wxT(" AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
 	else
