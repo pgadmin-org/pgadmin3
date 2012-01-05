@@ -37,6 +37,7 @@ private:
 	void OnChangeFormat(wxCommandEvent &ev);
 	void OnChangeData(wxCommandEvent &ev);
 	void OnChangeSchema(wxCommandEvent &ev);
+	void OnChangeSection(wxCommandEvent &ev);
 	void OnChangeList(wxListEvent &ev);
 	void OnEndProcess(wxProcessEvent &event);
 

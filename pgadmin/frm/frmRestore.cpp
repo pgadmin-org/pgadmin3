@@ -56,7 +56,9 @@
 #define txtNumberOfJobs          CTRL_TEXT("txtNumberOfJobs")
 #define chkVerbose               CTRL_CHECKBOX("chkVerbose")
 #define stSingleObject           CTRL_STATIC("stSingleObject")
-
+#define chkSectionPreData       CTRL_CHECKBOX("chkSectionPreData")
+#define chkSectionData          CTRL_CHECKBOX("chkSectionData")
+#define chkSectionPostData      CTRL_CHECKBOX("chkSectionPostData")
 #define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
 #define btnView                 CTRL_BUTTON("btnView")
 
@@ -71,6 +73,9 @@ BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
 	EVT_BUTTON(XRCID("btnView"),                 frmRestore::OnView)
 	EVT_END_PROCESS(-1,                          frmRestore::OnEndProcess)
 	EVT_CLOSE(                                   ExternProcessDialog::OnClose)
+	EVT_CHECKBOX(XRCID("chkSectionPreData"),     frmRestore::OnChangeSection)
+	EVT_CHECKBOX(XRCID("chkSectionData"),        frmRestore::OnChangeSection)
+	EVT_CHECKBOX(XRCID("chkSectionPostData"),    frmRestore::OnChangeSection)
 END_EVENT_TABLE()
 
 
@@ -179,6 +184,13 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 		cbFormat->Append(_("Directory"));
 	cbFormat->SetSelection(0);
 
+	if (!pgAppMinimumVersion(restoreExecutable, 9, 2))
+	{
+		chkSectionPreData->Disable();
+		chkSectionData->Disable();
+		chkSectionPostData->Disable();
+	}
+
 	wxCommandEvent ev;
 	OnChangeName(ev);
 }
@@ -239,13 +251,10 @@ void frmRestore::OnChangeFormat(wxCommandEvent &ev)
 
 void frmRestore::OnChangeData(wxCommandEvent &ev)
 {
-	if (chkOnlyData->GetValue())
-	{
-		chkOnlySchema->SetValue(false);
-		chkOnlySchema->Disable();
-	}
-	else
-		chkOnlySchema->Enable();
+	chkOnlySchema->Enable(!chkOnlyData->GetValue());
+	chkSectionPreData->Enable(!chkOnlyData->GetValue());
+	chkSectionData->Enable(!chkOnlyData->GetValue());
+	chkSectionPostData->Enable(!chkOnlyData->GetValue());
 
 	OnChange(ev);
 }
@@ -253,13 +262,21 @@ void frmRestore::OnChangeData(wxCommandEvent &ev)
 
 void frmRestore::OnChangeSchema(wxCommandEvent &ev)
 {
-	if (chkOnlySchema->GetValue())
-	{
-		chkOnlyData->SetValue(false);
-		chkOnlyData->Disable();
-	}
-	else
-		chkOnlyData->Enable();
+	chkOnlyData->Enable(!chkOnlySchema->GetValue());
+	chkSectionPreData->Enable(!chkOnlySchema->GetValue());
+	chkSectionData->Enable(!chkOnlySchema->GetValue());
+	chkSectionPostData->Enable(!chkOnlySchema->GetValue());
+
+	OnChange(ev);
+}
+
+
+void frmRestore::OnChangeSection(wxCommandEvent &ev)
+{
+	bool isSection = chkSectionPreData->GetValue() || chkSectionData->GetValue() || chkSectionPostData->GetValue();
+
+	chkOnlySchema->Enable(!isSection);
+	chkOnlyData->Enable(!isSection);
 
 	OnChange(ev);
 }
@@ -371,6 +388,17 @@ wxString frmRestore::getCmdPart2(int step)
 		if (cbFormat->GetSelection() == 1) // directory
 		{
 			cmd.Append(wxT(" --format directory"));
+		}
+
+		// Section
+		if (pgAppMinimumVersion(restoreExecutable, 9, 2))
+		{
+			if (chkSectionPreData->GetValue())
+				cmd.Append(wxT(" --section pre-data"));
+			if (chkSectionData->GetValue())
+				cmd.Append(wxT(" --section data"));
+			if (chkSectionPostData->GetValue())
+				cmd.Append(wxT(" --section post-data"));
 		}
 
 		if (chkOnlyData->GetValue())

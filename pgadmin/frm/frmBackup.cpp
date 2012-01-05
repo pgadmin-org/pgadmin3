@@ -52,6 +52,9 @@
 #define chkForceQuoteForIdent   CTRL_CHECKBOX("chkForceQuoteForIdent")
 #define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
 #define chkNoUnloggedTableData  CTRL_CHECKBOX("chkNoUnloggedTableData")
+#define chkSectionPreData       CTRL_CHECKBOX("chkSectionPreData")
+#define chkSectionData          CTRL_CHECKBOX("chkSectionData")
+#define chkSectionPostData      CTRL_CHECKBOX("chkSectionPostData")
 
 
 BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
@@ -62,6 +65,9 @@ BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
 	EVT_CHECKBOX(XRCID("chkOnlyData"),            frmBackup::OnChangePlain)
 	EVT_CHECKBOX(XRCID("chkOnlySchema"),          frmBackup::OnChangePlain)
 	EVT_CHECKBOX(XRCID("chkNoUnloggedTableData"), frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkSectionPreData"),      frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkSectionData"),         frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkSectionPostData"),     frmBackup::OnChangePlain)
 	EVT_CLOSE(                                    ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
@@ -203,6 +209,12 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 		delete objects;
 	}
 
+	if (!pgAppMinimumVersion(backupExecutable, 9, 2))
+	{
+		chkSectionPreData->Disable();
+		chkSectionData->Disable();
+		chkSectionPostData->Disable();
+	}
 	if (!pgAppMinimumVersion(backupExecutable, 9, 1))
 	{
 		chkForceQuoteForIdent->Disable();
@@ -309,13 +321,18 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
 {
 	bool isPlain = (cbFormat->GetSelection() == 2);
 	bool isDirectory = (cbFormat->GetSelection() == 3);
+	bool isSection = chkSectionPreData->GetValue() || chkSectionData->GetValue() || chkSectionPostData->GetValue();
 
 	chkBlobs->Enable(canBlob && !isPlain);
-	chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue());
+	chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue() && !isSection);
 	if (isPlain)
 		isPlain = !chkOnlyData->GetValue();
 
-	chkOnlySchema->Enable(isPlain);
+	chkOnlySchema->Enable(isPlain && !isSection);
+
+	chkSectionPreData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
+	chkSectionData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
+	chkSectionPostData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
 	chkNoOwner->Enable(isPlain);
 	chkDropDb->Enable(isPlain);
 	chkCreateDb->Enable(isPlain);
@@ -417,6 +434,17 @@ wxString frmBackup::getCmdPart2()
 			cmd.Append(wxT(" --format directory"));
 			break;
 		}
+	}
+
+	// Section
+	if (pgAppMinimumVersion(backupExecutable, 9, 2))
+	{
+		if (chkSectionPreData->GetValue())
+			cmd.Append(wxT(" --section pre-data"));
+		if (chkSectionData->GetValue())
+			cmd.Append(wxT(" --section data"));
+		if (chkSectionPostData->GetValue())
+			cmd.Append(wxT(" --section post-data"));
 	}
 
 	if (!cbEncoding->GetValue().IsEmpty())
