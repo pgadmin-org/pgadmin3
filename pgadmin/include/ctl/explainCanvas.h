@@ -2,10 +2,10 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2011, The pgAdmin Development Team
+// Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// explainCanvas.cpp - Explain Canvas
+// explainCanvas.h - Explain Canvas
 //
 //////////////////////////////////////////////////////////////////////////
 
