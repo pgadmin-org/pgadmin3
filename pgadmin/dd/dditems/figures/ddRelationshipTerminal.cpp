@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2011, The pgAdmin Development Team
+// Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // ddRelationshipTerminal.cpp - Draw inverse arrows at fk terminal based on kind of relationship.

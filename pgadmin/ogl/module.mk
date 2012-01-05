@@ -3,7 +3,7 @@
 # pgAdmin III - PostgreSQL Tools
 # 
 <<<<<<< HEAD
-# Copyright (C) 2002 - 2011, The pgAdmin Development Team
+# Copyright (C) 2002 - 2012, The pgAdmin Development Team
 =======
 # Copyright (C) 2002 - 2012, The pgAdmin Development Team
 >>>>>>> 573b7fd... Update copyright notices for 2012.
