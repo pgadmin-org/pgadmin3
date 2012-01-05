@@ -2,11 +2,7 @@
 #
 # pgAdmin III - PostgreSQL Tools
 # 
-<<<<<<< HEAD
 # Copyright (C) 2002 - 2012, The pgAdmin Development Team
-=======
-# Copyright (C) 2002 - 2012, The pgAdmin Development Team
->>>>>>> 573b7fd... Update copyright notices for 2012.
 # This software is released under the PostgreSQL Licence
 #
 # module.mk - pgadmin/ogl/ Makefile fragment
