@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
-// Copyright (C) 2002 - 2011, The pgAdmin Development Team
+// 
+// Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // pgUserMapping.cpp - User Mapping class
