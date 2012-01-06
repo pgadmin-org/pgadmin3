@@ -398,6 +398,10 @@ wxString pgTable::GetSql(ctlTree *browser)
 					if (colDetails.Length() > 0)
 						if (colDetails.Last() != '\n')
 							colDetails += wxT("\n");
+					colDetails += column->GetVariablesSql();
+					if (colDetails.Length() > 0)
+						if (colDetails.Last() != '\n')
+							colDetails += wxT("\n");
 
 					colCount++;
 					columnPrivileges += column->GetPrivileges();
