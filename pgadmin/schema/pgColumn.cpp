@@ -193,11 +193,7 @@ wxString pgColumn::GetSql(ctlTree *browser)
 					       + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
 				sql += GetAttstattargetSql();
 
-				size_t i;
-				for (i = 0 ; i < variables.GetCount() ; i++)
-					sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
-					       + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-					       + wxT(" SET (") + variables.Item(i) + wxT(");\n");
+				sql += GetVariablesSql();
 
 				sql += GetCommentSql();
 
@@ -246,6 +242,19 @@ wxString pgColumn::GetAttstattargetSql()
 		                   + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
 
 	return attstattargetSql;
+}
+
+wxString pgColumn::GetVariablesSql()
+{
+	wxString variablesSql;
+
+	size_t i;
+	for (i = 0 ; i < variables.GetCount() ; i++)
+		variablesSql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+			   + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+			   + wxT(" SET (") + variables.Item(i) + wxT(");\n");
+
+	return variablesSql;
 }
 
 wxString pgColumn::GetPrivileges()

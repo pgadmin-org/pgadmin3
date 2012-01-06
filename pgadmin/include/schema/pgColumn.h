@@ -265,6 +265,7 @@ public:
 	wxString GetCommentSql();
 	wxString GetStorageSql();
 	wxString GetAttstattargetSql();
+	wxString GetVariablesSql();
 	wxString GetPrivileges();
 	wxString GetHelpPage(bool forCreate) const
 	{
