@@ -79,6 +79,8 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 	table = parentNode;
 	wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW || table->GetMetaType() == GP_EXTTABLE || table->GetMetaType() == GP_PARTITION));
 
+	changedColumn = NULL;
+	
 	dirtyVars = false;
 
 	txtAttstattarget->SetValidator(numericValidator);
@@ -392,6 +394,10 @@ int dlgColumn::Go(bool modal)
 		txtAttstattarget->Disable();
 		cbStorage->Disable();
 	}
+
+	if (changedColumn)
+		ApplyChangesToDlg();
+
 	return dlgTypeProperty::Go(modal);
 }
 
@@ -592,6 +598,63 @@ wxString dlgColumn::GetSql()
 			sql += securityPage->GetGrant(wxT("arwx"), table->GetQuotedFullIdentifier(), &currentAcl, qtIdent(name));
 	}
 	return sql;
+}
+
+
+void dlgColumn::SetChangedCol(pgColumn *changedCol)
+{
+	changedColumn = changedCol;
+}
+
+
+void dlgColumn::ApplyChangesToObj(pgColumn *changedCol)
+{
+	changedCol->iSetName(txtName->GetValue());
+	changedCol->iSetComment(txtComment->GetValue());
+
+	changedCol->iSetRawTypename(cbDatatype->GetValue());
+
+	if (!txtLength->GetValue().IsEmpty())
+		changedCol->iSetLength(StrToLong(txtLength->GetValue()));
+	if (!txtPrecision->GetValue().IsEmpty())
+		changedCol->iSetPrecision(StrToLong(txtPrecision->GetValue()));
+	changedCol->iSetCollation(cbCollation->GetValue());
+
+	changedCol->iSetStorage(cbStorage->GetValue());
+	changedCol->iSetAttstattarget(StrToLong(txtAttstattarget->GetValue()));
+	changedCol->iSetNotNull(chkNotNull->GetValue());
+	changedCol->iSetDefault(txtDefault->GetValue());
+
+	changedCol->GetVariables().Clear();
+	for (int pos = 0 ; pos < lstVariables->GetItemCount() ; pos++)
+	{
+		changedCol->GetVariables().Add(lstVariables->GetText(pos) + wxT("=") + lstVariables->GetText(pos, 1));
+	}
+}
+
+
+void dlgColumn::ApplyChangesToDlg()
+{
+	txtName->SetValue(changedColumn->GetName());
+	txtComment->SetValue(changedColumn->GetComment());
+
+	cbDatatype->SetValue(changedColumn->GetRawTypename());
+
+	txtLength->SetValue(NumToStr(changedColumn->GetLength()));
+	txtPrecision->SetValue(NumToStr(changedColumn->GetPrecision()));
+	cbCollation->SetValue(changedColumn->GetCollation());
+
+	cbStorage->SetValue(changedColumn->GetStorage());
+	txtAttstattarget->SetValue(NumToStr(changedColumn->GetAttstattarget()));
+	chkNotNull->SetValue(changedColumn->GetNotNull());
+	txtDefault->SetValue(changedColumn->GetDefault());
+
+	lstVariables->DeleteAllItems();
+	for (size_t i = 0 ; i < changedColumn->GetVariables().GetCount() ; i++)
+	{
+		wxString item = changedColumn->GetVariables().Item(i);
+		lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
+	}
 }
 
 
