@@ -248,8 +248,8 @@ wxString pgColumn::GetVariablesSql()
 	size_t i;
 	for (i = 0 ; i < variables.GetCount() ; i++)
 		variablesSql += wxT("ALTER TABLE ") + GetQuotedFullTable()
-			   + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-			   + wxT(" SET (") + variables.Item(i) + wxT(");\n");
+		                + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+		                + wxT(" SET (") + variables.Item(i) + wxT(");\n");
 
 	return variablesSql;
 }

@@ -15,6 +15,19 @@
 
 #include "dlg/dlgProperty.h"
 
+enum
+{
+	COL_NAME = 0,
+	COL_DEFINITION,
+	COL_INHERIT,
+	COL_SQLCHANGE,
+	COL_COMMENTS,
+	COL_STATISTICS,
+	COL_PGCOLUMN,
+	COL_TYPEOID,
+	COL_CHANGEDCOL
+};
+
 class pgSchema;
 class pgTable;
 class pgColumn;

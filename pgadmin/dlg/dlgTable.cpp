@@ -174,6 +174,7 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 	btnAddTable->Disable();
 	btnRemoveTable->Disable();
 
+	// Visible columns
 	lstColumns->AddColumn(_("Column name"), 90);
 	lstColumns->AddColumn(_("Definition"), 135);
 #ifndef __WXMAC__
@@ -181,11 +182,19 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 #else
 	lstColumns->AddColumn(_("Inherited from table"), 80);
 #endif
+	// Invisible columns
+	// ... sql definition
 	lstColumns->AddColumn(_("Column definition"), 0);
+	// ... new comment
 	lstColumns->AddColumn(_("Column comment"), 0);
+	// ... new statistics
 	lstColumns->AddColumn(_("Column statistics"), 0);
+	// ... pgColumn* handle (used for new columns)
 	lstColumns->AddColumn(_("Column"), 0);
+	// ... new type OID
 	lstColumns->AddColumn(_("Column type oid"), 0);
+	// ... pgColumn* handle (used for changed columns)
+	lstColumns->AddColumn(_("Changed column"), 0);
 
 	lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
@@ -299,9 +308,9 @@ int dlgTable::Go(bool modal)
 						                                 column->GetName(), column->GetDefinition());
 						previousColumns.Add(column->GetQuotedIdentifier()
 						                    + wxT(" ") + column->GetDefinition());
-						lstColumns->SetItem(pos, 6, NumToStr((long)column));
+						lstColumns->SetItem(pos, COL_PGCOLUMN, NumToStr((long)column));
 						if (inherited)
-							lstColumns->SetItem(pos, 2, column->GetInheritedTableName());
+							lstColumns->SetItem(pos, COL_INHERIT, column->GetInheritedTableName());
 					}
 				}
 
@@ -810,12 +819,13 @@ wxString dlgTable::GetSql()
 		for (pos = 0; pos < lstColumns->GetItemCount() ; pos++)
 		{
 			index = -1;
-			if (lstColumns->GetText(pos, 2).IsEmpty())
+
+			if (lstColumns->GetText(pos, COL_INHERIT).IsEmpty())
 			{
-				definition = lstColumns->GetText(pos, 3);
+				definition = lstColumns->GetText(pos, COL_SQLCHANGE);
 				if (definition.IsEmpty())
 				{
-					definition = qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
+					definition = qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, COL_DEFINITION);
 					index = tmpDef.Index(definition);
 					if (index < 0)
 					{
@@ -827,7 +837,7 @@ wxString dlgTable::GetSql()
 				{
 					tmpsql += definition;
 
-					pgColumn *column = (pgColumn *) StrToLong(lstColumns->GetText(pos, 6));
+					pgColumn *column = (pgColumn *) StrToLong(lstColumns->GetText(pos, COL_PGCOLUMN));
 					if (column)
 					{
 						index = tmpDef.Index(column->GetQuotedIdentifier()
@@ -837,9 +847,9 @@ wxString dlgTable::GetSql()
 			}
 			else
 			{
-				if (! lstColumns->GetText(pos, 2).IsEmpty())
+				if (! lstColumns->GetText(pos, COL_INHERIT).IsEmpty())
 				{
-					definition = qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
+					definition = qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, COL_DEFINITION);
 					index = tmpDef.Index(definition);
 				}
 			}
@@ -1245,7 +1255,7 @@ wxString dlgTable::GetSql()
 		{
 			for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
 			{
-				if (lstColumns->GetText(pos, 2).IsEmpty())
+				if (lstColumns->GetText(pos, COL_INHERIT).IsEmpty())
 				{
 					// standard definition, not inherited
 					if (needComma)
@@ -1254,7 +1264,7 @@ wxString dlgTable::GetSql()
 						needComma = true;
 
 					wxString name = lstColumns->GetText(pos);
-					wxString definition = lstColumns->GetText(pos, 1);
+					wxString definition = lstColumns->GetText(pos, COL_DEFINITION);
 
 					sql += wxT("\n   ") + qtIdent(name)
 					       + wxT(" ") + definition;
@@ -1465,10 +1475,10 @@ wxString dlgTable::GetSql()
 		// Statistics
 		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
 		{
-			if (!lstColumns->GetText(pos, 4).IsEmpty())
+			if (!lstColumns->GetText(pos, COL_STATISTICS).IsEmpty())
 				sql += wxT("ALTER TABLE ") + tabname
-				       + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-				       + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+				       + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, COL_NAME))
+				       + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, COL_STATISTICS)
 				       + wxT(";\n");
 		}
 	}
@@ -1478,10 +1488,10 @@ wxString dlgTable::GetSql()
 	{
 		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
 		{
-			if (!lstColumns->GetText(pos, 5).IsEmpty())
+			if (!lstColumns->GetText(pos, COL_COMMENTS).IsEmpty())
 				sql += wxT("COMMENT ON COLUMN ") + tabname
-				       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-				       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+				       + wxT(".") + qtIdent(lstColumns->GetText(pos, COL_NAME))
+				       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, COL_COMMENTS))
 				       + wxT(";\n");
 		}
 	}
@@ -1724,7 +1734,7 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
 				size_t row = lstColumns->GetItemCount();
 				while (row--)
 				{
-					if (set->GetVal(wxT("attname")).Cmp(lstColumns->GetText(row, 0)) == 0)
+					if (set->GetVal(wxT("attname")).Cmp(lstColumns->GetText(row, COL_NAME)) == 0)
 					{
 						found = true;
 						break;
@@ -1733,7 +1743,7 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
 
 				if (found)
 				{
-					lstColumns->SetItem(row, 2, tabname);
+					lstColumns->SetItem(row, COL_INHERIT, tabname);
 				}
 				else
 				{
@@ -1772,9 +1782,9 @@ void dlgTable::OnRemoveTable(wxCommandEvent &ev)
 		size_t row = lstColumns->GetItemCount();
 		while (row--)
 		{
-			if (tabname == lstColumns->GetText(row, 2))
+			if (tabname == lstColumns->GetText(row, COL_INHERIT))
 			{
-				lstColumns->SetItem(row, 2, wxT(""));
+				lstColumns->SetItem(row, COL_INHERIT, wxT(""));
 			}
 		}
 		CheckChange();
@@ -1852,18 +1862,25 @@ void dlgTable::OnChangeOfType(wxCommandEvent &ev)
 void dlgTable::OnChangeCol(wxCommandEvent &ev)
 {
 	long pos = lstColumns->GetSelection();
-	pgColumn *column = (pgColumn *) StrToLong(lstColumns->GetText(pos, 6));
+	pgColumn *column = (pgColumn *) StrToLong(lstColumns->GetText(pos, COL_PGCOLUMN));
+	pgColumn *column2 = (pgColumn *) StrToLong(lstColumns->GetText(pos, COL_CHANGEDCOL));
 
 	dlgColumn col(&columnFactory, mainForm, column, table);
 	col.CenterOnParent();
 	col.SetDatabase(database);
+	col.SetChangedCol(column2);
 	if (col.Go(true) != wxID_CANCEL)
 	{
-		lstColumns->SetItem(pos, 0, col.GetName());
-		lstColumns->SetItem(pos, 1, col.GetDefinition());
-		lstColumns->SetItem(pos, 3, col.GetSql());
-		lstColumns->SetItem(pos, 4, col.GetStatistics());
-		lstColumns->SetItem(pos, 5, col.GetComment());
+		delete column2;
+		pgColumn *changedColumn = new pgColumn(* column);
+		col.ApplyChangesToObj(changedColumn);
+
+		lstColumns->SetItem(pos, COL_NAME, col.GetName());
+		lstColumns->SetItem(pos, COL_DEFINITION, col.GetDefinition());
+		lstColumns->SetItem(pos, COL_SQLCHANGE, col.GetSql());
+		lstColumns->SetItem(pos, COL_STATISTICS, col.GetStatistics());
+		lstColumns->SetItem(pos, COL_COMMENTS, col.GetComment());
+		lstColumns->SetItem(pos, COL_CHANGEDCOL, NumToStr((long)changedColumn));
 	}
 	CheckChange();
 }
@@ -1896,10 +1913,10 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
 	{
 		long pos = lstColumns->AppendItem(columnFactory.GetIconId(), col.GetName(), col.GetDefinition());
 		if (table && !connection->BackendMinimumVersion(8, 0))
-			lstColumns->SetItem(pos, 3, col.GetSql());
-		lstColumns->SetItem(pos, 4, col.GetStatistics());
-		lstColumns->SetItem(pos, 5, col.GetComment());
-		lstColumns->SetItem(pos, 7, col.GetTypeOid());
+			lstColumns->SetItem(pos, COL_SQLCHANGE, col.GetSql());
+		lstColumns->SetItem(pos, COL_STATISTICS, col.GetStatistics());
+		lstColumns->SetItem(pos, COL_COMMENTS, col.GetComment());
+		lstColumns->SetItem(pos, COL_TYPEOID, col.GetTypeOid());
 	}
 
 	CheckChange();
@@ -1925,11 +1942,11 @@ void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 void dlgTable::OnSelChangeCol(wxListEvent &ev)
 {
 	long pos = lstColumns->GetSelection();
-	wxString inheritedFromTable = lstColumns->GetText(pos, 2);
+	wxString inheritedFromTable = lstColumns->GetText(pos, COL_INHERIT);
 
 	btnAddCol->Enable(!(cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0));
 	btnRemoveCol->Enable(inheritedFromTable.IsEmpty() && !(cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0));
-	btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, 6).IsEmpty() && inheritedFromTable.IsEmpty());
+	btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, COL_PGCOLUMN).IsEmpty() && inheritedFromTable.IsEmpty());
 }
 
 

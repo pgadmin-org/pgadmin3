@@ -24,6 +24,9 @@ public:
 	dlgColumn(pgaFactory *factory, frmMain *frame, pgColumn *column, pgTable *parentNode);
 
 	void CheckChange();
+	void SetChangedCol(pgColumn *changedCol);
+	void ApplyChangesToObj(pgColumn *changedCol);
+	void ApplyChangesToDlg();
 	wxString GetSql();
 	pgObject *CreateObject(pgCollection *collection);
 	pgObject *GetObject();
@@ -79,6 +82,7 @@ protected:
 private:
 	pgColumn *column;
 	pgTable *table;
+	pgColumn *changedColumn;
 	wxArrayString varInfo;
 	bool dirtyVars;
 
