@@ -97,7 +97,6 @@ int dlgDomain::Go(bool modal)
 		txtDefault->SetValue(domain->GetDefault());
 		txtCheck->SetValue(domain->GetCheck());
 
-		txtName->Disable();
 		cbDatatype->Disable();
 
 		cbCollation->SetValue(domain->GetQuotedCollation());
@@ -171,7 +170,8 @@ void dlgDomain::CheckChange()
 
 	if (domain)
 	{
-		enable = txtDefault->GetValue() != domain->GetDefault()
+		enable = txtName->GetValue() != domain->GetName()
+                 || txtDefault->GetValue() != domain->GetDefault()
 		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
 		         || chkNotNull->GetValue() != domain->GetNotNull()
 		         || txtCheck->GetValue() != domain->GetCheck()
@@ -231,6 +231,14 @@ wxString dlgDomain::GetSql()
 		// edit mode
 		name = GetName();
 
+		if (txtName->GetValue() != domain->GetName())
+		{
+
+	        if (connection->BackendMinimumVersion(9, 2))
+                AppendNameChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
+            else
+                AppendNameChange(sql, wxT("TYPE ") + domain->GetQuotedFullIdentifier());
+		}
 		if (chkNotNull->GetValue() != domain->GetNotNull())
 		{
 			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
