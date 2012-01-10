@@ -1042,11 +1042,13 @@ wxString dlgRepCluster::GetSql()
 		       wxT(");\n");
 	}
 
-	if (!txtComment->GetValue().IsEmpty())
+	if ((!cluster && !txtComment->IsEmpty()) || (cluster &&
+		cluster->GetComment() != txtComment->GetValue()))
+	{
 		sql += wxT("\n")
 		       wxT("COMMENT ON SCHEMA ") + quotedName + wxT(" IS ")
 		       + qtDbString(txtComment->GetValue()) + wxT(";\n");
-
+	}
 
 	if (chkJoinCluster->GetValue())
 		sql += wxT("\n\n-- In addition, the configuration is copied from the existing cluster.\n");
