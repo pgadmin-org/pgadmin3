@@ -62,9 +62,16 @@ wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
 		case DEPENDENTS:
 			message = _("pgAgent job dependents");
 			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop job \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPTITLE:
+			message = _("Drop job?");
+			break;
 	}
 
-	if (!message.IsEmpty())
+	if (!message.IsEmpty() && !(kindOfMessage==DROPEXCLUDINGDEPS || kindOfMessage==DROPTITLE))
 		message += wxT(" ") + GetName();
 
 	return message;

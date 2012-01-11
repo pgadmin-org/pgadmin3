@@ -37,6 +37,7 @@ public:
 
 	bool DropObject(wxFrame *, ctlTree *, bool);
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	bool HasStats()
 	{

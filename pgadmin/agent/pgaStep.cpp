@@ -60,9 +60,16 @@ wxString pgaStep::GetTranslatedMessage(int kindOfMessage) const
 		case DEPENDENTS:
 			message = _("pgAgent step dependents");
 			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop step \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPTITLE:
+			message = _("Drop step?");
+			break;
 	}
 
-	if (!message.IsEmpty())
+	if (!message.IsEmpty() && !(kindOfMessage==DROPEXCLUDINGDEPS || kindOfMessage==DROPTITLE))
 		message += wxT(" ") + GetName();
 
 	return message;

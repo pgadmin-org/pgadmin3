@@ -113,6 +113,13 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case BACKUPSERVERTITLE:
 			message = _("Backup unknown object of type");
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop object \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPTITLE:
+			message = _("Drop object?");
+			break;
 	}
 	//message += wxT(" ") + factory->GetTypeName();
 
