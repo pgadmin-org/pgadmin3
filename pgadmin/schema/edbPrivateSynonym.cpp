@@ -36,6 +36,24 @@ bool edbPrivateSynonym::DropObject(wxFrame *frame, ctlTree *browser, bool cascad
 	return GetDatabase()->ExecuteVoid(sql);
 }
 
+wxString edbPrivateSynonym::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop synonym \"%s\"?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPTITLE:
+			message = _("Drop synonym?");
+			break;
+	}
+
+	return message;
+}
+
 wxString edbPrivateSynonym::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
@@ -194,7 +212,9 @@ wxString edbPrivateSynonymCollection::GetTranslatedMessage(int kindOfMessage) co
 
 edbPrivateSynonymFactory::edbPrivateSynonymFactory()
 	: pgSchemaObjFactory(__("Synonym"), __("New Synonym..."), __("Create a new Synonym."), synonym_png_img)
-{}
+{
+	metaType = EDB_SYNONYM;
+}
 
 pgCollection *edbPrivateSynonymFactory::CreateCollection(pgObject *obj)
 {

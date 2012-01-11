@@ -36,6 +36,7 @@
 #include "schema/pgObject.h"
 #include "schema/pgCollection.h"
 #include "schema/pgTable.h"
+#include "schema/edbPrivateSynonym.h"
 #include "dlg/dlgProperty.h"
 
 // Event table
@@ -831,6 +832,8 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 				if (data->GetMetaType() == PGM_SERVER)
 					text = wxString::Format(_("Are you sure you wish to drop server \"%s\"?"),
 					                        ((pgServer *)data)->GetFullIdentifier().c_str());
+				else if (data->GetMetaType() == EDB_SYNONYM)
+					text = ((edbPrivateSynonym *)data)->GetTranslatedMessage(DROPEXCLUDINGDEPS);
 				else
 					text = data->GetTranslatedMessage(DROPEXCLUDINGDEPS);
 				caption = data->GetTranslatedMessage(DROPTITLE);
