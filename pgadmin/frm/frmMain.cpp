@@ -168,8 +168,6 @@ frmMain::frmMain(const wxString &title)
 	dependencies->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 	dependents->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 
-	ResetLists();
-
 	wxColour background;
 	background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
 	statistics->SetBackgroundColour(background);
@@ -206,6 +204,8 @@ frmMain::frmMain(const wxString &title)
 	viewMenu->Check(MNU_SQLPANE, manager.GetPane(wxT("sqlPane")).IsShown());
 	viewMenu->Check(MNU_OBJECTBROWSER, manager.GetPane(wxT("objectBrowser")).IsShown());
 	viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+
+	ResetLists();
 
 	// tell the manager to "commit" all the changes just made
 	manager.Update();
