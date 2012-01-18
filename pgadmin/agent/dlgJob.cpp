@@ -181,7 +181,7 @@ int dlgJob::Go(bool modal)
 					lstSteps->SetItem(pos, 3, NumToStr((long)step));
 					previousSteps.Add(NumToStr((long)step));
 				}
-				item = mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+				item = mainForm->GetBrowser()->GetNextChild(stepsItem, cookie);
 			}
 		}
 
@@ -204,7 +204,7 @@ int dlgJob::Go(bool modal)
 					lstSchedules->SetItem(pos, 3, NumToStr((long)schedule));
 					previousSchedules.Add(NumToStr((long)schedule));
 				}
-				item = mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+				item = mainForm->GetBrowser()->GetNextChild(schedulesItem, cookie);
 			}
 		}
 	}
