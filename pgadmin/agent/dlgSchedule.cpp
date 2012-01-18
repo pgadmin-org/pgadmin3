@@ -142,7 +142,11 @@ int dlgSchedule::Go(bool modal)
 			timEnd->SetTime(schedule->GetEnd());
 		}
 		else
+		{
+			calEnd->SetValue(wxInvalidDateTime);
+			timEnd->SetTime(wxInvalidDateTime);
 			timEnd->Disable();
+		}
 
 		unsigned int x;
 		for (x = 0; x < schedule->GetMonths().Length(); x++ )
