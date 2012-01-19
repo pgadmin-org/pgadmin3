@@ -346,7 +346,7 @@ void SelGenTablesPage::RefreshTablesList()
 		}
 	}
 	delete iterator;
-	m_allTables->Set(tablesList, NULL);
+	m_allTables->Set(tablesList, (void **)NULL);
 
 	int max = wparent->preSelTables.Count();
 	if(max > 0)

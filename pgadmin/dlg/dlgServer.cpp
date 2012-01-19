@@ -104,7 +104,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
 	cbDatabase->SetSelection(0);
 
 	txtPort->SetValue(NumToStr((long)settings->GetLastPort()));
-	if (!cbSSL->IsEmpty())
+	if (!cbSSL->GetValue().IsEmpty())
 		cbSSL->SetSelection(settings->GetLastSSL());
 	txtUsername->SetValue(settings->GetLastUsername());
 
@@ -349,7 +349,7 @@ wxString dlgServer::GetHelpPage() const
 
 int dlgServer::GoNew()
 {
-	if (cbSSL->IsEmpty())
+	if (cbSSL->GetValue().IsEmpty())
 		return Go(true);
 	else
 	{

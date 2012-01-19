@@ -1882,7 +1882,7 @@ SelTablesPage::~SelTablesPage()
 
 void SelTablesPage::RefreshTablesList()
 {
-	m_allTables->Set(wparent->getTables(), NULL);
+	m_allTables->Set(wparent->getTables(), (void **)NULL);
 }
 
 void SelTablesPage::OnButtonAdd(wxCommandEvent &)

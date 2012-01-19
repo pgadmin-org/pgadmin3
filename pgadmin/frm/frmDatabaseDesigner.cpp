@@ -630,7 +630,7 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 
 	//Open Model
 	wxFileDialog openFileDialog(this, _("Open model"), _(""), _(""), _("*.pgd"),
-	                            wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
+	                            wxFD_OPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
 
 	if (openFileDialog.ShowModal() == wxID_OK)
 	{
