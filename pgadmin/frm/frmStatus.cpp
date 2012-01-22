@@ -562,7 +562,10 @@ void frmStatus::AddStatusPane()
 	if (connection->BackendMinimumVersion(8, 3))
 		statusList->AddColumn(_("TX start"), 50);
 	if (connection->BackendMinimumVersion(9, 2))
+	{
 		statusList->AddColumn(_("State"), 35);
+		statusList->AddColumn(_("State change"), 35);
+	}
 	statusList->AddColumn(_("Blocked by"), 35);
 	statusList->AddColumn(_("Query"), 500);
 
@@ -1356,7 +1359,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
 	// State
 	if (connection->BackendMinimumVersion(9, 2))
-		q += wxT("state, ");
+		q += wxT("state, date_trunc('second', state_change) AS state_change, ");
 
 	// Blocked by...
 	q +=   wxT("(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND (")
@@ -1431,7 +1434,10 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
 				if (connection->BackendMinimumVersion(9, 2))
+				{
 					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("state")));
+					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("state_change")));
+				}
 
 				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
 				statusList->SetItem(row, colpos, qry);
