@@ -71,7 +71,7 @@ wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
 			break;
 	}
 
-	if (!message.IsEmpty() && !(kindOfMessage==DROPEXCLUDINGDEPS || kindOfMessage==DROPTITLE))
+	if (!message.IsEmpty() && !(kindOfMessage == DROPEXCLUDINGDEPS || kindOfMessage == DROPTITLE))
 		message += wxT(" ") + GetName();
 
 	return message;

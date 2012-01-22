@@ -586,10 +586,10 @@ void frmMain::Refresh(pgObject *data)
 			// Attempt to expand any child nodes that were previously expanded
 			ExpandChildNodes(currentItem, expandedNodes);
 
-		    // Select the current node
+			// Select the current node
 			execSelChange(currentItem, currentItem == browser->GetSelection());
 		}
-    }
+	}
 
 	browser->Thaw();
 	EndMsg(done);
