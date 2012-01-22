@@ -1332,17 +1332,17 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
 	// Backend start timestamp
 	if (connection->BackendMinimumVersion(8, 1))
-		q += wxT("backend_start, ");
+		q += wxT("date_trunc('second', backend_start) AS backend_start, ");
 
 	// Query start timestamp (when available)
 	if (connection->BackendMinimumVersion(9, 2))
 	{
-		q += wxT("CASE WHEN state='active' THEN query_start::text ELSE '' END ");
+		q += wxT("CASE WHEN state='active' THEN date_trunc('second', query_start)::text ELSE '' END ");
 	}
 	else if (connection->BackendMinimumVersion(7, 4))
 	{
 		q += wxT("CASE WHEN ") + querycol + wxT("='' OR ") + querycol + wxT("='<IDLE>' THEN '' ")
-		     wxT("     ELSE query_start::text END ");
+		     wxT("     ELSE date_trunc('second', query_start)::text END ");
 	}
 	else
 	{
@@ -1352,7 +1352,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
 	// Transaction start timestamp
 	if (connection->BackendMinimumVersion(8, 3))
-		q += wxT("xact_start, ");
+		q += wxT("date_trunc('second', xact_start) AS xact_start, ");
 
 	// State
 	if (connection->BackendMinimumVersion(9, 2))
@@ -1515,7 +1515,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 		      wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
 		      wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
 		      wxT("pgl.virtualxid::text, pgl.virtualtransaction::text AS transaction, pgl.mode, pgl.granted, ")
-		      wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
+		      wxT("date_trunc('second', pg_stat_get_backend_activity_start(svrid)) AS query_start, ")
 		      wxT("pg_stat_get_backend_activity(svrid) AS query ")
 		      wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
 		      wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
@@ -1529,7 +1529,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 		      wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
 		      wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
 		      wxT("pgl.transaction, pgl.mode, pgl.granted, ")
-		      wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
+		      wxT("date_trunc('second', pg_stat_get_backend_activity_start(svrid)) AS query_start, ")
 		      wxT("pg_stat_get_backend_activity(svrid) AS query ")
 		      wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
 		      wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
