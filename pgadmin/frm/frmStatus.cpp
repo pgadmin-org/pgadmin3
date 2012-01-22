@@ -561,6 +561,8 @@ void frmStatus::AddStatusPane()
 		statusList->AddColumn(_("Query start"), 50);
 	if (connection->BackendMinimumVersion(8, 3))
 		statusList->AddColumn(_("TX start"), 50);
+	if (connection->BackendMinimumVersion(9, 2))
+		statusList->AddColumn(_("State"), 35);
 	statusList->AddColumn(_("Blocked by"), 35);
 	statusList->AddColumn(_("Query"), 500);
 
@@ -1286,6 +1288,8 @@ void frmStatus::OnRefreshUITimer(wxTimerEvent &event)
 void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 {
 	long pid = 0;
+	wxString pidcol = connection->BackendMinimumVersion(9, 2) ? wxT("pid") : wxT("procpid");
+	wxString querycol = connection->BackendMinimumVersion(9, 2) ? wxT("query") : wxT("current_query");
 
 	if (! viewMenu->IsChecked(MNU_STATUSPAGE))
 		return;
@@ -1305,35 +1309,83 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	wxCriticalSectionLocker lock(gs_critsect);
 
 	long row = 0;
-	wxString q = wxT("SELECT procpid, ");
+	wxString q = wxT("SELECT ");
+
+	// PID
+	q += pidcol + wxT(" AS pid, ");
+
+	// Application name (when available)
 	if (connection->BackendMinimumVersion(8, 5))
 		q += wxT("application_name, ");
-	q += wxT("datname, usename");
+
+	// Database, and user name
+	q += wxT("datname, usename,\n");
+
+	// Client connection method
 	if (connection->BackendMinimumVersion(8, 1))
 	{
-		q += wxT(",\nCASE WHEN client_port=-1 THEN 'local pipe' ");
+		q += wxT("CASE WHEN client_port=-1 THEN 'local pipe' ");
 		if (connection->BackendMinimumVersion(9, 1))
-			q += wxT("        WHEN length(client_hostname)>0 THEN client_hostname||':'||client_port ");
-		q += wxT("     ELSE textin(inet_out(client_addr))||':'||client_port END AS client, ")
-		     wxT("backend_start");
+			q += wxT("WHEN length(client_hostname)>0 THEN client_hostname||':'||client_port ");
+		q += wxT("ELSE textin(inet_out(client_addr))||':'||client_port END AS client,\n");
 	}
-	if (connection->BackendMinimumVersion(7, 4))
-	{
-		q += wxT(",\nCASE WHEN current_query='' OR current_query='<IDLE>' THEN '' ")
-		     wxT("     ELSE query_start::text END AS query_start ");
-	}
-	if (connection->BackendMinimumVersion(8, 3))
-		q += wxT(",\nxact_start ");
 
-	q +=   wxT(", (SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND (")
-	       wxT("relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)")
+	// Backend start timestamp
+	if (connection->BackendMinimumVersion(8, 1))
+		q += wxT("backend_start, ");
+
+	// Query start timestamp (when available)
+	if (connection->BackendMinimumVersion(9, 2))
+	{
+		q += wxT("CASE WHEN state='active' THEN query_start::text ELSE '' END ");
+	}
+	else if (connection->BackendMinimumVersion(7, 4))
+	{
+		q += wxT("CASE WHEN ") + querycol + wxT("='' OR ") + querycol + wxT("='<IDLE>' THEN '' ")
+		     wxT("     ELSE query_start::text END ");
+	}
+	else
+	{
+		q += wxT("'' ");
+	}
+	q += wxT("AS query_start,\n");
+
+	// Transaction start timestamp
+	if (connection->BackendMinimumVersion(8, 3))
+		q += wxT("xact_start, ");
+
+	// State
+	if (connection->BackendMinimumVersion(9, 2))
+		q += wxT("state, ");
+
+	// Blocked by...
+	q +=   wxT("(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND (")
+	       wxT("relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=") + pidcol + wxT(" AND NOT granted)")
 	       wxT(" OR ")
-	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=procpid AND NOT GRANTED)")
-	       wxT(")) AS blockedby, ")
-	       wxT("current_query, ")
-	       wxT("CASE WHEN query_start IS NULL OR current_query LIKE '<IDLE>%' THEN false ELSE query_start < now() - '10 seconds'::interval END AS slowquery ")
-	       wxT("FROM pg_stat_activity ")
-	       wxT("ORDER BY ") + NumToStr((long)statusSortColumn) + statusSortOrder;
+	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=") + pidcol + wxT(" AND NOT GRANTED)")
+	       wxT(")) AS blockedby,\n");
+
+	// Query
+	q += querycol + wxT(" AS query,\n");
+
+	// Slow query?
+	if (connection->BackendMinimumVersion(9, 2))
+	{
+		q += wxT("CASE WHEN query_start IS NULL OR state<>'active' THEN false ELSE query_start < now() - '10 seconds'::interval END ");
+	}
+	else if (connection->BackendMinimumVersion(7, 4))
+	{
+		wxT("CASE WHEN query_start IS NULL OR ") + querycol + wxT(" LIKE '<IDLE>%' THEN false ELSE query_start < now() - '10 seconds'::interval END ");
+	}
+	else
+	{
+		q += wxT("false");
+	}
+	q += wxT("AS slowquery\n");
+
+	// And the rest of the query...
+	q += wxT("FROM pg_stat_activity ")
+	     wxT("ORDER BY ") + NumToStr((long)statusSortColumn) + wxT(" ") + statusSortOrder;
 
 	pgSet *dataSet1 = connection->ExecuteSet(q);
 	if (dataSet1)
@@ -1343,7 +1395,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
 		while (!dataSet1->Eof())
 		{
-			pid = dataSet1->GetLong(wxT("procpid"));
+			pid = dataSet1->GetLong(wxT("pid"));
 
 			if (pid != backend_pid)
 			{
@@ -1357,7 +1409,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 					statusList->SetItem(row, 0, NumToStr(pid));
 				}
 
-				wxString qry = dataSet1->GetVal(wxT("current_query"));
+				wxString qry = dataSet1->GetVal(wxT("query"));
 
 				int colpos = 1;
 				if (connection->BackendMinimumVersion(8, 5))
@@ -1378,6 +1430,9 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 				if (connection->BackendMinimumVersion(8, 3))
 					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
+				if (connection->BackendMinimumVersion(9, 2))
+					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("state")));
+
 				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
 				statusList->SetItem(row, colpos, qry);
 
@@ -1386,9 +1441,16 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 				{
 					statusList->SetItemBackgroundColour(row,
 					                                    wxColour(settings->GetActiveProcessColour()));
-					if (qry == wxT("<IDLE>"))
+					if (qry == wxT("<IDLE>") || qry == wxT("<IDLE> in transaction0"))
 						statusList->SetItemBackgroundColour(row,
 						                                    wxColour(settings->GetIdleProcessColour()));
+					if (connection->BackendMinimumVersion(9, 2))
+					{
+						if (dataSet1->GetVal(wxT("state")) != wxT("active"))
+							statusList->SetItemBackgroundColour(row,
+							                                    wxColour(settings->GetIdleProcessColour()));
+					}
+
 					if (dataSet1->GetVal(wxT("blockedby")).Length() > 0)
 						statusList->SetItemBackgroundColour(row,
 						                                    wxColour(settings->GetBlockedProcessColour()));
@@ -1454,7 +1516,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 		      wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
 		      wxT("pgl.virtualxid::text, pgl.virtualtransaction::text AS transaction, pgl.mode, pgl.granted, ")
 		      wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
-		      wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
+		      wxT("pg_stat_get_backend_activity(svrid) AS query ")
 		      wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
 		      wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
 		      wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
@@ -1468,7 +1530,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 		      wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
 		      wxT("pgl.transaction, pgl.mode, pgl.granted, ")
 		      wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
-		      wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
+		      wxT("pg_stat_get_backend_activity(svrid) AS query ")
 		      wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
 		      wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
 		      wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
@@ -1481,7 +1543,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 		      wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
 		      wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
 		      wxT("pgl.transaction, pgl.mode, pgl.granted, ")
-		      wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
+		      wxT("pg_stat_get_backend_activity(svrid) AS query ")
 		      wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
 		      wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
 		      wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
@@ -1524,7 +1586,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 				else
 					lockList->SetItem(row, colpos++, _("No"));
 
-				wxString qry = dataSet2->GetVal(wxT("current_query"));
+				wxString qry = dataSet2->GetVal(wxT("query"));
 
 				if (locks_connection->BackendMinimumVersion(7, 4))
 				{

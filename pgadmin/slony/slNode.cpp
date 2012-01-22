@@ -266,6 +266,7 @@ void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
+	wxString pidcol = wxEmptyString;
 	pgConn *conn = GetCluster()->GetNodeConn(form, GetSlId(), pid < 0);
 
 	if (!expandedKids)
@@ -299,9 +300,14 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		{
 			if (conn->BackendMinimumVersion(9, 0))
 			{
+				if (conn->BackendMinimumVersion(9, 2))
+					pidcol = wxT("pid");
+				else
+					pidcol = wxT("procpid");
+
 				pid = StrToLong(conn->ExecuteScalar(
 				                    wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetCluster()->GetName()) + wxT(".sl_nodelock nl, ")
-				                    wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+				                    wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.") + pidcol + wxT(" AND nl_nodeid = ")
 				                    + NumToStr(GetCluster()->GetLocalNodeID())));
 			}
 			else

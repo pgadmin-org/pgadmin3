@@ -285,12 +285,13 @@ bool slCluster::ClusterMinimumVersion(int major, int minor)
 long slCluster::GetSlonPid()
 {
 	long slonPid;
+	wxString pidcol = GetConnection()->BackendMinimumVersion(9, 2) ? wxT("pid") : wxT("procpid");
 
 	if (GetConnection()->BackendMinimumVersion(9, 0))
 	{
 		slonPid = StrToLong(GetConnection()->ExecuteScalar(
 		                        wxT("SELECT nl_backendpid FROM ") + qtIdent(wxT("_") + GetName()) + wxT(".sl_nodelock nl, ")
-		                        wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+		                        wxT("pg_stat_activity sa WHERE nl.nl_backendpid = sa.") + pidcol + wxT(" AND nl_nodeid = ")
 		                        + NumToStr(GetLocalNodeID())));
 	}
 	else

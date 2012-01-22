@@ -1107,6 +1107,8 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
 	if (conn)
 	{
+		wxString pidcol = GetConnection()->BackendMinimumVersion(9, 2) ? wxT("pid") : wxT("procpid");
+		wxString querycol = GetConnection()->BackendMinimumVersion(9, 2) ? wxT("query") : wxT("current_query");
 		wxString sql;
 		wxString replication_query = wxT("state || ' (' || sent_location || ' sent, ' || write_location || ' written, ' || flush_location || ' flushed, ' || replay_location || ' applied)'");
 		wxLogInfo(wxT("Displaying statistics for server %s"), GetIdentifier().c_str());
@@ -1123,15 +1125,15 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 		}
 		statistics->AddColumn(_("Current Query"), 300);
 
-		sql = wxT("SELECT procpid, usename, datname, backend_start, client_addr, ");
+		sql = wxT("SELECT ") + pidcol + wxT(" AS pid, usename, datname, backend_start, client_addr, ");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 			sql += wxT("client_hostname, ");
-		sql += wxT("client_port, current_query FROM pg_stat_activity\n");
+		sql += wxT("client_port, ") + querycol + wxT(" AS query FROM pg_stat_activity\n");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 		{
 			sql += wxT("UNION\n")
-			       wxT("SELECT procpid, usename, '' AS datname, backend_start, client_addr, client_hostname, client_port, ")
-			       + replication_query + wxT(" AS current_query FROM pg_stat_replication");
+			       wxT("SELECT ") + pidcol + wxT(", usename, '' AS datname, backend_start, client_addr, client_hostname, client_port, ")
+			       + replication_query + wxT(" AS query FROM pg_stat_replication");
 		}
 
 		pgSet *stats = ExecuteSet(sql);
@@ -1140,7 +1142,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 			int pos = 0;
 			while (!stats->Eof())
 			{
-				statistics->InsertItem(pos, stats->GetVal(wxT("procpid")), 0);
+				statistics->InsertItem(pos, stats->GetVal(wxT("pid")), 0);
 				int colpos = 1;
 				statistics->SetItem(pos, colpos++, stats->GetVal(wxT("usename")));
 				statistics->SetItem(pos, colpos++, stats->GetVal(wxT("datname")));
@@ -1156,7 +1158,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 						client = _("local pipe");
 					statistics->SetItem(pos, colpos++, client);
 				}
-				statistics->SetItem(pos, colpos++, stats->GetVal(wxT("current_query")));
+				statistics->SetItem(pos, colpos++, stats->GetVal(wxT("query")));
 
 				stats->MoveNext();
 				pos++;
