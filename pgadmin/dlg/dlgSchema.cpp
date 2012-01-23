@@ -31,7 +31,7 @@ dlgProperty *pgSchemaBaseFactory::CreateDialog(frmMain *frame, pgObject *node, p
 }
 
 dlgSchema::dlgSchema(pgaFactory *f, frmMain *frame, pgSchema *node, pgObject *parent)
-	: dlgDefaultSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
+	: dlgDefaultSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC", node != NULL ? true : false)
 {
 	schema = node;
 	seclabelPage = new ctlSeclabelPanel(nbNotebook);
