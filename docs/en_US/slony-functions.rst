@@ -1,5 +1,3 @@
-<html>
-
 .. _slony-functions:
 
 

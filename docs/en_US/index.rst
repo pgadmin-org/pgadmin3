@@ -10,6 +10,6 @@ Contents:
    using
    pgagent.rst
    slony.rst
-   extended.rst
+   extend.rst
    appendices.rst
 

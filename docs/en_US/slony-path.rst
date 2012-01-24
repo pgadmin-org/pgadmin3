@@ -34,6 +34,3 @@ to be advised to listen to events from other nodes.
 
 **Note:** This step is not necessary for Slony-I v1.1 and later, because
 listen information is generated automatically when paths are defined.
-</p>
-</body>
-</html>

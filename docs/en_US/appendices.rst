@@ -14,6 +14,6 @@ Contents:
 
 pgAdmin includes software from the OpenSSL and MIT Kerberos projects:
 
-* `MIT Kerberos licence <kerberos.html>`_
-* `The OpenSSL licence <openssl.html>`_
+* `MIT Kerberos licence <kerberos>`_
+* `The OpenSSL licence <openssl>`_
 

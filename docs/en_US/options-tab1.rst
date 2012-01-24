@@ -57,6 +57,6 @@ pgAdmin Options - Tab 1 (General)
    Greenplum.
 
 * **Ignore server/utility version mismatches** - When checked, pgAdmin will pass the '-i' option 
-   to utilities such as <i>pg_dump</i> which will allow utilities from one version of the database to 
+   to utilities such as *pg_dump* which will allow utilities from one version of the database to
    be used with another version. This option should be use with extreme care as it may cause errors to
    occur during backup or restore options.
