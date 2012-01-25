@@ -1378,7 +1378,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	}
 	else if (connection->BackendMinimumVersion(7, 4))
 	{
-		wxT("CASE WHEN query_start IS NULL OR ") + querycol + wxT(" LIKE '<IDLE>%' THEN false ELSE query_start < now() - '10 seconds'::interval END ");
+		q += wxT("CASE WHEN query_start IS NULL OR ") + querycol + wxT(" LIKE '<IDLE>%' THEN false ELSE query_start < now() - '10 seconds'::interval END ");
 	}
 	else
 	{
