@@ -370,6 +370,11 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	refreshUITimer = new wxTimer(this, TIMER_REFRESHUI_ID);
 	refreshUITimer->Start(250);
 
+	// The selected pane is the log pane by default
+	// so enable/disable the widgets according to this
+	wxListEvent nullevent;
+	OnSelLogItem(nullevent);
+
 	// We're good now
 	loaded = true;
 }
