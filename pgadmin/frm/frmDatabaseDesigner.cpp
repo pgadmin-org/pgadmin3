@@ -890,7 +890,7 @@ void frmDatabaseDesigner::OnToggleSQLWindow(wxCommandEvent &event)
 
 bool databaseDesignerBaseFactory::CheckEnable(pgObject *obj)
 {
-	return true ;
+	return obj && obj->GetDatabase() && obj->GetDatabase()->GetConnected();
 }
 
 
