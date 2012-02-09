@@ -88,22 +88,25 @@ private:
 	wxTreeItemId columnsItem, constraintsItem;
 
 	wxString GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &val);
-	wxString AppendNum(bool &changed, wxTextCtrl *ctl, long val);
-	wxString AppendNum(bool &changed, wxTextCtrl *ctl, double val);
-
+	wxString AppendNum(bool &changed, wxTextCtrl *ctl, wxString val);
+	
 	bool tableVacEnabled, hasVacuum, settingAutoVacuum;
-	long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit,
-	     settingFreezeMinAge, settingFreezeMaxAge, settingFreezeTableAge;
-	long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit,
-	     tableFreezeMinAge, tableFreezeMaxAge, tableFreezeTableAge;
-	double settingVacFactor, settingAnlFactor;
-	double tableVacFactor, tableAnlFactor;
+	wxString settingVacBaseThr, settingAnlBaseThr, settingCostDelay,
+	         settingCostLimit, settingFreezeMinAge, settingFreezeMaxAge,
+	         settingFreezeTableAge;
+	wxString tableVacBaseThr, tableAnlBaseThr, tableCostDelay,
+	         tableCostLimit, tableFreezeMinAge, tableFreezeMaxAge,
+	         tableFreezeTableAge;
+	wxString settingVacFactor, settingAnlFactor;
+	wxString tableVacFactor, tableAnlFactor;
 
 	/* Toast Table */
 	bool toastTableVacEnabled, toastTableHasVacuum;
-	long toastTableVacBaseThr, toastTableAnlBaseThr, toastTableCostDelay, toastTableCostLimit,
-	     toastTableFreezeMinAge, toastTableFreezeMaxAge, toastTableFreezeTableAge;
-	double toastTableVacFactor, toastTableAnlFactor;
+	wxString toastTableVacBaseThr, toastTableAnlBaseThr,
+	         toastTableCostDelay, toastTableCostLimit,
+	         toastTableFreezeMinAge, toastTableFreezeMaxAge,
+	         toastTableFreezeTableAge;
+	wxString toastTableVacFactor, toastTableAnlFactor;
 
 	DECLARE_EVENT_TABLE()
 };

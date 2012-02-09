@@ -462,29 +462,7 @@ int dlgTable::Go(bool modal)
 
 	if ((connection->BackendMinimumVersion(8, 1) && table) || connection->BackendMinimumVersion(8, 4))
 	{
-		txtBaseVac->SetValidator(numericValidator);
-		txtBaseAn->SetValidator(numericValidator);
-		txtFactorVac->SetValidator(numericValidator);
-		txtFactorAn->SetValidator(numericValidator);
-		txtVacDelay->SetValidator(numericValidator);
-		txtVacLimit->SetValidator(numericValidator);
-		txtFreezeMinAge->SetValidator(numericValidator);
-		txtFreezeMaxAge->SetValidator(numericValidator);
-		if (connection->BackendMinimumVersion(8, 4))
-		{
-			txtFreezeTableAge->SetValidator(numericValidator);
-
-			txtBaseToastVac->SetValidator(numericValidator);
-			txtBaseToastAn->SetValidator(numericValidator);
-			txtFactorToastVac->SetValidator(numericValidator);
-			txtFactorToastAn->SetValidator(numericValidator);
-			txtToastVacDelay->SetValidator(numericValidator);
-			txtToastVacLimit->SetValidator(numericValidator);
-			txtToastFreezeMinAge->SetValidator(numericValidator);
-			txtToastFreezeMaxAge->SetValidator(numericValidator);
-			txtToastFreezeTableAge->SetValidator(numericValidator);
-		}
-		else
+		if (!connection->BackendMinimumVersion(8, 4))
 		{
 			txtFreezeTableAge->Disable();
 			/* Remove Toast Table AutoVacuume setting page */
@@ -501,56 +479,56 @@ int dlgTable::Go(bool modal)
 			wxString setting = avSet.GetVal(wxT("setting"));
 
 			if (name == wxT("autovacuum_vacuum_cost_delay"))
-				settingCostDelay = StrToLong(setting);
+				settingCostDelay = setting;
 			else if (name == wxT("vacuum_cost_delay"))
 			{
-				if (settingCostDelay < 0)
-					settingCostDelay = StrToLong(setting);
+				if (StrToLong(settingCostDelay) < 0)
+					settingCostDelay = setting;
 			}
 			else if (name == wxT("autovacuum_vacuum_cost_limit"))
-				settingCostLimit = StrToLong(setting);
+				settingCostLimit = setting;
 			else if (name == wxT("vacuum_cost_limit"))
 			{
-				if (settingCostLimit < 0)
-					settingCostLimit = StrToLong(setting);
+				if (StrToLong(settingCostLimit) < 0)
+					settingCostLimit = setting;
 			}
 			else if (name == wxT("autovacuum_vacuum_scale_factor"))
-				settingVacFactor = StrToDouble(setting);
+				settingVacFactor = setting;
 			else if (name == wxT("autovacuum_analyze_scale_factor"))
-				settingAnlFactor = StrToDouble(setting);
+				settingAnlFactor = setting;
 			else if (name == wxT("autovacuum_vacuum_threshold"))
-				settingVacBaseThr = StrToLong(setting);
+				settingVacBaseThr = setting;
 			else if (name == wxT("autovacuum_analyze_threshold"))
-				settingAnlBaseThr = StrToLong(setting);
+				settingAnlBaseThr = setting;
 			else if (name == wxT("vacuum_freeze_min_age"))
-				settingFreezeMinAge = StrToLong(setting);
+				settingFreezeMinAge = setting;
 			else if (name == wxT("autovacuum_freeze_max_age"))
-				settingFreezeMaxAge = StrToLong(setting);
+				settingFreezeMaxAge = setting;
 			else if (name == wxT("vacuum_freeze_table_age"))
-				settingFreezeTableAge = StrToLong(setting);
+				settingFreezeTableAge = setting;
 			else
 				settingAutoVacuum = avSet.GetBool(wxT("setting"));
 		}
 
-		tableVacBaseThr = -1;
-		tableAnlBaseThr = -1;
-		tableCostDelay = -1;
-		tableCostLimit = -1;
-		tableFreezeMinAge = -1;
-		tableFreezeMaxAge = -1;
-		tableVacFactor = -1;
-		tableAnlFactor = -1;
-		tableFreezeTableAge = -1;
+		tableVacBaseThr = wxT("-1");
+		tableAnlBaseThr = wxT("-1");
+		tableCostDelay = wxT("-1");
+		tableCostLimit = wxT("-1");
+		tableFreezeMinAge = wxT("-1");
+		tableFreezeMaxAge = wxT("-1");
+		tableVacFactor = wxT("-1");
+		tableAnlFactor = wxT("-1");
+		tableFreezeTableAge = wxT("-1");
 
-		toastTableVacBaseThr = -1;
-		toastTableAnlBaseThr = -1;
-		toastTableCostDelay = -1;
-		toastTableCostLimit = -1;
-		toastTableFreezeMinAge = -1;
-		toastTableFreezeMaxAge = -1;
-		toastTableVacFactor = -1;
-		toastTableAnlFactor = -1;
-		toastTableFreezeTableAge = -1;
+		toastTableVacBaseThr = wxT("-1");
+		toastTableAnlBaseThr = wxT("-1");
+		toastTableCostDelay = wxT("-1");
+		toastTableCostLimit = wxT("-1");
+		toastTableFreezeMinAge = wxT("-1");
+		toastTableFreezeMaxAge = wxT("-1");
+		toastTableVacFactor = wxT("-1");
+		toastTableAnlFactor = wxT("-1");
+		toastTableFreezeTableAge = wxT("-1");
 
 		toastTableHasVacuum = false;
 		toastTableVacEnabled = false;
@@ -565,17 +543,17 @@ int dlgTable::Go(bool modal)
 				tableVacEnabled = set.GetBool(wxT("enabled"));
 				chkVacEnabled->SetValue(tableVacEnabled);
 
-				tableVacBaseThr = set.GetLong(wxT("vac_base_thresh"));
-				tableAnlBaseThr = set.GetLong(wxT("anl_base_thresh"));
-				tableCostDelay = set.GetLong(wxT("vac_cost_delay"));
-				tableCostLimit = set.GetLong(wxT("vac_cost_limit"));
-				tableVacFactor = set.GetDouble(wxT("vac_scale_factor"));
-				tableAnlFactor = set.GetDouble(wxT("anl_scale_factor"));
+				tableVacBaseThr = set.GetVal(wxT("vac_base_thresh"));
+				tableAnlBaseThr = set.GetVal(wxT("anl_base_thresh"));
+				tableCostDelay = set.GetVal(wxT("vac_cost_delay"));
+				tableCostLimit = set.GetVal(wxT("vac_cost_limit"));
+				tableVacFactor = set.GetVal(wxT("vac_scale_factor"));
+				tableAnlFactor = set.GetVal(wxT("anl_scale_factor"));
 
 				if (connection->BackendMinimumVersion(8, 2))
 				{
-					tableFreezeMinAge = set.GetLong(wxT("freeze_min_age"));
-					tableFreezeMaxAge = set.GetLong(wxT("freeze_max_age"));
+					tableFreezeMinAge = set.GetVal(wxT("freeze_min_age"));
+					tableFreezeMaxAge = set.GetVal(wxT("freeze_max_age"));
 				}
 			}
 			else
@@ -591,23 +569,23 @@ int dlgTable::Go(bool modal)
 			else
 				tableVacEnabled = table->GetAutoVacuumEnabled() == 1;
 			if (!table->GetAutoVacuumVacuumThreshold().IsEmpty())
-				table->GetAutoVacuumVacuumThreshold().ToLong(&tableVacBaseThr);
+				tableVacBaseThr = table->GetAutoVacuumVacuumThreshold();
 			if (!table->GetAutoVacuumAnalyzeThreshold().IsEmpty())
-				table->GetAutoVacuumAnalyzeThreshold().ToLong(&tableAnlBaseThr);
+				tableAnlBaseThr = table->GetAutoVacuumAnalyzeThreshold();
 			if (!table->GetAutoVacuumVacuumScaleFactor().IsEmpty())
-				table->GetAutoVacuumVacuumScaleFactor().ToDouble(&tableVacFactor);
+				tableVacFactor = table->GetAutoVacuumVacuumScaleFactor();
 			if (!table->GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
-				table->GetAutoVacuumAnalyzeScaleFactor().ToDouble(&tableAnlFactor);
+				tableAnlFactor = table->GetAutoVacuumAnalyzeScaleFactor();
 			if (!table->GetAutoVacuumVacuumCostDelay().IsEmpty())
-				table->GetAutoVacuumVacuumCostDelay().ToLong(&tableCostDelay);
+				tableCostDelay = table->GetAutoVacuumVacuumCostDelay();
 			if (!table->GetAutoVacuumVacuumCostLimit().IsEmpty())
-				table->GetAutoVacuumVacuumCostLimit().ToLong(&tableCostLimit);
+				tableCostLimit = table->GetAutoVacuumVacuumCostLimit();
 			if (!table->GetAutoVacuumFreezeMinAge().IsEmpty())
-				table->GetAutoVacuumFreezeMinAge().ToLong(&tableFreezeMinAge);
+				tableFreezeMinAge = table->GetAutoVacuumFreezeMinAge();
 			if (!table->GetAutoVacuumFreezeMaxAge().IsEmpty())
-				table->GetAutoVacuumFreezeMaxAge().ToLong(&tableFreezeMaxAge);
+				tableFreezeMaxAge = table->GetAutoVacuumFreezeMaxAge();
 			if (!table->GetAutoVacuumFreezeTableAge().IsEmpty())
-				table->GetAutoVacuumFreezeTableAge().ToLong(&tableFreezeTableAge);
+				tableFreezeTableAge = table->GetAutoVacuumFreezeTableAge();
 
 			hasVacuum = table->GetCustomAutoVacuumEnabled();
 			chkVacEnabled->SetValue(hasVacuum ? tableVacEnabled : settingAutoVacuum);
@@ -628,23 +606,23 @@ int dlgTable::Go(bool modal)
 					else
 						toastTableVacEnabled  = table->GetToastAutoVacuumEnabled() == 1;
 					if (!table->GetToastAutoVacuumVacuumThreshold().IsEmpty())
-						table->GetToastAutoVacuumVacuumThreshold().ToLong(&toastTableVacBaseThr);
+						toastTableVacBaseThr = table->GetToastAutoVacuumVacuumThreshold();
 					if (!table->GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
-						table->GetToastAutoVacuumAnalyzeThreshold().ToLong(&toastTableAnlBaseThr);
+						toastTableAnlBaseThr = table->GetToastAutoVacuumAnalyzeThreshold();
 					if (!table->GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
-						table->GetToastAutoVacuumVacuumScaleFactor().ToDouble(&toastTableVacFactor);
+						toastTableVacFactor = table->GetToastAutoVacuumVacuumScaleFactor();
 					if (!table->GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
-						table->GetToastAutoVacuumAnalyzeScaleFactor().ToDouble(&toastTableAnlFactor);
+						toastTableAnlFactor = table->GetToastAutoVacuumAnalyzeScaleFactor();
 					if (!table->GetToastAutoVacuumVacuumCostDelay().IsEmpty())
-						table->GetToastAutoVacuumVacuumCostDelay().ToLong(&toastTableCostDelay);
+						toastTableCostDelay = table->GetToastAutoVacuumVacuumCostDelay();
 					if (!table->GetToastAutoVacuumVacuumCostLimit().IsEmpty())
-						table->GetToastAutoVacuumVacuumCostLimit().ToLong(&toastTableCostLimit);
+						toastTableCostLimit = table->GetToastAutoVacuumVacuumCostLimit();
 					if (!table->GetToastAutoVacuumFreezeMinAge().IsEmpty())
-						table->GetToastAutoVacuumFreezeMinAge().ToLong(&toastTableFreezeMinAge);
+						toastTableFreezeMinAge = table->GetToastAutoVacuumFreezeMinAge();
 					if (!table->GetToastAutoVacuumFreezeMaxAge().IsEmpty())
-						table->GetToastAutoVacuumFreezeMaxAge().ToLong(&toastTableFreezeMaxAge);
+						toastTableFreezeMaxAge = table->GetToastAutoVacuumFreezeMaxAge();
 					if (!table->GetToastAutoVacuumFreezeTableAge().IsEmpty())
-						table->GetToastAutoVacuumFreezeTableAge().ToLong(&toastTableFreezeTableAge);
+						toastTableFreezeTableAge = table->GetToastAutoVacuumFreezeTableAge();
 				}
 				chkToastVacEnabled->SetValue(toastTableHasVacuum ? toastTableVacEnabled : settingAutoVacuum);
 			}
@@ -655,99 +633,30 @@ int dlgTable::Go(bool modal)
 			chkVacEnabled->SetValue(settingAutoVacuum);
 		}
 
-		if (tableVacBaseThr >= 0)
-			txtBaseVac->SetValue(NumToStr(tableVacBaseThr));
-		else
-			txtBaseVac->SetValue(wxEmptyString);
-
-		if (tableAnlBaseThr >= 0)
-			txtBaseAn->SetValue(NumToStr(tableAnlBaseThr));
-		else
-			txtBaseAn->SetValue(wxEmptyString);
-
-		if (tableVacFactor >= 0)
-			txtFactorVac->SetValue(NumToStr(tableVacFactor));
-		else
-			txtFactorVac->SetValue(wxEmptyString);
-
-		if (tableAnlFactor >= 0)
-			txtFactorAn->SetValue(NumToStr(tableAnlFactor));
-		else
-			txtFactorAn->SetValue(wxEmptyString);
-
-		if (tableCostDelay >= 0)
-			txtVacDelay->SetValue(NumToStr(tableCostDelay));
-		else
-			txtVacDelay->SetValue(wxEmptyString);
-
-		if (tableCostLimit >= 0)
-			txtVacLimit->SetValue(NumToStr(tableCostLimit));
-		else
-			txtVacLimit->SetValue(wxEmptyString);
+		txtBaseVac->SetValue(tableVacBaseThr);
+		txtBaseAn->SetValue(tableAnlBaseThr);
+		txtFactorVac->SetValue(tableVacFactor);
+		txtFactorAn->SetValue(tableAnlFactor);
+		txtVacDelay->SetValue(tableCostDelay);
+		txtVacLimit->SetValue(tableCostLimit);
 
 		if (connection->BackendMinimumVersion(8, 2))
 		{
-			if (tableFreezeMinAge >= 0)
-				txtFreezeMinAge->SetValue(NumToStr(tableFreezeMinAge));
-			else
-				txtFreezeMinAge->SetValue(wxEmptyString);
-
-			if (tableFreezeMaxAge >= 0)
-				txtFreezeMaxAge->SetValue(NumToStr(tableFreezeMaxAge));
-			else
-				txtFreezeMaxAge->SetValue(wxEmptyString);
+			txtFreezeMinAge->SetValue(tableFreezeMinAge);
+			txtFreezeMaxAge->SetValue(tableFreezeMaxAge);
 		}
 		if (connection->BackendMinimumVersion(8, 4))
 		{
-			if (tableFreezeTableAge >= 0)
-				txtFreezeTableAge->SetValue(NumToStr(tableFreezeTableAge));
-			else
-				txtFreezeTableAge->SetValue(wxEmptyString);
-
-			if (toastTableVacBaseThr >= 0)
-				txtBaseToastVac->SetValue(NumToStr(toastTableVacBaseThr));
-			else
-				txtBaseToastVac->SetValue(wxEmptyString);
-
-			if (toastTableAnlBaseThr >= 0)
-				txtBaseToastAn->SetValue(NumToStr(toastTableAnlBaseThr));
-			else
-				txtBaseToastAn->SetValue(wxEmptyString);
-
-			if (toastTableVacFactor >= 0)
-				txtFactorToastVac->SetValue(NumToStr(toastTableVacFactor));
-			else
-				txtFactorToastVac->SetValue(wxEmptyString);
-
-			if (toastTableAnlFactor >= 0)
-				txtFactorToastAn->SetValue(NumToStr(toastTableAnlFactor));
-			else
-				txtFactorToastAn->SetValue(wxEmptyString);
-
-			if (toastTableCostDelay >= 0)
-				txtToastVacDelay->SetValue(NumToStr(toastTableCostDelay));
-			else
-				txtToastVacDelay->SetValue(wxEmptyString);
-
-			if (toastTableCostLimit >= 0)
-				txtToastVacLimit->SetValue(NumToStr(toastTableCostLimit));
-			else
-				txtToastVacLimit->SetValue(wxEmptyString);
-
-			if (toastTableFreezeMinAge >= 0)
-				txtToastFreezeMinAge->SetValue(NumToStr(toastTableFreezeMinAge));
-			else
-				txtToastFreezeMinAge->SetValue(wxEmptyString);
-
-			if (toastTableFreezeMaxAge >= 0)
-				txtToastFreezeMaxAge->SetValue(NumToStr(toastTableFreezeMaxAge));
-			else
-				txtToastFreezeMaxAge->SetValue(wxEmptyString);
-
-			if (toastTableFreezeTableAge >= 0)
-				txtToastFreezeTableAge->SetValue(NumToStr(toastTableFreezeTableAge));
-			else
-				txtToastFreezeTableAge->SetValue(wxEmptyString);
+			txtFreezeTableAge->SetValue(tableFreezeTableAge);
+			txtBaseToastVac->SetValue(toastTableVacBaseThr);
+			txtBaseToastAn->SetValue(toastTableAnlBaseThr);
+			txtFactorToastVac->SetValue(toastTableVacFactor);
+			txtFactorToastAn->SetValue(toastTableAnlFactor);
+			txtToastVacDelay->SetValue(toastTableCostDelay);
+			txtToastVacLimit->SetValue(toastTableCostLimit);
+			txtToastFreezeMinAge->SetValue(toastTableFreezeMinAge);
+			txtToastFreezeMaxAge->SetValue(toastTableFreezeMaxAge);
+			txtToastFreezeTableAge->SetValue(toastTableFreezeTableAge);
 
 			chkCustomToastVac->SetValue(toastTableHasVacuum);
 			chkToastVacEnabled->SetValue(toastTableHasVacuum ? toastTableVacEnabled : settingAutoVacuum);
@@ -1585,27 +1494,16 @@ wxString dlgTable::GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &v
 }
 
 
-wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, long val)
+wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, wxString val)
 {
 	wxString str = ctl->GetValue();
-	long v = StrToLong(str);
+	long v = StrToDouble(str);
 	if (str.IsEmpty() || v < 0)
 		v = -1;
 
-	changed |= (v != val);
-	return NumToStr(v);
-}
-
-
-wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, double val)
-{
-	wxString str = ctl->GetValue();
-	double v = StrToDouble(str);
-	if (str.IsEmpty() || v < 0)
-		v = -1.;
-
-	changed |= (v != val);
-	return NumToStr(v);
+	long v2 = StrToDouble(val);
+	changed |= (v != v2);
+	return str;
 }
 
 
@@ -1651,23 +1549,22 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
 			txtFreezeMaxAge->Enable(false);
 		}
 
-		stBaseVacCurr->SetLabel(NumToStr((tableVacBaseThr == -1) ? settingVacBaseThr : tableVacBaseThr));
-		stBaseAnCurr->SetLabel(NumToStr((tableAnlBaseThr == -1) ? settingAnlBaseThr : tableAnlBaseThr));
-		stFactorVacCurr->SetLabel(NumToStr((tableVacFactor == -1) ? settingVacFactor : tableVacFactor));
-		stFactorAnCurr->SetLabel(NumToStr((tableAnlFactor == -1) ? settingAnlFactor : tableAnlFactor));
-		stVacDelayCurr->SetLabel(NumToStr((tableCostDelay == -1) ? settingCostDelay : tableCostDelay));
-		stVacLimitCurr->SetLabel(NumToStr((tableCostLimit == -1) ? settingCostLimit : tableCostLimit));
+		stBaseVacCurr->SetLabel(tableVacBaseThr == wxT("-1") ? settingVacBaseThr : tableVacBaseThr);
+		stBaseAnCurr->SetLabel(tableAnlBaseThr == wxT("-1") ? settingAnlBaseThr : tableAnlBaseThr);
+		stFactorVacCurr->SetLabel(tableVacFactor == wxT("-1") ? settingVacFactor : tableVacFactor);
+		stFactorAnCurr->SetLabel(tableAnlFactor == wxT("-1") ? settingAnlFactor : tableAnlFactor);
+		stVacDelayCurr->SetLabel(tableCostDelay == wxT("-1") ? settingCostDelay : tableCostDelay);
+		stVacLimitCurr->SetLabel(tableCostLimit == wxT("-1") ? settingCostLimit : tableCostLimit);
 
 		if (connection->BackendMinimumVersion(8, 2))
 		{
-			stFreezeMinAgeCurr->SetLabel(NumToStr((tableFreezeMinAge == -1) ? settingFreezeMinAge : tableFreezeMinAge));
-			stFreezeMaxAgeCurr->SetLabel(NumToStr((tableFreezeMaxAge == -1) ? settingFreezeMaxAge : tableFreezeMaxAge));
+			stFreezeMinAgeCurr->SetLabel(tableFreezeMinAge == wxT("-1") ? settingFreezeMinAge : tableFreezeMinAge);
+			stFreezeMaxAgeCurr->SetLabel(tableFreezeMaxAge == wxT("-1") ? settingFreezeMaxAge : tableFreezeMaxAge);
 		}
 		if (connection->BackendMinimumVersion(8, 4))
 		{
 			txtFreezeTableAge->Enable(vacEn);
-			stFreezeTableAgeCurr->SetLabel(NumToStr((tableFreezeTableAge == -1) ? settingFreezeTableAge : tableFreezeTableAge));
-
+			stFreezeTableAgeCurr->SetLabel(tableFreezeTableAge == wxT("-1") ? settingFreezeTableAge : tableFreezeTableAge);
 			/* Toast Table Vacuum Settings */
 			bool toastVacEn = chkCustomToastVac->GetValue() && chkToastVacEnabled->GetValue();
 			chkToastVacEnabled->Enable(chkCustomToastVac->GetValue());
@@ -1682,16 +1579,16 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
 			txtToastFreezeMaxAge->Enable(toastVacEn);
 			txtToastFreezeTableAge->Enable(toastVacEn);
 
-			stBaseToastVacCurr->SetLabel(NumToStr((toastTableVacBaseThr == -1) ? settingVacBaseThr : toastTableVacBaseThr));
-			stBaseToastAnCurr->SetLabel(NumToStr((toastTableAnlBaseThr == -1) ? settingAnlBaseThr : toastTableAnlBaseThr));
-			stFactorToastVacCurr->SetLabel(NumToStr((toastTableVacFactor == -1) ? settingVacFactor : toastTableVacFactor));
-			stFactorToastAnCurr->SetLabel(NumToStr((toastTableAnlFactor == -1) ? settingAnlFactor : toastTableAnlFactor));
-			stToastVacDelayCurr->SetLabel(NumToStr((toastTableCostDelay == -1) ? settingCostDelay : toastTableCostDelay));
-			stToastVacLimitCurr->SetLabel(NumToStr((toastTableCostLimit == -1) ? settingCostLimit : toastTableCostLimit));
-			stToastFreezeMinAgeCurr->SetLabel(NumToStr((toastTableFreezeMinAge == -1) ? settingFreezeMinAge : toastTableFreezeMinAge));
-			stToastFreezeMaxAgeCurr->SetLabel(NumToStr((toastTableFreezeMaxAge == -1) ? settingFreezeMaxAge : toastTableFreezeMaxAge));
+			stBaseToastVacCurr->SetLabel(toastTableVacBaseThr == wxT("-1") ? settingVacBaseThr : toastTableVacBaseThr);
+			stBaseToastAnCurr->SetLabel(toastTableAnlBaseThr == wxT("-1") ? settingAnlBaseThr : toastTableAnlBaseThr);
+			stFactorToastVacCurr->SetLabel(toastTableVacFactor == wxT("-1") ? settingVacFactor : toastTableVacFactor);
+			stFactorToastAnCurr->SetLabel(toastTableAnlFactor == wxT("-1") ? settingAnlFactor : toastTableAnlFactor);
+			stToastVacDelayCurr->SetLabel(toastTableCostDelay == wxT("-1") ? settingCostDelay : toastTableCostDelay);
+			stToastVacLimitCurr->SetLabel(toastTableCostLimit == wxT("-1") ? settingCostLimit : toastTableCostLimit);
+			stToastFreezeMinAgeCurr->SetLabel(toastTableFreezeMinAge == wxT("-1") ? settingFreezeMinAge : toastTableFreezeMinAge);
+			stToastFreezeMaxAgeCurr->SetLabel(toastTableFreezeMaxAge == wxT("-1") ? settingFreezeMaxAge : toastTableFreezeMaxAge);
 			txtToastFreezeTableAge->Enable(toastVacEn);
-			stToastFreezeTableAgeCurr->SetLabel(NumToStr((toastTableFreezeTableAge == -1) ? settingFreezeTableAge : toastTableFreezeTableAge));
+			stToastFreezeTableAgeCurr->SetLabel(toastTableFreezeTableAge == wxT("-1") ? settingFreezeTableAge : toastTableFreezeTableAge);
 		}
 		else
 		{
