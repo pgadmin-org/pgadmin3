@@ -495,10 +495,7 @@ wxString ddDatabaseDesign::getNewTableName()
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
-				if(indx == 0)
-					tmpStr = _("NewTable");
-				else
-					tmpStr = wxString::Format(_("NewTable%d"), indx);
+				tmpStr = wxString::Format(_("NewTable%d"), indx);
 
 				if(table->getTableName().IsSameAs(tmpStr))
 				{
