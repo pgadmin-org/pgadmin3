@@ -168,6 +168,7 @@ private:
 	void OnExecFile(wxCommandEvent &event);
 	void OnExplain(wxCommandEvent &event);
 	void OnBuffers(wxCommandEvent &event);
+	void OnTiming(wxCommandEvent &event);
 	void OnNew(wxCommandEvent &event);
 	void OnOpen(wxCommandEvent &event);
 	void OnSave(wxCommandEvent &event);

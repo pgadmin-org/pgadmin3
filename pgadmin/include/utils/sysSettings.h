@@ -275,6 +275,16 @@ public:
 	{
 		WriteBool(wxT("frmQuery/ExplainBuffers"), newval);
 	}
+	bool GetExplainTiming() const
+	{
+		bool b;
+		Read(wxT("frmQuery/ExplainTiming"), &b, true);
+		return b;
+	}
+	void SetExplainTiming(const bool newval)
+	{
+		WriteBool(wxT("frmQuery/ExplainTiming"), newval);
+	}
 
 	// Display options
 	wxString GetSystemSchemas() const
