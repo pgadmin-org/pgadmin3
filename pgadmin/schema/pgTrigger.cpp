@@ -570,6 +570,7 @@ wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))
 	{
+		form->GetBrowser()->DeleteChildren(item);
 		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
 		form->GetSqlPane()->SetReadOnly(false);
 		form->GetSqlPane()->SetText(((pgTrigger *)obj)->GetSql(form->GetBrowser()));
