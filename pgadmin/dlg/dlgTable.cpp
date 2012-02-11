@@ -56,6 +56,13 @@
 #define cbConstrType    CTRL_COMBOBOX("cbConstrType")
 #define btnRemoveConstr CTRL_BUTTON("btnRemoveConstr")
 
+#define cbLikeRelation          CTRL_COMBOBOX("cbLikeRelation")
+#define chkIncludingDefaults    CTRL_CHECKBOX("chkIncludingDefaults")
+#define chkIncludingConstraints CTRL_CHECKBOX("chkIncludingConstraints")
+#define chkIncludingIndexes     CTRL_CHECKBOX("chkIncludingIndexes")
+#define chkIncludingStorage     CTRL_CHECKBOX("chkIncludingStorage")
+#define chkIncludingComments    CTRL_CHECKBOX("chkIncludingComments")
+
 /* AutoVacuum Settings */
 #define nbVaccum            CTRL_NOTEBOOK("nbVacuum")
 #define chkCustomVac        CTRL_CHECKBOX("chkCustomVac")
@@ -235,7 +242,7 @@ int dlgTable::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
-	// new of type combobox
+	// new "of type" combobox
 	wxString typeQuery = wxT("SELECT t.oid, t.typname ")
 	                     wxT("FROM pg_type t, pg_namespace n ")
 	                     wxT("WHERE t.typtype='c' AND t.typnamespace=n.oid ")
@@ -244,6 +251,9 @@ int dlgTable::Go(bool modal)
 	cbOfType->Insert(wxEmptyString, 0, (void *)0);
 	cbOfType->FillOidKey(connection, typeQuery);
 	cbOfType->SetSelection(0);
+
+	// "like relation" tab
+	nbNotebook->GetPage(3)->Enable(!table);
 
 	hasPK = false;
 
@@ -407,6 +417,32 @@ int dlgTable::Go(bool modal)
 		// Add the default tablespace
 		cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
 		cbTablespace->SetSelection(0);
+
+		// new "like relation" combobox
+		wxString likeRelationQuery = wxT("SELECT c.oid, quote_ident(n.nspname)||'.'||quote_ident(c.relname) ")
+		                             wxT("FROM pg_class c, pg_namespace n ")
+		                             wxT("WHERE c.relnamespace=n.oid AND c.relkind IN ");
+		if (connection->BackendMinimumVersion(9, 2))
+		{
+			likeRelationQuery += wxT("('r', 'v', 'f')");
+		}
+		else
+		{
+			likeRelationQuery += wxT("('r')");
+		}
+		if (!settings->GetShowSystemObjects())
+			likeRelationQuery += wxT(" AND ") + connection->SystemNamespaceRestriction(wxT("n.nspname"));
+		likeRelationQuery += wxT(" ORDER BY 1");
+		cbLikeRelation->Insert(wxEmptyString, 0, (void *)0);
+		cbLikeRelation->FillOidKey(connection, likeRelationQuery);
+		cbLikeRelation->SetSelection(0);
+
+		// Enable the "like relation" comboboxes
+		chkIncludingDefaults->Enable();
+		chkIncludingConstraints->Enable(connection->BackendMinimumVersion(8, 2));
+		chkIncludingIndexes->Enable(connection->BackendMinimumVersion(8, 3));
+		chkIncludingStorage->Enable(connection->BackendMinimumVersion(9, 0));
+		chkIncludingComments->Enable(connection->BackendMinimumVersion(9, 0));
 	}
 
 	chkUnlogged->Enable(connection->BackendMinimumVersion(9, 1) && !table);
@@ -1179,6 +1215,7 @@ wxString dlgTable::GetSql()
 	}
 	else
 	{
+		bool needComma = false;
 		bool typedTable = cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0;
 
 		tabname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
@@ -1193,7 +1230,22 @@ wxString dlgTable::GetSql()
 		if (!typedTable || (typedTable && lstConstraints->GetItemCount() > 0))
 			sql += wxT("\n(");
 
-		bool needComma = false;
+		if (!cbLikeRelation->GetValue().IsEmpty())
+		{
+			sql += wxT("\n   LIKE ") + cbLikeRelation->GetValue();
+			if (chkIncludingDefaults->GetValue())
+				sql += wxT(" INCLUDING DEFAULTS");
+			if (chkIncludingConstraints->GetValue())
+				sql += wxT(" INCLUDING CONSTRAINTS");
+			if (chkIncludingIndexes->GetValue())
+				sql += wxT(" INCLUDING INDEXES");
+			if (chkIncludingStorage->GetValue())
+				sql += wxT(" INCLUDING STORAGE");
+			if (chkIncludingComments->GetValue())
+				sql += wxT(" INCLUDING COMMENTS");
+			needComma = true;
+		}
+
 		if (!typedTable)
 		{
 			for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
