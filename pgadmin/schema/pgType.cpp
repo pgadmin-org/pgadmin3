@@ -118,7 +118,35 @@ wxString pgType::GetSql(ctlTree *browser)
 		else
 		{
 			sql += wxT("\n   (INPUT=") + qtIdent(GetInputFunction())
-			       + wxT(", OUTPUT=") + qtIdent(GetOutputFunction());
+			       + wxT(",\n       OUTPUT=") + qtIdent(GetOutputFunction());
+			if (GetConnection()->BackendMinimumVersion(7, 4))
+			{
+				if (!GetReceiveFunction().IsEmpty())
+				{
+					sql += wxT(",\n       RECEIVE=") + GetReceiveFunction();
+				}
+				if (!GetSendFunction().IsEmpty())
+				{
+					sql += wxT(",\n       SEND=") + GetSendFunction();
+				}
+			}
+			if (GetConnection()->BackendMinimumVersion(8, 3))
+			{
+				if (!GetTypmodinFunction().IsEmpty())
+					sql += wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction();
+				if (!GetTypmodoutFunction().IsEmpty())
+					sql += wxT(",\n       TYPMOD_OUT=") + GetTypmodoutFunction();
+				if (GetAnalyzeFunction() != wxEmptyString)
+					sql += wxT(",\n       ANALYZE=") + GetAnalyzeFunction();
+			}
+			if (GetConnection()->BackendMinimumVersion(8, 4))
+			{
+				sql += wxT(",\n       CATEGORY=") + qtDbString(GetCategory());
+				if (GetPrefered())
+					sql += wxT(",\n       PREFERRED=true");
+			}
+			if (GetPassedByValue())
+				sql += wxT(",\n    PASSEDBYVALUE");
 			AppendIfFilled(sql, wxT(", DEFAULT="), qtDbString(GetDefault()));
 			if (!GetElement().IsNull())
 			{
@@ -128,25 +156,9 @@ wxString pgType::GetSql(ctlTree *browser)
 			sql += wxT(",\n       INTERNALLENGTH=") + NumToStr(GetInternalLength())
 			       + wxT(", ALIGNMENT=" + GetAlignment()
 			             + wxT(", STORAGE=") + GetStorage());
-			if (GetConnection()->BackendMinimumVersion(8, 3))
+			if (GetConnection()->BackendMinimumVersion(9, 1) && GetCollatable())
 			{
-				if (GetTypmodinFunction() != wxEmptyString && GetTypmodoutFunction() != wxEmptyString)
-				{
-					sql += wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction()
-					       + wxT(", TYPMOD_OUT=") + GetTypmodoutFunction();
-				}
-				else if (GetTypmodinFunction() != wxEmptyString)
-					sql += wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction();
-				else if (GetTypmodoutFunction() != wxEmptyString)
-					sql += wxT(",\n       TYPMOD_OUT=") + GetTypmodoutFunction();
-				else if (GetAnalyzeFunction() != wxEmptyString)
-					sql += wxT(",\n       ANALYZE=") + GetAnalyzeFunction();
-			}
-			if (GetConnection()->BackendMinimumVersion(8, 4))
-			{
-				sql += wxT(",\n       CATEGORY=") + qtDbString(GetCategory());
-				if (GetPrefered())
-					sql += wxT(",\n       PREFERRED=true");
+				sql += wxT(",\n       COLLATABLE=true");
 			}
 			if (GetConnection()->BackendMinimumVersion(9, 1) && GetCollatable())
 			{
