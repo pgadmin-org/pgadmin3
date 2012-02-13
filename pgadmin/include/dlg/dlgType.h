@@ -79,6 +79,9 @@ private:
 	void showDefinition(int panel);
 	wxString GetFullTypeName(int type);
 
+	wxString catGetText(wxString c);
+	wxString catGetChar(wxString t);
+
 	wxArrayString memberTypes, memberLengths, memberPrecisions, memberCollations, memberOriginalNames;
 	bool queriesToBeSplitted;
 

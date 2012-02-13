@@ -101,6 +101,30 @@ public:
 	{
 		typmodoutFunction = s;
 	}
+	wxString GetAnalyzeFunction() const
+	{
+		return analyzeFunction;
+	}
+	void iSetAnalyzeFunction(const wxString &s)
+	{
+		analyzeFunction = s;
+	}
+	wxString GetCategory() const
+	{
+		return category;
+	}
+	void iSetCategory(const wxString &s)
+	{
+		category = s;
+	}
+	bool GetPrefered() const
+	{
+		return prefered;
+	}
+	void iSetPrefered(const bool b)
+	{
+		prefered = b;
+	}
 	wxString GetDefault() const
 	{
 		return defaultVal;
@@ -238,11 +262,11 @@ public:
 private:
 	wxString alias, inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
 	         typesList, quotedTypesList, labelList, quotedLabelList, sendFunction, receiveFunction,
-	         typmodinFunction, typmodoutFunction;
+	         typmodinFunction, typmodoutFunction, analyzeFunction, category;
 	wxArrayString typesArray, labelArray, collationsArray;
 	long internalLength;
 	int typeClass;
-	bool passedByValue, isRecordType, collatable;
+	bool passedByValue, isRecordType, collatable, prefered;
 	OID relOid;
 };
 

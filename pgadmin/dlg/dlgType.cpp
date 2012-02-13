@@ -36,6 +36,9 @@
 #define cbSend                  CTRL_COMBOBOX("cbSend")
 #define cbTypmodin              CTRL_COMBOBOX("cbTypmodin")
 #define cbTypmodout             CTRL_COMBOBOX("cbTypmodout")
+#define cbAnalyze               CTRL_COMBOBOX("cbAnalyze")
+#define cbCategory              CTRL_COMBOBOX("cbCategory")
+#define chkPrefered             CTRL_CHECKBOX("chkPrefered")
 #define chkVariable             CTRL_CHECKBOX("chkVariable")
 #define txtIntLength            CTRL_TEXT("txtIntLength")
 #define txtDefault              CTRL_TEXT("txtDefault")
@@ -360,6 +363,14 @@ int dlgType::Go(bool modal)
 		cbTypmodout->Append(type->GetTypmodoutFunction());
 		cbTypmodout->SetSelection(0);
 		cbTypmodout->Disable();
+		cbAnalyze->Append(type->GetAnalyzeFunction());
+		cbAnalyze->SetSelection(0);
+		cbAnalyze->Disable();
+		cbCategory->Append(catGetText(type->GetCategory()));
+		cbCategory->SetSelection(0);
+		cbCategory->Disable();
+		chkPrefered->SetValue(type->GetPrefered());
+		chkPrefered->Disable();
 
 		chkVariable->SetValue(type->GetInternalLength() < 0);
 		chkVariable->Disable();
@@ -455,15 +466,20 @@ int dlgType::Go(bool modal)
 		bool hasSendRcv = connection->BackendMinimumVersion(7, 4);
 		bool hasTypmod = connection->BackendMinimumVersion(8, 3);
 
+		cbCategory->Enable(connection->BackendMinimumVersion(8, 4));
+		chkPrefered->Enable(connection->BackendMinimumVersion(8, 4));
+
 		if (hasSendRcv)
 		{
 			cbReceive->Append(wxEmptyString);
 			cbSend->Append(wxEmptyString);
+			cbAnalyze->Append(wxEmptyString);
 		}
 		else
 		{
 			cbReceive->Disable();
 			cbSend->Disable();
+			cbAnalyze->Disable();
 		}
 
 		if (hasTypmod)
@@ -505,6 +521,7 @@ int dlgType::Go(bool modal)
 				{
 					cbReceive->Append(pn);
 					cbSend->Append(pn);
+					cbAnalyze->Append(pn);
 				}
 				if (hasTypmod)
 				{
@@ -931,6 +948,11 @@ wxString dlgType::GetSql()
 						AppendQuoted(sql, cbSend->GetValue());
 					}
 				}
+				if (cbAnalyze->GetCurrentSelection() > 0)
+				{
+					sql += wxT(",\n   ANALYZE=");
+					AppendQuoted(sql, cbAnalyze->GetValue());
+				}
 
 			}
 			if (connection->BackendMinimumVersion(8, 3))
@@ -954,6 +976,12 @@ wxString dlgType::GetSql()
 					}
 				}
 
+			}
+			if (connection->BackendMinimumVersion(8, 4))
+			{
+				sql += wxT(",\n   CATEGORY=") + qtDbString(cbCategory->GetValue());
+				if (chkPrefered->GetValue())
+					sql += wxT(",\n   PREFERRED=true");
 			}
 			sql += wxT(",\n    INTERNALLENGTH=");
 			if (chkVariable->GetValue())
@@ -1134,4 +1162,72 @@ void dlgType::OnDelPriv(wxCommandEvent &ev)
 {
 	securityChanged = true;
 	CheckChange();
+}
+
+
+wxString dlgType::catGetText(wxString c)
+{
+	if (c == wxT("A"))
+		return wxT("Array types");
+	if (c == wxT("B"))
+		return wxT("Boolean types");
+	if (c == wxT("C"))
+		return wxT("Composite types");
+	if (c == wxT("D"))
+		return wxT("Date/time types");
+	if (c == wxT("E"))
+		return wxT("Enum types");
+	if (c == wxT("G"))
+		return wxT("Geometric types");
+	if (c == wxT("I"))
+		return wxT("Network address types");
+	if (c == wxT("N"))
+		return wxT("Numeric types");
+	if (c == wxT("P"))
+		return wxT("Pseudo-types");
+	if (c == wxT("S"))
+		return wxT("String types");
+	if (c == wxT("T"))
+		return wxT("Timespan types");
+	if (c == wxT("U"))
+		return wxT("User-defined types");
+	if (c == wxT("V"))
+		return wxT("Bit-string types");
+	if (c == wxT("X"))
+		return wxT("unknown type");
+	return wxEmptyString;
+}
+
+
+wxString dlgType::catGetChar(wxString t)
+{
+	if (t == wxT("Array types"))
+		return wxT("A");
+	if (t == wxT("Boolean types"))
+		return wxT("B");
+	if (t == wxT("Composite types"))
+		return wxT("C");
+	if (t == wxT("Date/time types"))
+		return wxT("D");
+	if (t == wxT("Enum types"))
+		return wxT("E");
+	if (t == wxT("Geometric types"))
+		return wxT("G");
+	if (t == wxT("Network address types"))
+		return wxT("I");
+	if (t == wxT("Numeric types"))
+		return wxT("N");
+	if (t == wxT("Pseudo-types"))
+		return wxT("P");
+	if (t == wxT("String types"))
+		return wxT("S");
+	if (t == wxT("Timespan types"))
+		return wxT("T");
+	if (t == wxT("User-defined types"))
+		return wxT("U");
+	if (t == wxT("Bit-string types"))
+		return wxT("V");
+	if (t == wxT("unknown type"))
+		return wxT("X");
+	return wxEmptyString;
 }

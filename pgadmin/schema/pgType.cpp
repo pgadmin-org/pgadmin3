@@ -139,6 +139,14 @@ wxString pgType::GetSql(ctlTree *browser)
 					sql += wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction();
 				else if (GetTypmodoutFunction() != wxEmptyString)
 					sql += wxT(",\n       TYPMOD_OUT=") + GetTypmodoutFunction();
+				else if (GetAnalyzeFunction() != wxEmptyString)
+					sql += wxT(",\n       ANALYZE=") + GetAnalyzeFunction();
+			}
+			if (GetConnection()->BackendMinimumVersion(8, 4))
+			{
+				sql += wxT(",\n       CATEGORY=") + qtDbString(GetCategory());
+				if (GetPrefered())
+					sql += wxT(",\n       PREFERRED=true");
 			}
 			if (GetConnection()->BackendMinimumVersion(9, 1) && GetCollatable())
 			{
@@ -291,6 +299,12 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			{
 				properties->AppendItem(_("Receive function"), GetReceiveFunction());
 				properties->AppendItem(_("Send function"), GetSendFunction());
+				properties->AppendItem(_("Analyze function"), GetAnalyzeFunction());
+			}
+			if (GetConnection()->BackendMinimumVersion(8, 4))
+			{
+				properties->AppendItem(_("Category"), GetCategory());
+				properties->AppendItem(_("Prefered?"), BoolToYesNo(GetPrefered()));
 			}
 			if (GetConnection()->BackendMinimumVersion(8, 3))
 			{
@@ -431,6 +445,12 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			{
 				type->iSetReceiveFunction(types->GetVal(wxT("typreceive")));
 				type->iSetSendFunction(types->GetVal(wxT("typsend")));
+				type->iSetAnalyzeFunction(types->GetVal(wxT("typanalyze")));
+			}
+			if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+			{
+				type->iSetCategory(types->GetVal(wxT("typcategory")));
+				type->iSetPrefered(types->GetBool(wxT("typispreferred")));
 			}
 			if (collection->GetConnection()->BackendMinimumVersion(8, 3))
 			{
