@@ -202,6 +202,14 @@ public:
 	{
 		return configList;
 	}
+	bool GetIsLeakProof() const
+	{
+		return isLeakProof;
+	}
+	void iSetIsLeakProof(bool b)
+	{
+		isLeakProof = b;
+	}
 
 	bool CanRestore()
 	{
@@ -245,7 +253,7 @@ protected:
 private:
 	wxString returnType, language, volatility, source, bin;
 	wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
-	bool returnAsSet, secureDefiner, isStrict, isWindow;
+	bool returnAsSet, secureDefiner, isStrict, isWindow, isLeakProof;
 	long argCount, cost, rows, argDefValCount, procType;
 	wxArrayString configList;
 };

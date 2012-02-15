@@ -327,6 +327,8 @@ wxString pgFunction::GetSql(ctlTree *browser)
 				sql += wxT("WINDOW ");
 			sql += GetVolatility();
 
+			if (GetConnection()->BackendMinimumVersion(9, 2) && GetIsLeakProof())
+				sql += wxT(" LEAKPROOF");
 			if (GetIsStrict())
 				sql += wxT(" STRICT");
 			if (GetSecureDefiner())
@@ -407,6 +409,8 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		}
 
 		properties->AppendItem(_("Volatility"), GetVolatility());
+		if (GetConnection()->BackendMinimumVersion(9, 2))
+			properties->AppendYesNoItem(_("Leak proof?"), GetIsLeakProof());
 		properties->AppendYesNoItem(_("Security of definer?"), GetSecureDefiner());
 		properties->AppendYesNoItem(_("Strict?"), GetIsStrict());
 		if (GetConnection()->BackendMinimumVersion(8, 4))
@@ -946,6 +950,11 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			{
 				function->iSetProviders(functions->GetVal(wxT("providers")));
 				function->iSetLabels(functions->GetVal(wxT("labels")));
+			}
+
+			if (obj->GetConnection()->BackendMinimumVersion(9, 2))
+			{
+				function->iSetIsLeakProof(functions->GetBool(wxT("proleakproof")));
 			}
 
 			if (browser)

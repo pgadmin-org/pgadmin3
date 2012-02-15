@@ -37,6 +37,7 @@
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
 #define txtCost             CTRL_TEXT("txtCost")
 #define txtRows             CTRL_TEXT("txtRows")
+#define chkLeakProof        CTRL_CHECKBOX("chkLeakProof")
 
 #define lstArguments        CTRL_LISTVIEW("lstArguments")
 #define rdbIn               CTRL_RADIOBUTTON("rdbIn")
@@ -75,6 +76,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 	EVT_TEXT(XRCID("txtLinkSymbol"),                dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtCost"),                      dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtRows"),                      dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkLeakProof"),             dlgProperty::OnChange)
 	EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 
 	EVT_CHECKBOX(XRCID("chkSetof"),                 dlgFunction::OnChangeSetof)
@@ -195,6 +197,7 @@ int dlgFunction::Go(bool modal)
 
 	if (!isBackendMinVer84)
 		txtArgDefVal->Disable();
+	chkLeakProof->Enable(connection->BackendMinimumVersion(9, 2));
 
 	AddGroups(cbOwner);
 	AddUsers(cbOwner);
@@ -234,6 +237,7 @@ int dlgFunction::Go(bool modal)
 		cbReturntype->Disable();
 		txtCost->Disable();
 		txtRows->Disable();
+		chkLeakProof->Disable();
 	}
 	else
 	{
@@ -338,6 +342,7 @@ int dlgFunction::Go(bool modal)
 		if (connection->BackendMinimumVersion(8, 4))
 			chkWindow->SetValue(function->GetIsWindow());
 		chkSecureDefiner->SetValue(function->GetSecureDefiner());
+		chkLeakProof->SetValue(function->GetIsLeakProof());
 
 		if (function->GetLanguage().IsSameAs(wxT("C"), false))
 		{
@@ -862,6 +867,7 @@ wxString dlgFunction::GetSql()
 	                 || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
 	                 || chkStrict->GetValue() != function->GetIsStrict()
 	                 || GetArgs() != function->GetArgListWithNames()
+	                 || chkLeakProof->GetValue() != function->GetIsLeakProof()
 	                 || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
 	                 || (!isC && txtSqlBox->GetText() != function->GetSource());
 
@@ -949,6 +955,12 @@ wxString dlgFunction::GetSql()
 			else
 				sql += wxT(" ");
 			sql +=  cbVolatility->GetValue();
+			if (connection->BackendMinimumVersion(9, 2))
+			{
+				if (!chkLeakProof->GetValue())
+					sql += wxT(" NOT");
+				sql += wxT(" LEAKPROOF");
+			}
 			if (chkStrict->GetValue())
 				sql += wxT(" STRICT");
 			if (chkSecureDefiner->GetValue())
