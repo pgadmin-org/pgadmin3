@@ -590,7 +590,7 @@ void pgServer::StorePassword()
 		while (lines.HasMoreTokens())
 		{
 			wxString str = lines.GetNextToken();
-			if (str.Left(seekStr.Length()) == seekStr)
+			if (str.Left(seekStr.Length()) == seekStr && !passwd.IsEmpty())
 			{
 				// entry found
 				found = true;
@@ -600,7 +600,7 @@ void pgServer::StorePassword()
 			else
 				file.Write(str + END_OF_LINE);
 		}
-		if (!found && storePwd)
+		if (!found && storePwd && !passwd.IsEmpty())
 			file.Write(seekStr + passwd + END_OF_LINE);
 
 		file.Close();
