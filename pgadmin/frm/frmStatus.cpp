@@ -994,7 +994,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent &ev)
 
 	// Get the database
 	row = list->GetFirstSelected();
-	col = 1;
+	col = connection->BackendMinimumVersion(9, 0) ? 2 : 1;
 	dbname.Append(list->GetText(row, col));
 
 	// Get the actual query
