@@ -162,7 +162,9 @@ void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int def
 
 void pgDialog::SavePosition()
 {
+#ifndef __WXGTK__
 	if (!IsIconized())
+#endif
 		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
 }
 
