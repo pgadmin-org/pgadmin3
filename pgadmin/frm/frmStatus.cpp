@@ -1005,8 +1005,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent &ev)
 
 	// Get the actual query
 	row = list->GetFirstSelected();
-	col = list->GetColumnCount() - 1;
-	text.Append(list->GetText(row, col) + wxT("\t"));
+	text.Append(queries.Item(row));
 
 	// Check if we have a query whose length is maximum
 	maxlength = 1024;
@@ -1401,12 +1400,19 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 		statusBar->SetStatusText(_("Refreshing status list."));
 		statusList->Freeze();
 
+		// Clear the queries array content
+		queries.Clear();
+
 		while (!dataSet1->Eof())
 		{
 			pid = dataSet1->GetLong(wxT("pid"));
 
+			// Update the UI
 			if (pid != backend_pid)
 			{
+				// Add the query content to the queries array
+				queries.Add(dataSet1->GetVal(wxT("current_query")));
+
 				if (row >= statusList->GetItemCount())
 				{
 					statusList->InsertItem(row, NumToStr(pid), -1);

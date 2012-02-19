@@ -143,6 +143,8 @@ private:
 	wxMenu        *lockPopupMenu;
 	wxMenu        *xactPopupMenu;
 
+	wxArrayString queries;
+
 	int statusColWidth[10], lockColWidth[10], xactColWidth[5];
 
 	int cboToRate();
