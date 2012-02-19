@@ -145,7 +145,7 @@ private:
 
 	wxArrayString queries;
 
-	int statusColWidth[10], lockColWidth[10], xactColWidth[5];
+	int statusColWidth[12], lockColWidth[10], xactColWidth[5];
 
 	int cboToRate();
 	wxString rateToCboString(int rate);
