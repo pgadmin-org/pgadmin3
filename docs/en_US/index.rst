@@ -8,8 +8,8 @@ Contents:
 
    introduction
    using
-   pgagent.rst
-   slony.rst
-   extend.rst
-   appendices.rst
+   pgagent
+   slony
+   extend
+   appendices
 

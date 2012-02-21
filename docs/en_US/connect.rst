@@ -9,8 +9,8 @@ Connect to server
 
 Use this dialog to add a new server connection to the pgAdmin tree.
 
-If you're experiencing connection problems, check the `connection problems
-<connect-error>`_.
+If you're experiencing connection problems, check the :ref:`connection problems
+<connect-error>`.
 
 The name is a text to identify the server in the pgAdmin tree.
 
@@ -26,8 +26,8 @@ pg_service.conf file. For details, see the `pg_service
 documentation <http://www.postgresql.org/docs/9.0/interactive/libpq-pgservice.html>`_.
 
 The maintenance DB field is used to specify the initial database that 
-pgAdmin connects to, and that will be expected to have the `pgAgent <pgagent>`_
-schema and `adminpack <extend>`_ objects
+pgAdmin connects to, and that will be expected to have the :ref:`pgAgent <pgagent>`
+schema and :ref:`adminpack <extend>` objects
 installed (both optional). On PostgreSQL 8.1 and above, the maintenance
 DB is normally called 'postgres', and on earlier versions 'template1' is
 often used, though it is preferrable to create a 'postgres' database for 
@@ -100,3 +100,10 @@ status/start/stop keywords to this. Example::
 This dialog can be launched at a later time to correct or add
 parameters by executing "properties" when the server is selected. You should
 not be connected to it if you want to make changes on its properties.
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   connect-error

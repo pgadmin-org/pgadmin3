@@ -1,3 +1,6 @@
+.. _slony:
+
+
 Slony-I support
 =============== 
 

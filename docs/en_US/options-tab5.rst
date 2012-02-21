@@ -5,7 +5,7 @@
 pgAdmin Options - Tab 5 (Query Tool Files)
 ******************************************
 
-.. image:: images/options-colours.png
+.. image:: images/options-querytoolfiles.png
 
 * **Favourites file path** - File path to the favourites file.
 

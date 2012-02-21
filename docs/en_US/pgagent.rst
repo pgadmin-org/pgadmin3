@@ -1,3 +1,6 @@
+.. _pgagent:
+
+
 pgAgent
 ======= 
 

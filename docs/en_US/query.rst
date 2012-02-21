@@ -145,3 +145,13 @@ For more details of the regular expression syntax offered, please see the
 `wxWidgets documentation
 <http://www.wxwindows.org/manuals/2.6.3/wx_wxresyn.html#wxresyn>`_.
 
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   gqb
+   export
+   macros
+   pgscript
+

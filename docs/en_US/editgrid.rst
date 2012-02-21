@@ -78,3 +78,9 @@ selectively view the data:
 **Note:** If a column is already selected for sorting, it's position in the sort
 list will remain the same, only the direction will be changed.
 
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   gridopts

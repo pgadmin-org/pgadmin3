@@ -1,3 +1,5 @@
+.. _appendices:
+
 Appendices
 ==========
 
@@ -14,6 +16,6 @@ Contents:
 
 pgAdmin includes software from the OpenSSL and MIT Kerberos projects:
 
-* `MIT Kerberos licence <kerberos>`_
-* `The OpenSSL licence <openssl>`_
+* :ref:`MIT Kerberos licence <kerberos>`
+* :ref:`The OpenSSL licence <openssl>`
 

@@ -23,8 +23,8 @@ tab.
 The lower right side contains a reverse engineered SQL script. You
 can copy this to any editor using cut & paste, or save it to a file
 using Save definition... from the File menu, or use it as a template
-if you select the `Query Tool <query>`_. If the
-`Copy SQL from main window to query tool <options-tab4>`_ option is selected, the SQL
+if you select the :ref:`Query Tool <query>`. If the
+:ref:`Copy SQL from main window to query tool <options-tab4>` option is selected, the SQL
 query will be copied automatically to the tool.
 
 The status line will show you some status information, as well as

@@ -46,7 +46,7 @@ XML linked to an external XSL stylesheet, or to process the XML using an
 external stylesheet and save the resulting output. This allows complete 
 flexibility to format reports in any way.
 
-The default `XSL stylesheet <default-xsl>`_ used to render 
+The default :ref:`XSL stylesheet <default-xsl>` used to render 
 XHTML output can be used as a starting point for your own, and sample 
-`XML data <sample-xml>`_ may also be reviewed if required.
+:ref:`XML data <sample-xml>` may also be reviewed if required.
 

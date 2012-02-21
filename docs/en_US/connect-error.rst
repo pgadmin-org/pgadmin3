@@ -1,4 +1,4 @@
-.. _connectionerrors:
+.. _connect-error:
 
 
 *****************

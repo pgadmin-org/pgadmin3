@@ -1,3 +1,6 @@
+.. _using:
+
+
 Using pgAdmin III
 =================
 
