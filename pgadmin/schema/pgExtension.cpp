@@ -102,9 +102,9 @@ wxString pgExtension::GetSql(ctlTree *browser)
 		      + wxT("\n\n CREATE EXTENSION ") + GetName();
 
 		if (!GetSchemaStr().IsEmpty())
-			sql += wxT("\n  SCHEMA ") + GetSchemaStr();
+			sql += wxT("\n  SCHEMA ") + qtIdent(GetSchemaStr());
 		if (!GetVersion().IsEmpty())
-			sql += wxT("\n  VERSION ") + GetVersion();
+			sql += wxT("\n  VERSION ") + qtIdent(GetVersion());
 
 		sql += wxT(";\n")
 		       +  GetOwnerSql(9, 1, wxT("EXTENSION ") + GetName());
