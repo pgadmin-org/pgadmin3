@@ -299,7 +299,7 @@ void pgTrigger::ReadColumnDetails()
 				}
 
 				columns += res->GetVal(wxT("attname"));
-				quotedColumns += res->GetVal(wxT("attname"));
+				quotedColumns += qtIdent(res->GetVal(wxT("attname")));
 				columnList.Add(res->GetVal(wxT("attname")));
 
 				i++;
