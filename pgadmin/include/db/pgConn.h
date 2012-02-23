@@ -248,6 +248,11 @@ public:
 
 	void Reset();
 
+	bool StartCopy(const wxString query);
+	bool PutCopyData(const char *data, long count);
+	bool EndPutCopy(const wxString errormsg);
+	bool GetCopyFinalStatus(void);
+
 	bool TableHasColumn(wxString schemaname, wxString tblname, const wxString &colname);
 
 protected:

@@ -164,8 +164,12 @@ void pgDialog::SavePosition()
 {
 #ifndef __WXGTK__
 	if (!IsIconized())
+	{
 #endif
 		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
+#ifndef __WXGTK__
+	}
+#endif
 }
 
 void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)

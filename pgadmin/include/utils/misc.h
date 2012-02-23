@@ -92,6 +92,7 @@ extern sysSettings *settings;
 #define CTRL_FILEPICKER(id)     (XRCCTRL(*this, id, wxFilePickerCtrl))
 #define CTRL_FONTPICKER(id)     (XRCCTRL(*this, id, wxFontPickerCtrl))
 #define CTRL_CHECKTREEVIEW(id)  (XRCCTRL(*this, id, ctlCheckTreeView))
+#define CTRL_GAUGE(id)          (XRCCTRL(*this, id, wxGauge))
 
 #endif // PGSCLI
 

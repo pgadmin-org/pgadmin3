@@ -798,6 +798,77 @@ pgSet *pgConn::ExecuteSet(const wxString &sql)
 }
 
 //////////////////////////////////////////////////////////////////////////
+// COPY functions
+//////////////////////////////////////////////////////////////////////////
+
+bool pgConn::StartCopy(const wxString query)
+{
+	if (GetStatus() != PGCONN_OK)
+		return false;
+
+	// Execute the query and get the status
+	PGresult *qryRes;
+
+	wxLogSql(wxT("COPY query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), query.c_str());
+	qryRes = PQexec(conn, query.mb_str(*conv));
+	lastResultStatus = PQresultStatus(qryRes);
+	SetLastResultError(qryRes);
+
+	// Check for errors
+	if (lastResultStatus != PGRES_COPY_IN)
+	{
+		LogError(false);
+		PQclear(qryRes);
+		return false;
+	}
+
+	// NO cleanup & exit
+	return  true;
+}
+
+bool pgConn::PutCopyData(const char *data, long count)
+{
+	// Execute the query and get the status
+	int result = PQputCopyData(conn, data, count);
+
+	return result == 1;
+}
+
+bool pgConn::EndPutCopy(const wxString errormsg)
+{
+	int result;
+
+	// Execute the query and get the status
+	if (errormsg.Length() == 0)
+		result = PQputCopyEnd(conn, NULL);
+	else
+		result = PQputCopyEnd(conn, errormsg.mb_str(*conv));
+
+	return result == 1;
+}
+
+bool pgConn::GetCopyFinalStatus(void)
+{
+	PGresult   *qryRes;
+
+	// Get status
+	qryRes = PQgetResult(conn);
+	lastResultStatus = PQresultStatus(qryRes);
+
+	// Check for errors
+	if (lastResultStatus != PGRES_COMMAND_OK)
+	{
+		LogError(false);
+		PQclear(qryRes);
+		return false;
+	}
+
+	// Cleanup & exit
+	PQclear(qryRes);
+	return  true;
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Info
 //////////////////////////////////////////////////////////////////////////
 

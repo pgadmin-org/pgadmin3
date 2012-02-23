@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<resource>
+  <object class="wxDialog" name="frmImport">
+    <title>Import data from file</title>
+    <size>300,133d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>3</rows>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbNotebook">
+          <pos>2,2d</pos>
+          <size>285,124d</size>
+          <style>wxNB_BOTTOM</style>
+          <object class="notebookpage">
+            <label>File Options</label>
+            <object class="wxPanel" name="pnlFileOptions">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stFilename">
+                    <label>Filename</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFilePickerCtrl" name="pickerImportfile">
+                    <message>Select the file to import</message>
+                    <style>wxFLP_OPEN|wxFLP_USE_TEXTCTRL</style>
+                    <wildcard>*.csv;*.*;*</wildcard>
+                    <tooltip>Enter a filename to import.</tooltip>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stFormat">
+                    <label>Format</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbFormat">
+                    <content>
+					  <item>text</item>
+					  <item>csv</item>
+					  <item>binary</item>
+					</content>
+                    <selection>0</selection>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stEncoding">
+                    <label>Encoding</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbEncoding">
+                    <content/>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN|wxCB_SORT</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Columns</label>
+            <object class="wxPanel" name="pnlColumns">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>1</growablerows>
+                <growablecols>0</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stColumnsToImport">
+                    <label>Columns to import</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckListBox" name="lstColumnsToImport">
+                    <content/>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Misc. Options</label>
+            <object class="wxPanel" name="pnlMiscOptions">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stOids">
+                    <label>OID</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkOids">
+                    <label></label>
+                    <checked>0</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stHeader">
+                    <label>Header</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkHeader">
+                    <label></label>
+                    <checked>0</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stDelimiter">
+                    <label>Delimiter</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+				  <object class="wxComboBox" name="cbDelimiter">
+					<content>
+					  <item>;</item>
+					  <item>,</item>
+					  <item>|</item>
+					</content>
+					<style>wxCB_DROPDOWN</style>
+				  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Quote Options</label>
+            <object class="wxPanel" name="pnlQuoteOptions">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stQuote">
+                    <label>Quote</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+				  <object class="wxComboBox" name="cbQuote">
+				    <content>
+					  <item>&quot;</item>
+					  <item>'</item>
+				    </content>
+				    <style>wxCB_DROPDOWN</style>
+				  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stEscape">
+                    <label>Escape</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+				  <object class="wxComboBox" name="cbEscape">
+				    <content>
+					  <item>&quot;</item>
+					  <item>'</item>
+				    </content>
+				    <style>wxCB_DROPDOWN</style>
+				  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>NULL Options</label>
+            <object class="wxPanel" name="pnlNullOptions">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>1</growablerows>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stNullString">
+                    <label>NULL string</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtNull"/>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stIgnoreForColumns">
+                    <label>Ignore for columns</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckListBox" name="lstIgnoreForColumns">
+                    <content/>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+        </object>
+        <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxGROW|wxALIGN_CENTRE</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>1</cols>
+          <growablecols>0</growablecols>
+          <object class="sizeritem">
+            <object class="wxGauge" name="gauge">
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>4</cols>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_HELP">
+              <label>Help</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;Import</label>
+              <default>1</default>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+    </object>
+  </object>
+</resource>

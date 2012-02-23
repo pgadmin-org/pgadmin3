@@ -66,6 +66,7 @@
 #include "frm/frmDatabaseDesigner.h"
 #include "frm/frmQuery.h"
 #include "frm/frmEditGrid.h"
+#include "frm/frmImport.h"
 #include "dlg/dlgServer.h"
 #include "dlg/dlgDatabase.h"
 #include "dlg/dlgSearchObject.h"
@@ -413,6 +414,7 @@ void frmMain::CreateMenus()
 	new backupGlobalsFactory(menuFactories, toolsMenu, 0);
 	new backupServerFactory(menuFactories, toolsMenu, 0);
 	new restoreFactory(menuFactories, toolsMenu, 0);
+	new importFactory(menuFactories, toolsMenu, 0);
 
 	new grantWizardFactory(menuFactories, toolsMenu, 0);
 	new mainConfigFactory(menuFactories, cfgMenu, 0);

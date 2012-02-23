@@ -63,7 +63,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgRule.xrc \
 	$(srcdir)/ui/dlgSchedule.xrc \
 	$(srcdir)/ui/dlgSchema.xrc \
-        $(srcdir)/ui/dlgSearchObject.xrc \
+	$(srcdir)/ui/dlgSearchObject.xrc \
 	$(srcdir)/ui/dlgSelectConnection.xrc \
 	$(srcdir)/ui/dlgSequence.xrc \
 	$(srcdir)/ui/dlgServer.xrc \
@@ -86,6 +86,7 @@ TMP_ui += \
 	$(srcdir)/ui/frmExport.xrc \
 	$(srcdir)/ui/frmGrantWizard.xrc \
 	$(srcdir)/ui/frmHint.xrc \
+	$(srcdir)/ui/frmImport.xrc \
 	$(srcdir)/ui/frmMaintenance.xrc \
 	$(srcdir)/ui/frmOptions.xrc \
 	$(srcdir)/ui/frmPassword.xrc \

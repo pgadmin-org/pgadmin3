@@ -20,6 +20,7 @@ pgadmin3_SOURCES += \
   	$(srcdir)/include/frm/frmGrantWizard.h \
   	$(srcdir)/include/frm/frmHbaConfig.h \
 	$(srcdir)/include/frm/frmHint.h \
+	$(srcdir)/include/frm/frmImport.h \
 	$(srcdir)/include/frm/frmMain.h \
 	$(srcdir)/include/frm/frmMainConfig.h \
 	$(srcdir)/include/frm/frmMaintenance.h \
