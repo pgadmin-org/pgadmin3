@@ -1411,7 +1411,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 			if (pid != backend_pid)
 			{
 				// Add the query content to the queries array
-				queries.Add(dataSet1->GetVal(wxT("current_query")));
+				queries.Add(dataSet1->GetVal(wxT("query")));
 
 				if (row >= statusList->GetItemCount())
 				{
