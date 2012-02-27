@@ -185,7 +185,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	sqltext = new ctlSQLBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
 	//Now, the Objects Browser
-	wxSizer *browserSizer = new wxBoxSizer(wxALL);
+	wxSizer *browserSizer = new wxBoxSizer(wxHORIZONTAL);
 	browserPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 	// Add the database designer
@@ -425,7 +425,7 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 			}
 			else if(existsTable && answer == wxID_OK)
 			{
-				wxMessageBox(_("You have to change the table name because there is already a table with that name in this model."), _("Table already existing"), wxICON_EXCLAMATION);
+				wxMessageBox(_("You have to change the table name because there is already a table with that name in this model."), _("Table already existing"), wxICON_EXCLAMATION | wxOK);
 			}
 		}
 		while (answer != wxID_CANCEL && !done);
@@ -491,7 +491,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 	}
 	else
 	{
-		wxMessageBox(_("Warning about adding a column to a table without a diagram"), _("Please create a model diagram first"), wxICON_EXCLAMATION);
+		wxMessageBox(_("Warning about adding a column to a table without a diagram"), _("Please create a model diagram first"), wxICON_EXCLAMATION | wxOK);
 	}
 }
 
@@ -779,7 +779,7 @@ wxColour frmDatabaseDesigner::GetServerColour(pgConn *connection)
 				while (serveritem)
 				{
 					object = browser->GetObject(serveritem);
-					if (object->IsCreatedBy(serverFactory))
+					if (object && object->IsCreatedBy(serverFactory))
 					{
 						server = (pgServer *)object;
 						if (server->GetConnected() &&
@@ -833,7 +833,11 @@ void frmDatabaseDesigner::OnChangeConnection(wxCommandEvent &event)
 			pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
 			if (newconn && createdNewConn)
 			{
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
+#if wxCHECK_VERSION(2, 9, 0)
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData*)newconn);
+#else
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void*)newconn);
+#endif
 				cbConnection->SetSelection(sel);
 				OnChangeConnection(event);
 			}

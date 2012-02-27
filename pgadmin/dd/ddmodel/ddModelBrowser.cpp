@@ -108,7 +108,7 @@ void ddModelBrowser::OnBeginDrag(wxTreeEvent &event)
 		wxDragResult result = dragSource.DoDragDrop(wxDrag_CopyOnly);
 		if(result != wxDragCopy)
 		{
-			wxMessageBox(wxT("Invalid kind of data during drag and drop operation"), wxT("Drag and drop error"), wxICON_ERROR);
+			wxMessageBox(wxT("Invalid kind of data during drag and drop operation"), wxT("Drag and drop error"), wxICON_ERROR | wxOK);
 		}
 	}
 }

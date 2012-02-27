@@ -425,7 +425,7 @@ void frmConfig::DisplayHint(bool force)
 		str = _("No configuration setting detected that appears doubtful.");
 	}
 
-	wxMessageBox(str, _("Backend Configuration Hints"), wxICON_EXCLAMATION);
+	wxMessageBox(str, _("Backend Configuration Hints"), wxICON_EXCLAMATION | wxOK);
 }
 
 

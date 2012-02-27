@@ -1008,7 +1008,11 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 			pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
 			if (newconn && createdNewConn)
 			{
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
+#if wxCHECK_VERSION(2, 9, 0)
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData*)newconn);
+#else
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void*)newconn);
+#endif
 				cbConnection->SetSelection(sel);
 				OnChangeConnection(ev);
 			}
@@ -1792,7 +1796,7 @@ void frmQuery::SetLineEndingStyle()
 	        (haveLF && haveCRLF) ||
 	        (haveCR && haveCRLF))
 	{
-		wxMessageBox(_("This file contains mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION);
+		wxMessageBox(_("This file contains mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION | wxOK);
 		sqlQuery->ConvertEOLs(mode);
 		changed = true;
 		setExtendedTitle();
@@ -2119,7 +2123,7 @@ bool frmQuery::updateFromGqb(bool executing)
 	{
 		if (controller->getTableCount() > 0)
 		{
-			wxMessageBox(_("No SQL query was generated."), _("Graphical Query Builder"), wxICON_INFORMATION);
+			wxMessageBox(_("No SQL query was generated."), _("Graphical Query Builder"), wxICON_INFORMATION | wxOK);
 		}
 		gqbUpdateRunning = false;
 		return false;
@@ -2197,7 +2201,7 @@ void frmQuery::OnExecScript(wxCommandEvent &event)
 	// Required because the pgScript parser isn't currently thread-safe :-(
 	if (frmQuery::ms_pgScriptRunning == true)
 	{
-		wxMessageBox(_("pgScript already running."), _("Concurrent execution of pgScripts is not supported at this time."), wxICON_WARNING);
+		wxMessageBox(_("pgScript already running."), _("Concurrent execution of pgScripts is not supported at this time."), wxICON_WARNING | wxOK);
 		return;
 	}
 	frmQuery::ms_pgScriptRunning = true;
@@ -2298,7 +2302,7 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 		wxString selection = sqlQuery->GetSelectedText();
 		if (selection.IsEmpty())
 		{
-			wxMessageBox(_("This macro includes a text substitution. Please select some text in the SQL pane and re-run the macro."), _("Execute macro"), wxICON_EXCLAMATION);
+			wxMessageBox(_("This macro includes a text substitution. Please select some text in the SQL pane and re-run the macro."), _("Execute macro"), wxICON_EXCLAMATION | wxOK);
 			return;
 		}
 		query.Replace(wxT("$SELECTION$"), selection);
@@ -2897,7 +2901,7 @@ wxColour frmQuery::GetServerColour(pgConn *connection)
 				while (serveritem)
 				{
 					object = browser->GetObject(serveritem);
-					if (object->IsCreatedBy(serverFactory))
+					if (object && object->IsCreatedBy(serverFactory))
 					{
 						server = (pgServer *)object;
 						if (server->GetConnected() &&

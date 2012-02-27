@@ -1086,7 +1086,7 @@ void frmMain::OnAuiNotebookPageClose(wxAuiNotebookEvent &event)
 	// Prevent the user closing the four main tabs.
 	if (event.GetSelection() < 4)
 	{
-		wxMessageBox(_("This tab cannot be closed."), _("Close tab"), wxICON_INFORMATION);
+		wxMessageBox(_("This tab cannot be closed."), _("Close tab"), wxICON_INFORMATION | wxOK);
 		event.Veto();
 		return;
 	}

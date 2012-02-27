@@ -253,7 +253,7 @@ void dlgEditGridOptions::OnChangeSize(wxSizeEvent &ev)
 void dlgEditGridOptions::OnValidate(wxCommandEvent &ev)
 {
 	if (Validate())
-		wxMessageBox(_("Filter string syntax validates OK!"), _("Syntax Validation"), wxICON_INFORMATION);
+		wxMessageBox(_("Filter string syntax validates OK!"), _("Syntax Validation"), wxICON_INFORMATION | wxOK);
 }
 
 void dlgEditGridOptions::OnCboColumnsChange(wxCommandEvent &ev)

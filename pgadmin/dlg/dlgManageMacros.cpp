@@ -174,7 +174,7 @@ void dlgManageMacros::SetMacro(bool silent)
 	else if ((Name.IsEmpty() && !query.IsEmpty()) || (!Name.IsEmpty() && query.IsEmpty()))
 	{
 		if (!silent)
-			wxMessageBox(_("You must specify a query and a name for the macro"), _("Save macro"), wxICON_EXCLAMATION);
+			wxMessageBox(_("You must specify a query and a name for the macro"), _("Save macro"), wxICON_EXCLAMATION | wxOK);
 		return;
 	}
 	else

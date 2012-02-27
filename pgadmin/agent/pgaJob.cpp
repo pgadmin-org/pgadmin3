@@ -149,7 +149,7 @@ pgObject *pgaJob::Refresh(ctlTree *browser, const wxTreeItemId item)
 	pgObject *job = 0;
 
 	pgObject *obj = browser->GetObject(browser->GetItemParent(item));
-	if (obj->IsCollection())
+	if (obj && obj->IsCollection())
 		job = jobFactory.CreateObjects((pgCollection *)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
 
 	return job;

@@ -664,7 +664,7 @@ void pgConn::Notice(const char *msg)
 
 		// Display the notice if required
 		if (settings->GetShowNotices())
-			wxMessageBox(str, _("Notice"), wxICON_INFORMATION);
+			wxMessageBox(str, _("Notice"), wxICON_INFORMATION | wxOK);
 
 		wxLogNotice(wxT("%s"), str.Trim().c_str());
 	}

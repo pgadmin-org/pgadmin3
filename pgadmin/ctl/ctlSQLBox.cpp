@@ -236,7 +236,7 @@ bool ctlSQLBox::ReplaceAll(const wxString &find, const wxString &replace, bool w
 
 	wxString msg;
 	msg.Printf(wxPLURAL("%d replacement made.", "%d replacements made.", count), count);
-	wxMessageBox(msg, _("Replace all"));
+	wxMessageBox(msg, _("Replace all"), wxOK | wxICON_INFORMATION);
 
 	if (count)
 		return true;

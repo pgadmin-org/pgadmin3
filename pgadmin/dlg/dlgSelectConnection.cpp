@@ -322,7 +322,7 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 				while (serveritem)
 				{
 					object = browser->GetObject(serveritem);
-					if (object->IsCreatedBy(serverFactory))
+					if (object && object->IsCreatedBy(serverFactory))
 					{
 						server = (pgServer *)object;
 						cbServer->Append(server->GetIdentifier(), (void *)server);

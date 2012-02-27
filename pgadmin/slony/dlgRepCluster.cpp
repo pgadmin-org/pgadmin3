@@ -470,7 +470,7 @@ int dlgRepCluster::Go(bool modal)
 				while (serveritem)
 				{
 					object = browser->GetObject(serveritem);
-					if (object->IsCreatedBy(serverFactory))
+					if (object && object->IsCreatedBy(serverFactory))
 					{
 						server = (pgServer *)object;
 						if (server == database->GetServer())
@@ -1130,7 +1130,7 @@ int dlgRepClusterUpgrade::Go(bool modal)
 			while (serveritem)
 			{
 				object = browser->GetObject(serveritem);
-				if (object->IsCreatedBy(serverFactory))
+				if (object && object->IsCreatedBy(serverFactory))
 				{
 					server = (pgServer *)object;
 					cbServer->Append(browser->GetItemText(server->GetId()), (void *)server);

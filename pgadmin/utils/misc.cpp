@@ -175,7 +175,11 @@ wxString NumToStr(double value)
 wxString NumToStr(wxLongLong value)
 {
 	wxString str;
+#if wxCHECK_VERSION(2, 9, 0)
+	str.Printf("%" wxLongLongFmtSpec "d", value.GetValue());
+#else
 	str.Printf(wxT("%") wxLongLongFmtSpec wxT("d"), value.GetValue());
+#endif
 	return str;
 }
 

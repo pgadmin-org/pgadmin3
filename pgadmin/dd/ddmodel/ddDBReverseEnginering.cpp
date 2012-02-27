@@ -172,7 +172,7 @@ OID ddImportDBUtils::getSchemaOID(pgConn *connection, wxString schemaName)
 
 	if(times > 1 || schemaOID == -1)
 	{
-		wxMessageBox(_("Schema not found"), _("getting table OID"),  wxICON_ERROR);
+		wxMessageBox(_("Schema not found"), _("getting table OID"),  wxICON_ERROR | wxOK);
 		return -1;
 	}
 	return schemaOID;
@@ -213,7 +213,7 @@ OID ddImportDBUtils::getTableOID(pgConn *connection, wxString schemaName, wxStri
 
 	if(times > 1 || tableOID == -1)
 	{
-		wxMessageBox(_("Table not found"), _("getting table OID"),  wxICON_ERROR);
+		wxMessageBox(_("Table not found"), _("getting table OID"),  wxICON_ERROR | wxOK);
 		return -1;
 	}
 	return tableOID;
@@ -657,7 +657,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 								if(baseUkIdxSourceCol != baseUkIdxSourceCol)
 								{
 									error = true;
-									wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+									wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 									return;
 								}
 							}
@@ -670,7 +670,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 						//Last check of consistency
 						if(fkFromPk == false && ukIndex < 0)
 						{
-							wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+							wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 							return;
 						}
 
@@ -776,7 +776,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 						}
 						else
 						{
-							wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR);
+							wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 							return;
 						}
 
@@ -1136,7 +1136,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 					if(baseUkIdxSourceCol != baseUkIdxSourceCol)
 					{
 						error = true;
-						wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+						wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 						return false;
 					}
 				}
@@ -1149,7 +1149,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 			//Last check of consistency
 			if(fkFromPk == false && ukIndex < 0)
 			{
-				wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+				wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 				return false;
 			}
 
@@ -1249,7 +1249,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 			}
 			else
 			{
-				wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR);
+				wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
 				return false;
 			}
 			delete sourceStubTable;
@@ -1319,7 +1319,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 	}
 	else
 	{
-		wxMessageBox(_("Error fk is repeated"), _("Error comparing relationships"),  wxICON_ERROR);
+		wxMessageBox(_("Error fk is repeated"), _("Error comparing relationships"),  wxICON_ERROR | wxOK);
 	}
 	delete foreignKeys;
 

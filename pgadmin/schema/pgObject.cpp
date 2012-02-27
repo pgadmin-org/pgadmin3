@@ -1171,7 +1171,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
 			while (item)
 			{
 				pgDatabase *db = (pgDatabase *)browser->GetObject(item);
-				if (db->GetMetaType() == PGM_DATABASE && db->GetName() == dbname)
+				if (db && db->GetMetaType() == PGM_DATABASE && db->GetName() == dbname)
 				{
 					if (db->GetConnected())
 						conn = db->GetConnection();

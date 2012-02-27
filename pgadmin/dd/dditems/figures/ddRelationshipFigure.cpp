@@ -241,7 +241,7 @@ void ddRelationshipFigure::updateForeignKey()
 	}
 	else
 	{
-		wxMessageBox(wxT("Error invalid kind of start figure at relationship"), wxT("Error invalid kind of start figure at relationship"), wxICON_ERROR);
+		wxMessageBox(wxT("Error invalid kind of start figure at relationship"), wxT("Error invalid kind of start figure at relationship"), wxICON_ERROR | wxOK);
 	}
 }
 

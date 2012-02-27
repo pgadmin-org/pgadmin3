@@ -83,7 +83,7 @@ bool ddDropTarget::OnDropText(wxCoord x, wxCoord y, const wxString &text)
 	{
 		if(target->includes(t))
 		{
-			wxMessageBox(_("Table exists already at this diagram"), _("Drag and drop warning"), wxICON_EXCLAMATION);
+			wxMessageBox(_("Table exists already at this diagram"), _("Drag and drop warning"), wxICON_EXCLAMATION | wxOK);
 			return true;
 		}
 		else

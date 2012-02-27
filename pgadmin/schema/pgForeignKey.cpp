@@ -218,7 +218,7 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		while (item)
 		{
 			pgTable *table = (pgTable *)browser->GetObject(item);
-			if (table->IsCreatedBy(tableFactory))
+			if (table && table->IsCreatedBy(tableFactory))
 			{
 				coveringIndex = table->GetCoveringIndex(browser, fkColumns);
 				break;

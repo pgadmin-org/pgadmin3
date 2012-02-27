@@ -139,7 +139,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 	if(tables.Count() != options.Count())
 	{
 		// shouldn't it be a WXASSERT?
-		wxMessageBox(_("Invalid number of arguments in call of function generate tables of list"), _("Error at generation process"),  wxICON_ERROR);
+		wxMessageBox(_("Invalid number of arguments in call of function generate tables of list"), _("Error at generation process"),  wxICON_ERROR | wxOK);
 		return wxEmptyString;
 	}
 
@@ -150,7 +150,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 		if(table == NULL)
 		{
 			// shouldn't it be a WXASSERT?
-			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error at generation process"),  wxICON_ERROR);
+			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error at generation process"),  wxICON_ERROR | wxOK);
 			return wxEmptyString;
 		}
 	}
@@ -240,14 +240,14 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 
 	if(countAlter > 0 && connection == NULL)
 	{
-		wxMessageBox(_("No connection found when building ALTER objects DDL."), _("Error at generation process"),  wxICON_ERROR);
+		wxMessageBox(_("No connection found when building ALTER objects DDL."), _("Error at generation process"),  wxICON_ERROR | wxOK);
 		return out;
 	}
 	else if(countAlter > 0 && connection != NULL)
 	{
 		if(schemaName.IsEmpty())
 		{
-			wxMessageBox(_("Schema defined when building ALTER TABLE DDL"), _("Error at generation process"),  wxICON_ERROR);
+			wxMessageBox(_("Schema defined when building ALTER TABLE DDL"), _("Error at generation process"),  wxICON_ERROR | wxOK);
 			return out;
 		}
 		out += wxT(" \n");
@@ -559,13 +559,13 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 	xmlWriter = xmlNewTextWriterFilename(file.mb_str(wxConvUTF8), 0);
 	if (xmlWriter == NULL)
 	{
-		wxMessageBox(_("Failed to write the model file!"), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("Failed to write the model file!"), _("Error"), wxICON_ERROR | wxOK);
 		return false;
 	}
 	rc = xmlTextWriterStartDocument(xmlWriter, NULL, "UTF-8" , NULL);
 	if(rc < 0)
 	{
-		wxMessageBox(_("Failed to write the model file!"), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("Failed to write the model file!"), _("Error"), wxICON_ERROR | wxOK);
 		return false;
 	}
 	else

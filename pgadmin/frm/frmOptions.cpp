@@ -548,7 +548,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	if (!pickerPostgresqlPath->GetPath().IsEmpty() && !isPgApp(pickerPostgresqlPath->GetPath() + wxT("/pg_dump")))
 #endif
 	{
-		wxMessageBox(_("The PostgreSQL bin path specified is not valid or does not contain a PostgreSQL pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("The PostgreSQL bin path specified is not valid or does not contain a PostgreSQL pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		return;
 	}
 
@@ -558,7 +558,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	if (!pickerEnterprisedbPath->GetPath().IsEmpty() && !isEdbApp(pickerEnterprisedbPath->GetPath() + wxT("/pg_dump")))
 #endif
 	{
-		wxMessageBox(_("The EnterpriseDB bin path specified is not valid or does not contain an EnterpriseDB pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("The EnterpriseDB bin path specified is not valid or does not contain an EnterpriseDB pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		return;
 	}
 
@@ -568,7 +568,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	if (!pickerGPDBPath->GetPath().IsEmpty() && !isGpApp(pickerGPDBPath->GetPath() + wxT("/pg_dump")))
 #endif
 	{
-		wxMessageBox(_("The Greenplum bin path specified is not valid or does not contain a Greenplum pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("The Greenplum bin path specified is not valid or does not contain a Greenplum pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		return;
 	}
 
@@ -576,7 +576,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	txtPgHelpPath->SetValue(CleanHelpPath(txtPgHelpPath->GetValue()));
 	if (!HelpPathValid(txtPgHelpPath->GetValue()))
 	{
-		wxMessageBox(_("An invalid PostgreSQL help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("An invalid PostgreSQL help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		txtPgHelpPath->SetFocus();
 		return;
 	}
@@ -584,7 +584,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	txtEdbHelpPath->SetValue(CleanHelpPath(txtEdbHelpPath->GetValue()));
 	if (!HelpPathValid(txtEdbHelpPath->GetValue()))
 	{
-		wxMessageBox(_("An invalid EnterpriseDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("An invalid EnterpriseDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		txtEdbHelpPath->SetFocus();
 		return;
 	}
@@ -592,7 +592,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	txtGpHelpPath->SetValue(CleanHelpPath(txtGpHelpPath->GetValue()));
 	if (!HelpPathValid(txtGpHelpPath->GetValue()))
 	{
-		wxMessageBox(_("An invalid GreenplumDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("An invalid GreenplumDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		txtGpHelpPath->SetFocus();
 		return;
 	}
@@ -600,7 +600,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	txtSlonyHelpPath->SetValue(CleanHelpPath(txtSlonyHelpPath->GetValue()));
 	if (!HelpPathValid(txtSlonyHelpPath->GetValue()))
 	{
-		wxMessageBox(_("An invalid Slony help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+		wxMessageBox(_("An invalid Slony help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR | wxOK);
 		txtSlonyHelpPath->SetFocus();
 		return;
 	}
@@ -864,7 +864,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	// Did any display options change? Display this message last, so it's
 	// in the selected language.
 	if (changed)
-		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);
+		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION | wxOK);
 
 	Destroy();
 }

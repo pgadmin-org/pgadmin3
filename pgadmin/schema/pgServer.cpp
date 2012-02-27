@@ -225,7 +225,10 @@ bool pgServer::Disconnect(frmMain *form)
 		versionNum = wxT("");
 		lastSystemOID = 0;
 	}
-	UpdateIcon(form->GetBrowser());
+
+	if (form)
+		UpdateIcon(form->GetBrowser());
+
 	return true;
 }
 

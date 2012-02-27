@@ -576,7 +576,7 @@ void ReportGridPage::populateGrid()
 		}
 		else if(table == NULL)
 		{
-			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error at generation process"),  wxICON_ERROR);
+			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error at generation process"),  wxICON_ERROR | wxOK);
 			return;
 		}
 	}
@@ -595,7 +595,7 @@ void ReportGridPage::populateGrid()
 		}
 		else if(table == NULL)
 		{
-			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error importing at generation process"),  wxICON_ERROR);
+			wxMessageBox(_("Metadata of table to be generated not found at database designer model"), _("Error importing at generation process"),  wxICON_ERROR | wxOK);
 			return;
 		}
 

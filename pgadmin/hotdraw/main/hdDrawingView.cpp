@@ -54,7 +54,13 @@ hdDrawingView::hdDrawingView(int diagram, wxWindow *ddParent, hdDrawingEditor *e
 	drawing = initialDrawing;
 	drawingEditor = editor;
 	canvasSize = size;
+
+#if wxCHECK_VERSION(2, 9, 0)
+	FitInside();
+#else
 	SetVirtualSizeHints(canvasSize);
+#endif
+
 	// Hack to avoid selection rectangle drawing bug
 	drawSelRect = false;
 	// Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event

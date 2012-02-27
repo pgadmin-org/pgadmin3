@@ -946,7 +946,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 	while (item)
 	{
 		data = browser->GetObject(item);
-		if (data->IsCreatedBy(databaseFactory.GetCollectionFactory()))
+		if (data && data->IsCreatedBy(databaseFactory.GetCollectionFactory()))
 			break;
 		// Get the next item
 		item = browser->GetNextChild(server->GetId(), cookie);
@@ -963,7 +963,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 	while (item)
 	{
 		data = browser->GetObject(item);
-		if (data->IsCreatedBy(databaseFactory) && data->GetName() == lastDatabase)
+		if (data && data->IsCreatedBy(databaseFactory) && data->GetName() == lastDatabase)
 			break;
 		// Get the next item
 		item = browser->GetNextChild(lastItem, cookie);
@@ -983,7 +983,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 	while (item)
 	{
 		data = browser->GetObject(item);
-		if (data->GetMetaType() == PGM_SCHEMA)
+		if (data && data->GetMetaType() == PGM_SCHEMA)
 			break;
 		// Get the next item
 		item = browser->GetNextChild(lastItem, cookie);
@@ -999,7 +999,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 	while (item)
 	{
 		data = browser->GetObject(item);
-		if (data->GetMetaType() == PGM_SCHEMA && data->GetName() == lastSchema)
+		if (data && data->GetMetaType() == PGM_SCHEMA && data->GetName() == lastSchema)
 			break;
 		// Get the next item
 		item = browser->GetNextChild(lastItem, cookie);
@@ -1162,7 +1162,7 @@ void frmMain::StoreServers()
 			while (serveritem)
 			{
 				server = (pgServer *)browser->GetItemData(serveritem);
-				if (server->IsCreatedBy(serverFactory))
+				if (server != NULL && server->IsCreatedBy(serverFactory))
 				{
 					wxString key;
 					++numServers;
@@ -1256,7 +1256,7 @@ pgServer *frmMain::ConnectToServer(const wxString &servername, bool restore)
 			while (serveritem)
 			{
 				object = browser->GetObject(serveritem);
-				if (object->IsCreatedBy(serverFactory))
+				if (object && object->IsCreatedBy(serverFactory))
 				{
 					server = (pgServer *)object;
 					if (server->GetDescription() == servername)
