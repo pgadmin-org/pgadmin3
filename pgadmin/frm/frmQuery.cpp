@@ -2959,20 +2959,19 @@ void frmQuery::LoadQueries()
 		{
 			key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 
-			if (!key)
-				continue;
-
-			if (WXSTRING_FROM_XML(key) != wxT(""))
+			if (key)
 			{
-				wxString query = WXSTRING_FROM_XML(key);
-				wxString tmp = query;
-				tmp.Replace(wxT("\n"), wxT(" "));
-				tmp.Replace(wxT("\r"), wxT(" "));
-				sqlQueries->Append(tmp);
-				histoQueries.Add(query);
+				if (WXSTRING_FROM_XML(key) != wxT(""))
+				{
+					wxString query = WXSTRING_FROM_XML(key);
+					wxString tmp = query;
+					tmp.Replace(wxT("\n"), wxT(" "));
+					tmp.Replace(wxT("\r"), wxT(" "));
+					sqlQueries->Append(tmp);
+					histoQueries.Add(query);
+				}
+				xmlFree(key);
 			}
-
-			xmlFree(key);
 		}
 
 		cur = cur->next;
