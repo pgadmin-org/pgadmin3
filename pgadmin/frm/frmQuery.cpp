@@ -1009,9 +1009,9 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 			if (newconn && createdNewConn)
 			{
 #if wxCHECK_VERSION(2, 9, 0)
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData*)newconn);
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData *)newconn);
 #else
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void*)newconn);
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
 #endif
 				cbConnection->SetSelection(sel);
 				OnChangeConnection(ev);
@@ -1036,6 +1036,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 	{
 		conn = (pgConn *)cbConnection->GetClientData(sel);
 		sqlResult->SetConnection(conn);
+		pgScript->SetConnection(conn);
 		title = wxT("Query - ") + cbConnection->GetValue();
 		setExtendedTitle();
 
