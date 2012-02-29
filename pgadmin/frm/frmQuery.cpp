@@ -1029,6 +1029,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 	{
 		conn = (pgConn *)cbConnection->GetClientData(sel);
 		sqlResult->SetConnection(conn);
+		pgScript->SetConnection(conn);
 		title = wxT("Query - ") + cbConnection->GetValue();
 		setExtendedTitle();
 
