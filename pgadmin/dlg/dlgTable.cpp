@@ -1458,12 +1458,10 @@ wxString dlgTable::GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &v
 wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, wxString val)
 {
 	wxString str = ctl->GetValue();
-	long v = StrToDouble(str);
-	if (str.IsEmpty() || v < 0)
-		v = -1;
+	if (str.IsEmpty() || str.StartsWith(wxT("-")))
+		str = wxT("-1");
 
-	long v2 = StrToDouble(val);
-	changed |= (v != v2);
+	changed |= (str != val);
 	return str;
 }
 
