@@ -59,7 +59,7 @@ void ddSouthTableSizeHandle::invokeStep(hdMouseEvent &event, hdDrawingView *view
 {
 	int y = event.GetPosition().y;
 	ddTableFigure *table = (ddTableFigure *) getOwner();
-	wxFont font = hdFontAttribute::defaultFont;
+	wxFont font = *hdFontAttribute::defaultFont;
 	int colOffset = table->getColDefaultHeight(font);
 
 	int divBy = (table->getTotalColumns() - table->getColumnsWindow());

@@ -229,6 +229,8 @@ bool pgAdmin3::OnInit()
 		locale->AddCatalog(wxT("pgadmin3"));
 	}
 
+	//Initialize Font
+	hdFontAttribute::InitFont();
 
 	long langCount = 0;
 	const wxLanguageInfo *langInfo;

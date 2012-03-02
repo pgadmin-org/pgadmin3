@@ -287,7 +287,7 @@ void hdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 void hdDrawingEditor::changeDefaultFiguresFont()
 {
-	hdFontAttribute::defaultFont = wxGetFontFromUser(editorOwner, hdFontAttribute::defaultFont, wxT("Select a default font for figures..."));
+	*hdFontAttribute::defaultFont = wxGetFontFromUser(editorOwner, *hdFontAttribute::defaultFont, wxT("Select a default font for figures..."));
 }
 
 bool hdDrawingEditor::modelHasChanged()

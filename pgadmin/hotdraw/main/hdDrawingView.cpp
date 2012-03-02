@@ -339,7 +339,7 @@ void hdDrawingView::simpleTextToolChangeHandler(wxCommandEvent &event)
 		//getFontMetrics
 		int width, height;
 		wxWindowDC dc(this);
-		dc.SetFont(hdFontAttribute::defaultFont);
+		dc.SetFont(*hdFontAttribute::defaultFont);
 		if(simpleTextFigure->getText(true).length() > 5)
 			dc.GetTextExtent(simpleTextFigure->getText(true), &width, &height);
 		else

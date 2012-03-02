@@ -21,12 +21,12 @@
 #include "hotdraw/figures/defaultAttributes/hdFontAttribute.h"
 #include "hotdraw/figures/hdAttribute.h"
 
-wxFont hdFontAttribute::defaultFont = wxFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+wxFont* hdFontAttribute::defaultFont = NULL;
 
 hdFontAttribute::hdFontAttribute():
 	hdAttribute()
 {
-	fontAttributes = defaultFont;
+	fontAttributes = *defaultFont;
 }
 
 void hdFontAttribute::apply(wxBufferedDC &context)
@@ -42,4 +42,9 @@ void hdFontAttribute::callDefaultChangeDialog(wxWindow *owner)
 wxFont &hdFontAttribute::font()
 {
 	return fontAttributes;
+}
+
+void hdFontAttribute::InitFont()
+{
+	defaultFont = new wxFont(10, wxSWISS, wxNORMAL, wxNORMAL);
 }

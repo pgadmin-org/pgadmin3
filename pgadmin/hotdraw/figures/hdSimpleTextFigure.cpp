@@ -27,7 +27,7 @@
 hdSimpleTextFigure::hdSimpleTextFigure(wxString textString)
 {
 	textEditable = false;
-	font = hdFontAttribute::defaultFont;
+	font = *hdFontAttribute::defaultFont;
 	padding = 2;
 	setText(textString);
 	showMenu = false;
