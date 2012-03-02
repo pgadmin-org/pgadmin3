@@ -2572,7 +2572,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 			}
 			else
 			{
-				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", rowsTotal), rowsTotal), STATUSPOS_MSGS);
+				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
 
 				sqlResult->DisplayData();
@@ -2585,7 +2585,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 				showMessage(wxString::Format(wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows()), sqlResult->NumRows()), _("OK."));
 			}
-			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_ROWS);
 		}
 	}
 

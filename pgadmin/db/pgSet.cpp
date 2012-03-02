@@ -158,7 +158,7 @@ wxString pgSet::ColType(const int col) const
 		return colTypes[col];
 
 	wxString szSQL, szResult;
-	szSQL.Printf(wxT("SELECT format_type(oid,NULL) as typname FROM pg_type WHERE oid = %d"), ColTypeOid(col));
+	szSQL.Printf(wxT("SELECT format_type(oid,NULL) as typname FROM pg_type WHERE oid = %d"), (int)ColTypeOid(col));
 	szResult = ExecuteScalar(szSQL);
 	colTypes[col] = szResult;
 
@@ -173,7 +173,7 @@ wxString pgSet::ColFullType(const int col) const
 		return colFullTypes[col];
 
 	wxString szSQL, szResult;
-	szSQL.Printf(wxT("SELECT format_type(oid,%d) as typname FROM pg_type WHERE oid = %d"), ColTypeMod(col), ColTypeOid(col));
+	szSQL.Printf(wxT("SELECT format_type(oid,%d) as typname FROM pg_type WHERE oid = %d"), (int)ColTypeMod(col), (int)ColTypeOid(col));
 	szResult = ExecuteScalar(szSQL);
 	colFullTypes[col] = szResult;
 

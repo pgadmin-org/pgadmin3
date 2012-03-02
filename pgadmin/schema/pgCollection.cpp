@@ -93,7 +93,7 @@ void pgCollection::ShowList(const wxString &name, ctlTree *browser, ctlListView 
 void pgCollection::UpdateChildCount(ctlTree *browser, int substract)
 {
 	wxString label;
-	label.Printf(wxString(wxGetTranslation(GetName())) + wxT(" (%d)"), browser->GetChildrenCount(GetId(), false) - substract);
+	label.Printf(wxString(wxGetTranslation(GetName())) + wxT(" (%d)"), (int)browser->GetChildrenCount(GetId(), false) - substract);
 	browser->SetItemText(GetId(), label);
 }
 

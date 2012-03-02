@@ -1453,7 +1453,7 @@ void frmEditGrid::Go()
 		return;
 	}
 
-	SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", thread->DataSet()->NumRows()), thread->DataSet()->NumRows()), 0);
+	SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", (int)thread->DataSet()->NumRows()), (int)thread->DataSet()->NumRows()), 0);
 
 	sqlGrid->BeginBatch();
 

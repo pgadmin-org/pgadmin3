@@ -1303,7 +1303,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
 	for (loop = 1; loop <= numServers; ++loop)
 	{
-		key.Printf(wxT("Servers/%d/"), loop);
+		key.Printf(wxT("Servers/%d/"), (int)loop);
 
 		settings->Read(key + wxT("Server"), &servername, wxEmptyString);
 		settings->Read(key + wxT("HostAddr"), &hostaddr, wxEmptyString);
