@@ -146,7 +146,7 @@ void ddSelectKindFksDialog::CreateControls()
 
 	// The Cancel button
 
-	cancel = new wxButton ( this, wxID_CANCEL, wxT("&CANCEL"),
+	cancel = new wxButton ( this, wxID_CANCEL, wxT("&Cancel"),
 	                        wxDefaultPosition, wxDefaultSize, 0 );
 	okCancelBox->Add(cancel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 }
