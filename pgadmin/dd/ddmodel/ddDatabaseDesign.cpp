@@ -477,41 +477,6 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex, wxString schemaName
 	return out;
 }
 
-wxString ddDatabaseDesign::getNewTableName()
-{
-	wxString out, tmpStr;
-	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
-	hdIFigure *tmp;
-	ddTableFigure *table;
-	int indx = 0;
-	bool repeat;
-	do
-	{
-		repeat = false;
-		iterator->ResetIterator();
-		while(iterator->HasNext())
-		{
-			tmp = (hdIFigure *)iterator->Next();
-			if(tmp->getKindId() == DDTABLEFIGURE)
-			{
-				table = (ddTableFigure *)tmp;
-				tmpStr = wxString::Format(_("NewTable%d"), indx);
-
-				if(table->getTableName().IsSameAs(tmpStr))
-				{
-					indx++;
-					repeat = true;
-					break;
-				}
-			}
-		}
-	}
-	while(repeat);
-	delete iterator;
-	out = wxString::Format(_("NewTable%d"), indx);
-	return out;
-}
-
 ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 {
 	hdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();

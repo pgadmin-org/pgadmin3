@@ -146,7 +146,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawing
 	switch(event.GetId())
 	{
 		case MNU_DDADDCOLUMN:
-			nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
+			nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"));
 			answer = nameDialog->ShowModal();
 			if (answer == wxID_OK)
 			{

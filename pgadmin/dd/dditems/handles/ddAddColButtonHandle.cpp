@@ -37,7 +37,7 @@ ddAddColButtonHandle::~ddAddColButtonHandle()
 void ddAddColButtonHandle::invokeStart(hdMouseEvent &event, hdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure *) getOwner();
-	wxTextEntryDialog nameDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
+	wxTextEntryDialog nameDialog(view, wxT("New column name"), wxT("Add a column"));
 	bool again;
 	do
 	{

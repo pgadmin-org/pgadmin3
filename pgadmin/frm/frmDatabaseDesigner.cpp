@@ -396,7 +396,7 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 
 		ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 		    this,
-		    design->getNewTableName(),
+		    wxEmptyString,
 		    wxEmptyString,
 		    NULL
 		);

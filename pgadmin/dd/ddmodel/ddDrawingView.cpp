@@ -41,7 +41,7 @@ void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 		case MNU_NEWTABLE:
 			ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 			    this,
-			    ed->getDesign()->getNewTableName(),
+			    wxEmptyString,
 			    wxEmptyString,
 			    NULL
 			);

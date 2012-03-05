@@ -52,7 +52,6 @@ public:
 	wxString generateModel(wxString schemaName);
 	wxString generateList(wxArrayString tables, wxArrayInt options, pgConn *connection = NULL, wxString schemaName = wxEmptyString);
 	bool validateModel(wxString &errors);
-	wxString getNewTableName();
 	ddTableFigure *getSelectedTable(int diagramIndex);
 	ddTableFigure *getTable(wxString tableName);
 	bool writeXmlModel(wxString file);
