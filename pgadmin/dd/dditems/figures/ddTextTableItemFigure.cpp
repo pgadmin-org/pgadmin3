@@ -365,7 +365,7 @@ void ddTextTableItemFigure::createMenu(wxMenu &mnu)
 	if(getOwnerColumn()->isUniqueKey())
 		item->Check(true);
 	mnu.AppendSeparator();
-	submenu = new wxMenu(_("Column datatype"));
+	submenu = new wxMenu();
 	item = mnu.AppendSubMenu(submenu, _("Column datatype"));
 	if(getOwnerColumn()->isGeneratedForeignKey())
 		item->Enable(false);
