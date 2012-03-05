@@ -1978,7 +1978,7 @@ void frmQuery::OnQuickReport(wxCommandEvent &event)
 	rep->XmlAddSectionTableFromGrid(section, sqlResult);
 
 	wxString stats;
-	stats.Printf(wxT("%d rows with %d columns retrieved."), sqlResult->NumRows(), sqlResult->GetNumberCols());
+	stats.Printf(wxT("%ld rows with %d columns retrieved."), sqlResult->NumRows(), sqlResult->GetNumberCols());
 
 	rep->XmlSetSectionTableInfo(section, stats);
 
@@ -2571,7 +2571,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				sqlResult->DisplayData(true);
 
 				showMessage(wxString::Format(
-				                wxPLURAL("%d row retrieved.", "%d rows retrieved.", sqlResult->NumRows()),
+				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows()),
 				                sqlResult->NumRows()), _("OK."));
 			}
 			else
@@ -2589,7 +2589,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 				showMessage(wxString::Format(wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows()), sqlResult->NumRows()), _("OK."));
 			}
-			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
 		}
 	}
 

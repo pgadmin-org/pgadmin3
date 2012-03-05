@@ -228,7 +228,7 @@ wxString pgaSchedule::GetMinutesString()
 	{
 		if (minutes[x] == 't')
 		{
-			tmp.Printf(wxT("%.2d, "), x);
+			tmp.Printf(wxT("%.2d, "), (int)x);
 			res += tmp;
 			isWildcard = false;
 		}
@@ -260,7 +260,7 @@ wxString pgaSchedule::GetHoursString()
 	{
 		if (hours[x] == 't')
 		{
-			tmp.Printf(wxT("%.2d, "), x);
+			tmp.Printf(wxT("%.2d, "), (int)x);
 			res += tmp;
 			isWildcard = false;
 		}
@@ -359,7 +359,7 @@ wxString pgaSchedule::GetMonthdaysString()
 		{
 			if (x < 31)
 			{
-				tmp.Printf(wxT("%.2d, "), x + 1);
+				tmp.Printf(wxT("%.2d, "), (int)(x + 1));
 				res += tmp;
 			}
 			else

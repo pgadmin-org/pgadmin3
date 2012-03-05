@@ -270,7 +270,7 @@ bool dlgSelectDatabase::getValidConnectionString(wxString connStr, wxString &res
 	if (port != 0)
 	{
 		wxString portStr;
-		portStr.Printf(wxT("port=%d"), port);
+		portStr.Printf(wxT("port=%ld"), port);
 		resultStr += portStr + wxT(" ");
 	}
 
@@ -278,7 +278,7 @@ bool dlgSelectDatabase::getValidConnectionString(wxString connStr, wxString &res
 	if (connection_timeout != 0)
 	{
 		wxString strConnTimeOut;
-		strConnTimeOut.Printf(wxT("connection_timeout=%d"), connection_timeout);
+		strConnTimeOut.Printf(wxT("connection_timeout=%ld"), connection_timeout);
 		resultStr += strConnTimeOut + wxT(" ");
 	}
 
