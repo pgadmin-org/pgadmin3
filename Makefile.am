@@ -64,6 +64,7 @@ endif
 
 # We need to ensure the help cache is world writeable
 install-data-hook:
+	touch $(help_cache)
 	chmod 0666 $(help_cache)
 
 # Perform astyle cleanup per rules:
