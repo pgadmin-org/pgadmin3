@@ -407,7 +407,10 @@ void dlgProperty::CreateAdditionalPages()
 
 		fgsizer->AddGrowableCol(0);
 		fgsizer->AddGrowableRow(1);
-		fgsizer->AddGrowableRow(2);
+		if (fgsizer->GetRows() > 1)
+		{
+			fgsizer->AddGrowableRow(2);
+		}
 
 		sqlPane->SetAutoLayout(true);
 		sqlPane->SetSizer(fgsizer);

@@ -623,8 +623,12 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	setTools(false);
 	lastFileFormat = settings->GetUnicodeFile();
 
+	// Note that under GTK+, SetMaxLength() function may only be used with single line text controls.
+	// (see http://docs.wxwidgets.org/2.8/wx_wxtextctrl.html#wxtextctrlsetmaxlength)
+#ifndef __WXGTK__
 	msgResult->SetMaxLength(0L);
 	msgHistory->SetMaxLength(0L);
+#endif
 }
 
 
