@@ -55,13 +55,13 @@ dlgManageMacros::dlgManageMacros(wxWindow *parent, frmMain *form, queryMacroList
 	for (i = 1; i < 13; i++)
 	{
 		wxString key;
-		key.Printf(wxT("Alt-F%d"), i);
+		key.Printf(wxT("Alt-F%d"), (int)i);
 		AddKeyToList(num++, key);
 	}
 	for (i = 1; i < 11; i++)
 	{
 		wxString key;
-		key.Printf(wxT("Ctrl-%d"), i % 10); // in order of keys 1,2,...,8,9,0
+		key.Printf(wxT("Ctrl-%d"), (int)i % 10); // in order of keys 1,2,...,8,9,0
 		AddKeyToList(num++, key);
 	}
 	lstKeys->Show();
