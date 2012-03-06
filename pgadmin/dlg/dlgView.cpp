@@ -100,26 +100,20 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 void dlgView::CheckChange()
 {
 	wxString name = GetName();
-	if(!name.IsEmpty())
-	{
-		bool enable = true;
-		if (view)
-			enable = txtComment->GetValue() != view->GetComment()
-			         || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false)
-			         || cbOwner->GetValue() != view->GetOwner()
-			         || name != view->GetName();
-		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
-		EnableOK(enable);
-	}
-	else
-	{
-		bool enable = true;
+	bool enable = true;
 
-		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-		CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
+	CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+	CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
 
-		EnableOK(enable);
+	if (enable && view)
+	{
+		enable = txtComment->GetValue() != view->GetComment()
+		         || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false)
+		         || cbOwner->GetValue() != view->GetOwner()
+		         || name != view->GetName();
 	}
+
+	EnableOK(enable);
 }
 
 
