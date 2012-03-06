@@ -117,7 +117,11 @@ void dlgView::CheckChange()
 {
 	bool enable = true;
 	wxString name = GetName();
-	if(!name.IsEmpty())
+
+	CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+	CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
+
+	if(enable)
 	{
 		if (view)
 			enable = txtComment->GetValue() != view->GetComment()
@@ -125,9 +129,10 @@ void dlgView::CheckChange()
 			         || cbOwner->GetValue() != view->GetOwner()
 			         || cbSchema->GetValue() != view->GetSchema()->GetName()
 			         || name != view->GetName();
-		enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
+
 		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
+
 		if (connection->BackendMinimumVersion(9, 2))
 		{
 			if (view)
@@ -142,11 +147,6 @@ void dlgView::CheckChange()
 				enable = enable || (chkSecurityBarrier->GetValue());
 			}
 		}
-	}
-	else
-	{
-		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-		CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
 	}
 
 	EnableOK(enable);
