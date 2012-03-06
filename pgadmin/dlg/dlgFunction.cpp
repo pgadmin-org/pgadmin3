@@ -401,7 +401,7 @@ int dlgFunction::Go(bool modal)
 		// create mode
 		restrict = wxT("(typtype IN ('b', 'c', 'd', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
 		if (!settings->GetShowSystemObjects())
-			restrict += wxT(" AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
+			restrict += wxT(" AND nspname NOT LIKE E'pg\\\\_toast%' AND nspname NOT LIKE E'pg\\\\_temp%'");
 
 		DatatypeReader tr(database, restrict);
 		while (tr.HasMore())
