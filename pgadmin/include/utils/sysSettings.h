@@ -383,6 +383,8 @@ public:
 	void SetSystemFont(const wxFont &font);
 	wxFont GetSQLFont();
 	void SetSQLFont(const wxFont &font);
+	wxFont GetDDFont();
+	void SetDDFont(const wxFont &font);
 	int GetLineEndingType() const
 	{
 		int i;

@@ -50,6 +50,7 @@
 #define QUERYTOOL_FAVOURITES_ITEM _("Favourites")
 #define QUERYTOOL_MACROS_ITEM _("Macros")
 #define QUERYTOOL_HISTORYFILE_ITEM _("History file")
+#define DATABASEDESIGNER_ITEM _("Database Designer")
 #define SERVERSTATUS_ITEM _("Server status")
 #define PGAGENT_ITEM _("pgAgent")
 #define MISC_ITEM _("Miscellaneous")
@@ -135,6 +136,7 @@
 #define pnlQueryToolFavourites      CTRL_PANEL("pnlQueryToolFavourites")
 #define pnlQueryToolMacros          CTRL_PANEL("pnlQueryToolMacros")
 #define pnlQueryToolHistoryFile     CTRL_PANEL("pnlQueryToolHistoryFile")
+#define pnlDatabaseDesigner         CTRL_PANEL("pnlDatabaseDesigner")
 #define pnlServerStatus          	CTRL_PANEL("pnlServerStatus")
 #define pnlPgAgent          		CTRL_PANEL("pnlPgAgent")
 #define pnlMiscUI                	CTRL_PANEL("pnlMiscUI")
@@ -142,6 +144,7 @@
 #define pnlMiscGuruHints          	CTRL_PANEL("pnlMiscGuruHints")
 #define pnlMiscLogging          	CTRL_PANEL("pnlMiscLogging")
 #define cbRefreshOnClick			CTRL_COMBOBOX("cbRefreshOnClick")
+#define pickerFontDD                CTRL_FONTPICKER("pickerFontDD")
 
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
@@ -368,6 +371,7 @@ frmOptions::frmOptions(frmMain *parent)
 
 	pickerFont->SetSelectedFont(settings->GetSystemFont());
 	pickerSqlFont->SetSelectedFont(settings->GetSQLFont());
+	pickerFontDD->SetSelectedFont(settings->GetDDFont());
 
 	// Load the display options
 	lstDisplay->Append(_("Databases"));
@@ -433,6 +437,8 @@ frmOptions::frmOptions(frmMain *parent)
 	menus->AppendItem(node, QUERYTOOL_FAVOURITES_ITEM);
 	menus->AppendItem(node, QUERYTOOL_MACROS_ITEM);
 	menus->AppendItem(node, QUERYTOOL_HISTORYFILE_ITEM);
+
+	node = menus->AppendItem(root, DATABASEDESIGNER_ITEM);
 
 	node = menus->AppendItem(root, SERVERSTATUS_ITEM);
 
@@ -668,6 +674,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetWriteBOM(chkWriteBOM->GetValue());
 	settings->SetSystemFont(pickerFont->GetSelectedFont());
 	settings->SetSQLFont(pickerSqlFont->GetSelectedFont());
+	settings->SetDDFont(pickerFontDD->GetSelectedFont());
 	settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
 	settings->SetSlonyPath(pickerSlonyPath->GetPath());
 	settings->SetPostgresqlPath(pickerPostgresqlPath->GetPath());
@@ -934,6 +941,7 @@ void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 		pnlQueryToolFavourites->Show(false);
 		pnlQueryToolMacros->Show(false);
 		pnlQueryToolHistoryFile->Show(false);
+		pnlDatabaseDesigner->Show(false);
 		pnlServerStatus->Show(false);
 		pnlPgAgent->Show(false);
 		pnlMiscUI->Show(false);
@@ -979,6 +987,8 @@ void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 			pnlQueryToolMacros->Show(true);
 		else if (menus->GetItemText(sel) == QUERYTOOL_HISTORYFILE_ITEM)
 			pnlQueryToolHistoryFile->Show(true);
+		else if (menus->GetItemText(sel) == DATABASEDESIGNER_ITEM)
+			pnlDatabaseDesigner->Show(true);
 		else if (menus->GetItemText(sel) == SERVERSTATUS_ITEM)
 		{
 			pnlServerStatus->Show(true);

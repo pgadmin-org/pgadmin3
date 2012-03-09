@@ -73,7 +73,6 @@ private:
 	void OnModelLoad(wxCommandEvent &event);
 	void OnToggleModelBrowser(wxCommandEvent &event);
 	void OnToggleSQLWindow(wxCommandEvent &event);
-	void OnChangeDefaultFont(wxCommandEvent &event);
 	void OnChangeConnection(wxCommandEvent &event);
 	void OnImportSchema(wxCommandEvent &WXUNUSED(event));
 	wxBitmap CreateBitmap(const wxColour &colour);

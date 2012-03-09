@@ -672,6 +672,32 @@ void sysSettings::SetSQLFont(const wxFont &font)
 }
 
 //////////////////////////////////////////////////////////////////////////
+// Database Designer Font
+//////////////////////////////////////////////////////////////////////////
+
+wxFont sysSettings::GetDDFont()
+{
+	wxString fontName;
+
+	Read(wxT("DDFont"), &fontName, wxEmptyString);
+
+	if (fontName.IsEmpty())
+		return wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+	else
+		return wxFont(fontName);
+}
+
+void sysSettings::SetDDFont(const wxFont &font)
+{
+	wxString fontName = font.GetNativeFontInfoDesc();
+
+	if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
+		Write(wxT("DDFont"), wxString(wxEmptyString));
+	else
+		Write(wxT("DDFont"), fontName);
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Language
 //////////////////////////////////////////////////////////////////////////
 

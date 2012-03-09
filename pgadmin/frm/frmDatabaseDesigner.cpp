@@ -26,6 +26,7 @@
 #include "schema/pgDatabase.h"
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgSelectConnection.h"
+#include "utils/sysSettings.h"
 
 // Designer headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
@@ -78,7 +79,6 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_RENDIAGRAM,					frmDatabaseDesigner::OnRenameDiagram)
 	EVT_MENU(MNU_TOGGLEDDSQL,					frmDatabaseDesigner::OnToggleSQLWindow)
 	EVT_MENU(MNU_TOGGLEMBROWSER,				frmDatabaseDesigner::OnToggleModelBrowser)
-	EVT_MENU(MNU_CHGFONT,						frmDatabaseDesigner::OnChangeDefaultFont)
 	EVT_MENU(CTL_IMPSCHEMA,					frmDatabaseDesigner::OnImportSchema)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(CTL_DDNOTEBOOK,  frmDatabaseDesigner::OnDeleteDiagramTab)
 	EVT_AUINOTEBOOK_PAGE_CLOSED(CTL_DDNOTEBOOK, frmDatabaseDesigner::OnDeletedDiagramTab)
@@ -133,10 +133,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	viewMenu->Check(MNU_TOGGLEDDSQL, true);
 	viewMenu->Check(MNU_TOGGLEMBROWSER, true);
 
-	// Set Preferences menu
-	preferencesMenu = new wxMenu();
-	preferencesMenu->Append(MNU_CHGFONT, _("&Change default font for figures..."), _("Change default font for figures"));
-
 	// Set Help menu
 	helpMenu = new wxMenu();
 	helpMenu->Append(MNU_CONTENTS, _("&Help"), _("Open the helpfile."));
@@ -147,7 +143,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	menuBar->Append(fileMenu, _("&File"));
 	menuBar->Append(diagramMenu, _("&Diagram"));
 	menuBar->Append(viewMenu, _("&View"));
-	menuBar->Append(preferencesMenu, _("&Preferences"));
 	menuBar->Append(helpMenu, _("&Help"));
 	SetMenuBar(menuBar);
 
@@ -735,11 +730,6 @@ void frmDatabaseDesigner::OnClickDiagramTab(wxAuiNotebookEvent &event)
 {
 //This event is not working by unknown reason right now.
 	wxLogError(wxT("WTF?"));
-}
-
-void frmDatabaseDesigner::OnChangeDefaultFont(wxCommandEvent &event)
-{
-	design->getEditor()->changeDefaultFiguresFont();
 }
 
 void frmDatabaseDesigner::UpdateToolbar()

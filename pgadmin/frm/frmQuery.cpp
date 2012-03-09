@@ -2466,14 +2466,14 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				else
 				{
 					showMessage(wxString::Format(_("Query returned successfully: one row affected, %s ms execution time."),
-					                    elapsedQuery.ToString().c_str()),
+					                             elapsedQuery.ToString().c_str()),
 					            wxString::Format(_("One row affected.")));
 				}
 			}
 			else
 			{
 				showMessage(wxString::Format(_("Query returned successfully: %d rows affected, %s ms execution time."),
-				                    insertedCount, elapsedQuery.ToString().c_str()),
+				                             insertedCount, elapsedQuery.ToString().c_str()),
 				            wxString::Format(_("%d rows affected."), insertedCount));
 			}
 		}
