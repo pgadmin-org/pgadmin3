@@ -169,8 +169,8 @@ bool slNode::CheckAcksAndContinue(wxFrame *frame)
 	if (!l)
 		return true;
 
-	wxMessageDialog dlg(frame, wxString::Format(wxPLURAL("There are %ld event acknowledgement outstanding.\nContinue anyway?",
-	                    "There are %ld event acknowledgements outstanding.\nContinue anyway?", l), l),
+	wxMessageDialog dlg(frame, wxString::Format(wxPLURAL("There is one event acknowledgement outstanding.\nContinue anyway?",
+	                    "There are %ld event acknowledgements outstanding.\nContinue anyway?", l)),
 	                    _("Events pending"), wxYES_NO | wxNO_DEFAULT);
 
 	return dlg.ShowModal() == wxID_YES;

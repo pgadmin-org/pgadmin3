@@ -1685,7 +1685,7 @@ void frmQuery::OnPositionStc(wxStyledTextEvent &event)
 	if (selCount < 1)
 		pos = wxEmptyString;
 	else
-		pos.Printf(wxPLURAL("%d char", "%d chars", selCount), selCount);
+		pos.Printf(wxPLURAL("%d char", "%d chars", selCount));
 	SetStatusText(pos, STATUSPOS_SEL);
 }
 
@@ -2467,8 +2467,8 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				                    "Query returned successfully: %d row affected, %s ms execution time.",
 				                    "Query returned successfully: %d rows affected, %s ms execution time.",
 				                    insertedCount),
-				                insertedCount, elapsedQuery.ToString().c_str()),
-				            wxString::Format(wxPLURAL("%d row affected.", "%d rows affected.", insertedCount), insertedCount));
+				                elapsedQuery.ToString().c_str()),
+				            wxString::Format(wxPLURAL("%d row affected.", "%d rows affected.", insertedCount)));
 			}
 		}
 		else
@@ -2541,7 +2541,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 		if (qi->toFileExportForm)
 		{
-			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal)), STATUSPOS_ROWS);
 
 			if (rowsTotal)
 			{
@@ -2567,12 +2567,12 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				sqlResult->DisplayData(true);
 
 				showMessage(wxString::Format(
-				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows()),
-				                sqlResult->NumRows()), _("OK."));
+				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows())),
+				                _("OK."));
 			}
 			else
 			{
-				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_MSGS);
+				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal)), STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
 
 				sqlResult->DisplayData();
@@ -2583,9 +2583,9 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
 
-				showMessage(wxString::Format(wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows()), sqlResult->NumRows()), _("OK."));
+				showMessage(wxString::Format(wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows())), _("OK."));
 			}
-			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal)), STATUSPOS_ROWS);
 		}
 	}
 
@@ -2708,7 +2708,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 
 		SetStatusText(wxString::Format(
 		                  wxPLURAL("%s (%d asynchronous notification received).", "%s (%d asynchronous notifications received).", notifies),
-		                  statusMsg.c_str(), notifies), STATUSPOS_MSGS);
+		                  statusMsg.c_str()), STATUSPOS_MSGS);
 	}
 
 	msgResult->AppendText(wxT("\n"));
