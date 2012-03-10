@@ -56,7 +56,11 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 	// Icon
 	SetIcon(*vacuum_png_ico);
 
+	// Note that under GTK+, SetMaxLength() function may only be used with single line text controls.
+	// (see http://docs.wxwidgets.org/2.8/wx_wxtextctrl.html#wxtextctrlsetmaxlength)
+#ifndef __WXGTK__
 	txtMessages->SetMaxLength(0L);
+#endif
 
 	if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE)
 	{

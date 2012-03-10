@@ -114,7 +114,11 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	chkDisableDollar->SetSize(chkDisableDollar->GetBestSize());
 
 	txtMessages = CTRL_TEXT("txtMessages");
+	// Note that under GTK+, SetMaxLength() function may only be used with single line text controls.
+	// (see http://docs.wxwidgets.org/2.8/wx_wxtextctrl.html#wxtextctrlsetmaxlength)
+#ifndef __WXGTK__
 	txtMessages->SetMaxLength(0L);
+#endif
 	btnOK->Disable();
 
 	long encNo = 0;
