@@ -278,13 +278,18 @@ wxString dlgTrigger::GetSql()
 	}
 
 	if (!trigger ||
-	        (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")) && txtBody->GetText() != trigger->GetSource()) ||
-	        chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW) ||
-	        chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
-	        chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
-	        chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
-	        chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
-	        rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : TRIGGER_TYPE_INSTEAD ? 2 : 1))
+	        (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL"))
+	         && (
+	        	txtBody->GetText() != trigger->GetSource() ||
+	        	chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW) ||
+	        	chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
+	        	chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
+	        	chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
+	        	chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
+	        	rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : TRIGGER_TYPE_INSTEAD ? 2 : 1)
+	        	)
+	        )
+	    )
 	{
 		if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
 			sql += wxT("CREATE OR REPLACE TRIGGER ");

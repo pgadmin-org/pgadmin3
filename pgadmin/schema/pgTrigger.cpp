@@ -334,7 +334,7 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 		                      "WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
 		if (triggerFunction)
 		{
-			iSetFunction(triggerFunction->GetName());
+			iSetFunction(triggerFunction->GetQuotedFullIdentifier());
 		}
 	}
 
