@@ -235,19 +235,9 @@ void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0, cons
 	wxRect rect;
 	int scrH, scrW;
 
-	int dispNum = wxDisplay::GetFromWindow(win);
-	if (dispNum >  -1)
-	{
-		rect = wxDisplay(dispNum).GetGeometry();
-		scrW = rect.GetWidth();
-		scrH = rect.GetHeight();
-	}
-	else
-	{
-		wxSize screenSize = wxGetDisplaySize();
-		scrW = screenSize.x;
-		scrH = screenSize.y;
-	}
+	wxSize screenSize = wxGetDisplaySize();
+	scrW = screenSize.x;
+	scrH = screenSize.y;
 
 	if (pos.x < 0)
 		pos.x = 0;
