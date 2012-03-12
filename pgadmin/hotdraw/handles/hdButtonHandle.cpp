@@ -38,7 +38,7 @@ hdButtonHandle::~hdButtonHandle()
 
 wxCursor hdButtonHandle::createCursor()
 {
-	return wxCursor(wxCURSOR_PENCIL);
+	return wxCursor(wxCURSOR_ARROW);
 }
 
 hdRect &hdButtonHandle::getDisplayBox(int posIdx)

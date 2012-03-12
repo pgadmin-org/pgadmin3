@@ -29,8 +29,6 @@
 ddAddFkButtonHandle::ddAddFkButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size):
 	hdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
-	handleCursorImage = wxBitmap(*ddRelationshipCursor_png_img).ConvertToImage();
-	handleCursor = wxCursor(handleCursorImage);
 }
 
 ddAddFkButtonHandle::~ddAddFkButtonHandle()
@@ -72,9 +70,4 @@ void ddAddFkButtonHandle::invokeStep(hdMouseEvent &event, hdDrawingView *view)
 
 void ddAddFkButtonHandle::invokeEnd(hdMouseEvent &event, hdDrawingView *view)
 {
-}
-
-wxCursor ddAddFkButtonHandle::createCursor()
-{
-	return handleCursor;
 }

@@ -26,8 +26,6 @@
 ddMinMaxTableButtonHandle::ddMinMaxTableButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size):
 	hdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
-	handleCursorImage = wxBitmap(*ddMinMaxCursor_png_img).ConvertToImage();
-	handleCursor = wxCursor(handleCursorImage);
 	buttonMaximizeImage = buttonSecondImage;
 	tmpImage = buttonImage;
 	showFirst = true;
@@ -61,10 +59,4 @@ void ddMinMaxTableButtonHandle::invokeEnd(hdMouseEvent &event, hdDrawingView *vi
 	}
 	showFirst = !showFirst;
 	view->notifyChanged();
-}
-
-
-wxCursor ddMinMaxTableButtonHandle::createCursor()
-{
-	return handleCursor;
 }

@@ -26,8 +26,6 @@
 ddAddColButtonHandle::ddAddColButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size):
 	hdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
-	handleCursorImage = wxBitmap(*ddAddColumnCursor_png_img).ConvertToImage();
-	handleCursor = wxCursor(handleCursorImage);
 }
 
 ddAddColButtonHandle::~ddAddColButtonHandle()
@@ -75,9 +73,4 @@ void ddAddColButtonHandle::invokeStep(hdMouseEvent &event, hdDrawingView *view)
 
 void ddAddColButtonHandle::invokeEnd(hdMouseEvent &event, hdDrawingView *view)
 {
-}
-
-wxCursor ddAddColButtonHandle::createCursor()
-{
-	return handleCursor;
 }

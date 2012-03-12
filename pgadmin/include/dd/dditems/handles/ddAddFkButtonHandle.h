@@ -23,7 +23,6 @@ public:
 	virtual void invokeStart(hdMouseEvent &event, hdDrawingView *view);
 	virtual void invokeStep(hdMouseEvent &event, hdDrawingView *view);
 	virtual void invokeEnd(hdMouseEvent &event, hdDrawingView *view);
-	wxCursor createCursor();
 protected:
 
 private:

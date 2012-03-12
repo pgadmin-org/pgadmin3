@@ -30,8 +30,6 @@
 ddRemoveTableButtonHandle::ddRemoveTableButtonHandle(hdIFigure *owner, hdILocator *buttonLocator , wxBitmap &buttonImage, wxSize &size):
 	hdButtonHandle(owner, buttonLocator, buttonImage, size)
 {
-	handleCursorImage = wxBitmap(*ddDeleteTableCursor_png_img).ConvertToImage();
-	handleCursor = wxCursor(handleCursorImage);
 }
 
 ddRemoveTableButtonHandle::~ddRemoveTableButtonHandle()
@@ -76,9 +74,4 @@ void ddRemoveTableButtonHandle::invokeEnd(hdMouseEvent &event, hdDrawingView *vi
 		}
 
 	}
-}
-
-wxCursor ddRemoveTableButtonHandle::createCursor()
-{
-	return handleCursor;
 }
