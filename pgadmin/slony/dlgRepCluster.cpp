@@ -1043,7 +1043,7 @@ wxString dlgRepCluster::GetSql()
 	}
 
 	if ((!cluster && !txtComment->IsEmpty()) || (cluster &&
-		cluster->GetComment() != txtComment->GetValue()))
+	        cluster->GetComment() != txtComment->GetValue()))
 	{
 		sql += wxT("\n")
 		       wxT("COMMENT ON SCHEMA ") + quotedName + wxT(" IS ")

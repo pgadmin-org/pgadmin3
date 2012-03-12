@@ -85,7 +85,7 @@ private:
 
 	wxString GetNumString(wxTextCtrl *ctl, bool enabled, const wxString &val);
 	wxString AppendNum(bool &changed, wxTextCtrl *ctl, wxString val);
-	
+
 	bool tableVacEnabled, hasVacuum, settingAutoVacuum;
 	wxString settingVacBaseThr, settingAnlBaseThr, settingCostDelay,
 	         settingCostLimit, settingFreezeMinAge, settingFreezeMaxAge,

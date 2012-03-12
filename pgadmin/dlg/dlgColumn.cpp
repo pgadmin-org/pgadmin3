@@ -79,7 +79,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 	wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW || table->GetMetaType() == GP_EXTTABLE || table->GetMetaType() == GP_PARTITION));
 
 	changedColumn = NULL;
-	
+
 	dirtyVars = false;
 
 	txtAttstattarget->SetValidator(numericValidator);
