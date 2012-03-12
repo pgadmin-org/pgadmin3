@@ -21,7 +21,7 @@
 #include "hotdraw/figures/defaultAttributes/hdFontAttribute.h"
 #include "hotdraw/figures/hdAttribute.h"
 
-wxFont* hdFontAttribute::defaultFont = NULL;
+wxFont *hdFontAttribute::defaultFont = NULL;
 
 hdFontAttribute::hdFontAttribute():
 	hdAttribute()

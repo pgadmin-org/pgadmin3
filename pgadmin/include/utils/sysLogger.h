@@ -31,7 +31,7 @@ class sysLogger : public wxLog
 {
 public:
 #if wxCHECK_VERSION(2, 9, 0)
-	void DoLogTextAtLevel(wxLogLevel level, const wxString& msg);
+	void DoLogTextAtLevel(wxLogLevel level, const wxString &msg);
 #else
 	virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
 #endif

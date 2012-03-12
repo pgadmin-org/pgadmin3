@@ -2569,7 +2569,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 				showMessage(wxString::Format(
 				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows())),
-				                _("OK."));
+				            _("OK."));
 			}
 			else
 			{

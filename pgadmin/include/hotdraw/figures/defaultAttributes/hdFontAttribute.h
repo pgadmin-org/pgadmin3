@@ -21,7 +21,7 @@ public:
 	virtual void callDefaultChangeDialog(wxWindow *owner = NULL);
 	virtual void apply(wxBufferedDC &context);
 	wxFont &font();
-	static wxFont* defaultFont;
+	static wxFont *defaultFont;
 	static void InitFont();
 protected:
 	wxFont fontAttributes;

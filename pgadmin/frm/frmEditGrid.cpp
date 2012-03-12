@@ -1188,7 +1188,7 @@ void frmEditGrid::OnDelete(wxCommandEvent &event)
 
 	wxString prompt;
 	prompt.Printf(wxPLURAL("Are you sure you wish to delete the selected row?",
-		                   "Are you sure you wish to delete the %d selected rows?", i));
+	                       "Are you sure you wish to delete the %d selected rows?", i));
 
 	wxMessageDialog msg(this, prompt, _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
 	if (msg.ShowModal() != wxID_YES)

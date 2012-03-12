@@ -133,9 +133,9 @@ void wxLogScriptVerbose(const wxChar *szFormat, ...)
 #endif
 
 #if wxCHECK_VERSION(2, 9, 0)
-	void sysLogger::DoLogTextAtLevel(wxLogLevel level, const wxString& msg)
+void sysLogger::DoLogTextAtLevel(wxLogLevel level, const wxString &msg)
 #else
-	void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
+void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 #endif
 {
 	wxString msgtype, preamble;
@@ -220,7 +220,7 @@ void wxLogScriptVerbose(const wxChar *szFormat, ...)
 
 	// Build the message.
 	fullmsg << time->FormatISODate() << wxT(" ") <<
-		time->FormatISOTime() << wxT(" ") << msgtype << wxT(": ") << msg;
+	        time->FormatISOTime() << wxT(" ") << msgtype << wxT(": ") << msg;
 
 	// Make sure to delete the time that we allocated
 	delete time;
