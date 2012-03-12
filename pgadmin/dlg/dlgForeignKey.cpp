@@ -480,7 +480,7 @@ wxString dlgForeignKey::GetSql()
 			      + wxT("\n  RENAME CONSTRAINT ") + qtIdent(foreignKey->GetName())
 			      + wxT(" TO ") + qtIdent(name) + wxT(";\n");
 		}
-		if (!chkDontValidate->GetValue())
+		if (connection->BackendMinimumVersion(9, 1) && !foreignKey->GetValid() && !chkDontValidate->GetValue())
 		{
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 			       + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
