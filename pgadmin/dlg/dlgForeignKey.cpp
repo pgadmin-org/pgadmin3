@@ -196,7 +196,7 @@ void dlgForeignKey::CheckChange()
 			           _("Please specify covering index name."));
 		}
 		else
-			enable = txtComment->GetValue() != foreignKey->GetComment();
+			enable = txtName->GetValue() != foreignKey->GetName() || txtComment->GetValue() != foreignKey->GetComment();
 
 		if (connection->BackendMinimumVersion(9, 1) && !foreignKey->GetValid() && !chkDontValidate->GetValue())
 			enable = true;
@@ -352,8 +352,8 @@ int dlgForeignKey::Go(bool modal)
 
 	if (foreignKey)
 	{
-		// edit mode: view only
-		txtName->Disable();
+		// edit mode
+		txtName->Enable(connection->BackendMinimumVersion(9, 2));
 		cbReferences->Append(foreignKey->GetReferences());
 		cbReferences->SetValue(foreignKey->GetReferences());
 		cbReferences->Disable();
@@ -472,10 +472,19 @@ wxString dlgForeignKey::GetSql()
 		sql += wxT(" FOREIGN KEY ") + GetDefinition()
 		       + wxT(";\n");
 	}
-	else if (!chkDontValidate->GetValue())
+	else
 	{
-		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+		if (foreignKey->GetName() != name)
+		{
+			sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			      + wxT("\n  RENAME CONSTRAINT ") + qtIdent(foreignKey->GetName())
+			      + wxT(" TO ") + qtIdent(name) + wxT(";\n");
+		}
+		if (!chkDontValidate->GetValue())
+		{
+			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			       + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+		}
 	}
 
 	if (!name.IsEmpty())

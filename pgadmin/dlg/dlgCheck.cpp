@@ -48,7 +48,7 @@ void dlgCheck::CheckChange()
 	bool enable = true;
 	if (check)
 	{
-		enable = txtComment->GetValue() != check->GetComment();
+		enable = txtName->GetValue() != check->GetName() || txtComment->GetValue() != check->GetComment();
 		if (connection->BackendMinimumVersion(9, 2) && !check->GetValid() && !chkDontValidate->GetValue())
 			enable = true;
 		EnableOK(enable);
@@ -86,8 +86,8 @@ int dlgCheck::Go(bool modal)
 {
 	if (check)
 	{
-		// edit mode: view only
-		txtName->Disable();
+		// edit mode
+		txtName->Enable(connection->BackendMinimumVersion(9, 2));
 
 		txtWhere->SetValue(check->GetDefinition());
 		txtWhere->Disable();
@@ -133,10 +133,19 @@ wxString dlgCheck::GetSql()
 		sql += wxT("\n  CHECK ") + GetDefinition()
 		       + wxT(";\n");
 	}
-	else if (!chkDontValidate->GetValue())
+	else
 	{
-		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-		      + wxT(" VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+		if (check->GetName() != name)
+		{
+			sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			      + wxT("\n  RENAME CONSTRAINT ") + qtIdent(check->GetName())
+			      + wxT(" TO ") + qtIdent(name) + wxT(";\n");
+		}
+		if (!chkDontValidate->GetValue())
+		{
+			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			       + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+		}
 	}
 
 	if (!name.IsEmpty())

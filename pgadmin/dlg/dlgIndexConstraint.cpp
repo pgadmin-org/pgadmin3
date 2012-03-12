@@ -562,6 +562,12 @@ wxString dlgIndexConstraint::GetSql()
 	}
 	else
 	{
+		if (index->GetName() != name)
+		{
+			sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			      + wxT("\n  RENAME CONSTRAINT ") + qtIdent(index->GetName())
+			      + wxT(" TO ") + qtIdent(name) + wxT(";\n");
+		}
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != index->GetTablespaceOid())
 		{
 			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)

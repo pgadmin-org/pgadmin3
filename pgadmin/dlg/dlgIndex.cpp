@@ -77,8 +77,8 @@ int dlgIndexBase::Go(bool modal)
 
 	if (index)
 	{
-		// edit mode: view only
-		txtName->Disable();
+		// edit mode
+		txtName->Enable(connection->BackendMinimumVersion(9, 2));
 		cbColumns->Disable();
 
 		if (txtFillFactor)
@@ -163,7 +163,8 @@ void dlgIndexBase::CheckChange()
 {
 	if (index)
 	{
-		EnableOK(txtComment->GetValue() != index->GetComment() ||
+		EnableOK(txtName->GetValue() != index->GetName() ||
+		         txtComment->GetValue() != index->GetComment() ||
 		         cbTablespace->GetOIDKey() != index->GetTablespaceOid() ||
 		         txtFillFactor->GetValue() != index->GetFillFactor());
 	}
