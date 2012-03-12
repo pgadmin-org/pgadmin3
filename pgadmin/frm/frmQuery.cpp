@@ -2455,21 +2455,26 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
 				                             elapsedQuery.ToString().c_str()), _("OK."));
 			}
-			else if (insertedCount == 1 && insertedOid)
+			else if (insertedCount == 1)
 			{
-				showMessage(wxString::Format(_("Query returned successfully: one row with OID %d inserted, %s ms execution time."),
-				                             insertedOid, elapsedQuery.ToString().c_str()),
-				            wxString::Format(_("One Row with OID %d inserted."), insertedOid));
+				if (insertedOid)
+				{
+					showMessage(wxString::Format(_("Query returned successfully: one row with OID %ld inserted, %s ms execution time."),
+					                             (long)insertedOid, elapsedQuery.ToString().c_str()),
+					            wxString::Format(_("One row with OID %ld inserted."), (long)insertedOid));
+				}
+				else
+				{
+					showMessage(wxString::Format(_("Query returned successfully: one row affected, %s ms execution time."),
+					                    elapsedQuery.ToString().c_str()),
+					            wxString::Format(_("One row affected.")));
+				}
 			}
 			else
 			{
-				showMessage(wxString::Format(
-				                wxPLURAL(
-				                    "Query returned successfully: %d row affected, %s ms execution time.",
-				                    "Query returned successfully: %d rows affected, %s ms execution time.",
-				                    insertedCount),
-				                elapsedQuery.ToString().c_str()),
-				            wxString::Format(wxPLURAL("%d row affected.", "%d rows affected.", insertedCount)));
+				showMessage(wxString::Format(_("Query returned successfully: %d rows affected, %s ms execution time."),
+				                    insertedCount, elapsedQuery.ToString().c_str()),
+				            wxString::Format(_("%d rows affected."), insertedCount));
 			}
 		}
 		else
@@ -2584,7 +2589,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
 
-				showMessage(wxString::Format(wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows())), _("OK."));
+				showMessage(wxString::Format(wxPLURAL("%d row retrieved.", "%d rows retrieved.", (int)sqlResult->NumRows())), _("OK."));
 			}
 			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal)), STATUSPOS_ROWS);
 		}
