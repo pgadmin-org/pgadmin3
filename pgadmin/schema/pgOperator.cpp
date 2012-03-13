@@ -113,16 +113,16 @@ wxString pgOperator::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
 	{
-		sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT("(") + GetOperands() + wxT(")\n\n")
-		      + wxT("-- DROP OPERATOR ") + GetFullIdentifier()
+		sql = wxT("-- Operator: ") + GetQuotedFullIdentifier() + wxT("(") + GetOperands() + wxT(")\n\n")
+		      + wxT("-- DROP OPERATOR ") + GetQuotedFullIdentifier()
 		      + wxT("(") + GetOperands() + wxT(");\n\n")
-		      wxT("CREATE OPERATOR ") + GetFullIdentifier()
-		      + wxT("(\n  PROCEDURE = ") + qtIdent(GetOperatorFunction());
+		      wxT("CREATE OPERATOR ") + GetQuotedFullIdentifier()
+		      + wxT("(\n  PROCEDURE = ") + GetOperatorFunction();
 		AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtTypeIdent(GetLeftType()));
 		AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtTypeIdent(GetRightType()));
 		AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
-		AppendIfFilled(sql, wxT(",\n  RESTRICT = "), qtIdent(GetRestrictFunction()));
-		AppendIfFilled(sql, wxT(",\n  JOIN = "), qtIdent(GetJoinFunction()));
+		AppendIfFilled(sql, wxT(",\n  RESTRICT = "), GetRestrictFunction());
+		AppendIfFilled(sql, wxT(",\n  JOIN = "), GetJoinFunction());
 		if (GetHashJoins()) sql += wxT(",\n  HASHES");
 		if (GetMergeJoins()) sql += wxT(",\n  MERGES");
 
@@ -137,7 +137,7 @@ wxString pgOperator::GetSql(ctlTree *browser)
 		sql += wxT(");\n");
 
 		if (!GetComment().IsNull())
-			sql += wxT("COMMENT ON OPERATOR ") + GetFullIdentifier()
+			sql += wxT("COMMENT ON OPERATOR ") + GetQuotedFullIdentifier()
 			       + wxT("(") + GetOperands() + wxT(") IS ")
 			       + qtDbString(GetComment()) + wxT(";\n");
 	}
