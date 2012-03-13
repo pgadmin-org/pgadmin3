@@ -687,6 +687,20 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 					type += wxT(" ") + col.GetNextToken();
 				}
 			}
+			// In case of statements like  DEFAULT ACL <schema name> DEFAULT PRIVILEGES FOR TABLES <privilege>
+			else if (type == wxT("DEFAULT"))
+			{
+				// We do not expect the 'DEFAULT <schema> <type> <name>' pattern here.
+				if (col.CountTokens() != 3)
+				{
+					type += wxT(" ") + col.GetNextToken();
+					if (type != wxT("DEFAULT ACL"))
+					{
+						wxLogError(wxString::Format(_("Unexpected DEFAULT statement found: '%s'!"), str.c_str()));
+						continue;
+					}
+				}
+			}
 
 			// Column 5 (namespace)
 			// Second interesting information: object's schema
