@@ -823,11 +823,8 @@ void frmDatabaseDesigner::OnChangeConnection(wxCommandEvent &event)
 			pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
 			if (newconn && createdNewConn)
 			{
-#if wxCHECK_VERSION(2, 9, 0)
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData *)newconn);
-#else
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
-#endif
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel);
+				cbConnection->SetClientData(sel, (void *)newconn);
 				cbConnection->SetSelection(sel);
 				OnChangeConnection(event);
 			}

@@ -532,7 +532,13 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	{
 		while (!indexes->Eof())
 		{
-			switch ( (wxChar)indexes->GetVal(wxT("contype"))[0U])
+			wxString strVal = indexes->GetVal(wxT("contype"));
+			if(strVal.IsEmpty())
+			{
+				indexes->MoveNext();
+				continue;
+			}
+			switch ((wxChar)strVal[0U])
 			{
 				case 0:
 					index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
