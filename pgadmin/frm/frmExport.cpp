@@ -290,7 +290,7 @@ bool frmExport::Export(pgSet *set)
 		wxLogError(wxPLURAL(
 		               "Data export incomplete.\n\n%d row contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead.",
 		               "Data export incomplete.\n\n%d rows contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead.",
-		               skipped));
+		               skipped), skipped);
 	else
 		wxMessageBox(_("Data export completed successfully."), _("Export data"), wxICON_INFORMATION | wxOK);
 

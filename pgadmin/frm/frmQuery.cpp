@@ -1686,7 +1686,7 @@ void frmQuery::OnPositionStc(wxStyledTextEvent &event)
 	if (selCount < 1)
 		pos = wxEmptyString;
 	else
-		pos.Printf(wxPLURAL("%d char", "%d chars", selCount));
+		pos.Printf(wxPLURAL("%d char", "%d chars", selCount), selCount);
 	SetStatusText(pos, STATUSPOS_SEL);
 }
 
@@ -2547,7 +2547,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 		if (qi->toFileExportForm)
 		{
-			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal)), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
 
 			if (rowsTotal)
 			{
@@ -2573,12 +2573,13 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				sqlResult->DisplayData(true);
 
 				showMessage(wxString::Format(
-				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.", sqlResult->NumRows())),
+				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.",
+                                sqlResult->NumRows()), sqlResult->NumRows()),
 				            _("OK."));
 			}
 			else
 			{
-				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal)), STATUSPOS_MSGS);
+				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
 
 				sqlResult->DisplayData();
@@ -2591,7 +2592,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 				showMessage(wxString::Format(wxPLURAL("%d row retrieved.", "%d rows retrieved.", (int)sqlResult->NumRows())), _("OK."));
 			}
-			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal)), STATUSPOS_ROWS);
+			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
 		}
 	}
 
@@ -2714,7 +2715,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 
 		SetStatusText(wxString::Format(
 		                  wxPLURAL("%s (%d asynchronous notification received).", "%s (%d asynchronous notifications received).", notifies),
-		                  statusMsg.c_str()), STATUSPOS_MSGS);
+		                  statusMsg.c_str(), notifies), STATUSPOS_MSGS);
 	}
 
 	msgResult->AppendText(wxT("\n"));
