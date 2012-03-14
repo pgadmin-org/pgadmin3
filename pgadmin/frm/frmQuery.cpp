@@ -2590,7 +2590,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
 
-				showMessage(wxString::Format(wxPLURAL("%d row retrieved.", "%d rows retrieved.", (int)sqlResult->NumRows())), _("OK."));
+				showMessage(wxString::Format(wxPLURAL("%d row retrieved.", "%d rows retrieved.", (int)sqlResult->NumRows()), (int)sqlResult->NumRows()), _("OK."));
 			}
 			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
 		}
