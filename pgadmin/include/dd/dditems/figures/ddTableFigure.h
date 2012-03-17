@@ -70,6 +70,7 @@ public:
 	void setColumnsWindow(int posIdx, int value, bool maximize = false);
 	void columnsWindowUp(int posIdx);
 	void columnsWindowDown(int posIdx);
+	int getFiguresMaxWidth();
 	int getColDefaultHeight(wxFont font);
 
 	//metadata
@@ -183,7 +184,6 @@ private:
 
 	//methods
 	int getHeightFontMetric(wxString text, wxFont font);
-	int getFiguresMaxWidth();
 	void calcInternalSubAreas(int posIdx);
 
 	//pk uk(s)

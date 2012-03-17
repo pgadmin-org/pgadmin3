@@ -56,6 +56,15 @@ ddTextTableItemFigure::~ddTextTableItemFigure()
 {
 }
 
+void ddTextTableItemFigure::recalculateDisplayBox()
+{
+	if (ownerColumn && ownerColumn->getOwnerTable())
+	{
+		hdSimpleTextFigure::recalculateDisplayBox();
+		displayBox().width = ownerColumn->getOwnerTable()->getFiguresMaxWidth();
+	}
+}
+
 void ddTextTableItemFigure::displayBoxUpdate()
 {
 	recalculateDisplayBox();

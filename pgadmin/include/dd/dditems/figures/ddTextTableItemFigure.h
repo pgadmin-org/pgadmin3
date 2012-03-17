@@ -63,6 +63,7 @@ public:
 	};
 	hdITool *CreateFigureTool(hdDrawingView *view, hdITool *defaultTool);
 	virtual void displayBoxUpdate();
+	void recalculateDisplayBox();
 	int getTextWidth();
 	int getTextHeight();
 	ddDataType getDataType();
