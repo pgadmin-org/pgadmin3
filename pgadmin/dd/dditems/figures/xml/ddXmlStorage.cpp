@@ -251,14 +251,6 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME", "%s", XML_FROM_WXSTRING(figure->getTableName()));
 	processResult(tmp);
 
-	//<!ELEMENT ALIAS (#PCDATA)>
-	if(figure->getShortTableName().Length() > 0)
-	{
-		//<!ELEMENT ALIAS (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "ALIAS", "%s", XML_FROM_WXSTRING(figure->getShortTableName()));
-		processResult(tmp);
-	}
-
 	//Close TITLE Element
 	xmlTextWriterEndElement(writer);
 
@@ -481,12 +473,6 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item
 	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "INITIALCOLNAME", "%s", XML_FROM_WXSTRING(item->originalStartColName));
 	processResult(tmp);
 
-	if(item->originalShortName.Length() > 0)
-	{
-		//<!ELEMENT INITIALALIASNAME (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "INITIALALIASNAME", "%s", XML_FROM_WXSTRING(item->originalShortName));
-		processResult(tmp);
-	}
 	//Close RELATIONITEM Element
 	xmlTextWriterEndElement(writer);
 }
@@ -625,7 +611,7 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 					tmp = xmlTextReaderRead(reader);	//go to /ALIAS
 					tmp = xmlTextReaderRead(reader);	//go to /TITLE
 				}
-				ddTableFigure *t = new ddTableFigure(tableName, -1, -1, tableAlias);
+				ddTableFigure *t = new ddTableFigure(tableName, -1, -1);
 
 				design->addTableToModel(t);
 			}
@@ -1627,7 +1613,7 @@ ddRelationshipItem *ddXmlStorage::getRelationshipItem(xmlTextReaderPtr reader, d
 	ddRelationshipItem *item = new ddRelationshipItem();
 	ddColumnFigure *sourceCol = source->getColByName(sourceColName);
 	ddColumnFigure *destinationCol = destination->getColByName(fkColName);
-	item->initRelationshipItemValues(itemOwner, destination, autoGenFk, destinationCol, sourceCol, initialColName, initialAliasName);
+	item->initRelationshipItemValues(itemOwner, destination, autoGenFk, destinationCol, sourceCol, initialColName);
 
 	return item;
 

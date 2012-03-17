@@ -50,9 +50,7 @@ void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 			{
 				ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
 				        rand() % 90 + 200,
-				        rand() % 90 + 140,
-				        newTableDialog->GetValue2()
-				                                           );
+				        rand() % 90 + 140);
 				ed->getDesign()->addTableToView(this->getIdx(), newTable);
 				ed->getDesign()->refreshDraw(this->getIdx());
 			}

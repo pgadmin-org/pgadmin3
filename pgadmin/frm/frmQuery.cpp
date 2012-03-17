@@ -2574,7 +2574,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 				showMessage(wxString::Format(
 				                wxPLURAL("%ld row retrieved.", "%ld rows retrieved.",
-                                sqlResult->NumRows()), sqlResult->NumRows()),
+				                         sqlResult->NumRows()), sqlResult->NumRows()),
 				            _("OK."));
 			}
 			else

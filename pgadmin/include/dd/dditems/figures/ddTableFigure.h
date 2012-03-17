@@ -25,10 +25,10 @@ class hdDrawing;
 class ddTableFigure : public hdCompositeFigure
 {
 public:
-	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
-	ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName = wxEmptyString);
+	ddTableFigure(wxString tableName, int x, int y);
+	ddTableFigure(wxString tableName, int posIdx, int x, int y);
 	void InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw);
-	void Init(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	void Init(wxString tableName, int x, int y);
 	hdMultiPosRect &getBasicDisplayBox();
 	~ddTableFigure();
 
@@ -75,14 +75,12 @@ public:
 
 	//metadata
 	wxString getTableName();
-	void setShortTableName(wxString shortName);
 	wxString getShortTableName();
 	wxString generateSQLCreate(wxString schemaName);
 	wxString generateSQLAlterPks(wxString schemaName);
 	wxString generateSQLAlterFks(wxString schemaName);
 	wxString generateSQLAlterUks(wxString schemaName);
 	wxString generateAltersTable(pgConn *connection, wxString schemaName, ddDatabaseDesign *design);
-	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);
 	ddColumnFigure *getColumnByName(wxString name);

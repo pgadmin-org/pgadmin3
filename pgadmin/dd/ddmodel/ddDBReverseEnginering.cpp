@@ -803,7 +803,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 							destinationCol = destTabFigure->getColByName(destColName);
 							initialColName = srcColName;
 							item = new ddRelationshipItem();
-							item->initRelationshipItemValues(relation, destTabFigure, autoGenFk, destinationCol, sourceCol, initialColName, wxEmptyString);
+							item->initRelationshipItemValues(relation, destTabFigure, autoGenFk, destinationCol, sourceCol, initialColName);
 							relation->getItemsHashMap()[item->original->getColumnName()] = item;
 						}
 					}
@@ -1329,7 +1329,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 ddTableFigure *ddImportDBUtils::getTableFigure(ddStubTable *table)
 {
 	wxString name = table->tableName;
-	ddTableFigure *tableFigure = new ddTableFigure(name, -1, -1, wxEmptyString);
+	ddTableFigure *tableFigure = new ddTableFigure(name, -1, -1);
 	if(tableFigure != NULL)
 	{
 		//Default Values

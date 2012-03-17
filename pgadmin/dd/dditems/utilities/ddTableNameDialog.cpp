@@ -20,13 +20,11 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 
 #define txtUsualTableName    CTRL_TEXT("txtUsualTableName")
-#define txtShortTableName    CTRL_TEXT("txtShortTableName")
-#define btnGenerate          CTRL_BUTTON("btnGenerate")
 
 
 BEGIN_EVENT_TABLE(ddTableNameDialog, pgDialog)
-	EVT_BUTTON(XRCID("btnGenerate"), ddTableNameDialog::OnGenButtonClicked )
 END_EVENT_TABLE()
+
 
 ddTableNameDialog::ddTableNameDialog(	wxWindow *parent,
                                         const wxString &defaultValue1,
@@ -68,7 +66,6 @@ void ddTableNameDialog::Init( )
 bool ddTableNameDialog::TransferDataToWindow()
 {
 	txtUsualTableName->SetValue(m_value1);
-	txtShortTableName->SetValue(m_value2);
 	return true;
 }
 
@@ -76,13 +73,6 @@ bool ddTableNameDialog::TransferDataToWindow()
 bool ddTableNameDialog::TransferDataFromWindow()
 {
 	m_value1 = txtUsualTableName->GetValue();
-	m_value2 = txtShortTableName->GetValue();
 	return true;
 }
 
-//Generation CheckBox Event to generata short name when checkbox clicked
-void ddTableNameDialog::OnGenButtonClicked( wxCommandEvent &event )
-{
-	wxString shortName = ddTableFigure::generateShortName(txtUsualTableName->GetValue());
-	txtShortTableName->SetValue(shortName);
-}

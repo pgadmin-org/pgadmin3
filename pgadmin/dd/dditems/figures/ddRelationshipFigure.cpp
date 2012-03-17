@@ -119,19 +119,6 @@ void ddRelationshipFigure::updateForeignKey()
 			}
 		}
 
-		//Update all column with auto FK naming with different shortname
-		for (it = chm.begin(); it != chm.end(); ++it)
-		{
-			fkColumnRelItem = it->second;
-			if(fkColumnRelItem->original != NULL) //original column wasn't mark for delete.
-			{
-				if(!fkColumnRelItem->original->getOwnerTable()->getShortTableName().IsSameAs(fkColumnRelItem->originalShortName, false))
-				{
-					fkColumnRelItem->syncAutoFkName();
-				}
-			}
-		}
-
 		//STEP 1: Look at all source table columns add and delete fk
 		hdIteratorBase *iterator = startTable->figuresEnumerator();
 		iterator->Next(); //first figure is main rect
@@ -388,15 +375,9 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawingV
 			endTable = (ddTableFigure *) getEndFigure();
 			if(constraintName.IsEmpty() && startTable && endTable )
 			{
-				if(!endTable->getShortTableName().IsEmpty())
-					constraintName = endTable->getShortTableName();
-				else
-					constraintName = endTable->getTableName();
+				constraintName = endTable->getTableName();
 				constraintName += _("_");
-				if(!startTable->getShortTableName().IsEmpty())
-					constraintName += startTable->getShortTableName();
-				else
-					constraintName += startTable->getTableName();
+				constraintName += startTable->getTableName();
 			}
 			nameDialog = new wxTextEntryDialog(view, wxT("Change Constraint Name"), wxT("Constraint Name"), constraintName );
 			answer = nameDialog->ShowModal();

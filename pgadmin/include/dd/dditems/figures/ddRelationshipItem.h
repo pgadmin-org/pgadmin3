@@ -21,9 +21,8 @@ public:
 	ddRelationshipItem();
 	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType, ddColumnFigure *existingColumn = NULL);
 	~ddRelationshipItem();
-	void initRelationshipItemValues(ddRelationshipFigure *owner, ddTableFigure *destination, bool fromExistingColumn, ddColumnFigure *fkCol, ddColumnFigure *sourceCol, wxString initialColName, wxString initialAliasName );
+	void initRelationshipItemValues(ddRelationshipFigure *owner, ddTableFigure *destination, bool fromExistingColumn, ddColumnFigure *fkCol, ddColumnFigure *sourceCol, wxString initialColName);
 	wxString originalStartColName;
-	wxString originalShortName;
 	ddColumnFigure *original;
 	ddColumnFigure *fkColumn;
 

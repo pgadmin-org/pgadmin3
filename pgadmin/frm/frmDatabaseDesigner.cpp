@@ -409,9 +409,7 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 				ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
 				        view->getIdx(),
 				        rand() % 90 + 200,
-				        rand() % 90 + 140,
-				        newTableDialog->GetValue2()
-				                                           );
+				        rand() % 90 + 140);
 				design->addTableToView(view->getIdx(), newTable);
 				design->refreshDraw(view->getIdx());
 				setModelChanged(true);

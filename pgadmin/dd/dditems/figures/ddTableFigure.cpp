@@ -61,7 +61,7 @@ All figures title, colums, indexes are store at same array to improve performanc
 	[maxIdxIndex] = last index index
 */
 
-void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
+void ddTableFigure::Init(wxString tableName, int x, int y)
 {
 	setKindId(DDTABLEFIGURE);
 	internalPadding = 2;
@@ -90,7 +90,6 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
 	add(tableTitle);
-	tableTitle->setAlias(shortName);  //Should be here to avoid a null pointer bug
 	tableTitle->moveTo(0, rectangleFigure->getBasicDisplayBox().x[0] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[0] + internalPadding / 2);
 
 	//Intialize handles
@@ -136,16 +135,16 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	belongsToSchema = false;
 }
 
-ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
+ddTableFigure::ddTableFigure(wxString tableName, int x, int y):
 	hdCompositeFigure()
 {
-	Init(tableName, x, y, shortName);
+	Init(tableName, x, y);
 }
 
-ddTableFigure::ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName):
+ddTableFigure::ddTableFigure(wxString tableName, int posIdx, int x, int y):
 	hdCompositeFigure()
 {
-	Init(tableName, 0, 0, shortName);
+	Init(tableName, 0, 0);
 	//Check figure available positions for diagrams, add at least needed to allow initialization of the class
 	int i, start;
 	start = basicDisplayBox.CountPositions();
@@ -845,117 +844,6 @@ ddColumnFigure *ddTableFigure::getColumnByName(wxString name)
 wxArrayString &ddTableFigure::getUkConstraintsNames()
 {
 	return ukNames;
-}
-
-/*
-Rules to auto generate short names:
-0. Table name delimiters are white space (quoted names) or _
-1. if last char in a word is "s" is ignored, ex: employees -> last char will be e not s.
-2. for quoted table names, quotes are ignored for short name purposes.
-4. first char of a syllabe will be defined as first letter before vowels (a,e,i,o,u).
-3. Tables with only one word:
-		1st char first char of word + 1 char second/third or four syllabe + last char.
-		ex: EMPLOYEES will be EME
-			PRODUCT	will be PDT
-4. Tables with more than one words:
-		1st char of first word, first char of second word, last char of last word.
-		ex: ITEM DESCRIPTIONS will be IDN
-			ITEMS FOR SALE will be IFE
-5. Tables with one word but in non latin characters as vowels (a,e,i,o,u) o less than 2 vowels
-		first 3 letters of the word
-*/
-
-wxString ddTableFigure::generateShortName(wxString longName)
-{
-	wxString nameT = longName;
-	//filter not desiree characters
-	nameT.Replace(wxT("\""), wxT(""), true);
-	//start to build short name based on rules
-	wxStringTokenizer tokens(nameT, wxT(" _"), wxTOKEN_DEFAULT);
-	wxChar f, s, l;
-	int num = tokens.CountTokens(), c = 0;
-
-	if(num > 1)
-	{
-		while( tokens.HasMoreTokens() )
-		{
-			wxString token = tokens.GetNextToken();
-			if(c == 0)
-				f = token.GetChar(0);
-			if(c == 1)
-				s = token.GetChar(0);
-			if(((c + 1) - num) == 0)
-			{
-				l = token.GetChar(token.length() - 1);
-				if(l == 's')
-					l = token.GetChar(token.length() - 2);
-			}
-			c++;
-		}
-	}
-	else
-	{
-		//Look for vowels
-		wxStringTokenizer vowelsTokens(nameT, wxT("aeiou"), wxTOKEN_DEFAULT);
-		int numVowels = vowelsTokens.CountTokens();
-		if(numVowels >= 3)
-		{
-			//word have at least 3 vowels tokens
-			f = nameT.GetChar(0);
-			wxString token;
-			token = vowelsTokens.GetNextToken();
-			token = vowelsTokens.GetNextToken();
-			s = token.GetChar(0);
-			if(s == 0)
-			{
-				token = vowelsTokens.GetNextToken();
-				s = token.GetChar(0);
-			}
-			if(s == 0)
-			{
-				token = vowelsTokens.GetNextToken();
-				s = token.GetChar(0);
-			}
-			l = nameT.Last();
-			if(l == 's')
-				l = nameT.GetChar(nameT.length() - 2);
-		}
-		else
-		{
-			//Less than two vowels languages or non latin languages
-			if(nameT.length() >= 3) // but a least 3 letters
-			{
-				f = nameT.GetChar(0);
-				s = nameT.GetChar(1);
-				l = nameT.GetChar(2);
-			}
-			else  //less three letters
-			{
-				f = nameT.GetChar(0);
-				if(nameT.length() == 2)
-					s = nameT.GetChar(1);
-				else
-					s = ' ';
-				l = ' ';
-			}
-
-		}
-	}
-	wxString out = wxString::Format(wxT("%c%c%c"), f, s, l);
-	out.UpperCase();
-	return out;
-}
-
-wxString ddTableFigure::getShortTableName()
-{
-	ddTextTableItemFigure *c = (ddTextTableItemFigure *) figureFigures->getItemAt(1);
-	return c->getAlias();
-}
-
-void ddTableFigure::setShortTableName(wxString shortName)
-{
-	ddTextTableItemFigure *c = (ddTextTableItemFigure *) figureFigures->getItemAt(1);
-	c->setAlias(shortName);
 }
 
 wxString ddTableFigure::getTableName()
