@@ -2965,7 +2965,7 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 			{
 				rowsDeleted++;
 				if ((int)pos < nRows - rowsDeleted)
-					memmove(lineIndex + pos, lineIndex + pos + 1, sizeof(cacheLine *) * (nRows - rowsDeleted - pos));
+					memmove(lineIndex + pos, lineIndex + pos + 1, sizeof(*lineIndex) * (nRows - rowsDeleted - pos));
 			}
 			else
 			{
