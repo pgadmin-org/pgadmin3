@@ -544,14 +544,6 @@ wxString pgTable::GetSql(ctlTree *browser)
 					{
 						sql += wxT(",\n  toast.autovacuum_vacuum_scale_factor=") + GetToastAutoVacuumVacuumScaleFactor();
 					}
-					if (!GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
-					{
-						sql += wxT(",\n  toast.autovacuum_analyze_threshold=") + GetToastAutoVacuumAnalyzeThreshold();
-					}
-					if (!GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
-					{
-						sql += wxT(",\n  toast.autovacuum_analyze_scale_factor=") + GetToastAutoVacuumAnalyzeScaleFactor();
-					}
 					if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
 					{
 						sql += wxT(",\n  toast.autovacuum_vacuum_cost_delay=") + GetToastAutoVacuumVacuumCostDelay();
@@ -1051,10 +1043,6 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 				properties->AppendItem(_("Toast auto-vacuum VACUUM base threshold"), GetToastAutoVacuumVacuumThreshold());
 			if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
 				properties->AppendItem(_("Toast auto-vacuum VACUUM scale factor"), GetToastAutoVacuumVacuumScaleFactor());
-			if (!GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
-				properties->AppendItem(_("Toast auto-vacuum ANALYZE base threshold"), GetToastAutoVacuumAnalyzeThreshold());
-			if (!GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
-				properties->AppendItem(_("Toast auto-vacuum ANALYZE scale factor"), GetToastAutoVacuumAnalyzeScaleFactor());
 			if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
 				properties->AppendItem(_("Toast auto-vacuum VACUUM cost delay"), GetToastAutoVacuumVacuumCostDelay());
 			if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
@@ -1609,8 +1597,6 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 								table->iSetToastAutoVacuumEnabled(0);
 							table->iSetToastAutoVacuumVacuumThreshold(set->GetVal(wxT("autovacuum_vacuum_threshold")));
 							table->iSetToastAutoVacuumVacuumScaleFactor(set->GetVal(wxT("autovacuum_vacuum_scale_factor")));
-							table->iSetToastAutoVacuumAnalyzeThreshold(set->GetVal(wxT("autovacuum_analyze_threshold")));
-							table->iSetToastAutoVacuumAnalyzeScaleFactor(set->GetVal(wxT("autovacuum_analyze_scale_factor")));
 							table->iSetToastAutoVacuumVacuumCostDelay(set->GetVal(wxT("autovacuum_vacuum_cost_delay")));
 							table->iSetToastAutoVacuumVacuumCostLimit(set->GetVal(wxT("autovacuum_vacuum_cost_limit")));
 							table->iSetToastAutoVacuumFreezeMinAge(set->GetVal(wxT("autovacuum_freeze_min_age")));

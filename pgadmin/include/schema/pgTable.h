@@ -462,22 +462,6 @@ public:
 	{
 		toast_autovacuum_vacuum_scale_factor = s;
 	}
-	wxString GetToastAutoVacuumAnalyzeThreshold()
-	{
-		return toast_autovacuum_analyze_threshold;
-	}
-	void iSetToastAutoVacuumAnalyzeThreshold(const wxString &s)
-	{
-		toast_autovacuum_analyze_threshold = s;
-	}
-	wxString GetToastAutoVacuumAnalyzeScaleFactor()
-	{
-		return toast_autovacuum_analyze_scale_factor;
-	}
-	void iSetToastAutoVacuumAnalyzeScaleFactor(const wxString &s)
-	{
-		toast_autovacuum_analyze_scale_factor = s;
-	}
 	wxString GetToastAutoVacuumVacuumCostDelay()
 	{
 		return toast_autovacuum_vacuum_cost_delay;
@@ -579,8 +563,7 @@ private:
 	bool hasOids, unlogged, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics, distributionIsRandom;
 
 	wxString toast_fillFactor, toast_autovacuum_vacuum_threshold,
-	         toast_autovacuum_vacuum_scale_factor, toast_autovacuum_analyze_threshold,
-	         toast_autovacuum_analyze_scale_factor, toast_autovacuum_vacuum_cost_delay,
+	         toast_autovacuum_vacuum_scale_factor, toast_autovacuum_vacuum_cost_delay,
 	         toast_autovacuum_vacuum_cost_limit, toast_autovacuum_freeze_min_age,
 	         toast_autovacuum_freeze_max_age, toast_autovacuum_freeze_table_age;
 
