@@ -98,11 +98,11 @@ private:
 
 	/* Toast Table */
 	bool toastTableVacEnabled, toastTableHasVacuum;
-	wxString toastTableVacBaseThr, toastTableAnlBaseThr,
+	wxString toastTableVacBaseThr,
 	         toastTableCostDelay, toastTableCostLimit,
 	         toastTableFreezeMinAge, toastTableFreezeMaxAge,
 	         toastTableFreezeTableAge;
-	wxString toastTableVacFactor, toastTableAnlFactor;
+	wxString toastTableVacFactor;
 
 	DECLARE_EVENT_TABLE()
 };

@@ -83,12 +83,8 @@
 #define chkToastVacEnabled        CTRL_CHECKBOX("chkToastVacEnabled")
 #define txtBaseToastVac           CTRL_TEXT("txtBaseToastVac")
 #define stBaseToastVacCurr        CTRL_STATIC("stBaseToastVacCurr")
-#define txtBaseToastAn            CTRL_TEXT("txtBaseToastAn")
-#define stBaseToastAnCurr         CTRL_STATIC("stBaseToastAnCurr")
 #define txtFactorToastVac         CTRL_TEXT("txtFactorToastVac")
 #define stFactorToastVacCurr      CTRL_STATIC("stFactorToastVacCurr")
-#define txtFactorToastAn          CTRL_TEXT("txtFactorToastAn")
-#define stFactorToastAnCurr       CTRL_STATIC("stFactorToastAnCurr")
 #define txtToastVacDelay          CTRL_TEXT("txtToastVacDelay")
 #define stToastVacDelayCurr       CTRL_STATIC("stToastVacDelayCurr")
 #define txtToastVacLimit          CTRL_TEXT("txtToastVacLimit")
@@ -138,9 +134,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
 	EVT_CHECKBOX(XRCID("chkCustomToastVac"),            dlgTable::OnChangeVacuum)
 	EVT_CHECKBOX(XRCID("chkToastVacEnabled"),           dlgTable::OnChangeVacuum)
 	EVT_TEXT(XRCID("txtBaseToastVac"),                  dlgTable::OnChangeVacuum)
-	EVT_TEXT(XRCID("txtBaseToastAn"),                   dlgTable::OnChangeVacuum)
 	EVT_TEXT(XRCID("txtFactorToastVac"),                dlgTable::OnChangeVacuum)
-	EVT_TEXT(XRCID("txtFactorToastAn"),                 dlgTable::OnChangeVacuum)
 	EVT_TEXT(XRCID("txtToastVacDelay"),                 dlgTable::OnChangeVacuum)
 	EVT_TEXT(XRCID("txtToastVacLimit"),                 dlgTable::OnChangeVacuum)
 	EVT_TEXT(XRCID("txtToastFreezeMinAge"),             dlgTable::OnChangeVacuum)
@@ -506,13 +500,11 @@ int dlgTable::Go(bool modal)
 		tableFreezeTableAge = wxT("-1");
 
 		toastTableVacBaseThr = wxT("-1");
-		toastTableAnlBaseThr = wxT("-1");
 		toastTableCostDelay = wxT("-1");
 		toastTableCostLimit = wxT("-1");
 		toastTableFreezeMinAge = wxT("-1");
 		toastTableFreezeMaxAge = wxT("-1");
 		toastTableVacFactor = wxT("-1");
-		toastTableAnlFactor = wxT("-1");
 		toastTableFreezeTableAge = wxT("-1");
 
 		toastTableHasVacuum = false;
@@ -592,12 +584,8 @@ int dlgTable::Go(bool modal)
 						toastTableVacEnabled  = table->GetToastAutoVacuumEnabled() == 1;
 					if (!table->GetToastAutoVacuumVacuumThreshold().IsEmpty())
 						toastTableVacBaseThr = table->GetToastAutoVacuumVacuumThreshold();
-					if (!table->GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
-						toastTableAnlBaseThr = table->GetToastAutoVacuumAnalyzeThreshold();
 					if (!table->GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
 						toastTableVacFactor = table->GetToastAutoVacuumVacuumScaleFactor();
-					if (!table->GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
-						toastTableAnlFactor = table->GetToastAutoVacuumAnalyzeScaleFactor();
 					if (!table->GetToastAutoVacuumVacuumCostDelay().IsEmpty())
 						toastTableCostDelay = table->GetToastAutoVacuumVacuumCostDelay();
 					if (!table->GetToastAutoVacuumVacuumCostLimit().IsEmpty())
@@ -618,7 +606,7 @@ int dlgTable::Go(bool modal)
 			chkVacEnabled->SetValue(settingAutoVacuum);
 		}
 
-		txtBaseVac->SetValue(tableVacBaseThr);
+		//txtBaseVac->SetValue(tableVacBaseThr);
 		txtBaseAn->SetValue(tableAnlBaseThr);
 		txtFactorVac->SetValue(tableVacFactor);
 		txtFactorAn->SetValue(tableAnlFactor);
@@ -634,9 +622,7 @@ int dlgTable::Go(bool modal)
 		{
 			txtFreezeTableAge->SetValue(tableFreezeTableAge);
 			txtBaseToastVac->SetValue(toastTableVacBaseThr);
-			txtBaseToastAn->SetValue(toastTableAnlBaseThr);
 			txtFactorToastVac->SetValue(toastTableVacFactor);
-			txtFactorToastAn->SetValue(toastTableAnlFactor);
 			txtToastVacDelay->SetValue(toastTableCostDelay);
 			txtToastVacLimit->SetValue(toastTableCostLimit);
 			txtToastFreezeMinAge->SetValue(toastTableFreezeMinAge);
@@ -1075,25 +1061,11 @@ wxString dlgTable::GetSql()
 					FillAutoVacuumParameters(setStr, resetStr, wxT("toast.autovacuum_vacuum_threshold"), newVal);
 				}
 
-				newVal = AppendNum(valChanged, txtBaseToastAn, toastTableAnlBaseThr);
-				if (valChanged)
-				{
-					valChanged = false;
-					FillAutoVacuumParameters(setStr, resetStr, wxT("toast.autovacuum_analyze_threshold"), newVal);
-				}
-
 				newVal = AppendNum(valChanged, txtFactorToastVac, toastTableVacFactor);
 				if (valChanged)
 				{
 					valChanged = false;
 					FillAutoVacuumParameters(setStr, resetStr, wxT("toast.autovacuum_vacuum_scale_factor"), newVal);
-				}
-
-				newVal = AppendNum(valChanged, txtFactorToastAn, toastTableAnlFactor);
-				if (valChanged)
-				{
-					valChanged = false;
-					FillAutoVacuumParameters(setStr, resetStr, wxT("toast.autovacuum_analyze_scale_factor"), newVal);
 				}
 
 				newVal = AppendNum(valChanged, txtToastVacDelay, toastTableCostDelay);
@@ -1308,25 +1280,11 @@ wxString dlgTable::GetSql()
 					FillAutoVacuumParameters(sql, resetStr, wxT("toast.autovacuum_vacuum_threshold"), newVal);
 				}
 
-				newVal = AppendNum(valChanged, txtBaseToastAn, toastTableAnlBaseThr);
-				if (valChanged)
-				{
-					valChanged = false;
-					FillAutoVacuumParameters(sql, resetStr, wxT("toast.autovacuum_analyze_threshold"), newVal);
-				}
-
 				newVal = AppendNum(valChanged, txtFactorToastVac, toastTableVacFactor);
 				if (valChanged)
 				{
 					valChanged = false;
 					FillAutoVacuumParameters(sql, resetStr, wxT("toast.autovacuum_vacuum_scale_factor"), newVal);
-				}
-
-				newVal = AppendNum(valChanged, txtFactorToastAn, toastTableAnlFactor);
-				if (valChanged)
-				{
-					valChanged = false;
-					FillAutoVacuumParameters(sql, resetStr, wxT("toast.autovacuum_analyze_scale_factor"), newVal);
 				}
 
 				newVal = AppendNum(valChanged, txtToastVacDelay, toastTableCostDelay);
@@ -1529,9 +1487,7 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
 			chkToastVacEnabled->Enable(chkCustomToastVac->GetValue());
 
 			txtBaseToastVac->Enable(toastVacEn);
-			txtBaseToastAn->Enable(toastVacEn);
 			txtFactorToastVac->Enable(toastVacEn);
-			txtFactorToastAn->Enable(toastVacEn);
 			txtToastVacDelay->Enable(toastVacEn);
 			txtToastVacLimit->Enable(toastVacEn);
 			txtToastFreezeMinAge->Enable(toastVacEn);
@@ -1539,9 +1495,7 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
 			txtToastFreezeTableAge->Enable(toastVacEn);
 
 			stBaseToastVacCurr->SetLabel(toastTableVacBaseThr == wxT("-1") ? settingVacBaseThr : toastTableVacBaseThr);
-			stBaseToastAnCurr->SetLabel(toastTableAnlBaseThr == wxT("-1") ? settingAnlBaseThr : toastTableAnlBaseThr);
 			stFactorToastVacCurr->SetLabel(toastTableVacFactor == wxT("-1") ? settingVacFactor : toastTableVacFactor);
-			stFactorToastAnCurr->SetLabel(toastTableAnlFactor == wxT("-1") ? settingAnlFactor : toastTableAnlFactor);
 			stToastVacDelayCurr->SetLabel(toastTableCostDelay == wxT("-1") ? settingCostDelay : toastTableCostDelay);
 			stToastVacLimitCurr->SetLabel(toastTableCostLimit == wxT("-1") ? settingCostLimit : toastTableCostLimit);
 			stToastFreezeMinAgeCurr->SetLabel(toastTableFreezeMinAge == wxT("-1") ? settingFreezeMinAge : toastTableFreezeMinAge);
