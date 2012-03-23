@@ -110,7 +110,7 @@ wxString pgForeignServer::GetSql(ctlTree *browser)
 	{
 		sql = wxT("-- Server: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP SERVER ") + GetQuotedFullIdentifier() + wxT(";")
-		      + wxT("\n\nCREATE SERVER ") + GetName()
+		      + wxT("\n\nCREATE SERVER ") + GetQuotedFullIdentifier()
 		      + wxT("\n   FOREIGN DATA WRAPPER ") + qtIdent(GetForeignDataWrapper()->GetName());
 
 		if (!GetType().IsEmpty())
@@ -123,7 +123,7 @@ wxString pgForeignServer::GetSql(ctlTree *browser)
 			sql += wxT("\n  OPTIONS (") + GetCreateOptions() + wxT(")");
 
 		sql += wxT(";\n")
-		       +  GetOwnerSql(8, 4, wxT("SERVER ") + GetName())
+		       +  GetOwnerSql(8, 4, wxT("SERVER ") + GetQuotedFullIdentifier())
 		       +  GetGrant(wxT("U"), wxT("FOREIGN SERVER ") + GetQuotedFullIdentifier());
 	}
 	return sql;
