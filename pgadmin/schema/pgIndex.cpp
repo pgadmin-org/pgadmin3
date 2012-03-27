@@ -532,13 +532,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	{
 		while (!indexes->Eof())
 		{
-			wxString strVal = indexes->GetVal(wxT("contype"));
-			if(strVal.IsEmpty())
-			{
-				indexes->MoveNext();
-				continue;
-			}
-			switch ((wxChar)strVal[0U])
+			switch (*(indexes->GetCharPtr(wxT("contype"))))
 			{
 				case 0:
 					index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
@@ -564,7 +558,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 			index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
 			index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
 			index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
-			index->iSetIsExclude(indexes->GetVal(wxT("contype"))[0U] == 'x');
+			index->iSetIsExclude(*(indexes->GetCharPtr(wxT("contype"))) == 'x');
 			index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
 			index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
 			index->iSetComment(indexes->GetVal(wxT("description")));
