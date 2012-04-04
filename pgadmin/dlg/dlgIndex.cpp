@@ -203,6 +203,9 @@ void dlgIndex::CheckChange()
 {
 	bool fill = false;
 
+	txtComment->Enable(!txtName->GetValue().IsEmpty());
+	chkClustered->Enable(!txtName->GetValue().IsEmpty());
+
 	if (index)
 	{
 		if (txtFillFactor)
@@ -640,7 +643,7 @@ wxString dlgIndex::GetSql()
 					       +  wxT(";\n");
 			}
 		}
-		if (connection->BackendMinimumVersion(7, 4))
+		if (connection->BackendMinimumVersion(7, 4) && chkClustered->IsEnabled())
 		{
 			if (index && index->GetIsClustered() && !chkClustered->GetValue())
 				sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
@@ -650,7 +653,10 @@ wxString dlgIndex::GetSql()
 				       +  wxT(" CLUSTER ON ") + qtIdent(name) + wxT(";\n");
 		}
 
-		AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
+		if (txtComment->IsEnabled())
+		{
+			AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
+		}
 	}
 	return sql;
 }
