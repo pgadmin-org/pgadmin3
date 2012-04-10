@@ -924,7 +924,7 @@ bool frmMain::CheckAlive()
 					}
 				}
 
-				serverItem = browser->GetNextChild(serversObj->GetId(), cookie);
+				serverItem = browser->GetNextChild(folderitem, cookie);
 			}
 		}
 		folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
