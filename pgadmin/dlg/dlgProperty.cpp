@@ -245,7 +245,10 @@ int dlgProperty::Go(bool modal)
 {
 	wxASSERT(factory != 0);
 
-	obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection());
+	if(GetObject())
+		obj = GetObject();
+	else
+		obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection());
 
 	// restore previous position and size, if applicable
 	wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
