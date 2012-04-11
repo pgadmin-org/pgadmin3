@@ -247,7 +247,7 @@ int dlgTable::Go(bool modal)
 	cbOfType->SetSelection(0);
 
 	// "like relation" tab
-	nbNotebook->GetPage(3)->Enable(!table);
+	nbNotebook->GetPage(TAB_LIKE)->Enable(!table);
 
 	hasPK = false;
 
@@ -690,7 +690,7 @@ int dlgTable::Go(bool modal)
 	else
 	{
 		/* Remove 'Vacuum Settings' Page */
-		nbNotebook->DeletePage(5);
+		nbNotebook->DeletePage(TAB_AUTOVACUUM);
 	}
 
 	// Find, and disable the RULE ACL option if we're 8.2

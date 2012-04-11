@@ -29,6 +29,20 @@ enum
 	COL_CHANGEDCOL
 };
 
+enum
+{
+	TAB_PROPERTIES = 0,
+	TAB_DEFINITION,
+	TAB_INHERITS,
+	TAB_LIKE,
+	TAB_COLUMNS,
+	TAB_CONSTRAINTS,
+	TAB_AUTOVACUUM,
+	TAB_PRIVILEGES,
+	TAB_SECLABEL,
+	TAB_SQL
+};
+
 class pgSchema;
 class pgTable;
 class pgColumn;
