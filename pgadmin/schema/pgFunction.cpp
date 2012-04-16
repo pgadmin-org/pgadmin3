@@ -557,10 +557,21 @@ wxString pgFunction::GetArgListWithNames()
 			arg += argTypesArray.Item(i);
 
 		// Parameter default value
-		if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) || GetConnection()->BackendMinimumVersion(8, 4))
+		if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS)
+		        && !argDefsArray.IsEmpty())
 		{
-			if (!argModesArray.Item(i).IsSameAs(wxT("OUT"), false) && !argDefsArray.Item(i).IsEmpty())
+			if ((argModesArray.Item(i).IsEmpty() ||
+			        argModesArray.Item(i) == wxT("IN") ||
+			        // 'edbspl' does not support default value with
+			        // INOUT parameter
+			        (argModesArray.Item(i) == wxT("INOUT") &&
+			         GetLanguage() != wxT("edbspl")) ||
+			        argModesArray.Item(i) == wxT("VARIADIC")) &&
+			        !argDefsArray.Item(i).IsEmpty() &&
+			        i < argDefsArray.Count())
+			{
 				arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
+			}
 		}
 
 		args += arg;
@@ -626,7 +637,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 	if (obj->GetConnection()->BackendMinimumVersion(8, 0))
 		argNamesCol = wxT("proargnames, ");
 	if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) && !obj->GetConnection()->BackendMinimumVersion(8, 4))
-		argDefsCol = wxT("proargdefvals, ");
+		argDefsCol = wxT("proargdefvals, COALESCE(substring(array_dims(proargdefvals), E'1:(.*)\\]')::integer, 0) AS pronargdefaults, ");
 	if (obj->GetConnection()->BackendMinimumVersion(8, 4))
 		argDefsCol = wxT("pg_get_expr(proargdefaults, 'pg_catalog.pg_class'::regclass) AS proargdefaultvals, pronargdefaults, ");
 	if (obj->GetConnection()->BackendMinimumVersion(8, 3))
@@ -669,7 +680,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 		while (!functions->Eof())
 		{
 			bool isProcedure = false;
-			bool hasDefValSupport = false;
 			wxString lanname = functions->GetVal(wxT("lanname"));
 			wxString typname = functions->GetVal(wxT("typname"));
 
@@ -694,10 +704,9 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
 			// Tokenize the arguments
 			wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
-			queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','), argDefsTkz(wxEmptyString, (wxChar)',');
 			wxString tmp;
 
-			// Support for Default Value in PG 8.4
+			wxArrayString argNamesArray;
 			wxArrayString argDefValArray;
 
 			// We always have types
@@ -708,7 +717,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			{
 				tmp = functions->GetVal(wxT("proargnames"));
 				if (!tmp.IsEmpty())
-					argNamesTkz.SetString(tmp.Mid(1, tmp.Length() - 2), wxT(","));
+					getArrayFromCommaSeparatedList(tmp.Mid(1, tmp.Length() - 2), argNamesArray);
 			}
 
 			// EDB 8.0 had modes in pg_proc.proargdirs
@@ -736,12 +745,13 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			{
 				tmp = functions->GetVal(wxT("proargdefvals"));
 				if (!tmp.IsEmpty())
-					argDefsTkz.SetString(tmp.Mid(1, tmp.Length() - 2), wxT(","));
+					getArrayFromCommaSeparatedList(tmp.Mid(1, tmp.Length() - 2), argDefValArray);
+
+				function->iSetArgDefValCount(functions->GetLong(wxT("pronargdefaults")));
 			}
 
 			if (obj->GetConnection()->BackendMinimumVersion(8, 4))
 			{
-				hasDefValSupport = true;
 				tmp = functions->GetVal(wxT("proargdefaultvals"));
 				getArrayFromCommaSeparatedList(tmp, argDefValArray);
 
@@ -754,17 +764,22 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 				function->iSetIsWindow(false);
 
 			// Now iterate the arguments and build the arrays
-			wxString type, name, mode, def;
+			wxString type, name, mode;
 			size_t nArgsIN = 0;
+			size_t nArgNames = 0;
 
 			while (argTypesTkz.HasMoreTokens())
 			{
-
-				// Now add the name, stripping the quotes and \" if
-				// necessary.
-				name = argNamesTkz.GetNextToken();
+				if (nArgNames < argNamesArray.GetCount())
+				{
+					name = argNamesArray[nArgNames++];
+				}
+				else
+					name = wxEmptyString;
 				if (!name.IsEmpty())
 				{
+					// Now add the name, stripping the quotes and \" if
+					// necessary.
 					if (name[0] == '"')
 						name = name.Mid(1, name.Length() - 2);
 					name.Replace(wxT("\\\""), wxT("\""));
@@ -783,9 +798,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
 							// consume uniformly, mode will definitely be "OUT"
 							mode = argModesTkz.GetNextToken();
-							// no defvals..
-							if (!hasDefValSupport)
-								def = argDefsTkz.GetNextToken();
+
 							continue;
 						}
 					}
@@ -805,16 +818,21 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 				{
 					if (mode == wxT('o') || mode == wxT("2"))
 						mode = wxT("OUT");
-					else if (mode == wxT("b"))
+					else if (mode == wxT("b") || mode == wxT("3"))
+					{
 						if (isProcedure)
 							mode = wxT("IN OUT");
 						else
 						{
 							mode = wxT("INOUT");
-							nArgsIN++;
+							// 'edbspl' does not support default values for the
+							// INOUT parameters.
+							if (lanname != wxT("edbspl"))
+							{
+								nArgsIN++;
+							}
 						}
-					else if (mode == wxT("3"))
-						mode = wxT("IN OUT");
+					}
 					else if (mode == wxT("v"))
 					{
 						mode = wxT("VARIADIC");
@@ -835,71 +853,63 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 					function->iAddArgMode(wxEmptyString);
 					nArgsIN++;
 				}
-
-				// Finally the defaults, as we got them.
-				if (!hasDefValSupport)
-					def = argDefsTkz.GetNextToken();
-
-				if (hasDefValSupport)
-				{
-					// We will process this later
-				}
-				else if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
-				{
-					if (def[0] == '"')
-						def = def.Mid(1, def.Length() - 2);
-
-					// Check the cache first - if we don't have a value, get it and cache for next time
-					wxString val = exprCache[def];
-					if (val == wxEmptyString)
-					{
-						val = obj->GetDatabase()->ExecuteScalar(wxT("SELECT pg_get_expr('") + def + wxT("', 'pg_catalog.pg_class'::regclass)"));
-						exprCache[def] = val;
-					}
-					function->iAddArgDef(val);
-				}
-				else
-					function->iAddArgDef(wxEmptyString);
 			}
 
 			function->iSetArgCount(functions->GetLong(wxT("pronargs")));
 
 			wxString strReturnTableArgs;
 			// Process default values
-			if (obj->GetConnection()->BackendMinimumVersion(8, 4))
+			size_t currINindex = 0;
+			for (size_t index = 0; index < function->GetArgModesArray().Count(); index++)
 			{
-				size_t currINindex = 0;
-				for (size_t index = 0; index < function->GetArgModesArray().Count(); index++)
+				wxString def = wxEmptyString;
+				if(function->GetArgModesArray()[index].IsEmpty() ||
+				        function->GetArgModesArray()[index] == wxT("IN") ||
+				        (function->GetArgModesArray()[index] == wxT("INOUT") &&
+				         lanname != wxT("edbspl")) ||
+				        function->GetArgModesArray()[index] == wxT("VARIADIC"))
 				{
-					if (function->GetArgModesArray()[index] == wxT("IN") ||
-					        function->GetArgModesArray()[index] == wxT("INOUT") ||
-					        function->GetArgModesArray()[index] == wxT("VARIADIC") ||
-					        function->GetArgModesArray()[index].IsEmpty())
+					if (!argDefValArray.IsEmpty() && nArgsIN <= argDefValArray.GetCount())
 					{
-						nArgsIN--;
-						if (function->GetArgDefValCount() != 0 &&
-						        nArgsIN < (size_t)function->GetArgDefValCount())
+						def = argDefValArray[currINindex++];
+
+						if (!def.IsEmpty() && def != wxT("-"))
 						{
-							if (argDefValArray[currINindex++] != wxT("-"))
-								function->iAddArgDef(argDefValArray[currINindex - 1]);
-							else
-								function->iAddArgDef(wxT(""));
+							// Only EDB 8.3 does not support get the default value
+							// using pg_get_expr directly
+							if (function->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) &&
+							        !function->GetConnection()->BackendMinimumVersion(8, 4))
+							{
+								// Check the cache first - if we don't have a value, get it and cache for next time
+								wxString val = exprCache[def];
+
+								if (val == wxEmptyString)
+								{
+									val = obj->GetDatabase()->ExecuteScalar(
+									          wxT("SELECT pg_get_expr('") + def.Mid(1, def.Length() - 2) + wxT("', 'pg_catalog.pg_class'::regclass)"));
+									exprCache[def] = val;
+								}
+								def = val;
+							}
 						}
 						else
-							function->iAddArgDef(wxEmptyString);
+						{
+							def = wxEmptyString;
+						}
 					}
-					else if(function->GetArgModesArray()[index] == wxT("TABLE"))
-					{
-						if (strReturnTableArgs.Length() > 0)
-							strReturnTableArgs += wxT(", ");
-						wxString strName = function->GetArgNamesArray()[index];
-						if (!strName.IsEmpty())
-							strReturnTableArgs += qtIdent(strName) + wxT(" ");
-						strReturnTableArgs += function->GetArgTypesArray()[index];
-					}
-					else
-						function->iAddArgDef(wxEmptyString);
+					nArgsIN--;
 				}
+				else if(function->GetConnection()->BackendMinimumVersion(8, 4) &&
+				        function->GetArgModesArray()[index] == wxT("TABLE"))
+				{
+					if (strReturnTableArgs.Length() > 0)
+						strReturnTableArgs += wxT(", ");
+					wxString strName = function->GetArgNamesArray()[index];
+					if (!strName.IsEmpty())
+						strReturnTableArgs += qtIdent(strName) + wxT(" ");
+					strReturnTableArgs += function->GetArgTypesArray()[index];
+				}
+				function->iAddArgDef(def);
 			}
 
 			function->iSetOid(functions->GetOid(wxT("oid")));

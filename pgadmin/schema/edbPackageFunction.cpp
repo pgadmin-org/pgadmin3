@@ -138,9 +138,14 @@ wxString edbPackageFunction::GetArgListWithNames()
 			arg += argTypesArray.Item(i);
 
 		// Parameter default value
-		if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) || GetConnection()->BackendMinimumVersion(8, 4))
+		if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) &&
+		        !argDefsArray.IsEmpty())
 		{
-			if (!argModesArray.Item(i).IsSameAs(wxT("OUT"), false) && !argDefsArray.Item(i).IsEmpty())
+			if ((argModesArray.Item(i).IsEmpty() ||
+			        argModesArray.Item(i) == wxT("IN") ||
+			        argModesArray.Item(i) == wxT("VARIADIC")) &&
+			        !argDefsArray.Item(i).IsEmpty() &&
+			        i < argDefsArray.Count())
 				arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
 		}
 
@@ -268,8 +273,14 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 
 	if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
 	{
-		argDefsCol = obj->GetConnection()->EdbMinimumVersion(8, 4) ? wxT("proargdefaults") : wxT("proargdefvals");
-		argDefsCol += wxT(" AS argdefaults, ");
+		if (obj->GetConnection()->EdbMinimumVersion(8, 4))
+		{
+			argDefsCol = wxT("pg_get_expr(proargdefaults, 'pg_catalog.pg_class'::regclass) AS argdefaults, pronargdefaults, ");
+		}
+		else
+		{
+			argDefsCol = wxT("proargdefvals AS argdefaults, COALESCE(substring(array_dims(proargdefvals), E'1:(.*)\\]')::integer, 0) AS pronargdefaults, ");
+		}
 	}
 
 	if (obj->GetConnection()->EdbMinimumVersion(8, 2))
@@ -306,6 +317,8 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 	{
 		while (!packageFunctions->Eof())
 		{
+			size_t inModeCnt = 0;
+			size_t defaultArgsCnt = 0;
 			if (packageFunctions->GetVal(wxT("eltclass")) == wxT("F"))
 				packageFunction = new edbPackageFunction(package, packageFunctions->GetVal(wxT("eltname")));
 			else
@@ -313,7 +326,8 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 
 			// Tokenize the arguments
 			wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
-			queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','),  argDefsTkz(wxEmptyString, (wxChar)',');
+			queryTokenizer argNamesTkz(wxEmptyString, (wxChar)',');
+			wxArrayString argDefValArray;
 			wxString tmp;
 
 			// Types
@@ -340,14 +354,21 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 			// Function defaults
 			if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
 			{
-				tmp = packageFunctions->GetVal(wxT("argdefaults"));
+				defaultArgsCnt = packageFunctions->GetLong(wxT("pronargdefaults"));
 
-				if (!tmp.IsEmpty())
-					argDefsTkz.SetString(tmp.Mid(1, tmp.Length() - 2), wxT(","));
+				if (defaultArgsCnt > 0)
+				{
+					tmp = packageFunctions->GetVal(wxT("argdefaults"));
+
+					if (!tmp.IsEmpty())
+					{
+						getArrayFromCommaSeparatedList(tmp.Mid(1, tmp.Length() - 2), argDefValArray);
+					}
+				}
 			}
 
 			// Now iterate the arguments and build the arrays
-			wxString type, name, mode, def;
+			wxString type, name, mode;
 
 			while (argTypesTkz.HasMoreTokens())
 			{
@@ -381,32 +402,70 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
 							mode = wxT("INOUT");
 					else if (mode == wxT("3"))
 						mode = wxT("IN OUT");
+					else if (mode == wxT("v"))
+					{
+						inModeCnt++;
+						mode = wxT("VARIADIC");
+					}
 					else
+					{
+						inModeCnt++;
 						mode = wxT("IN");
+					}
 
 					packageFunction->iAddArgMode(mode);
 				}
 				else
 					packageFunction->iAddArgMode(wxEmptyString);
+			}
 
-				// Finally the defaults, as we got them.
-				def = argDefsTkz.GetNextToken();
-				if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
+			// Finally the defaults, as we got them.
+			if (packageFunction->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+			{
+				size_t currINindex = 0;
+				while (inModeCnt)
 				{
-					if (def[0] == '"')
-						def = def.Mid(1, def.Length() - 2);
-
-					// Check the cache first - if we don't have a value, get it and cache for next time
-					wxString val = exprCache[def];
-					if (val == wxEmptyString)
+					for (size_t index = 0; index < packageFunction->GetArgTypesArray().Count(); index++)
 					{
-						val = obj->GetDatabase()->ExecuteScalar(wxT("SELECT pg_get_expr('") + def + wxT("', 'pg_catalog.pg_class'::regclass)"));
-						exprCache[def] = val;
+						wxString def = wxEmptyString;
+						if(packageFunction->GetArgModesArray()[index].IsEmpty() ||
+						        packageFunction->GetArgModesArray()[index] == wxT("IN") ||
+						        packageFunction->GetArgModesArray()[index] == wxT("VARIADIC"))
+						{
+							if (!argDefValArray.IsEmpty() && inModeCnt <= argDefValArray.GetCount())
+							{
+								def = argDefValArray[currINindex++];
+
+								if (!def.IsEmpty() && def != wxT("-"))
+								{
+									// Only EDB 8.3 does not support get the
+									// default value using pg_get_expr directly
+									if (!packageFunction->GetConnection()->BackendMinimumVersion(8, 4))
+									{
+										// Check the cache first - if we don't
+										// have a value, get it and cache for
+										// next time
+										wxString val = exprCache[def];
+
+										if (val == wxEmptyString)
+										{
+											val = obj->GetDatabase()->ExecuteScalar(
+											          wxT("SELECT pg_get_expr('") + def.Mid(1, def.Length() - 2) + wxT("', 'pg_catalog.pg_class'::regclass)"));
+											exprCache[def] = val;
+										}
+										def = val;
+									}
+								}
+								else
+								{
+									def = wxEmptyString;
+								}
+							}
+							inModeCnt--;
+						}
+						packageFunction->iAddArgDef(def);
 					}
-					packageFunction->iAddArgDef(val);
 				}
-				else
-					packageFunction->iAddArgDef(wxEmptyString);
 			}
 
 			packageFunction->iSetOid(packageFunctions->GetOid(wxT("oid")));
