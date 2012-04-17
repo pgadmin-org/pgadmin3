@@ -250,6 +250,14 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 			{
 				// new options
 
+				if (currentChar == wxT("\"") && wrappedInQuotes && !antislash && !tmp.IsEmpty())
+				{
+					// In this specific case, the next character is the comma,
+					// but we don't want to start the next option with the comma
+					// so we skip it right now
+					index++;
+				}
+
 				// we need to grab option and value from tmp string
 				option = tmp.BeforeFirst('=');
 				value = tmp.AfterFirst('=');
