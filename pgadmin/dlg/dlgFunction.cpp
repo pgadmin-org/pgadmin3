@@ -381,7 +381,7 @@ int dlgFunction::Go(bool modal)
 	{
 		wxString restrict;
 		// create mode
-		restrict = wxT("(typtype IN ('b', 'c', 'd', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
+		restrict = wxT("(typtype IN ('b', 'c', 'd', 'e', 'p') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
 		if (!settings->GetShowSystemObjects())
 			restrict += wxT(" AND nspname NOT LIKE E'pg\\\\_toast%' AND nspname NOT LIKE E'pg\\\\_temp%'");
 
