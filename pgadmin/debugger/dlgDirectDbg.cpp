@@ -274,6 +274,12 @@ void dlgDirectDbg::populateParamGrid( )
 	else
 		chkPkgInit->Enable();
 
+	// Set the columns' size
+
+	grdParams->SetColSize(COL_NAME, 200);
+	grdParams->SetColSize(COL_TYPE, 100);
+	grdParams->SetColSize(COL_VALUE, 150);
+
 	// If the target function has no parameters (and it's not defined within
 	// a package), there's no good reason to wait for the user to hit the Ok
 	// button before we invoke the target...
@@ -290,11 +296,12 @@ void dlgDirectDbg::populateParamGrid( )
 		font.SetStyle( wxFONTSTYLE_ITALIC );
 		grdParams->SetCellFont( 0, COL_NAME, font );
 
-		grdParams->SetColSize(COL_NAME, 200);
 		activateDebugger();
 	}
 	else
+	{
 		this->ShowModal();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
