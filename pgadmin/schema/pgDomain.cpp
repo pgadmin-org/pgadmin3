@@ -204,7 +204,7 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 	       wxT("       description, (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname=d.typname) > 1 AS domisdup,\n")
 	       wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup\n")
 	       wxT("  FROM pg_type d\n")
-	       wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
+	       wxT("  JOIN pg_type b ON b.oid = d.typbasetype\n")
 	       wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
