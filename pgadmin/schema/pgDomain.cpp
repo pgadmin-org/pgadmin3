@@ -249,7 +249,7 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=d.oid) AS providers");
 	}
 	sql += wxT("\n   FROM pg_type d\n")
-	       wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
+	       wxT("  JOIN pg_type b ON b.oid = d.typbasetype\n")
 	       wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
