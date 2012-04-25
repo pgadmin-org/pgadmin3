@@ -339,3 +339,4 @@ private:
 	hdPoint point;
 };
 #endif
+
