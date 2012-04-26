@@ -1067,12 +1067,20 @@ void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &fu
 		// Now erase any old code and write out the new listing
 		m_view->SetReadOnly( false );
 
-		// Strip the leading blank line from the source as it looks ugly
+		// Get the source. Ignore any CRs.
 		wxString src = codeCache.getSource();
 		src.Replace(wxT("\r"), wxT(""));
 
+		// Before PostgreSQL 9.1, the server ignored an initial newline
+		// when calculating line numbers. The line numbers of what we display
+		// has to match the server's numbering, or all the highlighting and
+		// breakpoints are off, so if we're connected to a server older than
+		// 9.1, strip the initial newline from the display.
 		if (src.StartsWith(wxT("\n")))
-			src = src.AfterFirst('\n');
+		{
+			if (!m_dbgConn->BackendMinimumVersion(9, 1))
+				src = src.AfterFirst('\n');
+		}
 
 		m_view->SetText(src);
 
