@@ -1036,7 +1036,18 @@ bool pgDatabase::CanDebugEdbspl()
 	if (GetServer()->GetSuperUser())
 	{
 		// Check the appropriate plugin is loaded
-		if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger")))
+
+		// Before EDBAS92, there was a separate library for SPL and PL/pgSQL.
+		// Starting with 9.2, EDB uses the community version of pldebugger,
+		// and support for both languages is built into plugin_debugger.so
+		wxString library_name;
+
+		if (server->GetConnection()->EdbMinimumVersion(9, 2))
+			library_name = wxT("plugin_debugger");
+		else
+			library_name = wxT("plugin_spl_debugger");
+
+		if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(library_name))
 		{
 			canDebugEdbspl = 1;
 			return false;
