@@ -158,6 +158,7 @@ public:
 	void OnChangeReadOnly(wxCommandEvent &event);
 
 protected:
+	void AddDatabases(ctlComboBoxFix *cb = 0);
 	void AddGroups(ctlComboBoxFix *comboBox = 0);
 	void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2 = 0);
 	void AddSchemas(ctlComboBoxFix *comboBox = 0);

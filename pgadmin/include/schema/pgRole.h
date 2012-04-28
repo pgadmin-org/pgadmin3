@@ -151,9 +151,9 @@ public:
 	{
 		return rolesIn;
 	}
-	wxArrayString &GetConfigList()
+	wxArrayString &GetVariables()
 	{
-		return configList;
+		return variables;
 	}
 
 	void ReassignDropOwnedTo(frmMain *form);
@@ -186,7 +186,7 @@ private:
 	bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin, replication;
 	long connectionLimit;
 	wxArrayString rolesIn;
-	wxArrayString configList;
+	wxArrayString variables;
 };
 
 

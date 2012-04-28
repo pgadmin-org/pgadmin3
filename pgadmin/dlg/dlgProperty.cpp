@@ -572,6 +572,12 @@ void dlgProperty::FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlCo
 }
 
 
+void dlgProperty::AddDatabases(ctlComboBoxFix *cb)
+{
+	FillCombobox(wxT("SELECT datname FROM pg_database ORDER BY 1"), cb);
+}
+
+
 void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
 	if (connection->BackendMinimumVersion(8, 1))

@@ -230,16 +230,39 @@ wxString pgRole::GetSql(ctlTree *browser)
 			sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
 
 		size_t index;
-		for (index = 0 ; index < configList.GetCount() ; index++)
+		if (variables.GetCount() > 0)
 		{
-			if (configList.Item(index).BeforeFirst('=') != wxT("search_path") &&
-			        configList.Item(index).BeforeFirst('=') != wxT("temp_tablespaces"))
-				sql += wxT("ALTER ROLE ") + GetQuotedIdentifier()
-				       + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("='") + configList.Item(index).AfterFirst('=') + wxT("';\n");
-			else
-				sql += wxT("ALTER ROLE ") + GetQuotedIdentifier()
-				       + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("=") + configList.Item(index).AfterFirst('=') + wxT(";\n");
+			wxString dbname = wxEmptyString;
+			wxString parameter = wxEmptyString;
+			wxString value = wxEmptyString;
+
+			sql += wxT("\n");
+			for (index = 0 ; index < variables.GetCount() ; index += 3)
+			{
+				dbname = variables.Item(index);
+				parameter = variables.Item(index + 1);
+				value = variables.Item(index + 2);
+
+				if (dbname.Length() == 0)
+				{
+					sql += wxT("ALTER ROLE ") + GetQuotedFullIdentifier();
+				}
+				else
+				{
+					sql += wxT("ALTER ROLE ") + GetQuotedFullIdentifier() + wxT(" IN DATABASE ") + dbname;
+				}
+
+				if (parameter != wxT("search_path") && parameter != wxT("temp_tablespaces"))
+				{
+					sql += wxT("\n  SET ") + parameter + wxT(" = '") + value + wxT("';\n");
+				}
+				else
+				{
+					sql += wxT("\n  SET ") + parameter + wxT(" = ") + value + wxT(";\n");
+				}
+			}
 		}
+
 		for (index = 0 ; index < rolesIn.GetCount() ; index++)
 		{
 			wxString role = rolesIn.Item(index);
@@ -383,6 +406,39 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 			rolesIn.Add(role);
 		}
+
+		// Get configuration
+		wxString query;
+		if (GetConnection()->BackendMinimumVersion(9, 0))
+		{
+			query = wxT("WITH configs AS ")
+			        wxT("(SELECT datname, unnest(setconfig) AS config")
+			        wxT(" FROM pg_db_role_setting s")
+			        wxT(" LEFT JOIN pg_database d ON d.oid=s.setdatabase")
+			        wxT(" WHERE s.setrole=") + NumToStr(GetOid()) + wxT(")\n")
+			        wxT("SELECT datname, split_part(config, '=', 1) AS variable, replace(config, split_part(config, '=', 1) || '=', '') AS value\n")
+			        wxT("FROM configs");
+		}
+		else
+		{
+			query = wxT("SELECT datname, split_part(config, '=', 1) AS variable,\n")
+			        wxT("       replace(config,split_part(config, '=', 1) || '=', '') AS value\n")
+			        wxT("FROM (SELECT '' AS datname, unnest(rolconfig) AS config\n")
+			        wxT("      FROM pg_roles r\n")
+			        wxT("      WHERE r.oid=") + NumToStr(GetOid()) + wxT(") configs");
+		}
+		pgSet *configs = GetConnection()->ExecuteSet(query);
+		if (configs)
+		{
+			while (!configs->Eof())
+			{
+				variables.Add(configs->GetVal(wxT("datname")));
+				variables.Add(configs->GetVal(wxT("variable")));
+				variables.Add(configs->GetVal(wxT("value")));
+				configs->MoveNext();
+			}
+			delete configs;
+		}
 	}
 	if (properties)
 	{
@@ -419,10 +475,23 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		}
 		properties->AppendItem(_("Member of"), roleList);
 
-		for (index = 0; index < configList.GetCount() ; index++)
+		wxString dbname;
+		wxString parameter;
+		wxString value;
+		for (index = 0; index < variables.GetCount() ; index += 3)
 		{
-			wxString item = configList.Item(index);
-			properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
+			dbname = variables.Item(index);
+			parameter = variables.Item(index + 1);
+			value = variables.Item(index + 2);
+
+			if (dbname.Length() == 0)
+			{
+				properties->AppendItem(parameter, value);
+			}
+			else
+			{
+				properties->AppendItem(parameter + wxT(" (database ") + dbname + wxT(")"), value);
+			}
 		}
 
 		if (!GetLabels().IsEmpty())
@@ -523,7 +592,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	// In 9.0+, role config options are in pg_db_role_setting
 	if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 5))
 	{
-		query = wxT("SELECT tab.oid, tab.*, pg_catalog.shobj_description(tab.oid, 'pg_authid') AS description, setting.setconfig AS rolconfig");
+		query = wxT("SELECT tab.oid, tab.*, pg_catalog.shobj_description(tab.oid, 'pg_authid') AS description");
 		if (collection->GetServer()->GetConnection()->GetIsGreenplum())
 			query += wxT(", (SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = rolresqueue) AS rsqname");
 		if (collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 2))
@@ -532,7 +601,6 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			         wxT(",\n(SELECT array_agg(provider) FROM pg_shseclabel sl2 WHERE sl2.objoid=tab.oid) AS providers");
 		}
 		query += wxT(" FROM ") + tabname + wxT(" tab") +
-		         wxT("  LEFT OUTER JOIN pg_db_role_setting setting ON (tab.oid=setting.setrole AND setting.setdatabase=0)\n") +
 		         restriction +  wxT(" ORDER BY rolname");
 	}
 	else if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 2))
@@ -581,10 +649,6 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			{
 				role->iSetRolQueueName(roles->GetVal(wxT("rsqname")));
 			}
-
-			wxString cfg = roles->GetVal(wxT("rolconfig"));
-			if (!cfg.IsEmpty())
-				FillArray(role->GetConfigList(), cfg.Mid(1, cfg.Length() - 2));
 
 			if (collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 2))
 			{

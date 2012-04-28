@@ -45,6 +45,7 @@
 #define btnAdd          CTRL_BUTTON("wxID_ADD")
 #define btnRemove       CTRL_BUTTON("wxID_REMOVE")
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
+#define cbVarDbname     CTRL_COMBOBOX2("cbVarDbname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
 
@@ -85,6 +86,7 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
 	EVT_BUTTON(wxID_ADD,                            dlgRole::OnVarAdd)
 	EVT_BUTTON(wxID_REMOVE,                         dlgRole::OnVarRemove)
 	EVT_TEXT(XRCID("cbVarname"),                    dlgRole::OnVarnameSelChange)
+	EVT_TEXT(XRCID("cbVarDbname"),                    dlgRole::OnVarnameSelChange)
 	EVT_COMBOBOX(XRCID("cbVarname"),                dlgRole::OnVarnameSelChange)
 
 	EVT_BUTTON(wxID_OK,                             dlgRole::OnOK)
@@ -100,7 +102,7 @@ dlgRole::dlgRole(pgaFactory *f, frmMain *frame, pgRole *node, bool chkLogin)
 	: dlgProperty(f, frame, wxT("dlgRole"))
 {
 	role = node;
-	lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);
+	lstVariables->CreateColumns(0, _("Database"), _("Variable"), _("Value"), -1);
 	btnOK->Disable();
 	chkValue->Hide();
 	if (chkLogin)
@@ -131,6 +133,16 @@ void dlgRole::OnChangeSize(wxSizeEvent &ev)
 
 int dlgRole::Go(bool modal)
 {
+	if (connection->BackendMinimumVersion(9, 0))
+	{
+		cbVarDbname->Append(wxT(""));
+		AddDatabases(cbVarDbname);
+	}
+	else
+	{
+		cbVarDbname->Enable(false);
+	}
+
 	if (connection->BackendMinimumVersion(9, 2))
 	{
 		seclabelPage->SetConnection(connection);
@@ -164,6 +176,12 @@ int dlgRole::Go(bool modal)
 		delete set;
 
 		cbVarname->SetSelection(0);
+
+		if (connection->BackendMinimumVersion(9, 0))
+		{
+			cbVarDbname->SetSelection(0);
+		}
+
 		SetupVarEditor(0);
 	}
 
@@ -198,10 +216,16 @@ int dlgRole::Go(bool modal)
 		txtComment->SetValue(role->GetComment());
 
 		size_t index;
-		for (index = 0 ; index < role->GetConfigList().GetCount() ; index++)
+		wxString dbname;
+		wxString parameter;
+		wxString value;
+		for (index = 0 ; index < role->GetVariables().GetCount() ; index += 3)
 		{
-			wxString item = role->GetConfigList().Item(index);
-			lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
+			dbname = role->GetVariables().Item(index);
+			parameter = role->GetVariables().Item(index + 1);
+			value = role->GetVariables().Item(index + 2);
+
+			lstVariables->AppendItem(0, dbname, parameter, value);
 		}
 
 		timValidUntil->Enable(!readOnly && role->GetAccountExpires().IsValid());
@@ -220,6 +244,7 @@ int dlgRole::Go(bool modal)
 			btnAddRole->Disable();
 			btnDelRole->Disable();
 			cbVarname->Disable();
+			cbVarDbname->Disable();
 			txtValue->Disable();
 			txtConnectionLimit->Disable();
 			btnRemove->Disable();
@@ -460,13 +485,13 @@ void dlgRole::OnVarSelChange(wxListEvent &ev)
 	long pos = lstVariables->GetSelection();
 	if (pos >= 0)
 	{
-		wxString value = lstVariables->GetText(pos, 1);
-		cbVarname->SetValue(lstVariables->GetText(pos));
+		cbVarDbname->SetValue(lstVariables->GetText(pos));
+		cbVarname->SetValue(lstVariables->GetText(pos, 1));
 
 		// We used to raise an OnVarnameSelChange() event here, but
 		// at this point the combo box hasn't necessarily updated.
-		int sel = cbVarname->FindString(lstVariables->GetText(pos));
-		SetupVarEditor(sel);
+		wxString value = lstVariables->GetText(pos, 2);
+		int sel = cbVarname->FindString(lstVariables->GetText(pos, 1));
 
 		txtValue->SetValue(value);
 		chkValue->SetValue(value == wxT("on"));
@@ -476,6 +501,7 @@ void dlgRole::OnVarSelChange(wxListEvent &ev)
 
 void dlgRole::OnVarAdd(wxCommandEvent &ev)
 {
+	wxString dbname = cbVarDbname->GetValue();
 	wxString name = cbVarname->GetValue();
 	wxString value;
 	if (chkValue->IsShown())
@@ -488,13 +514,39 @@ void dlgRole::OnVarAdd(wxCommandEvent &ev)
 
 	if (!name.IsEmpty())
 	{
-		long pos = lstVariables->FindItem(-1, name);
-		if (pos < 0)
+		bool found = false;
+		long prevpos = -1;
+		for (long item = 0; item < lstVariables->GetItemCount(); item++)
 		{
-			pos = lstVariables->GetItemCount();
-			lstVariables->InsertItem(pos, name, 0);
+			if (name == lstVariables->GetText(item, 1))
+			{
+				if (dbname == lstVariables->GetText(item))
+				{
+					found = true;
+					lstVariables->SetItem(item, 2, value);
+				}
+				else
+				{
+					prevpos = item;
+				}
+			}
 		}
-		lstVariables->SetItem(pos, 1, value);
+		if (!found)
+		{
+			if (prevpos != -1)
+			{
+				lstVariables->InsertItem(prevpos, dbname, 1);
+				lstVariables->SetItem(prevpos, 1, name);
+				lstVariables->SetItem(prevpos, 2, value);
+			}
+			else
+			{
+				long pos = lstVariables->GetItemCount();
+				lstVariables->InsertItem(pos, dbname, 1);
+				lstVariables->SetItem(pos, 1, name);
+				lstVariables->SetItem(pos, 2, value);
+			}
+		}
 	}
 	CheckChange();
 }
@@ -760,12 +812,16 @@ wxString dlgRole::GetSql()
 	}
 
 	wxArrayString vars;
+	wxString dbname;
+	wxString parameter;
+	wxString value;
+
 	size_t index;
 
 	if (role)
 	{
-		for (index = 0 ; index < role->GetConfigList().GetCount() ; index++)
-			vars.Add(role->GetConfigList().Item(index));
+		for (index = 0 ; index < role->GetVariables().GetCount() ; index++)
+			vars.Add(role->GetVariables().Item(index));
 	}
 
 	int cnt = lstVariables->GetItemCount();
@@ -773,42 +829,63 @@ wxString dlgRole::GetSql()
 	// check for changed or added vars
 	for (pos = 0 ; pos < cnt ; pos++)
 	{
-		wxString newVar = lstVariables->GetText(pos);
-		wxString newVal = lstVariables->GetText(pos, 1);
+		wxString newDb = lstVariables->GetText(pos);
+		wxString newVar = lstVariables->GetText(pos, 1);
+		wxString newVal = lstVariables->GetText(pos, 2);
 
 		wxString oldVal;
 
-		for (index = 0 ; index < vars.GetCount() ; index++)
+		for (index = 0 ; index < vars.GetCount() ; index += 3)
 		{
-			wxString var = vars.Item(index);
-			if (var.BeforeFirst('=').IsSameAs(newVar, false))
+			dbname = vars.Item(index);
+			parameter = vars.Item(index + 1);
+			value = vars.Item(index + 2);
+
+			if (newDb == dbname && newVar == parameter)
 			{
-				oldVal = var.Mid(newVar.Length() + 1);
+				oldVal = value;
+				vars.RemoveAt(index);
+				vars.RemoveAt(index);
 				vars.RemoveAt(index);
 				break;
 			}
 		}
 		if (oldVal != newVal)
 		{
-			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
-				sql += wxT("ALTER ROLE ") + qtIdent(name)
-				       +  wxT("\n  SET ") + newVar
-				       +  wxT("='") + newVal
-				       +  wxT("';\n");
+			if (newDb.Length() == 0)
+				sql += wxT("ALTER ROLE ") + qtIdent(name);
 			else
-				sql += wxT("ALTER ROLE ") + qtIdent(name)
-				       +  wxT("\n  SET ") + newVar
-				       +  wxT("=") + newVal
-				       +  wxT(";\n");
+				sql += wxT("ALTER ROLE ") + qtIdent(name) + wxT(" IN DATABASE ") + newDb;
+
+			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
+			{
+				sql += wxT("\n  SET ") + newVar + wxT(" = '") + newVal + wxT("';\n");
+			}
+			else
+			{
+				sql += wxT("\n  SET ") + newVar + wxT(" = ") + newVal + wxT(";\n");
+			}
 		}
 	}
 
 	// check for removed vars
-	for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
+	for (pos = 0 ; pos < (int)vars.GetCount() ; pos += 3)
 	{
-		sql += wxT("ALTER ROLE ") + qtIdent(name)
-		       +  wxT("\n  RESET ") + vars.Item(pos).BeforeFirst('=')
-		       + wxT(";\n");
+		dbname = vars.Item(pos);
+		parameter = vars.Item(pos + 1);
+		value = vars.Item(pos + 2);
+
+		if (dbname.Length() == 0)
+		{
+			sql += wxT("ALTER ROLE ") + qtIdent(name)
+			       +  wxT(" RESET ") + parameter
+			       + wxT(";\n");
+		}
+		else
+		{
+			sql += wxT("ALTER ROLE ") + qtIdent(name) + wxT(" IN DATABASE ") + dbname
+			       +  wxT(" RESET ") + parameter + wxT(";\n");
+		}
 	}
 
 	AppendComment(sql, wxT("ROLE"), 0, role);

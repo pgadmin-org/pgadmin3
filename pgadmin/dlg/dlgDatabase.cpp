@@ -222,15 +222,11 @@ int dlgDatabase::Go(bool modal)
 		wxString username;
 		wxString varname;
 		wxString varvalue;
-		for (i = 0 ; i < database->GetVariables().GetCount() ; i++)
+		for (i = 0 ; i < database->GetVariables().GetCount() ; i += 3)
 		{
-			wxStringTokenizer tkz(database->GetVariables().Item(i), wxT("="));
-			while (tkz.HasMoreTokens())
-			{
-				username = tkz.GetNextToken();
-				varname = tkz.GetNextToken();
-				varvalue = tkz.GetNextToken();
-			}
+			username = database->GetVariables().Item(i);
+			varname = database->GetVariables().Item(i + 1);
+			varvalue = database->GetVariables().Item(i + 2);
 
 			lstVariables->AppendItem(0, username, varname, varvalue);
 		}
@@ -724,17 +720,15 @@ wxString dlgDatabase::GetSql()
 		wxString username;
 		wxString varname;
 		wxString varvalue;
-
 		size_t index;
+		int pos;
 
+		// copy database->GetVariables() into vars
 		for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
 			vars.Add(database->GetVariables().Item(index));
 
-		int cnt = lstVariables->GetItemCount();
-		int pos;
-
 		// check for changed or added vars
-		for (pos = 0 ; pos < cnt ; pos++)
+		for (pos = 0 ; pos < lstVariables->GetItemCount() ; pos++)
 		{
 			wxString newUsr = lstVariables->GetText(pos);
 			wxString newVar = lstVariables->GetText(pos, 1);
@@ -742,20 +736,17 @@ wxString dlgDatabase::GetSql()
 
 			wxString oldVal;
 
-			for (index = 0 ; index < vars.GetCount() ; index++)
+			for (index = 0 ; index < vars.GetCount() ; index += 3)
 			{
-				wxStringTokenizer tkz(vars.Item(index), wxT("="));
-				while (tkz.HasMoreTokens())
-				{
-					username = tkz.GetNextToken();
-					varname = tkz.GetNextToken();
-					varvalue = tkz.GetNextToken();
-				}
+				username = vars.Item(index);
+				varname = vars.Item(index + 1);
+				varvalue = vars.Item(index + 2);
 
-				wxString var = vars.Item(index);
 				if (newUsr == username && newVar == varname)
 				{
 					oldVal = varvalue;
+					vars.RemoveAt(index);
+					vars.RemoveAt(index);
 					vars.RemoveAt(index);
 					break;
 				}
@@ -768,22 +759,22 @@ wxString dlgDatabase::GetSql()
 					sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name);
 
 				if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
-					sql += wxT("\n  SET ") + newVar + wxT("='") + newVal + wxT("';\n");
+				{
+					sql += wxT("\n  SET ") + newVar + wxT(" = '") + newVal + wxT("';\n");
+				}
 				else
-					sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
+				{
+					sql += wxT("\n  SET ") + newVar + wxT(" = ") + newVal + wxT(";\n");
+				}
 			}
 		}
 
 		// check for removed vars
-		for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
+		for (pos = 0 ; pos < (int)vars.GetCount() ; pos += 3)
 		{
-			wxStringTokenizer tkz(vars.Item(pos), wxT("="));
-			while (tkz.HasMoreTokens())
-			{
-				username = tkz.GetNextToken();
-				varname = tkz.GetNextToken();
-				varvalue = tkz.GetNextToken();
-			}
+			username = vars.Item(index);
+			varname = vars.Item(index + 1);
+			varvalue = vars.Item(index + 2);
 
 			if (username.Length() == 0)
 			{
@@ -864,9 +855,13 @@ wxString dlgDatabase::GetSql2()
 				sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name);
 
 			if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
-				sql += wxT("\n  SET ") + newVar + wxT("='") + newVal + wxT("';\n");
+			{
+				sql += wxT("\n  SET ") + newVar + wxT(" = '") + newVal + wxT("';\n");
+			}
 			else
-				sql += wxT("\n  SET ") + newVar + wxT("=") + newVal + wxT(";\n");
+			{
+				sql += wxT("\n  SET ") + newVar + wxT(" = ") + newVal + wxT(";\n");
+			}
 		}
 		if (seclabelPage && connection->BackendMinimumVersion(9, 2))
 			sql += seclabelPage->GetSqlForSecLabels(wxT("DATABASE"), qtIdent(name));
