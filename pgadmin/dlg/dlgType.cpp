@@ -743,7 +743,7 @@ void dlgType::OnSubtypeChange(wxCommandEvent &ev)
 		          wxT("  FROM pg_proc\n")
 		          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
 		          wxT("  WHERE prorettype=701 ")
-		          wxT("    AND proargtypes='") + subtypeoid + wxT("'\n")
+		          wxT("    AND proargtypes='") + subtypeoid + wxT(" ") + subtypeoid + wxT("'\n")
 		          wxT("  ORDER BY proname\n"));
 		if (set)
 		{
@@ -1181,8 +1181,7 @@ wxString dlgType::GetSql()
 			}
 			if (!cbRngCollation->GetValue().IsEmpty())
 			{
-				sql += wxT(", COLLATION=");
-				AppendQuoted(sql, cbRngCollation->GetValue());
+				sql += wxT(", COLLATION=") + cbRngCollation->GetValue();
 			}
 			if (!cbCanonical->GetValue().IsEmpty())
 			{
