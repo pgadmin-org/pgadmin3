@@ -189,10 +189,11 @@ DatatypeReader::DatatypeReader(pgDatabase *db, const wxString &condition, bool a
 DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains, bool addSerials)
 {
 	wxString condition = wxT("typisdefined AND typtype ");
+	// We don't get pseudotypes here
 	if (withDomains)
-		condition += wxT("IN ('b', 'c', 'd', 'e')");
+		condition += wxT("IN ('b', 'c', 'd', 'e', 'r')");
 	else
-		condition += wxT("IN ('b', 'c', 'e')");
+		condition += wxT("IN ('b', 'c', 'e', 'r')");
 
 	condition += wxT("AND NOT EXISTS (select 1 from pg_class where relnamespace=typnamespace and relname = typname and relkind != 'c') AND (typname not like '_%' OR NOT EXISTS (select 1 from pg_class where relnamespace=typnamespace and relname = substring(typname from 2)::name and relkind != 'c')) ");
 
