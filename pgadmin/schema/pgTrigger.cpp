@@ -399,17 +399,9 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	           wxT("  LEFT OUTER JOIN pg_language l ON l.oid=p.prolang\n")
 	           wxT(" WHERE ");
 	if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
-	{
-		trig_sql += wxT("tgconstraint=0");
-	}
-	else
-	{
-		trig_sql += wxT("NOT tgisconstraint");
-	}
-	if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
-		trig_sql += wxT(" AND NOT tgisinternal\n");
+		trig_sql += wxT("NOT tgisinternal AND \n");
 	if (restriction.IsEmpty())
-		trig_sql += wxT(" AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
+		trig_sql += wxT("tgrelid = ") + collection->GetOidStr() + wxT("\n");
 	else
 		trig_sql += restriction + wxT("\n");
 	trig_sql += wxT(" ORDER BY tgname");
