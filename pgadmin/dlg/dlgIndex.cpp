@@ -115,26 +115,32 @@ void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 {
 	if (cbType)
 	{
-		if (cbType->GetValue().Length() > 0)
-		{
-			cbOpClass->Clear();
+		wxString method = wxEmptyString;
 
-			wxString sql = wxT("SELECT opcname FROM pg_opclass ");
-			sql += wxT("WHERE opcintype=");
-			sql += NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection()));
-			sql += wxT("AND opcmethod=") + cbType->GetStringKey(cbType->GetCurrentSelection())
-			       + wxT(" AND NOT opcdefault")
-			       + wxT(" ORDER BY 1");
-			pgSet *set = connection->ExecuteSet(sql);
-			if (set)
+		if (cbType->GetValue().Length() == 0)
+		{
+			method = cbType->GetStringKey(1);
+		}
+		else
+		{
+			method = cbType->GetStringKey(cbType->GetCurrentSelection());
+		}
+
+		cbOpClass->Clear();
+
+		wxString sql = wxT("SELECT opcname FROM pg_opclass ")
+				wxT("WHERE opcmethod=") + method +
+				wxT(" AND NOT opcdefault")
+				wxT(" ORDER BY 1");
+		pgSet *set = connection->ExecuteSet(sql);
+		if (set)
+		{
+			while (!set->Eof())
 			{
-				while (!set->Eof())
-				{
-					cbOpClass->Append(set->GetVal(0));
-					set->MoveNext();
-				}
-				delete set;
+				cbOpClass->Append(set->GetVal(0));
+				set->MoveNext();
 			}
+			delete set;
 		}
 	}
 
@@ -345,42 +351,10 @@ int dlgIndex::Go(bool modal)
 			for (unsigned int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)
 			{
 				colDef = colsArr.Item(colIdx);
-
-				if (colDef.EndsWith(firstOrder.GetData(), &colRest))
-				{
-					colDef = colRest;
-					nullsDef = wxT("FIRST");
-				}
-				else if (colDef.EndsWith(lastOrder.GetData(), &colRest))
-				{
-					colDef = colRest;
-					nullsDef = wxT("LAST");
-				}
-				else
-					nullsDef = wxT("");
-
-				if (colDef.EndsWith(descOrder.GetData(), &colRest))
-				{
-					colDef = colRest;
-					descDef = wxT("DESC");
-					if (nullsDef.IsEmpty())
-						nullsDef = wxT("FIRST");
-				}
-				else
-				{
-					descDef = wxT("ASC");
-					if (nullsDef.IsEmpty())
-						nullsDef = wxT("LAST");
-				}
-
-				int pos = colDef.First(wxT(" "));
-				if (pos > 0)
-				{
-					opclassDef = colDef.Mid(pos + 1);
-					colDef = colDef.Mid(0, pos - 1);
-				}
-				else
-					opclassDef = wxEmptyString;
+				descDef = index->GetOrdersArray().Item(colIdx);
+				nullsDef = index->GetNullsArray().Item(colIdx);
+				opclassDef = index->GetOpClassesArray().Item(colIdx);
+				nullsDef = index->GetNullsArray().Item(colIdx);
 
 				lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
 				lstColumns->SetItem(colIdx, 1, descDef);
@@ -397,9 +371,8 @@ int dlgIndex::Go(bool modal)
 				int pos = colDef.First(wxT(" "));
 				if (pos > 0)
 				{
-					colDef = colRest;
 					opclassDef = colDef.Mid(pos + 1);
-					colDef = colDef.Mid(0, pos - 1);
+					colDef = colDef.Mid(0, pos);
 				}
 				else
 					opclassDef = wxEmptyString;
@@ -426,6 +399,7 @@ int dlgIndex::Go(bool modal)
 		rdbNullsFirst->Disable();
 		rdbNullsLast->Disable();
 		cbCollation->Disable();
+		lstColumns->Disable();
 	}
 	else
 	{
