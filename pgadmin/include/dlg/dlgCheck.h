@@ -15,12 +15,12 @@
 #include "dlg/dlgProperty.h"
 
 class pgCheck;
-class pgTable;
+class pgObject;
 
 class dlgCheck : public dlgProperty
 {
 public:
-	dlgCheck(pgaFactory *factory, frmMain *frame, pgCheck *node = 0, pgTable *parentNode = 0);
+	dlgCheck(pgaFactory *factory, frmMain *frame, pgCheck *node = 0, pgObject *parentNode = 0);
 
 	void CheckChange();
 	wxString GetSql();
@@ -36,7 +36,7 @@ public:
 
 private:
 	pgCheck *check;
-	pgTable *table;
+	pgObject *object;
 
 	void OnChangeValidate(wxCommandEvent &ev);
 

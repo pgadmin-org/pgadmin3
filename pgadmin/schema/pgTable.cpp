@@ -447,6 +447,8 @@ wxString pgTable::GetSql(ctlTree *browser)
 						cols_sql += ((pgForeignKey *)data)->GetDefinition();
 						break;
 					case PGM_CHECK:
+						if (GetDatabase()->BackendMinimumVersion(9, 2) && ((pgCheck *)data)->GetNoInherit())
+							cols_sql += wxT("NO INHERIT ");
 						cols_sql += wxT("(") + ((pgCheck *)data)->GetDefinition() + wxT(")");
 						if (GetDatabase()->BackendMinimumVersion(9, 2) && !((pgCheck *)data)->GetValid())
 							cols_sql += wxT(" NOT VALID");

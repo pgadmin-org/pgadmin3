@@ -184,6 +184,7 @@ public:
 	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 	wxString GetSql(ctlTree *browser);
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	wxMenu *GetNewMenu();
 
 	bool HasStats()
 	{

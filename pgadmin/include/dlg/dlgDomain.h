@@ -34,9 +34,15 @@ private:
 	void OnSelChangeTyp(wxCommandEvent &ev);
 	void OnChangeValidate(wxCommandEvent &ev);
 
+	void OnAddConstr(wxCommandEvent &ev);
+	void OnRemoveConstr(wxCommandEvent &ev);
+	void OnSelChangeConstr(wxListEvent &ev);
+
 	pgSchema *schema;
 	pgDomain *domain;
 	ctlSeclabelPanel *seclabelPage;
+	wxArrayString previousConstraints, constraintsDefinition;
+	wxTreeItemId constraintsItem;
 
 	void OnChange(wxCommandEvent &event);
 

@@ -15,28 +15,32 @@
 
 #include "pgAdmin3.h"
 #include "schema/pgTable.h"
+#include "schema/pgDomain.h"
 #include "schema/pgConstraints.h"
 #include "schema/pgIndexConstraint.h"
 #include "schema/pgCheck.h"
 #include "schema/pgForeignKey.h"
 
 
-pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgTable *table)
-	: pgTableObjCollection(factory, table)
+pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgSchema *schema)
+	: pgSchemaObjCollection(factory, schema)
 {
 }
 
 wxMenu *pgConstraintCollection::GetNewMenu()
 {
-	if (!GetSchema()->GetCreatePrivilege())
+	if ((table && !table->CanCreate()) || (domain && !domain->CanCreate()))
 		return 0;
 
 	wxMenu *menu = new wxMenu();
-	if (table->GetPrimaryKey().IsEmpty())
-		primaryKeyFactory.AppendMenu(menu);
-	foreignKeyFactory.AppendMenu(menu);
-	excludeFactory.AppendMenu(menu);
-	uniqueFactory.AppendMenu(menu);
+	if (table)
+	{
+		if (table->GetPrimaryKey().IsEmpty())
+			primaryKeyFactory.AppendMenu(menu);
+		foreignKeyFactory.AppendMenu(menu);
+		excludeFactory.AppendMenu(menu);
+		uniqueFactory.AppendMenu(menu);
+	}
 	checkFactory.AppendMenu(menu);
 	return menu;
 }
@@ -46,15 +50,28 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 {
 	if (browser->GetChildrenCount(GetId(), false) == 0)
 	{
+		browser->RemoveDummyChild(this);
+
 		wxTreeItemId id = browser->GetItemParent(GetId());
 		wxASSERT(id);
-		table = (pgTable *)browser->GetObject(id);
-		wxASSERT(table && (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION));
+		table = NULL;
+		domain = NULL;
+		if (browser->GetObject(id)->IsCreatedBy(tableFactory))
+		{
+			table = (pgTable *)browser->GetObject(id);
+		}
+		if (browser->GetObject(id)->IsCreatedBy(domainFactory))
+		{
+			domain = (pgDomain *)browser->GetObject(id);
+		}
 
-		primaryKeyFactory.CreateObjects(this, browser);
-		foreignKeyFactory.CreateObjects(this, browser);
-		excludeFactory.CreateObjects(this, browser);
-		uniqueFactory.CreateObjects(this, browser);
+		if (table)
+		{
+			primaryKeyFactory.CreateObjects(this, browser);
+			foreignKeyFactory.CreateObjects(this, browser);
+			excludeFactory.CreateObjects(this, browser);
+			uniqueFactory.CreateObjects(this, browser);
+		}
 		checkFactory.CreateObjects(this, browser);
 	}
 	UpdateChildCount(browser);
@@ -89,14 +106,14 @@ wxString pgConstraintCollection::GetTranslatedMessage(int kindOfMessage) const
 #include "images/constraints.pngc"
 
 pgConstraintFactory::pgConstraintFactory()
-	: pgTableObjFactory(__("Constraint"), 0, 0, 0)
+	: pgSchemaObjFactory(__("Constraint"), 0, 0, 0)
 {
 	metaType = PGM_CONSTRAINT;
 }
 
 pgCollection *pgConstraintFactory::CreateCollection(pgObject *obj)
 {
-	return new pgConstraintCollection(GetCollectionFactory(), (pgTable *)obj);
+	return new pgConstraintCollection(GetCollectionFactory(), (pgSchema *)obj);
 }
 
 

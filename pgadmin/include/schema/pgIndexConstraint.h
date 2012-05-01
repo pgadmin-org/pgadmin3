@@ -38,8 +38,8 @@ public:
 	}
 
 protected:
-	pgIndexConstraint(pgTable *newTable, pgaFactory &factory, const wxString &newName)
-		: pgIndexBase(newTable, factory, newName) {}
+	pgIndexConstraint(pgSchema *newSchema, pgaFactory &factory, const wxString &newName)
+		: pgIndexBase(newSchema, factory, newName) {}
 
 private:
 	OID constraintOid;
@@ -58,8 +58,8 @@ extern pgPrimaryKeyFactory primaryKeyFactory;
 class pgPrimaryKey : public pgIndexConstraint
 {
 public:
-	pgPrimaryKey(pgTable *newTable, const wxString &newName = wxT(""))
-		: pgIndexConstraint(newTable, primaryKeyFactory, newName) {}
+	pgPrimaryKey(pgSchema *newSchema, const wxString &newName = wxT(""))
+		: pgIndexConstraint(newSchema, primaryKeyFactory, newName) {}
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
@@ -82,8 +82,8 @@ extern pgUniqueFactory uniqueFactory;
 class pgUnique : public pgIndexConstraint
 {
 public:
-	pgUnique(pgTable *newTable, const wxString &newName = wxT(""))
-		: pgIndexConstraint(newTable, uniqueFactory, newName) {}
+	pgUnique(pgSchema *newSchema, const wxString &newName = wxT(""))
+		: pgIndexConstraint(newSchema, uniqueFactory, newName) {}
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
@@ -102,8 +102,8 @@ extern pgExcludeFactory excludeFactory;
 class pgExclude : public pgIndexConstraint
 {
 public:
-	pgExclude(pgTable *newTable, const wxString &newName = wxT(""))
-		: pgIndexConstraint(newTable, excludeFactory, newName) {}
+	pgExclude(pgSchema *newSchema, const wxString &newName = wxT(""))
+		: pgIndexConstraint(newSchema, excludeFactory, newName) {}
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);

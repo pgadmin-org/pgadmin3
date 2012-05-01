@@ -19,6 +19,18 @@
 #include "schema/pgDomain.h"
 #include "schema/pgDatatype.h"
 
+#include "schema/pgTable.h"
+#include "schema/pgColumn.h"
+#include "schema/pgIndexConstraint.h"
+#include "schema/pgForeignKey.h"
+#include "schema/pgCheck.h"
+#include "utils/sysSettings.h"
+#include "utils/pgfeatures.h"
+#include "schema/pgRule.h"
+#include "schema/pgTrigger.h"
+#include "schema/pgConstraints.h"
+#include "schema/gpPartition.h"
+
 
 pgDomain::pgDomain(pgSchema *newSchema, const wxString &newName)
 	: pgSchemaObject(newSchema, domainFactory, newName)
@@ -113,7 +125,35 @@ wxString pgDomain::GetSql(ctlTree *browser)
 		// CONSTRAINT Name Dont know where it's stored, may be omitted anyway
 		if (notNull)
 			sql += wxT("\n  NOT NULL");
-		AppendIfFilled(sql, wxT("\n   "), GetCheck());
+
+		// Get a count of the constraints.
+		int consCount = 0;
+		pgCollection *constraints = browser->FindCollection(checkFactory, GetId());
+		if (constraints)
+		{
+			constraints->ShowTreeDetail(browser);
+			treeObjectIterator consIt(browser, constraints);
+
+			pgObject *data;
+
+			while ((data = consIt.GetNextObject()) != 0)
+			{
+				data->ShowTreeDetail(browser);
+
+				sql += wxT("\n  CONSTRAINT ") + data->GetQuotedIdentifier()
+				       + wxT(" ") + data->GetTypeName().Upper()
+				       + wxT(" ") ;
+
+				switch (data->GetMetaType())
+				{
+					case PGM_CHECK:
+						sql += wxT("(") + ((pgCheck *)data)->GetDefinition() + wxT(")");
+						if (GetDatabase()->BackendMinimumVersion(9, 2) && !((pgCheck *)data)->GetValid())
+							sql += wxT(" NOT VALID");
+						break;
+				}
+			}
+		}
 
 		sql += wxT(";\n")
 		       + GetOwnerSql(7, 4)
@@ -127,48 +167,31 @@ wxString pgDomain::GetSql(ctlTree *browser)
 }
 
 
+wxMenu *pgDomain::GetNewMenu()
+{
+	wxMenu *menu = pgObject::GetNewMenu();
+	if (schema->GetCreatePrivilege())
+	{
+		checkFactory.AppendMenu(menu);
+	}
+	return menu;
+}
+
 
 void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
 	if (!expandedKids)
 	{
 		expandedKids = true;
+
+		browser->RemoveDummyChild(this);
+
+		// Log
+		wxLogInfo(wxT("Adding child object to domain %s"), GetIdentifier().c_str());
 		if (GetConnection()->BackendMinimumVersion(7, 4))
-		{
-			wxString query = wxT("SELECT conname, ");
-			if (GetConnection()->BackendMinimumVersion(9, 2))
-				query += wxT("convalidated, ");
-			query += wxT("pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr();
-			pgSet *set = ExecuteSet(query);
-			check = wxEmptyString;
-			if (set)
-			{
-				while (!set->Eof())
-				{
-					if (!check.IsEmpty())
-					{
-						check += wxT(" ");
-					}
-					wxString conname = set->GetVal(wxT("conname"));
-					if (!conname.StartsWith(wxT("$")))
-						check += wxT("CONSTRAINT ") + qtIdent(conname) + wxT(" ");
-					check += set->GetVal(wxT("consrc"));
-
-					// there may be more than one constraint
-					// but there is only one check constraint
-					if (GetConnection()->BackendMinimumVersion(9, 2))
-						if (!set->GetBool(wxT("convalidated")))
-						{
-							iSetCheckConstraintName(set->GetVal(wxT("conname")));
-							iSetValid(false);
-						}
-
-					set->MoveNext();
-				}
-				delete set;
-			}
-		}
+			browser->AppendCollection(this, constraintFactory);
 	}
+
 	if (properties)
 	{
 		CreateListColumns(properties);
@@ -182,7 +205,6 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		if (GetCollationOid() > 0)
 			properties->AppendItem(_("Collation"), GetQuotedCollation());
 		properties->AppendItem(_("Default"), GetDefault());
-		properties->AppendItem(_("Check"), GetCheck());
 		properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
 		properties->AppendYesNoItem(_("System domain?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -357,6 +379,7 @@ wxString pgDomainCollection::GetTranslatedMessage(int kindOfMessage) const
 pgDomainFactory::pgDomainFactory()
 	: pgSchemaObjFactory(__("Domain"), __("New Domain..."), __("Create a new Domain."), domain_png_img, domain_sm_png_img)
 {
+	metaType = PGM_DOMAIN;
 }
 
 

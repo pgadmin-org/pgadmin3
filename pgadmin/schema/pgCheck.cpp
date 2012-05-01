@@ -19,8 +19,8 @@
 #include "schema/pgCheck.h"
 
 
-pgCheck::pgCheck(pgTable *newTable, const wxString &newName)
-	: pgTableObject(newTable, checkFactory, newName)
+pgCheck::pgCheck(pgSchema *newSchema, const wxString &newName)
+	: pgSchemaObject(newSchema, checkFactory, newName)
 {
 }
 
@@ -106,7 +106,7 @@ int pgCheck::GetIconId()
 
 bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+	wxString sql = wxT("ALTER ") + objectKind + wxT(" ") + qtIdent(objectSchema) + wxT(".") + qtIdent(objectName)
 	               + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
 	if (cascaded)
 		sql += wxT(" CASCADE");
@@ -116,7 +116,12 @@ bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 wxString pgCheck::GetConstraint()
 {
-	sql = GetQuotedIdentifier() +  wxT(" CHECK (") + GetDefinition() + wxT(")");
+	sql = GetQuotedIdentifier() +  wxT(" CHECK ");
+
+	if (GetDatabase()->BackendMinimumVersion(9, 2) && GetNoInherit())
+		sql += wxT("NO INHERIT ");
+
+	sql += wxT("(") + GetDefinition() + wxT(")");
 
 	if (GetDatabase()->BackendMinimumVersion(9, 2) && !GetValid())
 		sql += wxT(" NOT VALID");
@@ -130,15 +135,16 @@ wxString pgCheck::GetSql(ctlTree *browser)
 	if (sql.IsNull())
 	{
 		sql = wxT("-- Check: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-		      + wxT("-- ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+		      + wxT("-- ALTER ") + objectKind + wxT(" ") + GetQuotedSchemaPrefix(objectSchema) + qtIdent(objectName)
 		      + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier()
-		      + wxT(";\n\nALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+		      + wxT(";\n\nALTER ") + objectKind + wxT(" ") + GetQuotedSchemaPrefix(objectSchema) + qtIdent(objectName)
 		      + wxT("\n  ADD CONSTRAINT ") + GetConstraint()
 		      + wxT(";\n");
 
 		if (!GetComment().IsNull())
 		{
-			sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+			sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier()
+			       + wxT(" ON ") + GetQuotedSchemaPrefix(objectSchema) + qtIdent(objectName)
 			       + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
 	}
@@ -157,8 +163,13 @@ void pgCheck::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Definition"), GetDefinition());
 		if (GetDatabase()->BackendMinimumVersion(9, 2))
+		{
+			properties->AppendItem(_("No Inherit?"), BoolToYesNo(GetNoInherit()));
 			properties->AppendItem(_("Valid?"), BoolToYesNo(GetValid()));
-		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		}
+		// Check constraints on a domain don't have comments
+		if (objectKind.Upper() == wxT("TABLE"))
+			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
 
@@ -177,7 +188,8 @@ pgObject *pgCheck::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 void pgCheck::Validate(frmMain *form)
 {
-	wxString sql = wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+	wxString sql = wxT("ALTER ") + objectKind + wxT(" ")
+	               + GetQuotedSchemaPrefix(objectSchema) + qtIdent(objectName)
 	               + wxT("\n  VALIDATE CONSTRAINT ") + GetQuotedIdentifier();
 	GetDatabase()->ExecuteVoid(sql);
 
@@ -188,19 +200,33 @@ void pgCheck::Validate(frmMain *form)
 
 pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
-	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
+	pgSchemaObjCollection *collection = (pgSchemaObjCollection *)coll;
 	pgCheck *check = 0;
-	wxString sql = wxT("SELECT c.oid, conname, relname, nspname, description,\n")
-	               wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n");
-	if (collection->GetDatabase()->BackendMinimumVersion(9, 2))
-		sql += wxT(", convalidated");
-	sql += wxT("  FROM pg_constraint c\n")
-	       wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
-	       wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
-	       wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
-	       + restriction + wxT("::oid\n")
-	       wxT(" ORDER BY conname");
+
+	wxString connoinherit = collection->GetDatabase()->BackendMinimumVersion(9, 2) ? wxT(", connoinherit") : wxEmptyString;
+	wxString convalidated = collection->GetDatabase()->BackendMinimumVersion(9, 2) ? wxT(", convalidated") : wxEmptyString;
+
+	wxString sql =
+	    wxT("SELECT 'TABLE' AS objectkind, c.oid, conname, relname, nspname, description,\n")
+	    wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n")
+	    + connoinherit + convalidated +
+	    wxT("  FROM pg_constraint c\n")
+	    wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+	    wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
+	    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	    wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
+	    + restriction + wxT("::oid\n")
+	    wxT("UNION\n")
+	    wxT("SELECT 'DOMAIN' AS objectkind, c.oid, conname, typname as relname, nspname, description,\n")
+	    wxT("       regexp_replace(pg_get_constraintdef(c.oid, true), E'CHECK \\\\((.*)\\\\).*', E'\\\\1') as consrc\n")
+	    + connoinherit + convalidated +
+	    wxT("  FROM pg_constraint c\n")
+	    wxT("  JOIN pg_type t ON t.oid=contypid\n")
+	    wxT("  JOIN pg_namespace nl ON nl.oid=typnamespace\n")
+	    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
+	    wxT(" WHERE contype = 'c' AND contypid =  ") + NumToStr(collection->GetOid())
+	    + restriction + wxT("::oid\n")
+	    wxT(" ORDER BY conname");
 
 	pgSet *checks = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -208,14 +234,18 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 	{
 		while (!checks->Eof())
 		{
-			check = new pgCheck(collection->GetTable(), checks->GetVal(wxT("conname")));
+			check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
 
 			check->iSetOid(checks->GetOid(wxT("oid")));
 			check->iSetDefinition(checks->GetVal(wxT("consrc")));
-			check->iSetFkTable(checks->GetVal(wxT("relname")));
-			check->iSetFkSchema(checks->GetVal(wxT("nspname")));
+			check->iSetObjectKind(checks->GetVal(wxT("objectkind")));
+			check->iSetObjectName(checks->GetVal(wxT("relname")));
+			check->iSetObjectSchema(checks->GetVal(wxT("nspname")));
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 2))
+			{
+				check->iSetNoInherit(checks->GetBool(wxT("connoinherit")));
 				check->iSetValid(checks->GetBool(wxT("convalidated")));
+			}
 			check->iSetComment(checks->GetVal(wxT("description")));
 
 			if (browser)
@@ -260,7 +290,7 @@ wxString pgCheckCollection::GetTranslatedMessage(int kindOfMessage) const
 #include "images/checkbad.pngc"
 
 pgCheckFactory::pgCheckFactory()
-	: pgTableObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_png_img)
+	: pgSchemaObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_png_img)
 {
 	metaType = PGM_CHECK;
 	collectionFactory = &constraintCollectionFactory;

@@ -726,17 +726,17 @@ void frmMain::ExecDrop(bool cascaded)
 
 	switch (metatype)
 	{
-		case PGM_CHECK:
 		case PGM_COLUMN:
+			owneritem = node->GetTable()->GetId();
+			break;
+
+		case PGM_CHECK:
 		case PGM_CONSTRAINT:
 		case PGM_EXCLUDE:
 		case PGM_FOREIGNKEY:
 		case PGM_INDEX:
 		case PGM_PRIMARYKEY:
 		case PGM_UNIQUE:
-			owneritem = node->GetTable()->GetId();
-			break;
-
 		case PGM_TRIGGER:
 		case PGM_RULE: // Rules are technically table objects! Yeuch
 		case EDB_PACKAGEFUNCTION:

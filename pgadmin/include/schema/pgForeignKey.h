@@ -14,7 +14,7 @@
 
 #include "pgIndex.h"
 
-class pgForeignKeyFactory : public pgTableObjFactory
+class pgForeignKeyFactory : public pgSchemaObjFactory
 {
 public:
 	pgForeignKeyFactory();
@@ -31,10 +31,10 @@ protected:
 };
 extern pgForeignKeyFactory foreignKeyFactory;
 
-class pgForeignKey : public pgTableObject
+class pgForeignKey : public pgSchemaObject
 {
 public:
-	pgForeignKey(pgTable *newTable, const wxString &newName = wxT(""));
+	pgForeignKey(pgSchema *newSchema, const wxString &newName = wxT(""));
 	~pgForeignKey();
 
 	int GetIconId();

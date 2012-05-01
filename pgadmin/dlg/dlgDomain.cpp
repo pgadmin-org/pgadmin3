@@ -14,11 +14,14 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frm/frmMain.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgDomain.h"
+#include "dlg/dlgCheck.h"
 #include "schema/pgSchema.h"
+#include "schema/pgCheck.h"
 #include "schema/pgDomain.h"
 #include "schema/pgDatatype.h"
 #include "ctl/ctlSeclabelPanel.h"
@@ -27,9 +30,11 @@
 // pointer to controls
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
 #define txtDefault          CTRL_TEXT("txtDefault")
-#define txtCheck            CTRL_TEXT("txtCheck")
 #define cbCollation         CTRL_COMBOBOX("cbCollation")
-#define chkDontValidate     CTRL_CHECKBOX("chkDontValidate")
+#define lstConstraints      CTRL_LISTVIEW("lstConstraints")
+#define btnAddConstr        CTRL_BUTTON("btnAddConstr")
+#define cbConstrType        CTRL_COMBOBOX("cbConstrType")
+#define btnRemoveConstr     CTRL_BUTTON("btnRemoveConstr")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
@@ -39,8 +44,9 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txLength"),                     dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
-	EVT_CHECKBOX(XRCID("chkDontValidate"),          dlgDomain::OnChangeValidate)
-	EVT_TEXT(XRCID("txtCheck"),                     dlgProperty::OnChange)
+	EVT_BUTTON(XRCID("btnAddConstr"),               dlgDomain::OnAddConstr)
+	EVT_BUTTON(XRCID("btnRemoveConstr"),            dlgDomain::OnRemoveConstr)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstConstraints"), dlgDomain::OnSelChangeConstr)
 END_EVENT_TABLE();
 
 
@@ -60,6 +66,8 @@ dlgDomain::dlgDomain(pgaFactory *f, frmMain *frame, pgDomain *node, pgSchema *sc
 
 	txtLength->Disable();
 	txtPrecision->Disable();
+
+	lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
 
 
@@ -95,7 +103,54 @@ int dlgDomain::Go(bool modal)
 		}
 		chkNotNull->SetValue(domain->GetNotNull());
 		txtDefault->SetValue(domain->GetDefault());
-		txtCheck->SetValue(domain->GetCheck());
+
+		wxCookieType cookie;
+		pgObject *data = 0;
+		wxTreeItemId item = mainForm->GetBrowser()->GetFirstChild(domain->GetId(), cookie);
+		while (item)
+		{
+			data = mainForm->GetBrowser()->GetObject(item);
+			pgaFactory *factory = data->GetFactory();
+			if (factory == checkFactory.GetCollectionFactory())
+				constraintsItem = item;
+			else if (data->GetMetaType() == PGM_CONSTRAINT)
+				constraintsItem = item;
+
+			if (constraintsItem)
+				break;
+
+			item = mainForm->GetBrowser()->GetNextChild(domain->GetId(), cookie);
+		}
+
+		if (constraintsItem)
+		{
+			pgCollection *coll = (pgCollection *)mainForm->GetBrowser()->GetObject(constraintsItem);
+			// make sure all constraints are appended
+			coll->ShowTreeDetail(mainForm->GetBrowser());
+			// this is the constraints collection
+			item = mainForm->GetBrowser()->GetFirstChild(constraintsItem, cookie);
+
+			// add constraints
+			while (item)
+			{
+				data = mainForm->GetBrowser()->GetObject(item);
+				switch (data->GetMetaType())
+				{
+					case PGM_CHECK:
+					{
+						pgCheck *obj = (pgCheck *)data;
+
+						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+						constraintsDefinition.Add(obj->GetDefinition());
+						previousConstraints.Add(obj->GetQuotedIdentifier()
+						                        + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
+						break;
+					}
+				}
+
+				item = mainForm->GetBrowser()->GetNextChild(constraintsItem, cookie);
+			}
+		}
 
 		cbDatatype->Disable();
 
@@ -108,15 +163,10 @@ int dlgDomain::Go(bool modal)
 			txtDefault->Disable();
 			chkNotNull->Disable();
 		}
-
-		if (connection->BackendMinimumVersion(9, 2))
-			chkDontValidate->SetValue(!domain->GetValid());
 	}
 	else
 	{
 		// create mode
-		if (!connection->BackendMinimumVersion(7, 4))
-			txtCheck->Disable();
 		FillDatatype(cbDatatype, false);
 
 		cbCollation->Enable(connection->BackendMinimumVersion(9, 1));
@@ -143,10 +193,10 @@ int dlgDomain::Go(bool modal)
 		}
 	}
 
-	if (connection->BackendMinimumVersion(9, 2))
-		chkDontValidate->Enable(!domain || (domain && !domain->GetValid()));
-	else
-		chkDontValidate->Enable(false);
+	cbConstrType->Clear();
+	cbConstrType->Append(_("Check"));
+	cbConstrType->SetSelection(0);
+	btnRemoveConstr->Disable();
 
 	return dlgProperty::Go(modal);
 }
@@ -170,15 +220,11 @@ void dlgDomain::CheckChange()
 
 	if (domain)
 	{
-		enable = txtName->GetValue() != domain->GetName()
-		         || txtDefault->GetValue() != domain->GetDefault()
-		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
-		         || chkNotNull->GetValue() != domain->GetNotNull()
-		         || txtCheck->GetValue() != domain->GetCheck()
-		         || cbOwner->GetValue() != domain->GetOwner()
-		         || txtComment->GetValue() != domain->GetComment();
-		if (connection->BackendMinimumVersion(9, 2) && !domain->GetValid() && !chkDontValidate->GetValue())
-			enable = true;
+		enable = false;
+		if (connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0)
+		{
+			enable = !GetSql().IsEmpty();
+		}
 		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
@@ -225,6 +271,11 @@ void dlgDomain::OnChangeValidate(wxCommandEvent &ev)
 wxString dlgDomain::GetSql()
 {
 	wxString sql, name;
+	int pos;
+	wxString definition;
+	int index = -1;
+	wxArrayString tmpDef = previousConstraints;
+	wxString tmpsql = wxEmptyString;
 
 	if (domain)
 	{
@@ -255,28 +306,43 @@ wxString dlgDomain::GetSql()
 			else
 				sql += wxT("\n  SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
 		}
-		if (txtCheck->GetValue() != domain->GetCheck())
-		{
-			if (!domain->GetCheck().IsEmpty())
-				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       + wxT(" DROP CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
 
-			if (!txtCheck->GetValue().IsEmpty())
+		// Build a temporary list of ADD CONSTRAINTs, and fixup the list to remove
+		for (pos = 0; pos < lstConstraints->GetItemCount() ; pos++)
+		{
+			wxString conname = qtIdent(lstConstraints->GetItemText(pos));
+			definition = conname;
+			definition += wxT(" CHECK ") + constraintsDefinition.Item(pos);
+			index = tmpDef.Index(definition);
+			if (index >= 0)
+				tmpDef.RemoveAt(index);
+			else
 			{
-				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
-				       + wxT(" ADD ");
-				if (!domain->GetCheck().IsEmpty())
-					sql += wxT("CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
-				sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
-				if (chkDontValidate->GetValue())
-					sql += wxT(" NOT VALID");
+				tmpsql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
+				          +  wxT("\n  ADD");
+				if (!conname.IsEmpty())
+					tmpsql += wxT(" CONSTRAINT ");
+
+				tmpsql += definition + wxT(";\n");
 			}
 		}
-		if (chkDontValidate->IsEnabled() && !domain->GetValid() && !chkDontValidate->GetValue())
+
+		// Add the DROP CONSTRAINTs...
+		for (index = 0 ; index < (int)tmpDef.GetCount() ; index++)
 		{
-			sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
-			       + wxT(" VALIDATE CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName()) + wxT(";\n");
+			definition = tmpDef.Item(index);
+			if (definition[0U] == '"')
+				definition = definition.Mid(1).BeforeFirst('"');
+			else
+				definition = definition.BeforeFirst(' ');
+			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
+			       + wxT("\n  DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
+
 		}
+
+		// Add the ADD CONSTRAINTs...
+		sql += tmpsql;
+
 		AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 		AppendSchemaChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 	}
@@ -290,17 +356,20 @@ wxString dlgDomain::GetSql()
 		if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 			sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
-		if (chkDontValidate->GetValue())
-			sql += wxT(";\nALTER DOMAIN ") + name + wxT(" ADD ");
-
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
+
 		if (chkNotNull->GetValue())
 			sql += wxT("\n   NOT NULL");
-		if (!txtCheck->GetValue().IsEmpty())
-			sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
 
-		if (chkDontValidate->GetValue())
-			sql += wxT(" NOT VALID");
+		for (pos = 0 ; pos < lstConstraints->GetItemCount() ; pos++)
+		{
+			wxString name = lstConstraints->GetItemText(pos);
+			wxString definition = constraintsDefinition.Item(pos);
+			if (!name.IsEmpty())
+				sql += wxT("\n   CONSTRAINT ") + qtIdent(name) + wxT(" CHECK ") + definition;
+			else
+				sql += wxT("\n   CHECK ") + definition;
+		}
 
 		sql += wxT(";\n");
 
@@ -319,3 +388,56 @@ void dlgDomain::OnChange(wxCommandEvent &event)
 {
 	CheckChange();
 }
+
+void dlgDomain::OnAddConstr(wxCommandEvent &ev)
+{
+	int sel = cbConstrType->GetCurrentSelection();
+
+	switch (sel)
+	{
+		case 0: // Check
+		{
+			dlgCheck chk(&checkFactory, mainForm);
+			chk.CenterOnParent();
+			chk.SetDatabase(database);
+			if (chk.Go(true) != wxID_CANCEL)
+			{
+				wxString tmpDef = chk.GetDefinition();
+				tmpDef.Replace(wxT("\n"), wxT(" "));
+
+				lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), tmpDef);
+				constraintsDefinition.Add(tmpDef);
+			}
+			break;
+		}
+	}
+	CheckChange();
+}
+
+
+void dlgDomain::OnRemoveConstr(wxCommandEvent &ev)
+{
+	if (settings->GetConfirmDelete())
+	{
+		if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+			return;
+	}
+
+	int pos = lstConstraints->GetSelection();
+	if (pos < 0)
+		return;
+
+	lstConstraints->DeleteItem(pos);
+	constraintsDefinition.RemoveAt(pos);
+	btnRemoveConstr->Disable();
+
+	CheckChange();
+}
+
+
+void dlgDomain::OnSelChangeConstr(wxListEvent &ev)
+{
+	btnRemoveConstr->Enable();
+}
+
+

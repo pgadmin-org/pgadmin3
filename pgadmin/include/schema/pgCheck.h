@@ -18,7 +18,7 @@
 
 
 
-class pgCheckFactory : public pgTableObjFactory
+class pgCheckFactory : public pgSchemaObjFactory
 {
 public:
 	pgCheckFactory();
@@ -36,10 +36,10 @@ protected:
 extern pgCheckFactory checkFactory;
 
 
-class pgCheck : public pgTableObject
+class pgCheck : public pgSchemaObject
 {
 public:
-	pgCheck(pgTable *newTable, const wxString &newName = wxT(""));
+	pgCheck(pgSchema *newSchema, const wxString &newName = wxT(""));
 	~pgCheck();
 
 	int GetIconId();
@@ -47,21 +47,29 @@ public:
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
-	wxString GetFkTable() const
+	wxString GetObjectName() const
 	{
-		return fkTable;
+		return objectName;
 	}
-	void iSetFkTable(const wxString &s)
+	void iSetObjectName(const wxString &s)
 	{
-		fkTable = s;
+		objectName = s;
 	}
-	wxString GetFkSchema() const
+	wxString GetObjectSchema() const
 	{
-		return fkSchema;
+		return objectSchema;
 	}
-	void iSetFkSchema(const wxString &s)
+	void iSetObjectSchema(const wxString &s)
 	{
-		fkSchema = s;
+		objectSchema = s;
+	}
+	wxString GetObjectKind() const
+	{
+		return objectKind;
+	}
+	void iSetObjectKind(const wxString &s)
+	{
+		objectKind = s;
 	}
 	wxString GetDefinition() const
 	{
@@ -70,6 +78,14 @@ public:
 	void iSetDefinition(const wxString &s)
 	{
 		definition = s;
+	}
+	bool GetNoInherit() const
+	{
+		return noinherit;
+	}
+	void iSetNoInherit(const bool b)
+	{
+		noinherit = b;
 	}
 	bool GetValid() const
 	{
@@ -104,8 +120,8 @@ public:
 	void Validate(frmMain *form);
 
 private:
-	wxString definition, fkTable, fkSchema;
-	bool valid;
+	wxString definition, objectKind, objectName, objectSchema;
+	bool noinherit, valid;
 };
 
 class pgCheckCollection : public pgSchemaObjCollection

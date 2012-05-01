@@ -18,10 +18,10 @@
 
 
 
-class pgIndexBase : public pgTableObject
+class pgIndexBase : public pgSchemaObject
 {
 protected:
-	pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString &newName = wxT(""));
+	pgIndexBase(pgSchema *newSchema, pgaFactory &factory, const wxString &newName = wxT(""));
 
 public:
 	wxString GetTranslatedMessage(int kindOfMessage) const;
@@ -275,17 +275,17 @@ private:
 class pgIndex : public pgIndexBase
 {
 public:
-	pgIndex(pgTable *newTable, const wxString &newName = wxT(""));
+	pgIndex(pgSchema *newSchema, const wxString &newName = wxT(""));
 };
 
 
-class pgIndexBaseFactory : public pgTableObjFactory
+class pgIndexBaseFactory : public pgSchemaObjFactory
 {
 public:
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 	virtual pgCollection *CreateCollection(pgObject *obj);
 protected:
-	pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img = 0) : pgTableObjFactory(tn, ns, nls, img) {}
+	pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img = 0) : pgSchemaObjFactory(tn, ns, nls, img) {}
 };
 
 class pgIndexFactory : public pgIndexBaseFactory
@@ -297,10 +297,10 @@ public:
 };
 extern pgIndexFactory indexFactory;
 
-class pgIndexBaseCollection : public pgTableObjCollection
+class pgIndexBaseCollection : public pgSchemaObjCollection
 {
 public:
-	pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl);
+	pgIndexBaseCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
 };

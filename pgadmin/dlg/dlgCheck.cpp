@@ -16,11 +16,12 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "frm/frmMain.h"
-#include "schema/pgTable.h"
+#include "schema/pgObject.h"
 #include "schema/pgCheck.h"
 #include "dlg/dlgCheck.h"
 
 #define txtWhere        CTRL_TEXT("txtWhere")
+#define chkNoInherit    CTRL_CHECKBOX("chkNoInherit")
 #define chkDontValidate CTRL_CHECKBOX("chkDontValidate")
 
 
@@ -32,15 +33,15 @@ END_EVENT_TABLE();
 
 dlgProperty *pgCheckFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-	return new dlgCheck(this, frame, (pgCheck *)node, (pgTable *)parent);
+	return new dlgCheck(this, frame, (pgCheck *)node, parent);
 }
 
 
-dlgCheck::dlgCheck(pgaFactory *f, frmMain *frame, pgCheck *node, pgTable *parentNode)
+dlgCheck::dlgCheck(pgaFactory *f, frmMain *frame, pgCheck *node, pgObject *parentNode)
 	: dlgProperty(f, frame, wxT("dlgCheck"))
 {
 	check = node;
-	table = parentNode;
+	object = parentNode;
 }
 
 void dlgCheck::CheckChange()
@@ -55,7 +56,9 @@ void dlgCheck::CheckChange()
 	}
 	else
 	{
-		txtComment->Enable(!GetName().IsEmpty());
+		// We don't allow changing the comment if the dialog is launched from dlgTable or dlgDomain
+		// so we check IsModal()
+		txtComment->Enable(!GetName().IsEmpty() && !IsModal() && object->GetTypeName().Upper() == wxT("TABLE"));
 		CheckValid(enable, !txtWhere->GetValue().IsEmpty(), _("Please specify condition."));
 		EnableOK(enable);
 	}
@@ -77,7 +80,7 @@ pgObject *dlgCheck::CreateObject(pgCollection *collection)
 
 	pgObject *obj = checkFactory.CreateObjects(collection, 0, wxT(
 	                    "\n   AND conname=") + qtDbString(name) + wxT(
-	                    "\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
+	                    "\n   AND relnamespace=") + object->GetSchema()->GetOidStr());
 	return obj;
 }
 
@@ -88,12 +91,16 @@ int dlgCheck::Go(bool modal)
 	{
 		// edit mode
 		txtName->Enable(connection->BackendMinimumVersion(9, 2));
+		txtComment->Enable(object->GetTypeName().Upper() == wxT("TABLE"));
 
 		txtWhere->SetValue(check->GetDefinition());
 		txtWhere->Disable();
 
 		if (connection->BackendMinimumVersion(9, 2))
+		{
+			chkNoInherit->SetValue(check->GetNoInherit());
 			chkDontValidate->SetValue(!check->GetValid());
+		}
 		else
 			chkDontValidate->SetValue(true);
 		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 2) && !check->GetDefinition().IsEmpty() && !check->GetValid());
@@ -102,13 +109,15 @@ int dlgCheck::Go(bool modal)
 	{
 		// create mode
 		txtComment->Disable();
-		if (!table)
+		if (!object)
 		{
 			cbClusterSet->Disable();
 			cbClusterSet = 0;
 		}
 		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 2));
 	}
+
+	chkNoInherit->Enable(connection->BackendMinimumVersion(9, 2) && !check);
 
 	return dlgProperty::Go(modal);
 }
@@ -127,30 +136,37 @@ wxString dlgCheck::GetSql()
 
 	if (!check)
 	{
-		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+		sql = wxT("ALTER ") + object->GetTypeName().Upper() + wxT(" ") + object->GetQuotedFullIdentifier()
 		      + wxT("\n  ADD");
-		AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
-		sql += wxT("\n  CHECK ") + GetDefinition()
-		       + wxT(";\n");
+		if (name.Length() > 0)
+		{
+			sql += wxT(" CONSTRAINT ") + qtIdent(name) + wxT("\n ");
+		}
+		sql += wxT(" CHECK ");
+		if (connection->BackendMinimumVersion(9, 2) && chkNoInherit->GetValue())
+		{
+			sql += wxT("NO INHERIT ");
+		}
+		sql += GetDefinition() + wxT(";\n");
 	}
 	else
 	{
 		if (check->GetName() != name)
 		{
-			sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			sql = wxT("ALTER ") + object->GetTypeName().Upper() + wxT(" ") + object->GetQuotedFullIdentifier()
 			      + wxT("\n  RENAME CONSTRAINT ") + qtIdent(check->GetName())
 			      + wxT(" TO ") + qtIdent(name) + wxT(";\n");
 		}
 		if (connection->BackendMinimumVersion(9, 2) && !check->GetValid() && !chkDontValidate->GetValue())
 		{
-			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+			sql += wxT("ALTER ") + object->GetTypeName().Upper() + wxT(" ") + object->GetQuotedFullIdentifier()
 			       + wxT("\n  VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
 		}
 	}
 
 	if (!name.IsEmpty())
 		AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name)
-		              + wxT(" ON ") + table->GetQuotedFullIdentifier(), check);
+		              + wxT(" ON ") + object->GetQuotedFullIdentifier(), check);
 	return sql;
 }
 

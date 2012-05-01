@@ -22,8 +22,8 @@
 #include "schema/pgIndexConstraint.h"
 
 
-pgIndexBase::pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString &newName)
-	: pgTableObject(newTable, factory, newName)
+pgIndexBase::pgIndexBase(pgSchema *newSchema, pgaFactory &factory, const wxString &newName)
+	: pgSchemaObject(newSchema, factory, newName)
 {
 	showExtendedStatistics = false;
 }
@@ -102,7 +102,7 @@ wxString pgIndexBase::GetTranslatedMessage(int kindOfMessage) const
 
 bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP INDEX ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+	wxString sql = wxT("DROP INDEX ") + this->GetSchema()->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
 	if (cascaded)
 		sql += wxT(" CASCADE");
 	return GetDatabase()->ExecuteVoid(sql);
@@ -292,7 +292,7 @@ void pgIndexBase::ReadColumnDetails()
 				pgSet *colSet = ExecuteSet(
 				                    wxT("SELECT attname as conattname\n")
 				                    wxT("  FROM pg_attribute\n")
-				                    wxT(" WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
+				                    wxT(" WHERE attrelid=") + GetOidStr() + wxT(" AND attnum=") + cn);
 				if (colSet)
 				{
 					if (columnCount)
@@ -480,15 +480,15 @@ bool executePgstatindexFactory::CheckChecked(pgObject *obj)
 }
 
 
-pgIndex::pgIndex(pgTable *newTable, const wxString &newName)
-	: pgIndexBase(newTable, indexFactory, newName)
+pgIndex::pgIndex(pgSchema *newSchema, const wxString &newName)
+	: pgIndexBase(newSchema, indexFactory, newName)
 {
 }
 
 
 pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
-	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
+	pgSchemaObjCollection *collection = (pgSchemaObjCollection *)coll;
 	pgIndexBase *index = 0;
 	wxString query;
 
@@ -535,18 +535,18 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 			switch (*(indexes->GetCharPtr(wxT("contype"))))
 			{
 				case 0:
-					index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+					index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
 					break;
 				case 'p':
-					index = new pgPrimaryKey(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+					index = new pgPrimaryKey(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgPrimaryKey *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				case 'u':
-					index = new pgUnique(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+					index = new pgUnique(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgUnique *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				case 'x':
-					index = new pgExclude(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+					index = new pgExclude(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgExclude *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				default:
@@ -613,7 +613,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 
 pgCollection *pgIndexBaseFactory::CreateCollection(pgObject *obj)
 {
-	return new pgIndexBaseCollection(GetCollectionFactory(), (pgTable *)obj);
+	return new pgIndexBaseCollection(GetCollectionFactory(), (pgSchema *)obj);
 }
 
 
@@ -660,8 +660,8 @@ pgIndexFactory indexFactory;
 static pgaCollectionFactory cf(&indexFactory, __("Indexes"), indexes_png_img);
 
 
-pgIndexBaseCollection::pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl)
-	: pgTableObjCollection(factory, tbl)
+pgIndexBaseCollection::pgIndexBaseCollection(pgaFactory *factory, pgSchema *sch)
+	: pgSchemaObjCollection(factory, sch)
 {
 }
 

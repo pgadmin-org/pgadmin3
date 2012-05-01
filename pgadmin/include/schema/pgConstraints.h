@@ -14,12 +14,13 @@
 #define __CONSTRAINTS_H
 
 #include "pgTable.h"
+#include "pgDomain.h"
 
 
-class pgConstraintCollection : public pgTableObjCollection
+class pgConstraintCollection : public pgSchemaObjCollection
 {
 public:
-	pgConstraintCollection(pgaFactory *factory, pgTable *table);
+	pgConstraintCollection(pgaFactory *factory, pgSchema *schema);
 
 	wxString GetHelpPage(bool forCreate) const
 	{
@@ -27,7 +28,7 @@ public:
 	}
 	bool CanCreate()
 	{
-		return false;
+		return true;
 	}
 	wxMenu *GetNewMenu();
 
@@ -35,10 +36,11 @@ public:
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	pgTable *table;
+	pgDomain *domain;
 };
 
 
-class pgConstraintFactory : public pgTableObjFactory
+class pgConstraintFactory : public pgSchemaObjFactory
 {
 public:
 	pgConstraintFactory();

@@ -19,8 +19,8 @@
 #include "schema/pgForeignKey.h"
 #include "schema/pgConstraints.h"
 
-pgForeignKey::pgForeignKey(pgTable *newTable, const wxString &newName)
-	: pgTableObject(newTable, foreignKeyFactory, newName)
+pgForeignKey::pgForeignKey(pgSchema *newSchema, const wxString &newName)
+	: pgSchemaObject(newSchema, foreignKeyFactory, newName)
 {
 }
 
@@ -106,7 +106,7 @@ int pgForeignKey::GetIconId()
 
 bool pgForeignKey::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("ALTER TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(fkTable)
+	wxString sql = wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
 	               + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
 	if (cascaded)
 		sql += wxT(" CASCADE");
@@ -184,6 +184,9 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 	{
 		expandedKids = true;
 
+		wxTreeItemId id = browser->GetItemParent(GetId());
+		pgTable *table = (pgTable *)browser->GetObject(id);
+
 		wxStringTokenizer c1l(GetConkey(), wxT(","));
 		wxStringTokenizer c2l(GetConfkey(), wxT(","));
 		wxString c1, c2;
@@ -196,7 +199,7 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			pgSet *set = ExecuteSet(
 			                 wxT("SELECT a1.attname as conattname, a2.attname as confattname\n")
 			                 wxT("  FROM pg_attribute a1, pg_attribute a2\n")
-			                 wxT(" WHERE a1.attrelid=") + GetTableOidStr() + wxT(" AND a1.attnum=") + c1 + wxT("\n")
+			                 wxT(" WHERE a1.attrelid=") + NumToStr(table->GetOid()) + wxT("::oid") + wxT(" AND a1.attnum=") + c1 + wxT("\n")
 			                 wxT("   AND a2.attrelid=") + GetRelTableOidStr() + wxT(" AND a2.attnum=") + c2);
 			if (set)
 			{
@@ -303,7 +306,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 	{
 		while (!foreignKeys->Eof())
 		{
-			foreignKey = new pgForeignKey(collection->GetTable(), foreignKeys->GetVal(wxT("conname")));
+			foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
 
 			foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
 			foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
@@ -386,7 +389,7 @@ wxString pgForeignKeyCollection::GetTranslatedMessage(int kindOfMessage) const
 
 
 pgForeignKeyFactory::pgForeignKeyFactory()
-	: pgTableObjFactory(__("Foreign Key"), __("New Foreign Key..."), __("Create a new Foreign Key constraint."), foreignkey_png_img)
+	: pgSchemaObjFactory(__("Foreign Key"), __("New Foreign Key..."), __("Create a new Foreign Key constraint."), foreignkey_png_img)
 {
 	metaType = PGM_FOREIGNKEY;
 	collectionFactory = &constraintCollectionFactory;

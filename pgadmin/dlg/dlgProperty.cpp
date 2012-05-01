@@ -1161,24 +1161,25 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
 		item = node->GetId();
 
 	// Additional hacks to get the table to refresh when modifying sub-objects
-	if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW || node->GetMetaType() == GP_PARTITION))
+	if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW
+	              || node->GetMetaType() == GP_PARTITION || node->GetMetaType() == PGM_DOMAIN))
 		owneritem = node->GetId();
 
 	int metatype = node->GetMetaType();
 
 	switch (metatype)
 	{
-		case PGM_CHECK:
 		case PGM_COLUMN:
-		case PGM_CONSTRAINT:
-		case PGM_EXCLUDE:
-		case PGM_FOREIGNKEY:
-		case PGM_INDEX:
-		case PGM_PRIMARYKEY:
-		case PGM_UNIQUE:
 			owneritem = node->GetTable()->GetId();
 			break;
 
+		case PGM_CHECK:
+		case PGM_FOREIGNKEY:
+		case PGM_CONSTRAINT:
+		case PGM_EXCLUDE:
+		case PGM_INDEX:
+		case PGM_PRIMARYKEY:
+		case PGM_UNIQUE:
 		case PGM_TRIGGER:
 		case PGM_RULE: // Rules are technically table objects! Yeuch
 		case EDB_PACKAGEFUNCTION:
