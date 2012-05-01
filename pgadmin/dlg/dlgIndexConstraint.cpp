@@ -182,7 +182,7 @@ int dlgIndexConstraint::Go(bool modal)
 				if (pos > 0)
 				{
 					opclassDef = colDef.Mid(pos + 1);
-					colDef = colDef.Mid(0, pos - 1);
+					colDef = colDef.Mid(0, pos);
 				}
 				else
 					opclassDef = wxEmptyString;
@@ -212,9 +212,8 @@ int dlgIndexConstraint::Go(bool modal)
 				int pos = colDef.First(wxT(" "));
 				if (pos > 0)
 				{
-					colDef = colRest;
 					opclassDef = colDef.Mid(pos + 1);
-					colDef = colDef.Mid(0, pos - 1);
+					colDef = colDef.Mid(0, pos);
 				}
 				else
 					opclassDef = wxEmptyString;

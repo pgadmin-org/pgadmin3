@@ -217,6 +217,21 @@ public:
 		procArgTypeList = s;
 	}
 
+	const wxArrayString &GetOrdersArray()
+	{
+		return ordersArray;
+	}
+
+	const wxArrayString &GetNullsArray()
+	{
+		return nullsArray;
+	}
+
+	const wxArrayString &GetOpClassesArray()
+	{
+		return opclassesArray;
+	}
+
 	const wxArrayString &GetCollationsArray()
 	{
 		return collationsArray;
@@ -264,7 +279,7 @@ private:
 	wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint, tablespace;
 	wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
 	long columnCount;
-	wxArrayString columnList, collationsArray;
+	wxArrayString columnList, ordersArray, nullsArray, opclassesArray, collationsArray;
 	bool isUnique, isPrimary, isExclude, isClustered;
 	bool deferrable, deferred, showExtendedStatistics;
 	OID relTableOid, tablespaceOid;

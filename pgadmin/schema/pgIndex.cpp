@@ -240,8 +240,13 @@ void pgIndexBase::ReadColumnDetails()
 						}
 						collationsArray.Add(collation);
 					}
+					else
+					{
+						collationsArray.Add(wxEmptyString);
+					}
 
 					opcname = res->GetVal(wxT("opcname"));
+					opclassesArray.Add(opcname);
 					coldef += wxT(" ") + opcname;
 
 					// Get the column options
@@ -251,16 +256,37 @@ void pgIndexBase::ReadColumnDetails()
 
 						if (opt && (opt & 0x0001)) // Descending...
 						{
+							ordersArray.Add(wxT("DESC"));
 							coldef += wxT(" DESC");
 							// NULLS FIRST is the default for descending
 							if (!(opt && (opt & 0x0002)))
+							{
+								nullsArray.Add(wxT("NULLS LAST"));
 								coldef += wxT(" NULLS LAST");
+							}
+							else
+							{
+								nullsArray.Add(wxEmptyString);
+							}
 						}
 						else // Ascending...
 						{
+							ordersArray.Add(wxT("ASC"));
 							if ((opt && (opt & 0x0002)))
+							{
+								nullsArray.Add(wxT("NULLS FIRST"));
 								coldef += wxT(" NULLS FIRST");
+							}
+							else
+							{
+								nullsArray.Add(wxEmptyString);
+							}
 						}
+					}
+					else
+					{
+						ordersArray.Add(wxEmptyString);
+						nullsArray.Add(wxEmptyString);
 					}
 				}
 
@@ -303,6 +329,10 @@ void pgIndexBase::ReadColumnDetails()
 					wxString colName = colSet->GetVal(0);
 					columns += colName;
 					columnList.Add(colName);
+					ordersArray.Add(wxEmptyString);
+					nullsArray.Add(wxEmptyString);
+					opclassesArray.Add(wxEmptyString);
+					collationsArray.Add(wxEmptyString);
 					quotedColumns += qtIdent(colName);
 
 					if (!ct.IsNull())
