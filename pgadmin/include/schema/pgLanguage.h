@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// pgLanguage.h PostgreSQL Language
+// pgLanguage.h - Language class
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +32,23 @@ public:
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+	wxString GetSql(ctlTree *browser);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+
 	bool CanDropCascaded()
+	{
+		return true;
+	}
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
 	{
 		return true;
 	}
@@ -44,6 +60,14 @@ public:
 	void iSetHandlerProc(const wxString &s)
 	{
 		handlerProc = s;
+	}
+	wxString GetInlineProc() const
+	{
+		return inlineProc;
+	}
+	void iSetInlineProc(const wxString &s)
+	{
+		inlineProc = s;
 	}
 	wxString GetValidatorProc() const
 	{
@@ -62,25 +86,8 @@ public:
 		trusted = b;
 	}
 
-	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-	wxString GetSql(ctlTree *browser);
-	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
-
-	bool HasStats()
-	{
-		return false;
-	}
-	bool HasDepends()
-	{
-		return true;
-	}
-	bool HasReferences()
-	{
-		return true;
-	}
-
 private:
-	wxString handlerProc, validatorProc;
+	wxString handlerProc, inlineProc, validatorProc;
 	bool trusted;
 };
 

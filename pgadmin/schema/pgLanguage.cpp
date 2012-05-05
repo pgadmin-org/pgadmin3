@@ -92,21 +92,23 @@ bool pgLanguage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 	return GetDatabase()->ExecuteVoid(sql);
 }
 
-
 wxString pgLanguage::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
 	{
 		sql = wxT("-- Language: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP LANGUAGE ") + GetQuotedFullIdentifier() + wxT(";")
-		      + wxT("\n\n CREATE ");
+		      + wxT("\n\nCREATE ");
 		if (GetTrusted())
 			sql += wxT("TRUSTED ");
 		sql += wxT("PROCEDURAL LANGUAGE '") + GetName()
-		       +  wxT("'\n  HANDLER ") + GetHandlerProc();
+		       +  wxT("'\n  HANDLER ") + qtIdent(GetHandlerProc());
+
+		if (!GetInlineProc().IsEmpty())
+			sql += wxT("\n  INLINE ") + qtIdent(GetInlineProc());
 
 		if (!GetValidatorProc().IsEmpty())
-			sql += wxT("\n  VALIDATOR ") + GetValidatorProc();
+			sql += wxT("\n  VALIDATOR ") + qtIdent(GetValidatorProc());
 
 		sql += wxT(";\n")
 		       +  GetOwnerSql(8, 3, wxT("LANGUAGE ") + GetName())
@@ -117,7 +119,6 @@ wxString pgLanguage::GetSql(ctlTree *browser)
 	}
 	return sql;
 }
-
 
 void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
@@ -131,8 +132,10 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendYesNoItem(_("Trusted?"), GetTrusted());
-		properties->AppendItem(_("Handler"), GetHandlerProc());
-		properties->AppendItem(_("Validator"), GetValidatorProc());
+		properties->AppendItem(_("Handler function"), GetHandlerProc());
+		if (GetConnection()->BackendMinimumVersion(9, 0))
+			properties->AppendItem(_("Inline function"), GetInlineProc());
+		properties->AppendItem(_("Validator function"), GetValidatorProc());
 		properties->AppendYesNoItem(_("System language?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -151,8 +154,6 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 	}
 }
 
-
-
 pgObject *pgLanguage::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
 	pgObject *language = 0;
@@ -163,24 +164,26 @@ pgObject *pgLanguage::Refresh(ctlTree *browser, const wxTreeItemId item)
 	return language;
 }
 
-
-
 pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
 	wxString sql;
 	pgLanguage *language = 0;
 
-	sql = wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval, description");
+	sql = wxT("SELECT lan.oid, lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval, description");
 	if (collection->GetConnection()->BackendMinimumVersion(8, 3))
 		sql += wxT(", pg_get_userbyid(lan.lanowner) as languageowner");
+	if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+		sql += wxT(", ip.proname as laninl");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 	{
 		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=lan.oid) AS labels");
 		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=lan.oid) AS providers");
 	}
 	sql += wxT("\n  FROM pg_language lan\n")
-	       wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n")
-	       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
+	       wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n");
+	if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+		sql += wxT("  LEFT OUTER JOIN pg_proc ip on ip.oid=laninline\n");
+	sql += wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=lan.oid AND des.objsubid=0\n")
 	       wxT(" WHERE lanispl IS TRUE")
 	       + restriction + wxT("\n")
@@ -196,10 +199,16 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			language->iSetDatabase(collection->GetDatabase());
 			language->iSetOid(languages->GetOid(wxT("oid")));
 			if (collection->GetConnection()->BackendMinimumVersion(8, 3))
+			{
 				language->iSetOwner(languages->GetVal(wxT("languageowner")));
+			}
 			language->iSetAcl(languages->GetVal(wxT("lanacl")));
 			language->iSetComment(languages->GetVal(wxT("description")));
 			language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
+			if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+			{
+				language->iSetInlineProc(languages->GetVal(wxT("laninl")));
+			}
 			language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
 			language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
 
@@ -212,7 +221,6 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			if (browser)
 			{
 				browser->AppendObject(collection, language);
-
 				languages->MoveNext();
 			}
 			else
@@ -224,14 +232,12 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	return language;
 }
 
-
 /////////////////////////////
 
 pgLanguageCollection::pgLanguageCollection(pgaFactory *factory, pgDatabase *db)
 	: pgDatabaseObjCollection(factory, db)
 {
 }
-
 
 wxString pgLanguageCollection::GetTranslatedMessage(int kindOfMessage) const
 {
@@ -263,7 +269,6 @@ pgLanguageFactory::pgLanguageFactory()
 	: pgDatabaseObjFactory(__("Language"), __("New Language..."), __("Create a new Language."), language_png_img, language_sm_png_img)
 {
 }
-
 
 pgCollection *pgLanguageFactory::CreateCollection(pgObject *obj)
 {

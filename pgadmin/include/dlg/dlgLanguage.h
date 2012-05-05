@@ -5,10 +5,9 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgLanguage.h - Language property
+// dlgLanguage.h - Language properties dialog
 //
 //////////////////////////////////////////////////////////////////////////
-
 
 #ifndef __DLG_LANGUAGEPROP
 #define __DLG_LANGUAGEPROP
@@ -41,6 +40,5 @@ private:
 
 	DECLARE_EVENT_TABLE()
 };
-
 
 #endif

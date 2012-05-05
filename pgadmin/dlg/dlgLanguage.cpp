@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgLanguage.cpp - PostgreSQL Language Property
+// dlgLanguage.cpp - Language properties dialog
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,19 +21,17 @@
 #include "schema/pgLanguage.h"
 #include "ctl/ctlSeclabelPanel.h"
 
-
 // pointer to controls
 #define cbName          CTRL_COMBOBOX("cbName")
 #define chkTrusted      CTRL_CHECKBOX("chkTrusted")
 #define cbHandler       CTRL_COMBOBOX("cbHandler")
+#define cbInline        CTRL_COMBOBOX("cbInline")
 #define cbValidator     CTRL_COMBOBOX("cbValidator")
-
 
 dlgProperty *pgLanguageFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
 	return new dlgLanguage(this, frame, (pgLanguage *)node, parent);
 }
-
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
 	EVT_TEXT(XRCID("cbName"),                       dlgLanguage::OnChangeName)
@@ -42,26 +40,25 @@ BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
 	EVT_COMBOBOX(XRCID("cbHandler"),                dlgProperty::OnChange)
 END_EVENT_TABLE();
 
-
 dlgLanguage::dlgLanguage(pgaFactory *f, frmMain *frame, pgLanguage *node, pgObject *parent)
 	: dlgSecurityProperty(f, frame, node, wxT("dlgLanguage"), wxT("USAGE"), "U")
 {
 	language = node;
-
 	seclabelPage = new ctlSeclabelPanel(nbNotebook);
 }
-
 
 pgObject *dlgLanguage::GetObject()
 {
 	return language;
 }
 
-
 int dlgLanguage::Go(bool modal)
 {
 	if (!connection->BackendMinimumVersion(7, 5))
 		txtComment->Disable();
+
+	if (!connection->BackendMinimumVersion(9, 0))
+		cbInline->Disable();
 
 	if (connection->BackendMinimumVersion(9, 1))
 	{
@@ -78,12 +75,21 @@ int dlgLanguage::Go(bool modal)
 	AddUsers(cbOwner);
 	if (!connection->BackendMinimumVersion(8, 3))
 		cbOwner->Disable();
+
 	if (language)
 	{
 		// edit mode
 		chkTrusted->SetValue(language->GetTrusted());
+
 		cbHandler->Append(language->GetHandlerProc());
 		cbHandler->SetSelection(0);
+
+		if (connection->BackendMinimumVersion(9, 0))
+		{
+			cbInline->Append(language->GetInlineProc());
+			cbInline->SetSelection(0);
+		}
+
 		wxString val = language->GetValidatorProc();
 		if (!val.IsEmpty())
 		{
@@ -94,8 +100,10 @@ int dlgLanguage::Go(bool modal)
 		cbName->SetValue(language->GetName());
 		if (!connection->BackendMinimumVersion(7, 4))
 			cbName->Disable();
-		cbHandler->Disable();
+
 		chkTrusted->Disable();
+		cbHandler->Disable();
+		cbInline->Disable();
 		cbValidator->Disable();
 	}
 	else
@@ -118,34 +126,43 @@ int dlgLanguage::Go(bool modal)
 			cbName->Append(wxT(" "));
 			cbName->Delete(0);
 		}
+
 		cbValidator->Append(wxT(""));
 		pgSet *set = connection->ExecuteSet(
-		                 wxT("SELECT nspname, proname, prorettype\n")
+		                 wxT("SELECT nspname, proname, prorettype, proargtypes[0] AS argtype\n")
 		                 wxT("  FROM pg_proc p\n")
 		                 wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
-		                 wxT(" WHERE prorettype=2280 OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
-		                 wxT(" AND proargtypes[0]=") + NumToStr(PGOID_TYPE_LANGUAGE_HANDLER) + wxT(")"));
+		                 wxT(" WHERE prorettype=") + NumToStr(PGOID_TYPE_LANGUAGE_HANDLER) + wxT("\n")
+		                 wxT("    OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
+		                 wxT("        AND proargtypes[0]=") + NumToStr(PGOID_TYPE_LANGUAGE_HANDLER) + wxT(")")
+		                 wxT("    OR (prorettype=") + NumToStr(PGOID_TYPE_VOID) +
+		                 wxT("        AND proargtypes[0]=") + NumToStr(PGOID_TYPE_INTERNAL) + wxT(")"));
 		if (set)
 		{
 			while (!set->Eof())
 			{
 				wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
 
-				if (set->GetOid(wxT("prorettype")) == 2280)
+				if (set->GetOid(wxT("prorettype")) == PGOID_TYPE_LANGUAGE_HANDLER)
 					cbHandler->Append(procname);
 				else
-					cbValidator->Append(procname);
+				{
+					if (set->GetOid(wxT("argtype")) == PGOID_TYPE_LANGUAGE_HANDLER)
+						cbValidator->Append(procname);
+					else
+						cbInline->Append(procname);
+				}
 				set->MoveNext();
 			}
 			delete set;
 		}
 		cbHandler->SetSelection(0);
+		cbInline->SetSelection(0);
 		cbValidator->SetSelection(0);
 	}
 
 	return dlgSecurityProperty::Go(modal);
 }
-
 
 pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 {
@@ -155,24 +172,23 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 	return obj;
 }
 
-
 void dlgLanguage::OnChangeName(wxCommandEvent &ev)
 {
-	if (connection->BackendMinimumVersion(8, 1))
+	if (connection->BackendMinimumVersion(8, 1) && !language)
 	{
 		bool useTemplate = (cbName->FindString(cbName->wxComboBox::GetValue()) >= 0);
 		chkTrusted->Enable(!useTemplate);
 		cbHandler->Enable(!useTemplate);
+		cbInline->Enable(!useTemplate && connection->BackendMinimumVersion(9, 0));
 		cbValidator->Enable(!useTemplate);
 	}
 	OnChange(ev);
 }
 
-
 void dlgLanguage::CheckChange()
 {
 	bool enable = true;
-	wxString name = cbName->wxComboBox::GetValue();
+	wxString name = cbName->GetValue();
 	if (language)
 	{
 		enable = name != language->GetName()
@@ -191,12 +207,10 @@ void dlgLanguage::CheckChange()
 	EnableOK(enable);
 }
 
-
-
 wxString dlgLanguage::GetSql()
 {
 	wxString sql, name;
-	name = cbName->wxComboBox::GetValue();
+	name = cbName->GetValue();
 
 	if (language)
 	{
@@ -220,6 +234,8 @@ wxString dlgLanguage::GetSql()
 			if (chkTrusted->GetValue())
 				sql += wxT("TRUSTED ");
 			sql += wxT("LANGUAGE ") + qtIdent(name) + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue());
+			if (connection->BackendMinimumVersion(9, 0))
+				AppendIfFilled(sql, wxT("\n   INLINE "), qtIdent(cbInline->GetValue()));
 			AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
 			sql += wxT(";\n");
 		}
@@ -235,7 +251,6 @@ wxString dlgLanguage::GetSql()
 
 	return sql;
 }
-
 
 void dlgLanguage::OnChange(wxCommandEvent &event)
 {
