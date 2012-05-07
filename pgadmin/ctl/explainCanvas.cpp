@@ -459,7 +459,10 @@ ExplainPopup::ExplainPopup(ExplainCanvas *parent, ExplainShape *shape, ExplainPo
 	m_rectBound.width = WXROUND(width);
 	m_rectBound.height = WXROUND(height);
 
-	SetSize(m_explainText->GetSize());
+    wxSize popupSize;
+    popupSize = m_explainText->GetSize();
+    popupSize.DecTo(wxGetDisplaySize());
+    SetSize(popupSize);
 
 	if (sy > GetClientSize().y * 2 / 3)
 		sy -= GetSize().y;
