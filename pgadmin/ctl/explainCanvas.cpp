@@ -323,10 +323,16 @@ ExplainPopup::ExplainPopup(wxWindow *w) : wxDialog(w, -1, wxEmptyString, wxDefau
 
 void ExplainPopup::SetShape(ExplainShape *s)
 {
+    wxSize popupSize;
+        
 	if (explainText)
 		delete explainText;
 	explainText = new ExplainText(this, s);
-	SetSize(explainText->GetSize());
+    
+    popupSize = explainText->GetSize();
+    popupSize.DecTo(wxGetDisplaySize());
+    
+    SetSize(popupSize);
 }
 
 
