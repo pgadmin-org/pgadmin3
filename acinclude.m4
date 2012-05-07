@@ -324,6 +324,26 @@ AC_DEFUN([LOCATE_SPHINX],
 ])
 AC_SUBST(SPHINX_BUILD)
 
+########################################
+# Enable Database Designer in pgAdmin3 #
+########################################
+AC_DEFUN([ENABLE_DATABASEDESIGNER],
+[
+	AC_ARG_ENABLE(databasedesigner, [  --enable-databasedesigner	build the database designer of pgAdmin3],
+	[
+		if test "$enableval" = yes
+		then
+			HAVE_DATABASEDESIGNER=yes
+		else
+			HAVE_DATABASEDESIGNER=no
+		fi
+	],
+	[
+		HAVE_DATABASEDESIGNER=no
+	])
+])
+AC_SUBST(HAVE_DATABASEDESIGNER)
+
 ###########################
 # Debug build of pgAdmin3 #
 ###########################
@@ -652,6 +672,10 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		then
 			CPPFLAGS="$CPPFLAGS -DHAVE_CONNINFO_PARSE"
 		fi
+		if test "$HAVE_DATABASEDESIGNER" = "yes"
+		then
+			CPPFLAGS="$CPPFLAGS -DDATABASEDESIGNER"
+		fi
 
 		# Avoid linking with things we don't need. Really this is a hack
 		# to prevent png2c linking with libpq with gcc on non-OSX OSs
@@ -857,6 +881,13 @@ AC_DEFUN([SUMMARY],
 	echo "libxslt directory:			$XSLT_HOME"
 	echo "libxslt xslt-config binary:		$XSLT_CONFIG"
 	echo "libxslt version:			libxslt "`$XSLT_CONFIG --version`
+	echo
+	if test "$HAVE_DATABASEDESIGNER" = yes
+	then
+		echo "Building Database Designer:		Yes"
+	else
+		echo "Building Database Designer:		No"
+	fi
 	echo
 	if test "$BUILD_DEBUG" = yes
 	then

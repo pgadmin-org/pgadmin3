@@ -63,7 +63,9 @@
 #include "frm/frmMaintenance.h"
 #include "frm/frmStatus.h"
 #include "frm/frmPassword.h"
+#ifdef DATABASEDESIGNER
 #include "frm/frmDatabaseDesigner.h"
+#endif
 #include "frm/frmQuery.h"
 #include "frm/frmEditGrid.h"
 #include "frm/frmImport.h"
@@ -385,7 +387,9 @@ void frmMain::CreateMenus()
 	new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
 	new queryToolDeleteFactory(menuFactories, scriptingMenu, 0);
 
+#ifdef DATABASEDESIGNER
 	new databaseDesignerFactory(menuFactories, toolsMenu, toolBar);
+#endif
 
 	viewdataMenuFactory = new submenuFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
 	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));

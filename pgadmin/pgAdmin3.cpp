@@ -56,7 +56,9 @@
 #include "frm/frmConfig.h"
 #include "frm/frmQuery.h"
 #include "frm/frmStatus.h"
+#ifdef DATABASEDESIGNER
 #include "frm/frmDatabaseDesigner.h"
+#endif
 #include "frm/frmSplash.h"
 #include "dlg/dlgSelectConnection.h"
 #include "db/pgConn.h"
@@ -229,8 +231,10 @@ bool pgAdmin3::OnInit()
 		locale->AddCatalog(wxT("pgadmin3"));
 	}
 
+#ifdef DATABASEDESIGNER
 	//Initialize Font
 	hdFontAttribute::InitFont();
+#endif
 
 	long langCount = 0;
 	const wxLanguageInfo *langInfo;
@@ -275,8 +279,10 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, "Sc", "serverstatusconnect", _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, "q", "query", _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, "qc", "queryconnect", _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+#ifdef DATABASEDESIGNER
 		{wxCMD_LINE_SWITCH, "d", "designer", _("open designer window"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, "dc", "designerconnectconnect", _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
+#endif
 		{wxCMD_LINE_OPTION, "f", "file", _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, "cm", NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, "ch", NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -290,8 +296,10 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+#ifdef DATABASEDESIGNER
 		{wxCMD_LINE_SWITCH, wxT("d"), wxT("designer"), _("open designer window"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("dc"), wxT("designerconnectconnect"), _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
+#endif
 		{wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -310,9 +318,13 @@ bool pgAdmin3::OnInit()
 	if (cmdParser.Parse() != 0)
 		return false;
 
-	if ((cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc"))) ||
-	        (cmdParser.Found(wxT("S")) && cmdParser.Found(wxT("Sc"))) ||
-	        (cmdParser.Found(wxT("d")) && cmdParser.Found(wxT("dc"))))
+	if (
+	    (cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc")))
+	    || (cmdParser.Found(wxT("S")) && cmdParser.Found(wxT("Sc")))
+#ifdef DATABASEDESIGNER
+	    || (cmdParser.Found(wxT("d")) && cmdParser.Found(wxT("dc")))
+#endif
+	)
 	{
 		cmdParser.Usage();
 		return false;
@@ -557,6 +569,7 @@ bool pgAdmin3::OnInit()
 			fq->Go();
 		}
 
+#ifdef DATABASEDESIGNER
 		else if ((cmdParser.Found(wxT("d")) || cmdParser.Found(wxT("dc"))) && !cmdParser.Found(wxT("s")))
 		{
 			// -d specified, but not -s. Open the designer window but do *not* open the main window
@@ -642,6 +655,7 @@ bool pgAdmin3::OnInit()
 			frmDatabaseDesigner *fq = new frmDatabaseDesigner(NULL, wxEmptyString, conn);
 			fq->Go();
 		}
+#endif
 
 #ifdef __WXMAC__
 		else if (((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s"))) || !macFileToOpen.IsEmpty())
