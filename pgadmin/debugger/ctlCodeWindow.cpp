@@ -279,8 +279,14 @@ void ctlCodeWindow::OnClose(wxCloseEvent &event)
 
 void ctlCodeWindow::OnMarginClick( wxStyledTextEvent &event )
 {
-	int lineNumber = m_view->LineFromPosition(event.GetPosition());
+	int lineNumber;
 
+	// Check that the user clicked on the line number or breakpoint margin.
+	// We don't want to set a breakpoint when the user folds/unfolds code.
+	if (!(event.GetMargin() == 0 || event.GetMargin() == 1))
+		return;
+
+	lineNumber = m_view->LineFromPosition(event.GetPosition());
 	if (!lineNumber)
 		return;
 
