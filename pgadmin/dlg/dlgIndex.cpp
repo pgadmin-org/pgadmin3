@@ -129,9 +129,9 @@ void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 		cbOpClass->Clear();
 
 		wxString sql = wxT("SELECT opcname FROM pg_opclass ")
-				wxT("WHERE opcmethod=") + method +
-				wxT(" AND NOT opcdefault")
-				wxT(" ORDER BY 1");
+		               wxT("WHERE opcmethod=") + method +
+		               wxT(" AND NOT opcdefault")
+		               wxT(" ORDER BY 1");
 		pgSet *set = connection->ExecuteSet(sql);
 		if (set)
 		{
