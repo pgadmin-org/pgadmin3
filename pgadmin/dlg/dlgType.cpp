@@ -507,7 +507,6 @@ int dlgType::Go(bool modal)
 	else
 	{
 		// Create mode
-		cbOwner->Append(wxEmptyString);
 		cbOwner->Disable();
 
 		bool hasSendRcv = connection->BackendMinimumVersion(7, 4);

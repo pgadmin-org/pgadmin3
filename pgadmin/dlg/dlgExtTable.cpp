@@ -60,9 +60,6 @@ int dlgExtTable::Go(bool modal)
 {
 	int returncode;
 
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
-
 	if (extTable)
 	{
 		// edit mode

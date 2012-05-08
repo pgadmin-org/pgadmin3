@@ -192,15 +192,10 @@ int dlgFunction::Go(bool modal)
 		rdbVariadic->Disable();
 		isProcedure = function->GetIsProcedure();
 	}
-	else
-		cbOwner->Append(wxEmptyString);
 
 	if (!isBackendMinVer84)
 		txtArgDefVal->Disable();
 	chkLeakProof->Enable(connection->BackendMinimumVersion(9, 2));
-
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
 
 	lstArguments->AddColumn(_("Type"), 60);
 	lstArguments->AddColumn(_("Mode"), 40);

@@ -69,10 +69,6 @@ int dlgLanguage::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
-	if (!language)
-		cbOwner->Append(wxEmptyString);
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
 	if (!connection->BackendMinimumVersion(8, 3))
 		cbOwner->Disable();
 

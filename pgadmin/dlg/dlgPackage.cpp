@@ -71,9 +71,6 @@ int dlgPackage::Go(bool modal)
 
 	cbOwner->Disable();
 
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
-
 	if (package)
 	{
 		// edit mode

@@ -1811,6 +1811,14 @@ int dlgSecurityProperty::Go(bool modal)
 {
 	if (securityPage)
 	{
+		if (cbOwner && !cbOwner->GetCount())
+		{
+			if (!GetObject())
+				cbOwner->Append(wxEmptyString);
+			AddGroups(cbOwner);
+			AddUsers(cbOwner);
+		}
+
 		securityPage->SetConnection(connection);
 		//securityPage->Layout();
 	}

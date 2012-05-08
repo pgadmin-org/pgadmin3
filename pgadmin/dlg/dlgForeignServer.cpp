@@ -62,12 +62,6 @@ pgObject *dlgForeignServer::GetObject()
 
 int dlgForeignServer::Go(bool modal)
 {
-	// Fill owner combobox
-	if (!foreignserver)
-		cbOwner->Append(wxT(""));
-	AddGroups();
-	AddUsers(cbOwner);
-
 	// Initialize options listview and buttons
 	lstOptions->AddColumn(_("Option"), 80);
 	lstOptions->AddColumn(_("Value"), 40);

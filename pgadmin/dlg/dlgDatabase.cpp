@@ -119,12 +119,6 @@ int dlgDatabase::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
-	if (!database)
-		cbOwner->Append(wxT(""));
-
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
-
 	if (connection->BackendMinimumVersion(9, 0))
 	{
 		cbVarUsername->Append(wxT(""));

@@ -61,11 +61,6 @@ pgObject *dlgView::GetObject()
 
 int dlgView::Go(bool modal)
 {
-	if (!view)
-		cbOwner->Append(wxEmptyString);
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
-
 	if (connection->BackendMinimumVersion(9, 1))
 	{
 		seclabelPage->SetConnection(connection);

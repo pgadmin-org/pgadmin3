@@ -57,11 +57,6 @@ int dlgSchema::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
-	if (!schema)
-		cbOwner->Append(wxT(""));
-
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
 	if (schema)
 	{
 		if (connection->BackendMinimumVersion(9, 0))

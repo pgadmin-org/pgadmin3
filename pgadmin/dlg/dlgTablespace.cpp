@@ -86,11 +86,6 @@ int dlgTablespace::Go(bool modal)
 	else
 		seclabelPage->Disable();
 
-	if (!tablespace)
-		cbOwner->Append(wxEmptyString);
-	AddGroups(cbOwner);
-	AddUsers(cbOwner);
-
 	pgSet *set;
 	if (connection->BackendMinimumVersion(8, 5))
 	{
