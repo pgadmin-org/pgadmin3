@@ -5,24 +5,23 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// pgAggregate.h PostgreSQL Aggregate
+// pgAggregate.h - Aggregate class
 //
 //////////////////////////////////////////////////////////////////////////
 
 #ifndef PGAGGREGATE_H
 #define PGAGGREGATE_H
 
-// App headers
 #include "pgSchema.h"
 
 class pgCollection;
-class pgAggregateFactory : public pgaFactory
+class pgAggregateFactory : public pgSchemaObjFactory
 {
 public:
 	pgAggregateFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
-	pgCollection *CreateCollection(pgObject *obj);
+	virtual pgCollection *CreateCollection(pgObject *obj);
 };
 extern pgAggregateFactory aggregateFactory;
 
@@ -30,15 +29,33 @@ class pgAggregate : public pgSchemaObject
 {
 public:
 	pgAggregate(pgSchema *newSchema, const wxString &newName = wxT(""));
-	~pgAggregate();
+
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+	wxString GetSql(ctlTree *browser);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+
+	wxString GetQuotedFullName();
+	wxString GetFullName();
+
 	bool CanDropCascaded()
 	{
 		return GetSchema()->GetMetaType() != PGM_CATALOG;
 	}
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
+	{
+		return true;
+	}
 
-	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
-	wxString GetFullName();
-	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	wxArrayString &GetInputTypesArray()
 	{
@@ -106,23 +123,6 @@ public:
 	{
 		quotedSortOp = s;
 	}
-
-	bool HasStats()
-	{
-		return false;
-	}
-	bool HasDepends()
-	{
-		return true;
-	}
-	bool HasReferences()
-	{
-		return true;
-	}
-
-	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-	wxString GetSql(ctlTree *browser);
-	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
 	wxArrayString inputTypes;

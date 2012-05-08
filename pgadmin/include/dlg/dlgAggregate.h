@@ -5,10 +5,9 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgAggregate.h - Aggregate property
+// dlgAggregate.h - Aggregate properties dialog
 //
 //////////////////////////////////////////////////////////////////////////
-
 
 #ifndef __DLG_AGGREGATEPROP
 #define __DLG_AGGREGATEPROP
@@ -29,6 +28,23 @@ public:
 	wxString GetSql();
 	pgObject *CreateObject(pgCollection *collection);
 	pgObject *GetObject();
+
+protected:
+	/*
+	*  Aggregate Privileges:
+	*  - Did not inherit dlgTypeProperty & dlgSecurityProperty as it will
+	*    lead to a lot of problem later
+	**/
+
+	ctlSecurityPanel *securityPage;
+	wxArrayString currentAcl;
+	wxArrayString groups;
+	bool securityChanged;
+
+	wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
+
+	void OnAddPriv(wxCommandEvent &ev);
+	void OnDelPriv(wxCommandEvent &ev);
 
 private:
 	pgSchema *schema;
@@ -59,6 +75,5 @@ private:
 
 	DECLARE_EVENT_TABLE()
 };
-
 
 #endif

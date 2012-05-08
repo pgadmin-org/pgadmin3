@@ -23,10 +23,6 @@ pgAggregate::pgAggregate(pgSchema *newSchema, const wxString &newName)
 {
 }
 
-pgAggregate::~pgAggregate()
-{
-}
-
 wxString pgAggregate::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -88,10 +84,9 @@ wxString pgAggregate::GetTranslatedMessage(int kindOfMessage) const
 	return message;
 }
 
-
 bool pgAggregate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP AGGREGATE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
+	wxString sql = wxT("DROP AGGREGATE ") + GetSchema()->GetQuotedIdentifier() + wxT(".") + GetFullName();
 	if (cascaded)
 		sql += wxT(" CASCADE");
 	return GetDatabase()->ExecuteVoid(sql);
@@ -101,12 +96,12 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
 	{
-		sql = wxT("-- Aggregate: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-		      + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(");");
+		sql = wxT("-- Aggregate: ") + GetQuotedFullName() + wxT("\n\n")
+		      + wxT("-- DROP AGGREGATE ") + GetQuotedFullName() + wxT(";");
 
 		if (GetDatabase()->BackendMinimumVersion(8, 2))
 		{
-			sql += wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(") (");
+			sql += wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullName() + wxT(" (");
 		}
 		else
 		{
@@ -131,16 +126,14 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 
 		AppendIfFilled(sql, wxT(",\n  SORTOP="), GetQuotedSortOp());
 
-		sql += wxT("\n);\n")
-		       + GetOwnerSql(8, 0, wxT("AGGREGATE ") + GetQuotedFullIdentifier()
-		                     + wxT("(") + GetInputTypesList()
-		                     + wxT(")"));
+		sql += wxT("\n);\n");
+		sql += GetOwnerSql(8, 0, wxT("AGGREGATE ") + GetQuotedFullName())
+		       +  GetGrant(wxT("X"), wxT("FUNCTION ") + GetQuotedFullIdentifier());
 
 		if (!GetComment().IsNull())
 		{
-			sql += wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier()
-			       + wxT("(") + GetInputTypesList()
-			       + wxT(") IS ") + qtDbString(GetComment()) + wxT(";\n");
+			sql += wxT("COMMENT ON AGGREGATE ") + GetQuotedFullName()
+			       + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
 		}
 
 		if (GetConnection()->BackendMinimumVersion(9, 1))
@@ -150,27 +143,6 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 	return sql;
 }
 
-
-wxString pgAggregate::GetFullName()
-{
-	return GetName() + wxT("(") + GetInputTypesList() + wxT(")");
-}
-
-// Return the list of input types
-wxString pgAggregate::GetInputTypesList()
-{
-	wxString types;
-
-	for (unsigned int i = 0; i < inputTypes.Count(); i++)
-	{
-		if (i > 0)
-			types += wxT(", ");
-
-		types += inputTypes.Item(i);
-	}
-	return types;
-}
-
 void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
 	if (properties)
@@ -178,9 +150,10 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 		CreateListColumns(properties);
 
 		properties->AppendItem(_("Name"), GetName());
-		properties->AppendItem(_("Input types"), GetInputTypesList());
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
+		properties->AppendItem(_("ACL"), GetAcl());
+		properties->AppendItem(_("Input types"), GetInputTypesList());
 		properties->AppendItem(_("State type"), GetStateType());
 		properties->AppendItem(_("State function"), GetStateFunction());
 		properties->AppendItem(_("Final type"), GetFinalType());
@@ -214,7 +187,6 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 	}
 }
 
-
 pgObject *pgAggregate::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
 	pgObject *aggregate = 0;
@@ -226,16 +198,49 @@ pgObject *pgAggregate::Refresh(ctlTree *browser, const wxTreeItemId item)
 	return aggregate;
 }
 
+wxString pgAggregate::GetQuotedFullName()
+{
+	return GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
+}
 
-////////////////////////////////////////////////////////////////////////
+wxString pgAggregate::GetFullName()
+{
+	return GetName() + wxT("(") + GetInputTypesList() + wxT(")");
+}
 
+// Return the list of input types
+wxString pgAggregate::GetInputTypesList()
+{
+	wxString types;
+
+	for (unsigned int i = 0; i < inputTypes.Count(); i++)
+	{
+		if (i > 0)
+			types += wxT(", ");
+
+		types += inputTypes.Item(i);
+	}
+	return types;
+}
 
 pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
 	pgAggregate *aggregate = 0;
+
+	// Build a cache of data types
+	pgSet *types = collection->GetDatabase()->ExecuteSet(wxT(
+	                   "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
+	cacheMap map;
+	while(!types->Eof())
+	{
+		map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+		types->MoveNext();
+	}
+
+	// Build the query to get all objects
 	wxString sql =
 	    wxT("SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n")
-	    wxT(        "aggfinalfn, proargtypes, aggtranstype, ")
+	    wxT(        "aggfinalfn, proargtypes, aggtranstype, proacl, ")
 	    wxT(        "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, ")
 	    wxT(        "prorettype AS aggfinaltype, ")
 	    wxT(        "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, ")
@@ -257,7 +262,6 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	else
 		sql +=  wxT("\n  FROM pg_aggregate ag\n");
 
-
 	pgSet *aggregates = collection->GetDatabase()->ExecuteSet(sql +
 	                    wxT("  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n")
 	                    wxT("  JOIN pg_type tt on tt.oid=aggtranstype\n")
@@ -267,18 +271,6 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	                    + restriction
 	                    + wxT("\n ORDER BY aggname"));
 
-	// Build a cache of data types
-	pgSet *types = collection->GetDatabase()->ExecuteSet(wxT(
-	                   "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
-
-	cacheMap map;
-
-	while(!types->Eof())
-	{
-		map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
-		types->MoveNext();
-	}
-
 	if (aggregates)
 	{
 		while (!aggregates->Eof())
@@ -287,6 +279,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
 			aggregate->iSetOid(aggregates->GetOid(wxT("aggfnoid")));
 			aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
+			aggregate->iSetAcl(aggregates->GetVal(wxT("proacl")));
 
 			// Get the input type names. From 8.2 onwards there might be
 			// multiple types in the array. In any case, we must properly
@@ -376,7 +369,6 @@ pgAggregateCollection::pgAggregateCollection(pgaFactory *factory, pgSchema *sch)
 {
 }
 
-
 wxString pgAggregateCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
@@ -404,7 +396,7 @@ wxString pgAggregateCollection::GetTranslatedMessage(int kindOfMessage) const
 #include "images/aggregates.pngc"
 
 pgAggregateFactory::pgAggregateFactory()
-	: pgaFactory(__("Aggregate"), __("New Aggregate..."), __("Create a new Aggregate."), aggregate_png_img, aggregate_sm_png_img)
+	: pgSchemaObjFactory(__("Aggregate"), __("New Aggregate..."), __("Create a new Aggregate."), aggregate_png_img, aggregate_sm_png_img)
 {
 }
 

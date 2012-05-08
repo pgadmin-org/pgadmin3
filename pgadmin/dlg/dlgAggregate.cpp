@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2012, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgAggregate.cpp - PostgreSQL Operator Property
+// dlgAggregate.cpp - Aggregate properties dialog
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,11 +22,11 @@
 #include "schema/pgAggregate.h"
 #include "schema/pgDatatype.h"
 #include "ctl/ctlSeclabelPanel.h"
+#include "frm/frmMain.h"
+#include "schema/pgUser.h"
+#include "schema/pgGroup.h"
 
 #include "images/aggregate.pngc"
-
-// Images
-
 
 // pointer to controls
 #define cbInputType         CTRL_COMBOBOX2("cbInputType")
@@ -39,6 +39,10 @@
 #define btnAddType          CTRL_BUTTON("btnAddType")
 #define btnRemoveType       CTRL_BUTTON("btnRemoveType")
 
+dlgProperty *pgAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+	return new dlgAggregate(this, frame, (pgAggregate *)node, (pgSchema *)parent);
+}
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
 	EVT_TEXT(XRCID("cbInputType"),                  dlgAggregate::OnChangeTypeBase)
@@ -50,33 +54,114 @@ BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
 	EVT_BUTTON(XRCID("btnAddType"),                 dlgAggregate::OnAddInputType)
 	EVT_BUTTON(XRCID("btnRemoveType"),              dlgAggregate::OnRemoveInputType)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstInputTypes"),  dlgAggregate::OnSelectInputType)
+	EVT_BUTTON(CTL_ADDPRIV,                         dlgAggregate::OnAddPriv)
+	EVT_BUTTON(CTL_DELPRIV,                         dlgAggregate::OnDelPriv)
 #ifdef __WXMAC__
 	EVT_SIZE(                                       dlgAggregate::OnChangeSize)
 #endif
 END_EVENT_TABLE();
 
-
-dlgProperty *pgAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
-{
-	return new dlgAggregate(this, frame, (pgAggregate *)node, (pgSchema *)parent);
-}
-
-
-dlgAggregate::dlgAggregate(pgaFactory *f, frmMain *frame, pgAggregate *node, pgSchema *sch)
+dlgAggregate::dlgAggregate(pgaFactory *f, frmMain *frame, pgAggregate *agg, pgSchema *sch)
 	: dlgTypeProperty(f, frame, wxT("dlgAggregate"))
 {
-	SetIcon(*aggregate_png_ico);
 	schema = sch;
-	aggregate = node;
+	aggregate = agg;
 	seclabelPage = new ctlSeclabelPanel(nbNotebook);
-}
 
+	/* Aggregate Privileges */
+	securityChanged = false;
+	if (agg)
+		connection = agg->GetConnection();
+	securityPage = new ctlSecurityPanel(nbNotebook, wxT("EXECUTE"), "X", frame->GetImageList());
+	if (connection && (!agg || agg->CanCreate()))
+	{
+		// Fetch Groups Information
+		pgSet *setGrp = connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
+
+		if (setGrp)
+		{
+			while (!setGrp->Eof())
+			{
+				groups.Add(setGrp->GetVal(0));
+				setGrp->MoveNext();
+			}
+			delete setGrp;
+		}
+
+		if (agg)
+		{
+			wxString strAcl = agg->GetAcl();
+			if (!strAcl.IsEmpty())
+			{
+				wxArrayString aclArray;
+				strAcl = strAcl.Mid(1, strAcl.Length() - 2);
+				getArrayFromCommaSeparatedList(strAcl, aclArray);
+				wxString roleName;
+				for (unsigned int index = 0; index < aclArray.Count(); index++)
+				{
+					wxString strCurrAcl = aclArray[index];
+
+					/*
+					* In rare case, we can have ',' (comma) in the user name.
+					* But, we need to handle them also
+					*/
+					if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
+					{
+						// Check it is start of the ACL
+						if (strCurrAcl[0U] == (wxChar)'"')
+							roleName = strCurrAcl + wxT(",");
+						continue;
+					}
+					else
+						strCurrAcl = roleName + strCurrAcl;
+
+					if (strCurrAcl[0U] == (wxChar)'"')
+						strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length() - 1);
+					roleName = strCurrAcl.BeforeLast('=');
+
+					wxString value = strCurrAcl.Mid(roleName.Length() + 1).BeforeLast('/');
+
+					int icon = userFactory.GetIconId();
+
+					if (roleName.Left(6).IsSameAs(wxT("group ")), false)
+					{
+						icon = groupFactory.GetIconId();
+						roleName = wxT("group ") + qtStrip(roleName.Mid(6));
+					}
+					else if (roleName.IsEmpty())
+					{
+						icon = PGICON_PUBLIC;
+						roleName = wxT("public");
+					}
+					else
+					{
+						roleName = qtStrip(roleName);
+						for (unsigned int index = 0; index < groups.Count(); index++)
+							if (roleName == groups[index])
+							{
+								roleName = wxT("group ") + roleName;
+								icon = groupFactory.GetIconId();
+								break;
+							}
+					}
+
+					securityPage->lbPrivileges->AppendItem(icon, roleName, value);
+					currentAcl.Add(roleName + wxT("=") + value);
+
+					// Reset roleName
+					roleName.Empty();
+				}
+			}
+		}
+	}
+	else
+		securityPage->Disable();
+}
 
 pgObject *dlgAggregate::GetObject()
 {
 	return aggregate;
 }
-
 
 int dlgAggregate::Go(bool modal)
 {
@@ -100,12 +185,13 @@ int dlgAggregate::Go(bool modal)
 	if (aggregate)
 	{
 		// edit mode
+		txtName->Enable(connection->BackendMinimumVersion(7, 4));
 		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 
 		for (unsigned int x = 0; x < aggregate->GetInputTypesArray().Count(); x++ )
 		{
-			lstInputTypes->InsertItem(x, aggregate->GetInputTypesArray()[x]);
-			AddType(wxT(" "), 0, aggregate->GetInputTypesArray()[x]);
+			lstInputTypes->InsertItem(x, aggregate->GetInputTypesArray().Item(x));
+			AddType(wxT(" "), 0, aggregate->GetInputTypesArray().Item(x));
 		}
 
 		cbStateType->Append(aggregate->GetStateType());
@@ -120,9 +206,6 @@ int dlgAggregate::Go(bool modal)
 		cbSortOp->SetSelection(0);
 
 		txtInitial->SetValue(aggregate->GetInitialCondition());
-
-		if (!connection->BackendMinimumVersion(7, 4))
-			txtName->Disable();
 
 		cbInputType->Disable();
 		btnAddType->Disable();
@@ -143,9 +226,25 @@ int dlgAggregate::Go(bool modal)
 		btnRemoveType->Disable();
 	}
 
+	securityPage->SetConnection(connection);
+
+	if (securityPage->cbGroups)
+	{
+		// Fetch Groups Information
+		for ( unsigned int index = 0; index < groups.Count();)
+			securityPage->cbGroups->Append(wxT("group ") + groups[index++]);
+
+		// Fetch Users Information
+		if (settings->GetShowUsersForPrivileges())
+		{
+			securityPage->stGroup->SetLabel(_("Group/User"));
+			dlgProperty::AddUsers(securityPage->cbGroups);
+		}
+	}
+	securityPage->lbPrivileges->GetParent()->Layout();
+
 	return dlgProperty::Go(modal);
 }
-
 
 pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 {
@@ -156,19 +255,19 @@ pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 	return obj;
 }
 
-
 #ifdef __WXMAC__
 void dlgAggregate::OnChangeSize(wxSizeEvent &ev)
 {
 	lstInputTypes->SetSize(wxDefaultCoord, wxDefaultCoord,
 	                       ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+	                                    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
 	if (GetAutoLayout())
 	{
 		Layout();
 	}
 }
 #endif
-
 
 void dlgAggregate::CheckChange()
 {
@@ -210,9 +309,8 @@ void dlgAggregate::CheckChange()
 		CheckValid(enable, cbStateType->GetGuessedSelection() >= 0, _("Please select state datatype."));
 		CheckValid(enable, cbStateFunc->GetCurrentSelection() >= 0, _("Please specify state function."));
 	}
-	EnableOK(enable);
+	EnableOK(enable || securityChanged);
 }
-
 
 void dlgAggregate::OnChangeTypeBase(wxCommandEvent &ev)
 {
@@ -226,7 +324,6 @@ void dlgAggregate::OnChangeTypeState(wxCommandEvent &ev)
 	OnChangeType(ev);
 }
 
-
 void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 {
 	cbStateFunc->Clear();
@@ -239,7 +336,6 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 	// Get the possible state functions. They must return the state type, and take
 	// input_types + 1 parameters, the first of which is of the state type.
 	// If there are no input_types specified, assume "ANY" for a count(*) style aggregate.
-
 	if (lstInputTypes->GetItemCount() > 0 && cbStateType->GetGuessedSelection() >= 0)
 	{
 		set = connection->ExecuteSet(
@@ -320,14 +416,11 @@ wxString dlgAggregate::GetSql()
 	if (aggregate)
 	{
 		// edit mode
-		name = GetName();
+		name = schema->GetQuotedPrefix() + qtIdent(GetName()) + wxT("(") + GetInputTypesList() + wxT(")");
 
-		AppendNameChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(aggregate->GetName()) +
-		                 wxT("(") + GetInputTypesList() + wxT(")"));
-		AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName()) +
-		                  wxT("(") + GetInputTypesList() + wxT(")"));
-		AppendSchemaChange(sql,  wxT("AGGREGATE ") + qtIdent(aggregate->GetSchema()->GetName()) + wxT(".") + qtIdent(name) +
-		                   wxT("(") + GetInputTypesList() + wxT(")"));
+		AppendNameChange(sql, wxT("AGGREGATE ") + aggregate->GetQuotedFullName());
+		AppendOwnerChange(sql, wxT("AGGREGATE ") + name);
+		AppendSchemaChange(sql,  wxT("AGGREGATE ") + name);
 	}
 	else
 	{
@@ -346,7 +439,7 @@ wxString dlgAggregate::GetSql()
 		}
 
 		sql += wxT("   SFUNC=") + cbStateFunc->GetStringKey()
-		       + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() + 1); // skip "any" type
+		       + wxT(",\n   STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() + 1); // skip "any" type
 
 		if (cbFinalFunc->GetCurrentSelection() > 0)
 		{
@@ -373,18 +466,20 @@ wxString dlgAggregate::GetSql()
 
 		sql += wxT("\n);\n");
 
-		AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name) +
-		               wxT("(") + GetInputTypesList() + wxT(")"));
+		AppendOwnerNew(sql, wxT("AGGREGATE ") + name + wxT("(") + GetInputTypesList() + wxT(")"));
 	}
+
 	AppendComment(sql, wxT("AGGREGATE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
-	              + wxT("(") + GetInputTypesList()
-	              + wxT(")"), aggregate);
+	              + wxT("(") + GetInputTypesList() + wxT(")"), aggregate);
+
+	sql += securityPage->GetGrant(wxT("X"),
+	                              wxT("FUNCTION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()) + wxT("(") + GetInputTypesList() + wxT(")"),
+	                              &currentAcl);
 
 	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
 		sql += seclabelPage->GetSqlForSecLabels(wxT("AGGREGATE"),
 		                                        qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
-		                                        + wxT("(") + GetInputTypesList()
-		                                        + wxT(")"));
+		                                        + wxT("(") + GetInputTypesList() + wxT(")"));
 
 	return sql;
 }
@@ -483,5 +578,17 @@ wxString dlgAggregate::GetInputTypesOidList()
 
 void dlgAggregate::OnChange(wxCommandEvent &event)
 {
+	CheckChange();
+}
+
+void dlgAggregate::OnAddPriv(wxCommandEvent &ev)
+{
+	securityChanged = true;
+	CheckChange();
+}
+
+void dlgAggregate::OnDelPriv(wxCommandEvent &ev)
+{
+	securityChanged = true;
 	CheckChange();
 }

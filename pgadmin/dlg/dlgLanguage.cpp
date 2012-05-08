@@ -54,6 +54,9 @@ pgObject *dlgLanguage::GetObject()
 
 int dlgLanguage::Go(bool modal)
 {
+	if (!connection->BackendMinimumVersion(8, 3))
+		cbOwner->Disable();
+
 	if (!connection->BackendMinimumVersion(7, 5))
 		txtComment->Disable();
 
@@ -68,9 +71,6 @@ int dlgLanguage::Go(bool modal)
 	}
 	else
 		seclabelPage->Disable();
-
-	if (!connection->BackendMinimumVersion(8, 3))
-		cbOwner->Disable();
 
 	if (language)
 	{
