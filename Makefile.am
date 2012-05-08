@@ -31,6 +31,7 @@ EXTRA_DIST = \
 	$(top_srcdir)/stringmerge \
         $(top_srcdir)/docs/Docs.vcproj \
         $(top_srcdir)/docs/builddocs.bat \
+        $(top_srcdir)/docs/createConf.vbs \
         $(top_srcdir)/docs/en_US/*.rst \
         $(top_srcdir)/docs/en_US/conf.py.in \
 	$(top_srcdir)/docs/en_US/images/*.png 
