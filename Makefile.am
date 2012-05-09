@@ -39,20 +39,20 @@ EXTRA_DIST = \
 TMP_docs = \
 	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/cs_CZ/*.css \
-	$(top_srcdir)/docs/cs_CZ/*.html \
-	$(top_srcdir)/docs/cs_CZ/pgadmin3.hh* \
 	$(top_srcdir)/docs/cs_CZ/hints/*.html \
-	$(top_srcdir)/docs/cs_CZ/images/*.png \
+	$(top_srcdir)/docs/de_DE/*.css \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
+	$(top_srcdir)/docs/es_ES/*.css \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
+	$(top_srcdir)/docs/fi_FI/*.css \
 	$(top_srcdir)/docs/fi_FI/hints/*.html \
 	$(top_srcdir)/docs/fr_FR/*.css \
-	$(top_srcdir)/docs/fr_FR/*.html \
-	$(top_srcdir)/docs/fr_FR/pgadmin3.hh* \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
-	$(top_srcdir)/docs/fr_FR/images/*.png \
+	$(top_srcdir)/docs/sl_SI/*.css \
 	$(top_srcdir)/docs/sl_SI/hints/*.html \
+	$(top_srcdir)/docs/zh_CN/*.css \
 	$(top_srcdir)/docs/zh_CN/hints/*.html \
+	$(top_srcdir)/docs/zh_TW/*.css \
 	$(top_srcdir)/docs/zh_TW/hints/*.html
 
 if !APPBUNDLE
