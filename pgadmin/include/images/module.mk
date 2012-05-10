@@ -26,6 +26,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/catalogobject-sm.png \
 	$(srcdir)/include/images/catalogobjects.png \
 	$(srcdir)/include/images/check.png \
+	$(srcdir)/include/images/checkbad.png \
 	$(srcdir)/include/images/checked.png \
 	$(srcdir)/include/images/clearAll.png \
 	$(srcdir)/include/images/clip_copy.png \
