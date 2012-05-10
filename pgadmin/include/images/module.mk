@@ -50,22 +50,35 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/database-sm.png \
 	$(srcdir)/include/images/database.png \
 	$(srcdir)/include/images/databases.png \
-    $(srcdir)/include/images/ddAddColumn.png \
-    $(srcdir)/include/images/ddAddForeignKey.png \
-    $(srcdir)/include/images/ddDown.png \
-    $(srcdir)/include/images/ddforeignkey.png \
-    $(srcdir)/include/images/ddgendiagram.png \
-    $(srcdir)/include/images/ddMaximizeTable.png \
-    $(srcdir)/include/images/ddMinimizeTable.png \
+	$(srcdir)/include/images/ddAddColumn.png \
+	$(srcdir)/include/images/ddAddColumnCursor.png \
+	$(srcdir)/include/images/ddAddForeignKey.png \
+	$(srcdir)/include/images/ddDeleteTableCursor.png \
+	$(srcdir)/include/images/ddDown.png \
+	$(srcdir)/include/images/ddMaximizeTable.png \
+	$(srcdir)/include/images/ddMinMaxCursor.png \
+	$(srcdir)/include/images/ddMinimizeTable.png \
+	$(srcdir)/include/images/ddRelationshipCursor.png \
+	$(srcdir)/include/images/ddRemoveColumn.png \
+	$(srcdir)/include/images/ddRemoveColumnCursor.png \
+	$(srcdir)/include/images/ddRemoveTable.png \
+	$(srcdir)/include/images/ddRemoveTable2.png \
+	$(srcdir)/include/images/ddUp.png \
+	$(srcdir)/include/images/ddcancel.png \
+	$(srcdir)/include/images/ddforeignkey.png \
+	$(srcdir)/include/images/ddforeignkeyfromuk.png \
+	$(srcdir)/include/images/ddforeignkeyuniquekey.png \
+	$(srcdir)/include/images/ddforeignkeyuniquekeyfromuk.png \
+	$(srcdir)/include/images/ddgendiagram.png \
+	$(srcdir)/include/images/ddmodel-32.png \
 	$(srcdir)/include/images/ddnewdiagram.png \
 	$(srcdir)/include/images/ddnotnull.png \
-    $(srcdir)/include/images/ddnull.png \
-    $(srcdir)/include/images/ddprimaryforeignkey.png \
-    $(srcdir)/include/images/ddprimarykey.png \
-    $(srcdir)/include/images/ddRemoveColumn.png \
-    $(srcdir)/include/images/ddRemoveTable.png \
-    $(srcdir)/include/images/ddUp.png \
-    $(srcdir)/include/images/ddunique.png \
+	$(srcdir)/include/images/ddnull.png \
+	$(srcdir)/include/images/ddprimaryforeignkey.png \
+	$(srcdir)/include/images/ddprimaryforeignkeyfromuk.png \
+	$(srcdir)/include/images/ddprimarykey.png \
+	$(srcdir)/include/images/ddprimarykeyuniquekey.png \
+	$(srcdir)/include/images/ddunique.png \
 	$(srcdir)/include/images/debugger.png \
 	$(srcdir)/include/images/delete.png \
 	$(srcdir)/include/images/dictionary.png \
