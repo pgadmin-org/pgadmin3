@@ -15,6 +15,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frm/frmBackupGlobals.h \
 	$(srcdir)/include/frm/frmBackupServer.h \
 	$(srcdir)/include/frm/frmConfig.h \
+	$(srcdir)/include/frm/frmDatabaseDesigner.h \
 	$(srcdir)/include/frm/frmEditGrid.h \
 	$(srcdir)/include/frm/frmExport.h \
   	$(srcdir)/include/frm/frmGrantWizard.h \
