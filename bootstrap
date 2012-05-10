@@ -12,47 +12,60 @@
 
 # Check for aclocal 1.9/1.10/1.11
 echo "Checking aclocal..."
-RET=`type aclocal-1.11 > /dev/null 2>&1 || echo fail`
+
+RET=`type aclocal-1.12 > /dev/null 2>&1 || echo fail`
 if [ x$RET != xfail ];
 then
-  ACLOCAL=aclocal-1.11
+  ACLOCAL=aclocal-1.12
 else
-  RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
+  RET=`type aclocal-1.11 > /dev/null 2>&1 || echo fail`
   if [ x$RET != xfail ];
   then
-    ACLOCAL=aclocal-1.10
+    ACLOCAL=aclocal-1.11
   else
-    RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
+    RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
     if [ x$RET != xfail ];
     then
-      ACLOCAL=aclocal-1.9
+      ACLOCAL=aclocal-1.10
     else
-      echo "ERROR: this script requires aclocal-1.9, aclocal-1.10 or aclocal-1.11"
-      exit 1
+      RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
+      if [ x$RET != xfail ];
+      then
+        ACLOCAL=aclocal-1.9
+      else
+        echo "ERROR: this script requires aclocal-1.9, aclocal-1.10, aclocal-1.11 or aclocal-1.12"
+        exit 1
+      fi
     fi
   fi
 fi
 
 
-# Check for automake 1.9/1.10/1.11
+# Check for automake 1.9/1.10/1.11/1.12
 echo "Checking automake..."
-RET=`type automake-1.11 > /dev/null 2>&1 || echo fail`
+RET=`type automake-1.12 > /dev/null 2>&1 || echo fail`
 if [ x$RET != xfail ];
 then
-  AUTOMAKE=automake-1.11
+  AUTOMAKE=automake-1.12
 else
-  RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
+  RET=`type automake-1.11 > /dev/null 2>&1 || echo fail`
   if [ x$RET != xfail ];
   then
-    AUTOMAKE=automake-1.10
+    AUTOMAKE=automake-1.11
   else
-    RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
+    RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
     if [ x$RET != xfail ];
     then
-      AUTOMAKE=automake-1.9
+      AUTOMAKE=automake-1.10
     else
-      echo "ERROR: this script requires automake-1.9, automake-1.10 or automake-1.11"
-      exit 1
+      RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
+      if [ x$RET != xfail ];
+      then
+        AUTOMAKE=automake-1.9
+      else
+        echo "ERROR: this script requires automake-1.9, automake-1.10, automake-1.11 or automake-1.12"
+        exit 1
+      fi
     fi
   fi
 fi
