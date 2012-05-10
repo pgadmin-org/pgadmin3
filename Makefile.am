@@ -29,12 +29,12 @@ EXTRA_DIST = \
 	$(top_srcdir)/pgAdmin3.sln \
 	$(top_srcdir)/stringextract \
 	$(top_srcdir)/stringmerge \
-        $(top_srcdir)/docs/Docs.vcproj \
-        $(top_srcdir)/docs/builddocs.bat \
-        $(top_srcdir)/docs/createConf.vbs \
-        $(top_srcdir)/docs/en_US/*.rst \
-        $(top_srcdir)/docs/en_US/conf.py \
-        $(top_srcdir)/docs/en_US/conf.py.in \
+	$(top_srcdir)/docs/Docs.vcproj \
+	$(top_srcdir)/docs/builddocs.bat \
+	$(top_srcdir)/docs/createConf.vbs \
+	$(top_srcdir)/docs/en_US/*.rst \
+	$(top_srcdir)/docs/en_US/conf.py \
+	$(top_srcdir)/docs/en_US/conf.py.in \
 	$(top_srcdir)/docs/en_US/Makefile.sphinx \
 	$(top_srcdir)/docs/en_US/images/*.png 
 
@@ -88,6 +88,9 @@ style:
 doc:
 if SPHINX_BUILD
 	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} htmlhelp
+
+# Fix up the charset so wxWidgets doesn't bleat
+	for f in `ls $(help_dir)/docs/en_US/*.html`; do sed "s/iso8859_1/iso8859\-1/g" $$f > temp; mv temp $$f; done
 endif
 
 clean-local:
