@@ -33,7 +33,9 @@ EXTRA_DIST = \
         $(top_srcdir)/docs/builddocs.bat \
         $(top_srcdir)/docs/createConf.vbs \
         $(top_srcdir)/docs/en_US/*.rst \
+        $(top_srcdir)/docs/en_US/conf.py \
         $(top_srcdir)/docs/en_US/conf.py.in \
+	$(top_srcdir)/docs/en_US/Makefile.sphinx \
 	$(top_srcdir)/docs/en_US/images/*.png 
 
 TMP_docs = \
@@ -57,16 +59,19 @@ TMP_docs = \
 
 if !APPBUNDLE
 nobase_dist_pkgdata_DATA = $(TMP_docs)
-help_cache = $(DESTDIR)/$(pkgdatadir)/docs/en_US/pgadmin3.hhp.cached
+help_dir = $(DESTDIR)/$(pkgdatadir)
 else
 nobase_dist_data_DATA = $(TMP_docs)
-help_cache = $(DESTDIR)/$(datadir)/docs/en_US/pgadmin3.hhp.cached
+help_dir = $(DESTDIR)/$(datadir)
 endif
 
 # We need to ensure the help cache is world writeable
 install-data-hook:
-	touch $(help_cache)
-	chmod 0666 $(help_cache)
+	touch $(help_dir)/docs/en_US/pgadmin3.hhp.cached
+	chmod 0666 $(help_dir)/docs/en_US/pgadmin3.hhp.cached
+if SPHINX_BUILD
+	if [ -d $(top_srcdir)/docs/en_US/_build/htmlhelp ]; then cp -R $(top_srcdir)/docs/en_US/_build/htmlhelp/* $(help_dir)/docs/en_US/; fi
+endif
 
 # Perform astyle cleanup per rules:
 # * -p - insert space around parenthesis
@@ -82,9 +87,8 @@ style:
 # Create HTML docs
 doc:
 if SPHINX_BUILD
-	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} html
+	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} htmlhelp
 endif
 
 clean-local:
 	rm -rf docs/en_US/_build
-	rm docs/en_US/conf.py
