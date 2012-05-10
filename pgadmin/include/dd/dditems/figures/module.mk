@@ -14,6 +14,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/dditems/figures/ddColumnKindIcon.h \
 	$(srcdir)/include/dd/dditems/figures/ddColumnOptionIcon.h \
 	$(srcdir)/include/dd/dditems/figures/ddRelationshipFigure.h \
+	$(srcdir)/include/dd/dditems/figures/ddRelationshipItem.h \
 	$(srcdir)/include/dd/dditems/figures/ddRelationshipTerminal.h \
 	$(srcdir)/include/dd/dditems/figures/ddTableFigure.h \
 	$(srcdir)/include/dd/dditems/figures/ddTextTableItemFigure.h
