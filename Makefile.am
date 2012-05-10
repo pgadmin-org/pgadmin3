@@ -80,7 +80,7 @@ style:
 	astyle -n -p -b -S -t4 -k3 -z2 `find . -name "*.cpp" -o -name "*.h" | egrep -v "(wx-build|xrcDialogs|pgscript/test)"`
 
 # Create HTML docs
-docs:
+doc:
 if SPHINX_BUILD
 	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} html
 endif
