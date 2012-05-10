@@ -14,3 +14,5 @@ png2c_SOURCES = \
 
 EXTRA_DIST = \
 	$(srcdir)/png2c.vcproj
+
+distclean:
