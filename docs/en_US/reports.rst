@@ -50,3 +50,9 @@ The default :ref:`XSL stylesheet <default-xsl>` used to render
 XHTML output can be used as a starting point for your own, and sample 
 :ref:`XML data <sample-xml>` may also be reviewed if required.
 
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   default-xsl

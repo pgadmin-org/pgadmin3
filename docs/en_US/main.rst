@@ -67,3 +67,11 @@ using doesn't support the feature, or that this property can't be
 changed by design, or that your user privileges won't allow you to
 change it.
 
+You can search for objects in the database using the :ref:`Search Tool <search_object>`
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   search_object

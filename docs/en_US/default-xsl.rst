@@ -1,0 +1,217 @@
+.. _default-xsl:
+
+
+**********************
+Default XSL Stylesheet
+**********************
+
+For reference, and as a starting point for your own stylesheets,
+the builtin stylesheet that pgadmin uses to render XHTML report output
+from XML report data is included below. This stylesheet includes
+the default HTML stylesheet that will be embedded into a report to
+give it the pgadmin look and feel.
+
+::
+
+    <?xml version="1.0"?>
+    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="xml" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="yes" encoding="utf-8" />
+    <xsl:template match="/report">
+
+    <html>
+      <head>
+        <xsl:if test="header/title != ''">
+          <title><xsl:value-of select="header/title" /></title>
+        </xsl:if>
+        <meta http-equiv="Content-Type" content="utf-8" />
+        <style type="text/css">
+          body {  font-family: verdana, helvetica, sans-serif; margin: 0px; padding: 0; }
+          h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #EBA525; }
+          h2 { font-size: 130%; padding-bottom: 0.5ex; color: #47678E; border-bottom-style: solid; border-bottom-width: 2px; }
+          h3 { font-size: 110%; padding-bottom: 0.5ex; color: #000000; }
+          th { text-align: left; background-color: #47678E; color: #EBA525; }
+          #ReportHeader { padding: 10px; background-color: #47678E; color: #EEEEEE; border-bottom-style: solid; border-bottom-width: 2px; border-color: #EBA525; }
+          #ReportHeader th { width: 25%; white-space: nowrap; vertical-align: top; }
+          #ReportHeader td { vertical-align: top; color: #EEEEEE; }
+          #ReportNotes { padding: 10px; background-color: #EEEEEE; font-size: 80%; border-bottom-style: solid; border-bottom-width: 2px; border-color: #EBA525; }
+          .ReportSQL { margin-bottom: 10px; padding: 10px; display: block; background-color: #eeeeee; font-family: monospace; }
+          #ReportDetails { margin-left: 10px; margin-right: 10px; margin-bottom: 10px; }
+          #ReportDetails td, th { font-size: 80%; margin-left: 2px; margin-right: 2px; }
+          #ReportDetails th { border-bottom-color: #777777; border-bottom-style: solid; border-bottom-width: 2px; }
+          .ReportDetailsOddDataRow { background-color: #dddddd; }
+          .ReportDetailsEvenDataRow { background-color: #eeeeee; }
+          .ReportTableHeaderCell { background-color: #dddddd; color: #47678E; vertical-align: top; font-size: 80%; white-space: nowrap; }
+          .ReportTableValueCell { vertical-align: top; font-size: 80%; white-space: nowrap; }
+          .ReportTableInfo { font-size: 80%; font-style: italic; }
+          #ReportFooter { font-weight: bold; font-size: 80%; text-align: right; background-color: #47678E; color: #eeeeee; margin-top: 10px; padding: 2px; border-bottom-style: solid; border-bottom-width: 2px; border-top-style: solid; border-top-width: 2px; border-color: #EBA525; }
+          #ReportFooter a { color: #EBA525; text-decoration: none; }
+        </style>
+      </head>
+
+      <body>
+        <div id="ReportHeader">
+
+        <xsl:if test="header/title != ''">
+          <h1><xsl:value-of select="header/title" /></h1>
+        </xsl:if>
+
+        <xsl:if test="header/generated != ''">
+          <b>Generated: </b><xsl:value-of select="header/generated" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/server != ''">
+          <b>Server: </b><xsl:value-of select="header/server" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/database != ''">
+          <b>Database: </b><xsl:value-of select="header/database" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/catalog != ''">
+          <b>Catalog: </b><xsl:value-of select="header/catalog" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/schema != ''">
+          <b>Schema: </b><xsl:value-of select="header/schema" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/table != ''">
+          <b>Table: </b><xsl:value-of select="header/table" /><br />
+        </xsl:if>
+
+        <xsl:if test="header/job != ''">
+          <b>Job: </b><xsl:value-of select="header/job" /><br />
+        </xsl:if>
+
+        </div>
+
+        <xsl:if test="header/notes != ''">
+          <div id="ReportNotes">
+          <b>Notes: </b><br /><br />
+          <xsl:call-template name="substitute">
+             <xsl:with-param name="string" select="header/notes" />
+          </xsl:call-template>
+          </div>
+        </xsl:if>
+
+        <div id="ReportDetails">
+          <xsl:apply-templates select="section" >
+            <xsl:sort select="@number" data-type="number" order="ascending" />
+          </xsl:apply-templates>
+        </div>
+
+        <div id="ReportFooter">
+    Report generated by <a href="http://www.enterprisedb.com/">Postgres Enterprise Manager&#8482;</a>
+        </div>
+
+        <br />
+      </body>
+    </html>
+
+    </xsl:template>
+
+    <xsl:template match="section">
+      <xsl:if test="../section[@id = current()/@id]/@name != ''">
+        <h2><xsl:value-of select="../section[@id = current()/@id]/@name" /></h2>
+      </xsl:if>
+
+      <xsl:if test="count(../section[@id = current()/@id]/table/columns/column) > 0">
+        <table>
+          <tr>
+            <xsl:apply-templates select="../section[@id = current()/@id]/table/columns/column">
+              <xsl:sort select="@number" data-type="number" order="ascending" />
+              <xsl:with-param name="count" select="count(../section[@id = current()/@id]/table/columns/column)" />
+            </xsl:apply-templates>
+          </tr>
+          <xsl:apply-templates select="../section[@id = current()/@id]/table/rows/*" mode="rows">
+              <xsl:sort select="@number" data-type="number" order="ascending" />
+            <xsl:with-param name="column-meta" select="../section[@id = current()/@id]/table/columns/column" />
+          </xsl:apply-templates>
+        </table>
+        <br />
+        <xsl:if test="../section[@id = current()/@id]/table/info != ''">
+          <p class="ReportTableInfo"><xsl:value-of select="../section[@id = current()/@id]/table/info" /></p>
+        </xsl:if>
+      </xsl:if>
+
+      <xsl:if test="../section[@id = current()/@id]/sql != ''">
+        <pre class="ReportSQL">
+          <xsl:call-template name="substitute">
+             <xsl:with-param name="string" select="../section[@id = current()/@id]/sql" />
+          </xsl:call-template>
+        </pre>
+      </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="column">
+      <xsl:param name="count" />
+      <th class="ReportTableHeaderCell">
+      <xsl:attribute name="width"><xsl:value-of select="100 div $count" />%</xsl:attribute>
+        <xsl:call-template name="substitute">
+           <xsl:with-param name="string" select="@name" />
+        </xsl:call-template>
+      </th>
+    </xsl:template>
+
+    <xsl:template match="*" mode="rows">
+      <xsl:param name="column-meta" />
+      <tr>
+      <xsl:choose>
+      <xsl:when test="position() mod 2 != 1">
+        <xsl:attribute name="class">ReportDetailsOddDataRow</xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="class">ReportDetailsEvenDataRow</xsl:attribute>
+      </xsl:otherwise>
+      </xsl:choose>
+        <xsl:apply-templates select="$column-meta" mode="cells">
+          <xsl:with-param name="row" select="." />
+        </xsl:apply-templates>
+      </tr>
+    </xsl:template>
+
+    <xsl:template match="*" mode="cells">
+      <xsl:param name="row" />
+        <td class="ReportTableValueCell">
+        <xsl:choose>
+          <xsl:when test="$row/@*[name() = current()/@id]|$row/*[name() = current()/@id] != ''">
+            <xsl:call-template name="substitute">
+              <xsl:with-param name="string" select="$row/@*[name() = current()/@id]|$row/*[name() = current()/@id]" />
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text> </xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+    </xsl:template>
+
+    <xsl:template name="substitute">
+       <xsl:param name="string" />
+       <xsl:param name="from" select="'
+    '" />
+       <xsl:param name="to">
+          <br />
+       </xsl:param>
+       <xsl:choose>
+          <xsl:when test="contains($string, $from)">
+             <xsl:value-of select="substring-before($string, $from)" />
+             <xsl:copy-of select="$to" />
+             <xsl:call-template name="substitute">
+                <xsl:with-param name="string" select="substring-after($string, $from)" />
+                <xsl:with-param name="from" select="$from" />
+                <xsl:with-param name="to" select="$to" />
+             </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+             <xsl:value-of select="$string" />
+          </xsl:otherwise>
+       </xsl:choose>
+    </xsl:template>
+
+    </xsl:stylesheet>
+
+.. toctree::
+   :maxdepth: 2
+
+   sample-xml

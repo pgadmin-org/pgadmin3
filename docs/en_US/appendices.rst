@@ -8,14 +8,11 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+   :titlesonly:
 
    bugreport
    team
    translation_team
    licence
-
-pgAdmin includes software from the OpenSSL and MIT Kerberos projects:
-
-* :ref:`MIT Kerberos licence <kerberos>`
-* :ref:`The OpenSSL licence <openssl>`
-
+   kerberos
+   openssl
