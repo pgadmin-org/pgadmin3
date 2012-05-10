@@ -71,6 +71,9 @@ install-data-hook:
 	chmod 0666 $(help_dir)/docs/en_US/pgadmin3.hhp.cached
 if SPHINX_BUILD
 	if [ -d $(top_srcdir)/docs/en_US/_build/htmlhelp ]; then cp -R $(top_srcdir)/docs/en_US/_build/htmlhelp/* $(help_dir)/docs/en_US/; fi
+
+# Fix up the charset so wxWidgets doesn't bleat
+	for f in `ls $(help_dir)/docs/en_US/*.html`; do sed "s/iso8859_1/iso8859\-1/g" $$f > temp; mv temp $$f; done
 endif
 
 # Perform astyle cleanup per rules:
@@ -88,9 +91,6 @@ style:
 doc:
 if SPHINX_BUILD
 	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} htmlhelp
-
-# Fix up the charset so wxWidgets doesn't bleat
-	for f in `ls $(help_dir)/docs/en_US/*.html`; do sed "s/iso8859_1/iso8859\-1/g" $$f > temp; mv temp $$f; done
 endif
 
 clean-local:
