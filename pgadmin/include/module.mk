@@ -22,6 +22,7 @@ EXTRA_DIST += \
 
 include $(srcdir)/include/agent/module.mk
 include $(srcdir)/include/db/module.mk
+include $(srcdir)/include/dd/module.mk
 include $(srcdir)/include/dlg/module.mk
 include $(srcdir)/include/debugger/module.mk
 include $(srcdir)/include/ctl/module.mk
