@@ -35,6 +35,7 @@ EXTRA_DIST = \
 	$(top_srcdir)/docs/en_US/*.rst \
 	$(top_srcdir)/docs/en_US/conf.py \
 	$(top_srcdir)/docs/en_US/conf.py.in \
+	$(top_srcdir)/docs/en_US/make.bat \
 	$(top_srcdir)/docs/en_US/Makefile.sphinx \
 	$(top_srcdir)/docs/en_US/images/*.png 
 
