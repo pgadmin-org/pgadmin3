@@ -415,8 +415,11 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent &event)
 		// line, up until the current cursor position.
 		int x = 0;
 		int max = line.Length() - (GetLineEndPosition(GetCurrentLine()) - GetCurrentPos()) - offset;
-		while ((line[x] == '\t' || line[x] == ' ') && x < max)
-			indent += line[x++];
+		if(line != wxEmptyString)
+		{
+			while ((line[x] == '\t' || line[x] == ' ') && x < max)
+				indent += line[x++];
+		}
 
 		// Select any indent in front of the cursor to be removed. If
 		// the cursor is positioned after any non-indent characters,
