@@ -581,7 +581,7 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
 	       wxT("    <xsl:if test=\"header/title != ''\">\n")
 	       wxT("      <title><xsl:value-of select=\"header/title\" /></title>\n")
 	       wxT("    </xsl:if>\n")
-	       wxT("    <meta http-equiv=\"Content-Type\" content=\"utf-8\" />\n");
+	       wxT("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
 	data += css;
 	data += wxT("  </head>\n")
 	        wxT("\n")

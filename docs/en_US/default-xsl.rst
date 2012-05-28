@@ -23,7 +23,7 @@ give it the pgadmin look and feel.
         <xsl:if test="header/title != ''">
           <title><xsl:value-of select="header/title" /></title>
         </xsl:if>
-        <meta http-equiv="Content-Type" content="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
           body {  font-family: verdana, helvetica, sans-serif; margin: 0px; padding: 0; }
           h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #EBA525; }
