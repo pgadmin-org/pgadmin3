@@ -94,5 +94,7 @@ if SPHINX_BUILD
 	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} htmlhelp
 endif
 
+all: doc
+
 clean-local:
 	rm -rf docs/en_US/_build
