@@ -146,7 +146,7 @@ void ctlSeclabelPanel::OnAddSeclabel(wxCommandEvent &ev)
 {
 	bool found = false;
 
-	for (unsigned int indexList = 0; indexList < lbSeclabels->GetItemCount(); indexList++)
+	for (int indexList = 0; indexList < lbSeclabels->GetItemCount(); indexList++)
 	{
 		if (lbSeclabels->GetText(indexList) == txtProvider->GetValue())
 		{
@@ -187,7 +187,7 @@ wxString ctlSeclabelPanel::GetSqlForSecLabels(wxString objecttype, wxString obje
 
 	wxString sql;
 	wxArrayString seclabels;
-	unsigned int indexList;
+	int indexList;
 	unsigned int indexArray;
 	wxString oldprovider, newprovider, oldlabel, newlabel;
 	bool found;

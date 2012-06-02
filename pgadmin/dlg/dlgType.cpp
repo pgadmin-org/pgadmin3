@@ -1229,9 +1229,9 @@ wxString dlgType::GetSqlForTypes()
 	wxString sql = wxEmptyString;
 	wxString objname, old_name, old_type, old_collation, new_name, new_type, new_full_type, new_collation, original_name;
 	wxArrayString elements = type->GetTypesArray();
-	size_t newindex;
-	size_t oldindex = 0;
-	int    hold = 0;
+	int newindex;
+	unsigned int oldindex = 0;
+	int hold = 0;
 	objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
 	for (newindex = 0 ; newindex < lstMembers->GetItemCount() ; newindex = newindex + 1 - hold)
