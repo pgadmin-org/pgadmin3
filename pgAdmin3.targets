@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PropertyPageSchema
+      Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
+    <AvailableItemName
+      Include="png2c">
+      <Targets>_png2c</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+  <UsingTask
+    TaskName="png2c"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <Target
+    Name="_png2c"
+    BeforeTargets="$(png2cBeforeTargets)"
+    AfterTargets="$(png2cAfterTargets)"
+    Condition="'@(png2c)' != ''"
+    DependsOnTargets="$(png2cDependsOn);Computepng2cOutput"
+    Outputs="%(png2c.Outputs)"
+    Inputs="%(png2c.Identity);%(png2c.AdditionalDependencies);$(MSBuildProjectFile)">
+    <ItemGroup
+      Condition="'@(SelectedFiles)' != ''">
+      <png2c
+        Remove="@(png2c)"
+        Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <png2c_tlog
+        Include="%(png2c.Outputs)"
+        Condition="'%(png2c.Outputs)' != '' and '%(png2c.ExcludedFromBuild)' != 'true'">
+        <Source>@(png2c, '|')</Source>
+      </png2c_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(png2c.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(png2c_tlog)' != '' and '%(png2c_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(png2c_tlog.Source);@(png2c_tlog-&gt;'%(Fullpath)')" />
+    <png2c
+      Condition="'@(png2c)' != '' and '%(png2c.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(png2c.CommandLineTemplate)"
+      AdditionalOptions="%(png2c.AdditionalOptions)"
+      Inputs="%(png2c.Identity)" />
+  </Target>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+            $(ComputeLinkInputsTargets);
+            Computepng2cOutput;
+          </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+            $(ComputeLibInputsTargets);
+            Computepng2cOutput;
+          </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <Target
+    Name="Computepng2cOutput"
+    Condition="'@(png2c)' != ''">
+    <ItemGroup>
+      <png2cDirsToMake
+        Condition="'@(png2c)' != '' and '%(png2c.ExcludedFromBuild)' != 'true'"
+        Include="%(png2c.Outputs)" />
+      <Link
+        Include="%(png2cDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <Lib
+        Include="%(png2cDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+      <ImpLib
+        Include="%(png2cDirsToMake.Identity)"
+        Condition="'%(Extension)'=='.obj' or '%(Extension)'=='.res' or '%(Extension)'=='.rsc' or '%(Extension)'=='.lib'" />
+    </ItemGroup>
+    <MakeDir
+      Directories="@(png2cDirsToMake-&gt;'%(RootDir)%(Directory)')" />
+  </Target>
+</Project>

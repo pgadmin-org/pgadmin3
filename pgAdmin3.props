@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(png2cBeforeTargets)' == '' and '$(png2cAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <png2cBeforeTargets>Midl</png2cBeforeTargets>
+    <png2cAfterTargets>CustomBuild</png2cAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <png2cDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(png2cDependsOn)</png2cDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <png2c>
+      <CommandLineTemplate> "$(SolutionDir)xtra\png2c\$(Configuration)\png2c.exe" [AllOptions] [AdditionalOptions] "%(FullPath)" "%(FullPath)c" </CommandLineTemplate>
+      <Outputs>%(FullPath)c</Outputs>
+      <ExecutionDescription>Compiling PNG (%(FullPath))...</ExecutionDescription>
+    </png2c>
+  </ItemDefinitionGroup>
+</Project>
