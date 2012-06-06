@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="All|Win32">
+      <Configuration>All</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F91F627F-F79C-49BE-BA21-E359FCEC461C}</ProjectGuid>
+    <RootNamespace>Installer</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='All|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='All|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='All|Win32'">$(SolutionDir)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='All|Win32'">$(SolutionDir)</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='All|Win32'">
+    <CustomBuildStep>
+      <Message>Calling installer build script...</Message>
+      <Command>make.bat 1.16</Command>
+      <Outputs>.\pgadmin3.msi;%(Outputs)</Outputs>
+    </CustomBuildStep>
+    <Link>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="utils\RegenGuids.pl" />
+    <None Include="resources\background.bmp" />
+    <None Include="resources\banner.bmp" />
+    <None Include="resources\help.ico" />
+    <None Include="resources\licence.rtf" />
+    <None Include="src\i18ndata.wxs" />
+    <None Include="src\i18nrefs.wxs" />
+    <None Include="src\pgadmin3.wxs">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Make.bat" />
+    <None Include="Makefile.am" />
+    <None Include="README.txt" />
+    <None Include="upgrade.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\docs\Docs.vcxproj">
+      <Project>{cfad4001-cc90-415e-87ac-1a85446bfa54}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pgadmin\pgAdmin3.vcxproj">
+      <Project>{5c2d73ba-1f24-48f8-8233-85f5d672aa6a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

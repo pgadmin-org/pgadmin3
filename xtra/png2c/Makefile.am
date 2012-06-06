@@ -13,6 +13,7 @@ png2c_SOURCES = \
         $(srcdir)/png2c.c
 
 EXTRA_DIST = \
-	$(srcdir)/png2c.vcproj
+	$(srcdir)/png2c.vcxproj \
+	$(srcdir)/png2c.vcxproj.filters
 
 distclean:

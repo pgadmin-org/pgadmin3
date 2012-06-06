@@ -16,7 +16,8 @@ pgadmin3_SOURCES = \
 
 EXTRA_DIST = \
 	$(srcdir)/Makefile.deps \
-	$(srcdir)/pgAdmin3.vcproj \
+	$(srcdir)/pgAdmin3.vcxproj \
+	$(srcdir)/pgAdmin3.vcxproj.filters \
 	$(srcdir)/precomp.cpp \
 	$(srcdir)/pgAdmin3.rc \
 	$(srcdir)/ver_svn.bat \

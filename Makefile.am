@@ -25,11 +25,14 @@ EXTRA_DIST = \
 	$(top_srcdir)/languages.po \
 	$(top_srcdir)/pgadmin3.pot \
 	$(top_srcdir)/pgadmin3-release.pot \
-	$(top_srcdir)/pgAdmin3.rules \
+	$(top_srcdir)/pgAdmin3.props \
+	$(top_srcdir)/pgAdmin3.targets \
+	$(top_srcdir)/pgAdmin3.xml \
 	$(top_srcdir)/pgAdmin3.sln \
 	$(top_srcdir)/stringextract \
 	$(top_srcdir)/stringmerge \
-	$(top_srcdir)/docs/Docs.vcproj \
+	$(top_srcdir)/docs/Docs.vcxproj \
+	$(top_srcdir)/docs/Docs.vcxproj.filters \
 	$(top_srcdir)/docs/builddocs.bat \
 	$(top_srcdir)/docs/createConf.vbs \
 	$(top_srcdir)/docs/en_US/*.rst \
