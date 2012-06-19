@@ -421,11 +421,18 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		}
 		else
 		{
-			query = wxT("SELECT datname, split_part(config, '=', 1) AS variable,\n")
+            wxString query_myrole = wxT("SELECT rolconfig FROM pg_roles WHERE oid=") + NumToStr(GetOid());
+			query = wxT("SELECT '' AS datname, split_part(config, '=', 1) AS variable,\n")
 			        wxT("       replace(config,split_part(config, '=', 1) || '=', '') AS value\n")
-			        wxT("FROM (SELECT '' AS datname, unnest(rolconfig) AS config\n")
-			        wxT("      FROM pg_roles r\n")
-			        wxT("      WHERE r.oid=") + NumToStr(GetOid()) + wxT(") configs");
+			        wxT("FROM (\n")
+			        wxT("    SELECT\n")
+                    wxT("      (\n")
+                    wxT("      SELECT rolconfig[i]\n")
+                    wxT("      FROM pg_roles\n")
+                    wxT("      WHERE oid=") + NumToStr(GetOid()) + wxT("\n")
+                    wxT("      ) AS config\n")
+                    wxT("    FROM generate_series(array_lower((")+query_myrole+wxT("),1), array_upper((")+query_myrole+wxT("),1)) AS i\n")
+			        wxT("     ) configs");
 		}
 		pgSet *configs = GetConnection()->ExecuteSet(query);
 		if (configs)

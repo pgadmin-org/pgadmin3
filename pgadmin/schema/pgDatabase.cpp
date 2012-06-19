@@ -653,11 +653,18 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			}
 			else
 			{
-				query = wxT("SELECT rolname, split_part(config, '=', 1) AS variable,\n")
+                wxString query_mydb = wxT("SELECT datconfig FROM pg_database WHERE oid=") + NumToStr(GetOid());
+				query = wxT("SELECT '' AS rolname, split_part(config, '=', 1) AS variable,\n")
 				        wxT("       replace(config,split_part(config, '=', 1) || '=', '') AS value\n")
-				        wxT("FROM (SELECT '' AS rolname, unnest(datconfig) AS config\n")
-				        wxT("      FROM pg_database d\n")
-				        wxT("      WHERE d.oid=") + NumToStr(GetOid()) + wxT(") configs");
+				        wxT("FROM (\n")
+				        wxT("    SELECT\n")
+                        wxT("      (\n")
+                        wxT("      SELECT datconfig[i]\n")
+                        wxT("      FROM pg_database\n")
+                        wxT("      WHERE oid=") + NumToStr(GetOid()) + wxT("\n")
+                        wxT("      ) AS config\n")
+                        wxT("    FROM generate_series(array_lower((")+query_mydb+wxT("),1), array_upper((")+query_mydb+wxT("),1)) AS i\n")
+				        wxT("     ) configs");
 			}
 			pgSet *configs = connection()->ExecuteSet(query);
 			if (configs)
