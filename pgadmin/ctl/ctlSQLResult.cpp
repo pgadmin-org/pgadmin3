@@ -219,6 +219,14 @@ void ctlSQLResult::DisplayData(bool single)
 				w = -1;
 
 			SetColSize(col, w);
+			if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC) {
+				/*
+				 * For numeric columns, set alignment to right.
+				 */
+				wxGridCellAttr *attr = new wxGridCellAttr();
+				attr->SetAlignment(wxALIGN_RIGHT, wxALIGN_TOP);
+				SetColAttr(col, attr);
+			}
 		}
 	}
 	Thaw();
