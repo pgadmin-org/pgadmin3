@@ -325,7 +325,26 @@ wxString sqlResultTable::GetValue(int row, int col)
 			if (settings->GetIndicateNull() && thread->DataSet()->IsNull(col))
 				return wxT("<NULL>");
 			else
-				return thread->DataSet()->GetVal(col);
+			{
+				if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
+					settings->GetThousandsSeparator().Length() > 0)
+				{
+					/* Add thousands separator */
+					wxString s = thread->DataSet()->GetVal(col);
+					size_t pos = s.find(wxT("."));
+					if (pos == wxString::npos)
+						pos = s.length();
+					while (pos > 3)
+					{
+						pos -= 3;
+						if (pos > 1 || !s.StartsWith(wxT("-")))
+							s.insert(pos, settings->GetThousandsSeparator());
+					}
+					return s;
+				}
+				else
+					return thread->DataSet()->GetVal(col);
+			}
 		}
 		else
 			return thread->DataSet()->ColName(col);

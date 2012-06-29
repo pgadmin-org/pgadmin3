@@ -349,6 +349,16 @@ public:
 	{
 		WriteBool(wxT("frmQuery/IndicateNull"), newval);
 	}
+	wxString GetThousandsSeparator() const
+	{
+		wxString s;
+		Read(wxT("frmQuery/ThousandsSeparator"), &s, wxEmptyString);
+		return s;
+	}
+	void SetThousandsSeparator(const wxString &newval)
+	{
+		Write(wxT("frmQuery/ThousandsSeparator"), newval);
+	}
 	bool GetAutoRollback() const
 	{
 		bool b;

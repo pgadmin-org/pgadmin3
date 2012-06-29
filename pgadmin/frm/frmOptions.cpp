@@ -87,6 +87,7 @@
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
+#define txtThousandsSeparator       CTRL_TEXT("txtThousandsSeparator")
 #define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define chkShowNotices			    CTRL_CHECKBOX("chkShowNotices")
@@ -301,6 +302,7 @@ frmOptions::frmOptions(frmMain *parent)
 
 	chkStickySql->SetValue(settings->GetStickySql());
 	chkIndicateNull->SetValue(settings->GetIndicateNull());
+	txtThousandsSeparator->SetValue(settings->GetThousandsSeparator());
 	chkAutoRollback->SetValue(settings->GetAutoRollback());
 	chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
 	chkShowNotices->SetValue(settings->GetShowNotices());
@@ -666,6 +668,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
 	settings->SetStickySql(chkStickySql->GetValue());
 	settings->SetIndicateNull(chkIndicateNull->GetValue());
+	settings->SetThousandsSeparator(txtThousandsSeparator->GetValue());
 	settings->SetAutoRollback(chkAutoRollback->GetValue());
 	settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
 	settings->SetShowNotices(chkShowNotices->GetValue());
