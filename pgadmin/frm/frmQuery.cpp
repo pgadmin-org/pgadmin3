@@ -2514,13 +2514,14 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				// Set an indicator on the error word (break on any kind of bracket, a space or full stop)
 				int sPos = errPos + selStart - 1, wEnd = 1;
 				sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
-				while(sqlQuery->GetCharAt(sPos + wEnd) != ' ' &&
-				        sqlQuery->GetCharAt(sPos + wEnd) != '(' &&
-				        sqlQuery->GetCharAt(sPos + wEnd) != '{' &&
-				        sqlQuery->GetCharAt(sPos + wEnd) != '[' &&
-				        sqlQuery->GetCharAt(sPos + wEnd) != '.' &&
-				        (unsigned int)(sPos + wEnd) < sqlQuery->GetText().Length())
+				int c = sqlQuery->GetCharAt(sPos + wEnd);
+				size_t len = sqlQuery->GetText().Length();
+				while(c != ' ' && c != '(' && c != '{' && c != '[' && c != '.' &&
+				        (unsigned int)(sPos + wEnd) < len)
+				{
 					wEnd++;
+					c = sqlQuery->GetCharAt(sPos + wEnd);
+				}
 				sqlQuery->SetStyling(wEnd, wxSTC_INDIC0_MASK);
 
 				int line = 0, maxLine = sqlQuery->GetLineCount();
