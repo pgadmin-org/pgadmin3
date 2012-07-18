@@ -10,13 +10,13 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/agent/dlgJob.h \
-	$(srcdir)/include/agent/dlgSchedule.h  \
-	$(srcdir)/include/agent/dlgStep.h  \
-	$(srcdir)/include/agent/pgaJob.h  \
-	$(srcdir)/include/agent/pgaSchedule.h  \
-	$(srcdir)/include/agent/pgaStep.h
+	include/agent/dlgJob.h \
+	include/agent/dlgSchedule.h  \
+	include/agent/dlgStep.h  \
+	include/agent/pgaJob.h  \
+	include/agent/pgaSchedule.h  \
+	include/agent/pgaStep.h
 
 EXTRA_DIST += \
-        $(srcdir)/include/agent/module.mk
+        include/agent/module.mk
 

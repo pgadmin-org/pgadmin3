@@ -10,31 +10,31 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/frm/events.cpp \
-	$(srcdir)/frm/frmAbout.cpp \
-	$(srcdir)/frm/frmBackup.cpp \
-	$(srcdir)/frm/frmBackupGlobals.cpp \
-	$(srcdir)/frm/frmBackupServer.cpp \
-	$(srcdir)/frm/frmConfig.cpp \
-	$(srcdir)/frm/frmDatabaseDesigner.cpp \
-	$(srcdir)/frm/frmEditGrid.cpp \
-	$(srcdir)/frm/frmExport.cpp \
-	$(srcdir)/frm/frmGrantWizard.cpp \
-	$(srcdir)/frm/frmHbaConfig.cpp \
-	$(srcdir)/frm/frmHint.cpp \
-	$(srcdir)/frm/frmImport.cpp \
-	$(srcdir)/frm/frmMain.cpp \
-	$(srcdir)/frm/frmMainConfig.cpp \
-	$(srcdir)/frm/frmMaintenance.cpp \
-	$(srcdir)/frm/frmOptions.cpp \
-	$(srcdir)/frm/frmPassword.cpp \
-	$(srcdir)/frm/frmPgpassConfig.cpp \
-	$(srcdir)/frm/frmQuery.cpp \
-	$(srcdir)/frm/frmReport.cpp \
-	$(srcdir)/frm/frmRestore.cpp \
-	$(srcdir)/frm/frmSplash.cpp \
-	$(srcdir)/frm/frmStatus.cpp \
-	$(srcdir)/frm/plugins.cpp
+	frm/events.cpp \
+	frm/frmAbout.cpp \
+	frm/frmBackup.cpp \
+	frm/frmBackupGlobals.cpp \
+	frm/frmBackupServer.cpp \
+	frm/frmConfig.cpp \
+	frm/frmDatabaseDesigner.cpp \
+	frm/frmEditGrid.cpp \
+	frm/frmExport.cpp \
+	frm/frmGrantWizard.cpp \
+	frm/frmHbaConfig.cpp \
+	frm/frmHint.cpp \
+	frm/frmImport.cpp \
+	frm/frmMain.cpp \
+	frm/frmMainConfig.cpp \
+	frm/frmMaintenance.cpp \
+	frm/frmOptions.cpp \
+	frm/frmPassword.cpp \
+	frm/frmPgpassConfig.cpp \
+	frm/frmQuery.cpp \
+	frm/frmReport.cpp \
+	frm/frmRestore.cpp \
+	frm/frmSplash.cpp \
+	frm/frmStatus.cpp \
+	frm/plugins.cpp
 
 EXTRA_DIST += \
-    $(srcdir)/frm/module.mk
+    frm/module.mk

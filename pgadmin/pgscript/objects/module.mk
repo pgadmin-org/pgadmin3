@@ -10,12 +10,12 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/objects/pgsGenerator.cpp \
-	$(srcdir)/pgscript/objects/pgsNumber.cpp \
-	$(srcdir)/pgscript/objects/pgsRecord.cpp \
-	$(srcdir)/pgscript/objects/pgsString.cpp \
-	$(srcdir)/pgscript/objects/pgsVariable.cpp
+	pgscript/objects/pgsGenerator.cpp \
+	pgscript/objects/pgsNumber.cpp \
+	pgscript/objects/pgsRecord.cpp \
+	pgscript/objects/pgsString.cpp \
+	pgscript/objects/pgsVariable.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/objects/module.mk
+	pgscript/objects/module.mk
 

@@ -10,12 +10,12 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/dditems/handles/ddAddColButtonHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddAddFkButtonHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddMinMaxTableButtonHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddRemoveTableButtonHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddScrollBarHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddSouthTableSizeHandle.cpp
+	dd/dditems/handles/ddAddColButtonHandle.cpp \
+	dd/dditems/handles/ddAddFkButtonHandle.cpp \
+	dd/dditems/handles/ddMinMaxTableButtonHandle.cpp \
+	dd/dditems/handles/ddRemoveTableButtonHandle.cpp \
+	dd/dditems/handles/ddScrollBarHandle.cpp \
+	dd/dditems/handles/ddSouthTableSizeHandle.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/dditems/handles/module.mk
+	dd/dditems/handles/module.mk

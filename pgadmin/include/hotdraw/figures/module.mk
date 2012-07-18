@@ -10,22 +10,22 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/figures/hdAbstractFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdAbstractMenuFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdAttribute.h \
-	$(srcdir)/include/hotdraw/figures/hdAttributeFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdBitmapFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdCompositeFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdIConnectionFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdIFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdLineConnection.h \
-	$(srcdir)/include/hotdraw/figures/hdLineTerminal.h \
-	$(srcdir)/include/hotdraw/figures/hdPolyLineFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdRectangleFigure.h \
-	$(srcdir)/include/hotdraw/figures/hdSimpleTextFigure.h
+	include/hotdraw/figures/hdAbstractFigure.h \
+	include/hotdraw/figures/hdAbstractMenuFigure.h \
+	include/hotdraw/figures/hdAttribute.h \
+	include/hotdraw/figures/hdAttributeFigure.h \
+	include/hotdraw/figures/hdBitmapFigure.h \
+	include/hotdraw/figures/hdCompositeFigure.h \
+	include/hotdraw/figures/hdIConnectionFigure.h \
+	include/hotdraw/figures/hdIFigure.h \
+	include/hotdraw/figures/hdLineConnection.h \
+	include/hotdraw/figures/hdLineTerminal.h \
+	include/hotdraw/figures/hdPolyLineFigure.h \
+	include/hotdraw/figures/hdRectangleFigure.h \
+	include/hotdraw/figures/hdSimpleTextFigure.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/figures/module.mk
+	include/hotdraw/figures/module.mk
 
-include $(srcdir)/include/hotdraw/figures/defaultAttributes/module.mk
-include $(srcdir)/include/hotdraw/figures/xml/module.mk
+include include/hotdraw/figures/defaultAttributes/module.mk
+include include/hotdraw/figures/xml/module.mk

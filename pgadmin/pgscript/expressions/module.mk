@@ -10,44 +10,44 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/expressions/pgsAnd.cpp \
-	$(srcdir)/pgscript/expressions/pgsAssign.cpp \
-	$(srcdir)/pgscript/expressions/pgsAssignToRecord.cpp \
-	$(srcdir)/pgscript/expressions/pgsCast.cpp \
-	$(srcdir)/pgscript/expressions/pgsColumns.cpp \
-	$(srcdir)/pgscript/expressions/pgsDifferent.cpp \
-	$(srcdir)/pgscript/expressions/pgsEqual.cpp \
-	$(srcdir)/pgscript/expressions/pgsExecute.cpp \
-	$(srcdir)/pgscript/expressions/pgsExpression.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenDate.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenDateTime.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenDictionary.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenInt.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenReal.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenReference.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenRegex.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenString.cpp \
-	$(srcdir)/pgscript/expressions/pgsGenTime.cpp \
-	$(srcdir)/pgscript/expressions/pgsGreater.cpp \
-	$(srcdir)/pgscript/expressions/pgsGreaterEqual.cpp \
-	$(srcdir)/pgscript/expressions/pgsIdent.cpp \
-	$(srcdir)/pgscript/expressions/pgsIdentRecord.cpp \
-	$(srcdir)/pgscript/expressions/pgsLines.cpp \
-	$(srcdir)/pgscript/expressions/pgsLower.cpp \
-	$(srcdir)/pgscript/expressions/pgsLowerEqual.cpp \
-	$(srcdir)/pgscript/expressions/pgsMinus.cpp \
-	$(srcdir)/pgscript/expressions/pgsModulo.cpp \
-	$(srcdir)/pgscript/expressions/pgsNegate.cpp \
-	$(srcdir)/pgscript/expressions/pgsNot.cpp \
-	$(srcdir)/pgscript/expressions/pgsOperation.cpp \
-	$(srcdir)/pgscript/expressions/pgsOr.cpp \
-	$(srcdir)/pgscript/expressions/pgsOver.cpp \
-	$(srcdir)/pgscript/expressions/pgsParenthesis.cpp \
-	$(srcdir)/pgscript/expressions/pgsPlus.cpp \
-	$(srcdir)/pgscript/expressions/pgsRemoveLine.cpp \
-	$(srcdir)/pgscript/expressions/pgsTimes.cpp \
-	$(srcdir)/pgscript/expressions/pgsTrim.cpp
+	pgscript/expressions/pgsAnd.cpp \
+	pgscript/expressions/pgsAssign.cpp \
+	pgscript/expressions/pgsAssignToRecord.cpp \
+	pgscript/expressions/pgsCast.cpp \
+	pgscript/expressions/pgsColumns.cpp \
+	pgscript/expressions/pgsDifferent.cpp \
+	pgscript/expressions/pgsEqual.cpp \
+	pgscript/expressions/pgsExecute.cpp \
+	pgscript/expressions/pgsExpression.cpp \
+	pgscript/expressions/pgsGenDate.cpp \
+	pgscript/expressions/pgsGenDateTime.cpp \
+	pgscript/expressions/pgsGenDictionary.cpp \
+	pgscript/expressions/pgsGenInt.cpp \
+	pgscript/expressions/pgsGenReal.cpp \
+	pgscript/expressions/pgsGenReference.cpp \
+	pgscript/expressions/pgsGenRegex.cpp \
+	pgscript/expressions/pgsGenString.cpp \
+	pgscript/expressions/pgsGenTime.cpp \
+	pgscript/expressions/pgsGreater.cpp \
+	pgscript/expressions/pgsGreaterEqual.cpp \
+	pgscript/expressions/pgsIdent.cpp \
+	pgscript/expressions/pgsIdentRecord.cpp \
+	pgscript/expressions/pgsLines.cpp \
+	pgscript/expressions/pgsLower.cpp \
+	pgscript/expressions/pgsLowerEqual.cpp \
+	pgscript/expressions/pgsMinus.cpp \
+	pgscript/expressions/pgsModulo.cpp \
+	pgscript/expressions/pgsNegate.cpp \
+	pgscript/expressions/pgsNot.cpp \
+	pgscript/expressions/pgsOperation.cpp \
+	pgscript/expressions/pgsOr.cpp \
+	pgscript/expressions/pgsOver.cpp \
+	pgscript/expressions/pgsParenthesis.cpp \
+	pgscript/expressions/pgsPlus.cpp \
+	pgscript/expressions/pgsRemoveLine.cpp \
+	pgscript/expressions/pgsTimes.cpp \
+	pgscript/expressions/pgsTrim.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/expressions/module.mk
+	pgscript/expressions/module.mk
 

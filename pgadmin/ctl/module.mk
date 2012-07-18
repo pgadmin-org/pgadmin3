@@ -10,32 +10,32 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-		$(srcdir)/ctl/calbox.cpp \
-        $(srcdir)/ctl/ctlAuiNotebook.cpp \
-        $(srcdir)/ctl/ctlCheckTreeView.cpp \
-        $(srcdir)/ctl/ctlColourPicker.cpp \
-        $(srcdir)/ctl/ctlComboBox.cpp \
-        $(srcdir)/ctl/ctlListView.cpp \
-        $(srcdir)/ctl/ctlMenuToolbar.cpp \
-        $(srcdir)/ctl/ctlSQLBox.cpp \
-        $(srcdir)/ctl/ctlSQLGrid.cpp \
-        $(srcdir)/ctl/ctlSQLResult.cpp \
-        $(srcdir)/ctl/ctlDefaultSecurityPanel.cpp \
-        $(srcdir)/ctl/ctlSeclabelPanel.cpp \
-        $(srcdir)/ctl/ctlSecurityPanel.cpp \
-        $(srcdir)/ctl/ctlTree.cpp \
-        $(srcdir)/ctl/explainCanvas.cpp \
-        $(srcdir)/ctl/explainShape.cpp \
-        $(srcdir)/ctl/timespin.cpp \
-        $(srcdir)/ctl/xh_calb.cpp \
-        $(srcdir)/ctl/xh_ctlcolourpicker.cpp \
-        $(srcdir)/ctl/xh_ctlcombo.cpp \
-        $(srcdir)/ctl/xh_ctlchecktreeview.cpp \
-        $(srcdir)/ctl/xh_ctltree.cpp \
-        $(srcdir)/ctl/xh_sqlbox.cpp \
-        $(srcdir)/ctl/xh_timespin.cpp
+		ctl/calbox.cpp \
+        ctl/ctlAuiNotebook.cpp \
+        ctl/ctlCheckTreeView.cpp \
+        ctl/ctlColourPicker.cpp \
+        ctl/ctlComboBox.cpp \
+        ctl/ctlListView.cpp \
+        ctl/ctlMenuToolbar.cpp \
+        ctl/ctlSQLBox.cpp \
+        ctl/ctlSQLGrid.cpp \
+        ctl/ctlSQLResult.cpp \
+        ctl/ctlDefaultSecurityPanel.cpp \
+        ctl/ctlSeclabelPanel.cpp \
+        ctl/ctlSecurityPanel.cpp \
+        ctl/ctlTree.cpp \
+        ctl/explainCanvas.cpp \
+        ctl/explainShape.cpp \
+        ctl/timespin.cpp \
+        ctl/xh_calb.cpp \
+        ctl/xh_ctlcolourpicker.cpp \
+        ctl/xh_ctlcombo.cpp \
+        ctl/xh_ctlchecktreeview.cpp \
+        ctl/xh_ctltree.cpp \
+        ctl/xh_sqlbox.cpp \
+        ctl/xh_timespin.cpp
 
 EXTRA_DIST += \
-        $(srcdir)/ctl/module.mk
+        ctl/module.mk
 
 

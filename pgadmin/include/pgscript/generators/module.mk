@@ -10,18 +10,18 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/pgscript/generators/pgsDateGen.h \
-	$(srcdir)/include/pgscript/generators/pgsDateTimeGen.h \
-	$(srcdir)/include/pgscript/generators/pgsDictionaryGen.h \
-	$(srcdir)/include/pgscript/generators/pgsIntegerGen.h \
-	$(srcdir)/include/pgscript/generators/pgsNumberGen.h \
-	$(srcdir)/include/pgscript/generators/pgsObjectGen.h \
-	$(srcdir)/include/pgscript/generators/pgsRealGen.h \
-	$(srcdir)/include/pgscript/generators/pgsReferenceGen.h \
-	$(srcdir)/include/pgscript/generators/pgsRegexGen.h \
-	$(srcdir)/include/pgscript/generators/pgsStringGen.h \
-	$(srcdir)/include/pgscript/generators/pgsTimeGen.h
+	include/pgscript/generators/pgsDateGen.h \
+	include/pgscript/generators/pgsDateTimeGen.h \
+	include/pgscript/generators/pgsDictionaryGen.h \
+	include/pgscript/generators/pgsIntegerGen.h \
+	include/pgscript/generators/pgsNumberGen.h \
+	include/pgscript/generators/pgsObjectGen.h \
+	include/pgscript/generators/pgsRealGen.h \
+	include/pgscript/generators/pgsReferenceGen.h \
+	include/pgscript/generators/pgsRegexGen.h \
+	include/pgscript/generators/pgsStringGen.h \
+	include/pgscript/generators/pgsTimeGen.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/pgscript/generators/module.mk
+	include/pgscript/generators/module.mk
 

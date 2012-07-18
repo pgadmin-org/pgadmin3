@@ -10,8 +10,8 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/locators/hdILocator.h \
-	$(srcdir)/include/hotdraw/locators/hdPolyLineLocator.h
+	include/hotdraw/locators/hdILocator.h \
+	include/hotdraw/locators/hdPolyLineLocator.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/locators/module.mk
+	include/hotdraw/locators/module.mk

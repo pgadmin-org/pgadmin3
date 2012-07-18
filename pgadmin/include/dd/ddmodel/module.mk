@@ -10,13 +10,13 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/ddmodel/ddBrowserDataContainer.h \
-	$(srcdir)/include/dd/ddmodel/ddDatabaseDesign.h \
-	$(srcdir)/include/dd/ddmodel/ddDrawingEditor.h \
-	$(srcdir)/include/dd/ddmodel/ddDBReverseEngineering.h \
-	$(srcdir)/include/dd/ddmodel/ddDrawingView.h \
-	$(srcdir)/include/dd/ddmodel/ddGenerationWizard.h \
-	$(srcdir)/include/dd/ddmodel/ddModelBrowser.h
+	include/dd/ddmodel/ddBrowserDataContainer.h \
+	include/dd/ddmodel/ddDatabaseDesign.h \
+	include/dd/ddmodel/ddDrawingEditor.h \
+	include/dd/ddmodel/ddDBReverseEngineering.h \
+	include/dd/ddmodel/ddDrawingView.h \
+	include/dd/ddmodel/ddGenerationWizard.h \
+	include/dd/ddmodel/ddModelBrowser.h
 	
 EXTRA_DIST += \
-	$(srcdir)/include/dd/ddmodel/module.mk
+	include/dd/ddmodel/module.mk

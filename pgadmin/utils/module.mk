@@ -10,20 +10,20 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/utils/csvfiles.cpp \
-	$(srcdir)/utils/factory.cpp \
-	$(srcdir)/utils/favourites.cpp \
-	$(srcdir)/utils/misc.cpp \
-	$(srcdir)/utils/pgconfig.cpp \
-	$(srcdir)/utils/registry.cpp \
-	$(srcdir)/utils/sysLogger.cpp \
-	$(srcdir)/utils/sysProcess.cpp \
-	$(srcdir)/utils/sysSettings.cpp \
-	$(srcdir)/utils/tabcomplete.c \
-	$(srcdir)/utils/utffile.cpp \
-	$(srcdir)/utils/macros.cpp
+	utils/csvfiles.cpp \
+	utils/factory.cpp \
+	utils/favourites.cpp \
+	utils/misc.cpp \
+	utils/pgconfig.cpp \
+	utils/registry.cpp \
+	utils/sysLogger.cpp \
+	utils/sysProcess.cpp \
+	utils/sysSettings.cpp \
+	utils/tabcomplete.c \
+	utils/utffile.cpp \
+	utils/macros.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/utils/module.mk \
-	$(srcdir)/utils/tab-complete.inc \
-	$(srcdir)/utils/tabcomplete.pl
+	utils/module.mk \
+	utils/tab-complete.inc \
+	utils/tabcomplete.pl

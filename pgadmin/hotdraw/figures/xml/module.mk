@@ -10,7 +10,7 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/hotdraw/figures/xml/hdStorage.cpp
+	hotdraw/figures/xml/hdStorage.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/figures/xml/module.mk
+	hotdraw/figures/xml/module.mk

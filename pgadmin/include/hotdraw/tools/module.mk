@@ -10,21 +10,21 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/tools/hdAbstractTool.h \
-	$(srcdir)/include/hotdraw/tools/hdCanvasMenuTool.h \
-	$(srcdir)/include/hotdraw/tools/hdCompositeFigureTool.h \
-	$(srcdir)/include/hotdraw/tools/hdConnectionCreationTool.h \
-	$(srcdir)/include/hotdraw/tools/hdCreationTool.h \
-	$(srcdir)/include/hotdraw/tools/hdDragCreationTool.h \
-	$(srcdir)/include/hotdraw/tools/hdDragTrackerTool.h \
-	$(srcdir)/include/hotdraw/tools/hdFigureTool.h \
-	$(srcdir)/include/hotdraw/tools/hdHandleTrackerTool.h \
-	$(srcdir)/include/hotdraw/tools/hdITool.h \
-	$(srcdir)/include/hotdraw/tools/hdMenuTool.h \
-	$(srcdir)/include/hotdraw/tools/hdPolyLineFigureTool.h \
-	$(srcdir)/include/hotdraw/tools/hdSelectAreaTool.h \
-	$(srcdir)/include/hotdraw/tools/hdSelectionTool.h \
-	$(srcdir)/include/hotdraw/tools/hdSimpleTextTool.h
+	include/hotdraw/tools/hdAbstractTool.h \
+	include/hotdraw/tools/hdCanvasMenuTool.h \
+	include/hotdraw/tools/hdCompositeFigureTool.h \
+	include/hotdraw/tools/hdConnectionCreationTool.h \
+	include/hotdraw/tools/hdCreationTool.h \
+	include/hotdraw/tools/hdDragCreationTool.h \
+	include/hotdraw/tools/hdDragTrackerTool.h \
+	include/hotdraw/tools/hdFigureTool.h \
+	include/hotdraw/tools/hdHandleTrackerTool.h \
+	include/hotdraw/tools/hdITool.h \
+	include/hotdraw/tools/hdMenuTool.h \
+	include/hotdraw/tools/hdPolyLineFigureTool.h \
+	include/hotdraw/tools/hdSelectAreaTool.h \
+	include/hotdraw/tools/hdSelectionTool.h \
+	include/hotdraw/tools/hdSimpleTextTool.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/tools/module.mk
+	include/hotdraw/tools/module.mk

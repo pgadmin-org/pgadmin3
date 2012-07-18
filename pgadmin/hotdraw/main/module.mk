@@ -10,9 +10,9 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/hotdraw/main/hdDrawing.cpp \
-	$(srcdir)/hotdraw/main/hdDrawingEditor.cpp \
-	$(srcdir)/hotdraw/main/hdDrawingView.cpp
+	hotdraw/main/hdDrawing.cpp \
+	hotdraw/main/hdDrawingEditor.cpp \
+	hotdraw/main/hdDrawingView.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/main/module.mk
+	hotdraw/main/module.mk

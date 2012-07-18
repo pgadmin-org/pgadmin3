@@ -10,12 +10,12 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/dditems/locators/ddAddColLocator.h \
-	$(srcdir)/include/dd/dditems/locators/ddAddFkLocator.h \
-	$(srcdir)/include/dd/dditems/locators/ddMinMaxTableLocator.h \
-	$(srcdir)/include/dd/dditems/locators/ddRemoveTableLocator.h \
-	$(srcdir)/include/dd/dditems/locators/ddScrollBarTableLocator.h \
-	$(srcdir)/include/dd/dditems/locators/ddTableBottomLocator.h
+	include/dd/dditems/locators/ddAddColLocator.h \
+	include/dd/dditems/locators/ddAddFkLocator.h \
+	include/dd/dditems/locators/ddMinMaxTableLocator.h \
+	include/dd/dditems/locators/ddRemoveTableLocator.h \
+	include/dd/dditems/locators/ddScrollBarTableLocator.h \
+	include/dd/dditems/locators/ddTableBottomLocator.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/dditems/locators/module.mk
+	include/dd/dditems/locators/module.mk

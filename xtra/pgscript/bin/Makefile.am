@@ -1,6 +1,6 @@
 ##############################################################################
 # pgAdmin III - PostgreSQL Tools
-# 
+#
 # Copyright (C) 2002 - 2009, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
@@ -10,7 +10,7 @@
 bin_PROGRAMS = pgScript
 
 pgScript_SOURCES = \
-	$(srcdir)/pgsMain.cpp
+	pgsMain.cpp
 
 pgScript_LDADD += \
 	$(srcdir)/../lib/libpgs.a

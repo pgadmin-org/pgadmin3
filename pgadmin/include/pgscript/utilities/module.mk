@@ -10,17 +10,17 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/pgscript/utilities/pgsAlloc.h \
-	$(srcdir)/include/pgscript/utilities/pgsContext.h \
-	$(srcdir)/include/pgscript/utilities/pgsCopiedPtr.h \
-	$(srcdir)/include/pgscript/utilities/pgsDriver.h \
-	$(srcdir)/include/pgscript/utilities/pgsMapm.h \
-	$(srcdir)/include/pgscript/utilities/pgsScanner.h \
-	$(srcdir)/include/pgscript/utilities/pgsSharedPtr.h \
-	$(srcdir)/include/pgscript/utilities/pgsThread.h \
-	$(srcdir)/include/pgscript/utilities/pgsUtilities.h
+	include/pgscript/utilities/pgsAlloc.h \
+	include/pgscript/utilities/pgsContext.h \
+	include/pgscript/utilities/pgsCopiedPtr.h \
+	include/pgscript/utilities/pgsDriver.h \
+	include/pgscript/utilities/pgsMapm.h \
+	include/pgscript/utilities/pgsScanner.h \
+	include/pgscript/utilities/pgsSharedPtr.h \
+	include/pgscript/utilities/pgsThread.h \
+	include/pgscript/utilities/pgsUtilities.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/pgscript/utilities/module.mk
+	include/pgscript/utilities/module.mk
 
-include $(srcdir)/include/pgscript/utilities/mapm-lib/module.mk
+include include/pgscript/utilities/mapm-lib/module.mk

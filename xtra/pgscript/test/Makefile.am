@@ -1,6 +1,6 @@
 ##############################################################################
 # pgAdmin III - PostgreSQL Tools
-# 
+#
 # Copyright (C) 2002 - 2009, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
@@ -10,32 +10,32 @@
 noinst_PROGRAMS = pgsTest
 
 pgsTest_SOURCES = \
-	$(srcdir)/pgsTestUtilityUtilities.cpp \
-	$(srcdir)/pgsTestUtilityMapm.cpp \
-	$(srcdir)/pgsTestUtilityContext.cpp \
-	$(srcdir)/pgsTestSuite.cpp \
-	$(srcdir)/pgsTestStatements.cpp \
-	$(srcdir)/pgsTestOperatorString.cpp \
-	$(srcdir)/pgsTestOperatorRecord.cpp \
-	$(srcdir)/pgsTestOperatorNumber.cpp \
-	$(srcdir)/pgsTestOperatorGenerator.cpp \
-	$(srcdir)/pgsTestObjectVariable.cpp \
-	$(srcdir)/pgsTestObjectRecord.cpp \
-	$(srcdir)/pgsTestObjectGenerator.cpp \
-	$(srcdir)/pgsTestGeneratorTime.cpp \
-	$(srcdir)/pgsTestGeneratorString.cpp \
-	$(srcdir)/pgsTestGeneratorRegex.cpp \
-	$(srcdir)/pgsTestGeneratorReference.cpp \
-	$(srcdir)/pgsTestGeneratorReal.cpp \
-	$(srcdir)/pgsTestGeneratorInt.cpp \
-	$(srcdir)/pgsTestGeneratorDictionary.cpp \
-	$(srcdir)/pgsTestGeneratorDateTime.cpp \
-	$(srcdir)/pgsTestGeneratorDate.cpp \
-	$(srcdir)/pgsTestExpressionRecord.cpp \
-	$(srcdir)/pgsTestExpressionOperation.cpp \
-	$(srcdir)/pgsTestExpressionIdent.cpp \
-	$(srcdir)/pgsTestExpressionExecute.cpp \
-	$(srcdir)/pgsTestExpressionCast.cpp
+	pgsTestUtilityUtilities.cpp \
+	pgsTestUtilityMapm.cpp \
+	pgsTestUtilityContext.cpp \
+	pgsTestSuite.cpp \
+	pgsTestStatements.cpp \
+	pgsTestOperatorString.cpp \
+	pgsTestOperatorRecord.cpp \
+	pgsTestOperatorNumber.cpp \
+	pgsTestOperatorGenerator.cpp \
+	pgsTestObjectVariable.cpp \
+	pgsTestObjectRecord.cpp \
+	pgsTestObjectGenerator.cpp \
+	pgsTestGeneratorTime.cpp \
+	pgsTestGeneratorString.cpp \
+	pgsTestGeneratorRegex.cpp \
+	pgsTestGeneratorReference.cpp \
+	pgsTestGeneratorReal.cpp \
+	pgsTestGeneratorInt.cpp \
+	pgsTestGeneratorDictionary.cpp \
+	pgsTestGeneratorDateTime.cpp \
+	pgsTestGeneratorDate.cpp \
+	pgsTestExpressionRecord.cpp \
+	pgsTestExpressionOperation.cpp \
+	pgsTestExpressionIdent.cpp \
+	pgsTestExpressionExecute.cpp \
+	pgsTestExpressionCast.cpp
 
 pgsTest_LDADD += \
 	$(srcdir)/../lib/libpgs.a

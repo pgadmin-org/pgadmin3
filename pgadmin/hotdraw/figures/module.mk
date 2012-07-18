@@ -10,22 +10,22 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/hotdraw/figures/hdAbstractFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdAbstractMenuFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdAttribute.cpp \
-	$(srcdir)/hotdraw/figures/hdAttributeFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdBitmapFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdCompositeFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdIConnectionFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdIFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdLineConnection.cpp \
-	$(srcdir)/hotdraw/figures/hdLineTerminal.cpp \
-	$(srcdir)/hotdraw/figures/hdPolyLineFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdRectangleFigure.cpp \
-	$(srcdir)/hotdraw/figures/hdSimpleTextFigure.cpp
+	hotdraw/figures/hdAbstractFigure.cpp \
+	hotdraw/figures/hdAbstractMenuFigure.cpp \
+	hotdraw/figures/hdAttribute.cpp \
+	hotdraw/figures/hdAttributeFigure.cpp \
+	hotdraw/figures/hdBitmapFigure.cpp \
+	hotdraw/figures/hdCompositeFigure.cpp \
+	hotdraw/figures/hdIConnectionFigure.cpp \
+	hotdraw/figures/hdIFigure.cpp \
+	hotdraw/figures/hdLineConnection.cpp \
+	hotdraw/figures/hdLineTerminal.cpp \
+	hotdraw/figures/hdPolyLineFigure.cpp \
+	hotdraw/figures/hdRectangleFigure.cpp \
+	hotdraw/figures/hdSimpleTextFigure.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/figures/module.mk
+	hotdraw/figures/module.mk
 
-include $(srcdir)/hotdraw/figures/defaultAttributes/module.mk
-include $(srcdir)/hotdraw/figures/xml/module.mk
+include hotdraw/figures/defaultAttributes/module.mk
+include hotdraw/figures/xml/module.mk

@@ -10,13 +10,13 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/pgscript/objects/pgsGenerator.h \
-	$(srcdir)/include/pgscript/objects/pgsNumber.h \
-	$(srcdir)/include/pgscript/objects/pgsObjects.h \
-	$(srcdir)/include/pgscript/objects/pgsRecord.h \
-	$(srcdir)/include/pgscript/objects/pgsString.h \
-	$(srcdir)/include/pgscript/objects/pgsVariable.h
+	include/pgscript/objects/pgsGenerator.h \
+	include/pgscript/objects/pgsNumber.h \
+	include/pgscript/objects/pgsObjects.h \
+	include/pgscript/objects/pgsRecord.h \
+	include/pgscript/objects/pgsString.h \
+	include/pgscript/objects/pgsVariable.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/pgscript/objects/module.mk
+	include/pgscript/objects/module.mk
 

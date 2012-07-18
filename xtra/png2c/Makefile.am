@@ -1,6 +1,6 @@
 ##############################################################################
 # pgAdmin III - PostgreSQL Tools
-# 
+#
 # Copyright (C) 2002 - 2012, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
@@ -10,10 +10,10 @@
 bin_PROGRAMS = png2c
 
 png2c_SOURCES = \
-        $(srcdir)/png2c.c
+        png2c.c
 
 EXTRA_DIST = \
-	$(srcdir)/png2c.vcxproj \
-	$(srcdir)/png2c.vcxproj.filters
+	png2c.vcxproj \
+	png2c.vcxproj.filters
 
 distclean:

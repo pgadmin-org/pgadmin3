@@ -10,15 +10,15 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/hotdraw/utilities/hdArrayCollection.cpp \
-	$(srcdir)/hotdraw/utilities/hdCollection.cpp \
-	$(srcdir)/hotdraw/utilities/hdGeometry.cpp \
-	$(srcdir)/hotdraw/utilities/hdKeyEvent.cpp \
-	$(srcdir)/hotdraw/utilities/hdMouseEvent.cpp \
-	$(srcdir)/hotdraw/utilities/hdMultiPosRect.cpp \
-	$(srcdir)/hotdraw/utilities/hdPoint.cpp \
-	$(srcdir)/hotdraw/utilities/hdRect.cpp \
-	$(srcdir)/hotdraw/utilities/hdRemoveDeleteDialog.cpp
+	hotdraw/utilities/hdArrayCollection.cpp \
+	hotdraw/utilities/hdCollection.cpp \
+	hotdraw/utilities/hdGeometry.cpp \
+	hotdraw/utilities/hdKeyEvent.cpp \
+	hotdraw/utilities/hdMouseEvent.cpp \
+	hotdraw/utilities/hdMultiPosRect.cpp \
+	hotdraw/utilities/hdPoint.cpp \
+	hotdraw/utilities/hdRect.cpp \
+	hotdraw/utilities/hdRemoveDeleteDialog.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/utilities/module.mk
+	hotdraw/utilities/module.mk

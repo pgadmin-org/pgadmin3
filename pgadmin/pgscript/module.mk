@@ -10,20 +10,20 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/pgsApplication.cpp \
-	$(srcdir)/pgscript/lex.pgs.cc \
-	$(srcdir)/pgscript/parser.tab.cc
+	pgscript/pgsApplication.cpp \
+	pgscript/lex.pgs.cc \
+	pgscript/parser.tab.cc
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/module.mk \
-	$(srcdir)/pgscript/parser.sh \
-	$(srcdir)/pgscript/pgsParser.yy \
-	$(srcdir)/pgscript/pgsScanner.ll \
-	$(srcdir)/pgscript/README
+	pgscript/module.mk \
+	pgscript/parser.sh \
+	pgscript/pgsParser.yy \
+	pgscript/pgsScanner.ll \
+	pgscript/README
 
-include $(srcdir)/pgscript/exceptions/module.mk
-include $(srcdir)/pgscript/expressions/module.mk
-include $(srcdir)/pgscript/generators/module.mk
-include $(srcdir)/pgscript/objects/module.mk
-include $(srcdir)/pgscript/statements/module.mk
-include $(srcdir)/pgscript/utilities/module.mk
+include pgscript/exceptions/module.mk
+include pgscript/expressions/module.mk
+include pgscript/generators/module.mk
+include pgscript/objects/module.mk
+include pgscript/statements/module.mk
+include pgscript/utilities/module.mk

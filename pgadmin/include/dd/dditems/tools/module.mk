@@ -10,8 +10,8 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/dditems/tools/ddColumnFigureTool.h \
-	$(srcdir)/include/dd/dditems/tools/ddColumnTextTool.h
+	include/dd/dditems/tools/ddColumnFigureTool.h \
+	include/dd/dditems/tools/ddColumnTextTool.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/dditems/tools/module.mk
+	include/dd/dditems/tools/module.mk

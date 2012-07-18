@@ -10,10 +10,10 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/connectors/hdChopBoxConnector.h \
-	$(srcdir)/include/hotdraw/connectors/hdIConnector.h \
-	$(srcdir)/include/hotdraw/connectors/hdLocatorConnector.h \
-	$(srcdir)/include/hotdraw/connectors/hdStickyRectangleConnector.h
+	include/hotdraw/connectors/hdChopBoxConnector.h \
+	include/hotdraw/connectors/hdIConnector.h \
+	include/hotdraw/connectors/hdLocatorConnector.h \
+	include/hotdraw/connectors/hdStickyRectangleConnector.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/connectors/module.mk
+	include/hotdraw/connectors/module.mk

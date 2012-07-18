@@ -10,18 +10,18 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/statements/pgsAssertStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsBreakStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsContinueStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsDeclareRecordStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsExpressionStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsIfStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsPrintStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsProgram.cpp \
-	$(srcdir)/pgscript/statements/pgsStmt.cpp \
-	$(srcdir)/pgscript/statements/pgsStmtList.cpp \
-	$(srcdir)/pgscript/statements/pgsWhileStmt.cpp
+	pgscript/statements/pgsAssertStmt.cpp \
+	pgscript/statements/pgsBreakStmt.cpp \
+	pgscript/statements/pgsContinueStmt.cpp \
+	pgscript/statements/pgsDeclareRecordStmt.cpp \
+	pgscript/statements/pgsExpressionStmt.cpp \
+	pgscript/statements/pgsIfStmt.cpp \
+	pgscript/statements/pgsPrintStmt.cpp \
+	pgscript/statements/pgsProgram.cpp \
+	pgscript/statements/pgsStmt.cpp \
+	pgscript/statements/pgsStmtList.cpp \
+	pgscript/statements/pgsWhileStmt.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/statements/module.mk
+	pgscript/statements/module.mk
 

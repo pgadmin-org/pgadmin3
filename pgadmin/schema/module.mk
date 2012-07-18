@@ -9,60 +9,58 @@
 #
 #######################################################################
 
-subdir = $(srcdir)/schema
-
 pgadmin3_SOURCES += \
-        $(subdir)/edbPackage.cpp \
-        $(subdir)/edbPackageFunction.cpp \
-        $(subdir)/edbPackageVariable.cpp \
-        $(subdir)/edbSynonym.cpp \
-        $(subdir)/edbPrivateSynonym.cpp \
-        $(subdir)/pgAggregate.cpp \
-        $(subdir)/pgCast.cpp \
-        $(subdir)/pgCatalogObject.cpp \
-        $(subdir)/pgCheck.cpp \
-        $(subdir)/pgCollation.cpp \
-        $(subdir)/pgCollection.cpp \
-        $(subdir)/pgColumn.cpp \
-        $(subdir)/pgConstraints.cpp \
-        $(subdir)/pgConversion.cpp \
-        $(subdir)/pgDatabase.cpp \
-        $(subdir)/pgDatatype.cpp \
-        $(subdir)/pgDomain.cpp \
-        $(subdir)/pgExtension.cpp \
-        $(subdir)/pgForeignDataWrapper.cpp \
-        $(subdir)/pgForeignKey.cpp \
-        $(subdir)/pgForeignServer.cpp \
-        $(subdir)/pgForeignTable.cpp \
-        $(subdir)/pgFunction.cpp \
-        $(subdir)/pgGroup.cpp \
-        $(subdir)/pgIndex.cpp \
-        $(subdir)/pgIndexConstraint.cpp \
-        $(subdir)/pgLanguage.cpp \
-        $(subdir)/pgObject.cpp \
-        $(subdir)/pgOperator.cpp \
-        $(subdir)/pgOperatorClass.cpp \
-        $(subdir)/pgOperatorFamily.cpp \
-        $(subdir)/pgRole.cpp \
-        $(subdir)/pgRule.cpp \
-        $(subdir)/pgSchema.cpp \
-        $(subdir)/pgSequence.cpp \
-        $(subdir)/pgServer.cpp \
-        $(subdir)/pgTable.cpp \
-        $(subdir)/pgTablespace.cpp \
-        $(subdir)/pgTextSearchConfiguration.cpp \
-        $(subdir)/pgTextSearchDictionary.cpp \
-        $(subdir)/pgTextSearchParser.cpp \
-        $(subdir)/pgTextSearchTemplate.cpp \
-        $(subdir)/pgTrigger.cpp \
-        $(subdir)/pgType.cpp \
-        $(subdir)/pgUser.cpp \
-        $(subdir)/pgUserMapping.cpp \
-        $(subdir)/pgView.cpp \
-        $(subdir)/gpExtTable.cpp \
-        $(subdir)/gpResQueue.cpp \
-        $(subdir)/gpPartition.cpp
+        schema/edbPackage.cpp \
+        schema/edbPackageFunction.cpp \
+        schema/edbPackageVariable.cpp \
+        schema/edbSynonym.cpp \
+        schema/edbPrivateSynonym.cpp \
+        schema/pgAggregate.cpp \
+        schema/pgCast.cpp \
+        schema/pgCatalogObject.cpp \
+        schema/pgCheck.cpp \
+        schema/pgCollation.cpp \
+        schema/pgCollection.cpp \
+        schema/pgColumn.cpp \
+        schema/pgConstraints.cpp \
+        schema/pgConversion.cpp \
+        schema/pgDatabase.cpp \
+        schema/pgDatatype.cpp \
+        schema/pgDomain.cpp \
+        schema/pgExtension.cpp \
+        schema/pgForeignDataWrapper.cpp \
+        schema/pgForeignKey.cpp \
+        schema/pgForeignServer.cpp \
+        schema/pgForeignTable.cpp \
+        schema/pgFunction.cpp \
+        schema/pgGroup.cpp \
+        schema/pgIndex.cpp \
+        schema/pgIndexConstraint.cpp \
+        schema/pgLanguage.cpp \
+        schema/pgObject.cpp \
+        schema/pgOperator.cpp \
+        schema/pgOperatorClass.cpp \
+        schema/pgOperatorFamily.cpp \
+        schema/pgRole.cpp \
+        schema/pgRule.cpp \
+        schema/pgSchema.cpp \
+        schema/pgSequence.cpp \
+        schema/pgServer.cpp \
+        schema/pgTable.cpp \
+        schema/pgTablespace.cpp \
+        schema/pgTextSearchConfiguration.cpp \
+        schema/pgTextSearchDictionary.cpp \
+        schema/pgTextSearchParser.cpp \
+        schema/pgTextSearchTemplate.cpp \
+        schema/pgTrigger.cpp \
+        schema/pgType.cpp \
+        schema/pgUser.cpp \
+        schema/pgUserMapping.cpp \
+        schema/pgView.cpp \
+        schema/gpExtTable.cpp \
+        schema/gpResQueue.cpp \
+        schema/gpPartition.cpp
 
 EXTRA_DIST += \
-        $(srcdir)/schema/module.mk
+        schema/module.mk
 

@@ -10,31 +10,31 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/frm/frmAbout.h \
-	$(srcdir)/include/frm/frmBackup.h \
-	$(srcdir)/include/frm/frmBackupGlobals.h \
-	$(srcdir)/include/frm/frmBackupServer.h \
-	$(srcdir)/include/frm/frmConfig.h \
-	$(srcdir)/include/frm/frmDatabaseDesigner.h \
-	$(srcdir)/include/frm/frmEditGrid.h \
-	$(srcdir)/include/frm/frmExport.h \
-  	$(srcdir)/include/frm/frmGrantWizard.h \
-  	$(srcdir)/include/frm/frmHbaConfig.h \
-	$(srcdir)/include/frm/frmHint.h \
-	$(srcdir)/include/frm/frmImport.h \
-	$(srcdir)/include/frm/frmMain.h \
-	$(srcdir)/include/frm/frmMainConfig.h \
-	$(srcdir)/include/frm/frmMaintenance.h \
-	$(srcdir)/include/frm/frmOptions.h \
-	$(srcdir)/include/frm/frmPassword.h \
-	$(srcdir)/include/frm/frmPgpassConfig.h \
-	$(srcdir)/include/frm/frmQuery.h \
-	$(srcdir)/include/frm/frmReport.h \
-	$(srcdir)/include/frm/frmRestore.h \
-	$(srcdir)/include/frm/frmSplash.h \
-	$(srcdir)/include/frm/frmStatus.h \
-    	$(srcdir)/include/frm/menu.h
+	include/frm/frmAbout.h \
+	include/frm/frmBackup.h \
+	include/frm/frmBackupGlobals.h \
+	include/frm/frmBackupServer.h \
+	include/frm/frmConfig.h \
+	include/frm/frmDatabaseDesigner.h \
+	include/frm/frmEditGrid.h \
+	include/frm/frmExport.h \
+  	include/frm/frmGrantWizard.h \
+  	include/frm/frmHbaConfig.h \
+	include/frm/frmHint.h \
+	include/frm/frmImport.h \
+	include/frm/frmMain.h \
+	include/frm/frmMainConfig.h \
+	include/frm/frmMaintenance.h \
+	include/frm/frmOptions.h \
+	include/frm/frmPassword.h \
+	include/frm/frmPgpassConfig.h \
+	include/frm/frmQuery.h \
+	include/frm/frmReport.h \
+	include/frm/frmRestore.h \
+	include/frm/frmSplash.h \
+	include/frm/frmStatus.h \
+    	include/frm/menu.h
 
 EXTRA_DIST += \
-    $(srcdir)/include/frm/module.mk
+    include/frm/module.mk
 

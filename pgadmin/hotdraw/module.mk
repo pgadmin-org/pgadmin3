@@ -9,13 +9,13 @@
 #
 #######################################################################
 
-include $(srcdir)/hotdraw/connectors/module.mk
-include $(srcdir)/hotdraw/figures/module.mk
-include $(srcdir)/hotdraw/handles/module.mk
-include $(srcdir)/hotdraw/locators/module.mk
-include $(srcdir)/hotdraw/main/module.mk
-include $(srcdir)/hotdraw/tools/module.mk
-include $(srcdir)/hotdraw/utilities/module.mk
+include hotdraw/connectors/module.mk
+include hotdraw/figures/module.mk
+include hotdraw/handles/module.mk
+include hotdraw/locators/module.mk
+include hotdraw/main/module.mk
+include hotdraw/tools/module.mk
+include hotdraw/utilities/module.mk
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/module.mk
+	hotdraw/module.mk

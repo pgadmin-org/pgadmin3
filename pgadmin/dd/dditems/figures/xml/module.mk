@@ -10,7 +10,7 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/dditems/figures/xml/ddXmlStorage.cpp
+	dd/dditems/figures/xml/ddXmlStorage.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/dditems/figures/xml/module.mk
+	dd/dditems/figures/xml/module.mk

@@ -10,24 +10,24 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-    $(srcdir)/include/slony/dlgRepCluster.h \
-    $(srcdir)/include/slony/dlgRepListen.h \
-    $(srcdir)/include/slony/dlgRepNode.h \
-    $(srcdir)/include/slony/dlgRepPath.h \
-    $(srcdir)/include/slony/dlgRepProperty.h \
-    $(srcdir)/include/slony/dlgRepSequence.h \
-    $(srcdir)/include/slony/dlgRepSet.h \
-    $(srcdir)/include/slony/dlgRepSubscription.h \
-    $(srcdir)/include/slony/dlgRepTable.h \
-    $(srcdir)/include/slony/slCluster.h \
-    $(srcdir)/include/slony/slListen.h \
-    $(srcdir)/include/slony/slNode.h \
-    $(srcdir)/include/slony/slPath.h \
-    $(srcdir)/include/slony/slSequence.h \
-    $(srcdir)/include/slony/slSet.h \
-    $(srcdir)/include/slony/slSubscription.h \
-    $(srcdir)/include/slony/slTable.h
+    include/slony/dlgRepCluster.h \
+    include/slony/dlgRepListen.h \
+    include/slony/dlgRepNode.h \
+    include/slony/dlgRepPath.h \
+    include/slony/dlgRepProperty.h \
+    include/slony/dlgRepSequence.h \
+    include/slony/dlgRepSet.h \
+    include/slony/dlgRepSubscription.h \
+    include/slony/dlgRepTable.h \
+    include/slony/slCluster.h \
+    include/slony/slListen.h \
+    include/slony/slNode.h \
+    include/slony/slPath.h \
+    include/slony/slSequence.h \
+    include/slony/slSet.h \
+    include/slony/slSubscription.h \
+    include/slony/slTable.h
 
 EXTRA_DIST += \
-    $(srcdir)/include/slony/module.mk
+    include/slony/module.mk
 

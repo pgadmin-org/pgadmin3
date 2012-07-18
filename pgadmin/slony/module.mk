@@ -10,25 +10,25 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/slony/dlgRepCluster.cpp \
-	$(srcdir)/slony/dlgRepListen.cpp \
-	$(srcdir)/slony/dlgRepNode.cpp \
-	$(srcdir)/slony/dlgRepPath.cpp \
-	$(srcdir)/slony/dlgRepProperty.cpp \
-	$(srcdir)/slony/dlgRepSequence.cpp \
-	$(srcdir)/slony/dlgRepSet.cpp \
-	$(srcdir)/slony/dlgRepSubscription.cpp \
-	$(srcdir)/slony/dlgRepTable.cpp \
-	$(srcdir)/slony/slCluster.cpp \
-	$(srcdir)/slony/slListen.cpp \
-	$(srcdir)/slony/slNode.cpp \
-	$(srcdir)/slony/slPath.cpp \
-	$(srcdir)/slony/slSequence.cpp \
-	$(srcdir)/slony/slSet.cpp \
-	$(srcdir)/slony/slSubscription.cpp \
-	$(srcdir)/slony/slTable.cpp
+	slony/dlgRepCluster.cpp \
+	slony/dlgRepListen.cpp \
+	slony/dlgRepNode.cpp \
+	slony/dlgRepPath.cpp \
+	slony/dlgRepProperty.cpp \
+	slony/dlgRepSequence.cpp \
+	slony/dlgRepSet.cpp \
+	slony/dlgRepSubscription.cpp \
+	slony/dlgRepTable.cpp \
+	slony/slCluster.cpp \
+	slony/slListen.cpp \
+	slony/slNode.cpp \
+	slony/slPath.cpp \
+	slony/slSequence.cpp \
+	slony/slSet.cpp \
+	slony/slSubscription.cpp \
+	slony/slTable.cpp
 
 EXTRA_DIST += \
-        $(srcdir)/slony/module.mk
+        slony/module.mk
 
 

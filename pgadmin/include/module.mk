@@ -10,30 +10,30 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/copyright.h \
-	$(srcdir)/include/pgAdmin3.h \
-	$(srcdir)/include/postgres.h \
-	$(srcdir)/include/precomp.h \
-	$(srcdir)/include/svnversion.h \
-	$(srcdir)/include/version.h
+	include/copyright.h \
+	include/pgAdmin3.h \
+	include/postgres.h \
+	include/precomp.h \
+	include/svnversion.h \
+	include/version.h
 
 EXTRA_DIST += \
-    $(srcdir)/include/module.mk
+    include/module.mk
 
-include $(srcdir)/include/agent/module.mk
-include $(srcdir)/include/db/module.mk
-include $(srcdir)/include/dd/module.mk
-include $(srcdir)/include/dlg/module.mk
-include $(srcdir)/include/debugger/module.mk
-include $(srcdir)/include/ctl/module.mk
-include $(srcdir)/include/frm/module.mk
-include $(srcdir)/include/images/module.mk
-include $(srcdir)/include/parser/module.mk
-include $(srcdir)/include/pgscript/module.mk
-include $(srcdir)/include/schema/module.mk
-include $(srcdir)/include/slony/module.mk
-include $(srcdir)/include/gqb/module.mk
-include $(srcdir)/include/hotdraw/module.mk
-include $(srcdir)/include/utils/module.mk
-include $(srcdir)/include/ogl/module.mk
+include include/agent/module.mk
+include include/db/module.mk
+include include/dd/module.mk
+include include/dlg/module.mk
+include include/debugger/module.mk
+include include/ctl/module.mk
+include include/frm/module.mk
+include include/images/module.mk
+include include/parser/module.mk
+include include/pgscript/module.mk
+include include/schema/module.mk
+include include/slony/module.mk
+include include/gqb/module.mk
+include include/hotdraw/module.mk
+include include/utils/module.mk
+include include/ogl/module.mk
 

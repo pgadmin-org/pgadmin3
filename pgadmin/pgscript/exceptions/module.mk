@@ -10,15 +10,15 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/exceptions/pgsArithmeticException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsAssertException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsBreakException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsCastException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsContinueException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsInterruptException.cpp \
-	$(srcdir)/pgscript/exceptions/pgsParameterException.cpp
+	pgscript/exceptions/pgsArithmeticException.cpp \
+	pgscript/exceptions/pgsAssertException.cpp \
+	pgscript/exceptions/pgsBreakException.cpp \
+	pgscript/exceptions/pgsCastException.cpp \
+	pgscript/exceptions/pgsContinueException.cpp \
+	pgscript/exceptions/pgsException.cpp \
+	pgscript/exceptions/pgsInterruptException.cpp \
+	pgscript/exceptions/pgsParameterException.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/exceptions/module.mk
+	pgscript/exceptions/module.mk
 

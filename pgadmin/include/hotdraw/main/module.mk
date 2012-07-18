@@ -10,10 +10,10 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/main/hdDrawing.h \
-	$(srcdir)/include/hotdraw/main/hdDrawingEditor.h \
-	$(srcdir)/include/hotdraw/main/hdDrawingView.h \
-	$(srcdir)/include/hotdraw/main/hdObject.h
+	include/hotdraw/main/hdDrawing.h \
+	include/hotdraw/main/hdDrawingEditor.h \
+	include/hotdraw/main/hdDrawingView.h \
+	include/hotdraw/main/hdObject.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/main/module.mk
+	include/hotdraw/main/module.mk

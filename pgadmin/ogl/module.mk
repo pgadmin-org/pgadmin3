@@ -10,21 +10,21 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/ogl/basic.cpp \
-	$(srcdir)/ogl/bmpshape.cpp \
-	$(srcdir)/ogl/composit.cpp \
-	$(srcdir)/ogl/divided.cpp \
-	$(srcdir)/ogl/lines.cpp \
-	$(srcdir)/ogl/oglmisc.cpp \
-	$(srcdir)/ogl/basic2.cpp \
-	$(srcdir)/ogl/canvas.cpp \
-	$(srcdir)/ogl/constrnt.cpp \
-	$(srcdir)/ogl/drawn.cpp \
-	$(srcdir)/ogl/mfutils.cpp \
-	$(srcdir)/ogl/ogldiag.cpp
+	ogl/basic.cpp \
+	ogl/bmpshape.cpp \
+	ogl/composit.cpp \
+	ogl/divided.cpp \
+	ogl/lines.cpp \
+	ogl/oglmisc.cpp \
+	ogl/basic2.cpp \
+	ogl/canvas.cpp \
+	ogl/constrnt.cpp \
+	ogl/drawn.cpp \
+	ogl/mfutils.cpp \
+	ogl/ogldiag.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/ogl/module.mk \
-	$(srcdir)/ogl/README
+	ogl/module.mk \
+	ogl/README
 
 

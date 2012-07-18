@@ -10,19 +10,19 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/pgscript/statements/pgsAssertStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsBreakStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsContinueStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsDeclareRecordStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsExpressionStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsIfStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsPrintStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsProgram.h \
-	$(srcdir)/include/pgscript/statements/pgsStatements.h \
-	$(srcdir)/include/pgscript/statements/pgsStmt.h \
-	$(srcdir)/include/pgscript/statements/pgsStmtList.h \
-	$(srcdir)/include/pgscript/statements/pgsWhileStmt.h
+	include/pgscript/statements/pgsAssertStmt.h \
+	include/pgscript/statements/pgsBreakStmt.h \
+	include/pgscript/statements/pgsContinueStmt.h \
+	include/pgscript/statements/pgsDeclareRecordStmt.h \
+	include/pgscript/statements/pgsExpressionStmt.h \
+	include/pgscript/statements/pgsIfStmt.h \
+	include/pgscript/statements/pgsPrintStmt.h \
+	include/pgscript/statements/pgsProgram.h \
+	include/pgscript/statements/pgsStatements.h \
+	include/pgscript/statements/pgsStmt.h \
+	include/pgscript/statements/pgsStmtList.h \
+	include/pgscript/statements/pgsWhileStmt.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/pgscript/statements/module.mk
+	include/pgscript/statements/module.mk
 

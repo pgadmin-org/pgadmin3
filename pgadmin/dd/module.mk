@@ -9,9 +9,9 @@
 #
 #######################################################################
 
-include $(srcdir)/dd/dditems/module.mk
-include $(srcdir)/dd/ddmodel/module.mk
+include dd/dditems/module.mk
+include dd/ddmodel/module.mk
 
 
 EXTRA_DIST += \
-	$(srcdir)/dd/module.mk
+	dd/module.mk

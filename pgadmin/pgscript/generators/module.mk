@@ -10,18 +10,18 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/generators/pgsDateGen.cpp \
-	$(srcdir)/pgscript/generators/pgsDateTimeGen.cpp \
-	$(srcdir)/pgscript/generators/pgsDictionaryGen.cpp \
-	$(srcdir)/pgscript/generators/pgsIntegerGen.cpp \
-	$(srcdir)/pgscript/generators/pgsNumberGen.cpp \
-	$(srcdir)/pgscript/generators/pgsObjectGen.cpp \
-	$(srcdir)/pgscript/generators/pgsRealGen.cpp \
-	$(srcdir)/pgscript/generators/pgsReferenceGen.cpp \
-	$(srcdir)/pgscript/generators/pgsRegexGen.cpp \
-	$(srcdir)/pgscript/generators/pgsStringGen.cpp \
-	$(srcdir)/pgscript/generators/pgsTimeGen.cpp
+	pgscript/generators/pgsDateGen.cpp \
+	pgscript/generators/pgsDateTimeGen.cpp \
+	pgscript/generators/pgsDictionaryGen.cpp \
+	pgscript/generators/pgsIntegerGen.cpp \
+	pgscript/generators/pgsNumberGen.cpp \
+	pgscript/generators/pgsObjectGen.cpp \
+	pgscript/generators/pgsRealGen.cpp \
+	pgscript/generators/pgsReferenceGen.cpp \
+	pgscript/generators/pgsRegexGen.cpp \
+	pgscript/generators/pgsStringGen.cpp \
+	pgscript/generators/pgsTimeGen.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/generators/module.mk
+	pgscript/generators/module.mk
 

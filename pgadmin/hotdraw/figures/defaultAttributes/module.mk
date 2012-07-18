@@ -10,10 +10,10 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/hotdraw/figures/defaultAttributes/hdFillAttribute.cpp \
-	$(srcdir)/hotdraw/figures/defaultAttributes/hdFontAttribute.cpp \
-	$(srcdir)/hotdraw/figures/defaultAttributes/hdFontColorAttribute.cpp \
-	$(srcdir)/hotdraw/figures/defaultAttributes/hdLineAttribute.cpp
+	hotdraw/figures/defaultAttributes/hdFillAttribute.cpp \
+	hotdraw/figures/defaultAttributes/hdFontAttribute.cpp \
+	hotdraw/figures/defaultAttributes/hdFontColorAttribute.cpp \
+	hotdraw/figures/defaultAttributes/hdLineAttribute.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/hotdraw/figures/defaultAttributes/module.mk
+	hotdraw/figures/defaultAttributes/module.mk

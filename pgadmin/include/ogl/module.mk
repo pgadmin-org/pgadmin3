@@ -10,23 +10,23 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/ogl/basic.h \
-        $(srcdir)/include/ogl/bmpshape.h \
-        $(srcdir)/include/ogl/composit.h \
-        $(srcdir)/include/ogl/divided.h \
-        $(srcdir)/include/ogl/drawnp.h \
-        $(srcdir)/include/ogl/linesp.h \
-        $(srcdir)/include/ogl/misc.h \
-        $(srcdir)/include/ogl/ogl.h \
-        $(srcdir)/include/ogl/basicp.h \
-        $(srcdir)/include/ogl/canvas.h \
-        $(srcdir)/include/ogl/constrnt.h \
-        $(srcdir)/include/ogl/drawn.h \
-        $(srcdir)/include/ogl/lines.h \
-        $(srcdir)/include/ogl/mfutils.h \
-        $(srcdir)/include/ogl/ogldiag.h
+	include/ogl/basic.h \
+        include/ogl/bmpshape.h \
+        include/ogl/composit.h \
+        include/ogl/divided.h \
+        include/ogl/drawnp.h \
+        include/ogl/linesp.h \
+        include/ogl/misc.h \
+        include/ogl/ogl.h \
+        include/ogl/basicp.h \
+        include/ogl/canvas.h \
+        include/ogl/constrnt.h \
+        include/ogl/drawn.h \
+        include/ogl/lines.h \
+        include/ogl/mfutils.h \
+        include/ogl/ogldiag.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/ogl/module.mk \
-	$(srcdir)/include/ogl/README
+	include/ogl/module.mk \
+	include/ogl/README
 

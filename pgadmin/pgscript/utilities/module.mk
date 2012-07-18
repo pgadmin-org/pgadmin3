@@ -10,14 +10,14 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/pgscript/utilities/pgsAlloc.cpp \
-	$(srcdir)/pgscript/utilities/pgsContext.cpp \
-	$(srcdir)/pgscript/utilities/pgsDriver.cpp \
-	$(srcdir)/pgscript/utilities/pgsMapm.cpp \
-	$(srcdir)/pgscript/utilities/pgsThread.cpp \
-	$(srcdir)/pgscript/utilities/pgsUtilities.cpp
+	pgscript/utilities/pgsAlloc.cpp \
+	pgscript/utilities/pgsContext.cpp \
+	pgscript/utilities/pgsDriver.cpp \
+	pgscript/utilities/pgsMapm.cpp \
+	pgscript/utilities/pgsThread.cpp \
+	pgscript/utilities/pgsUtilities.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/pgscript/utilities/module.mk
+	pgscript/utilities/module.mk
 
-include $(srcdir)/pgscript/utilities/m_apm/module.mk
+include pgscript/utilities/m_apm/module.mk

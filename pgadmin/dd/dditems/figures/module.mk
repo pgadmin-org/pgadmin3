@@ -10,16 +10,16 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/dditems/figures/ddColumnFigure.cpp \
-	$(srcdir)/dd/dditems/figures/ddColumnKindIcon.cpp \
-	$(srcdir)/dd/dditems/figures/ddColumnOptionIcon.cpp \
-	$(srcdir)/dd/dditems/figures/ddRelationshipFigure.cpp \
-	$(srcdir)/dd/dditems/figures/ddRelationshipItem.cpp \
-	$(srcdir)/dd/dditems/figures/ddRelationshipTerminal.cpp \
-	$(srcdir)/dd/dditems/figures/ddTableFigure.cpp \
-	$(srcdir)/dd/dditems/figures/ddTextTableItemFigure.cpp
+	dd/dditems/figures/ddColumnFigure.cpp \
+	dd/dditems/figures/ddColumnKindIcon.cpp \
+	dd/dditems/figures/ddColumnOptionIcon.cpp \
+	dd/dditems/figures/ddRelationshipFigure.cpp \
+	dd/dditems/figures/ddRelationshipItem.cpp \
+	dd/dditems/figures/ddRelationshipTerminal.cpp \
+	dd/dditems/figures/ddTableFigure.cpp \
+	dd/dditems/figures/ddTextTableItemFigure.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/dditems/figures/module.mk
+	dd/dditems/figures/module.mk
 
-include $(srcdir)/dd/dditems/figures/xml/module.mk
+include dd/dditems/figures/xml/module.mk

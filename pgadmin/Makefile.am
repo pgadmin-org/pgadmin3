@@ -9,43 +9,46 @@
 #
 #######################################################################
 
+
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = pgadmin3
 
 pgadmin3_SOURCES = \
-	$(srcdir)/pgAdmin3.cpp 
+	pgAdmin3.cpp
 
 EXTRA_DIST = \
-	$(srcdir)/Makefile.deps \
-	$(srcdir)/pgAdmin3.vcxproj \
-	$(srcdir)/pgAdmin3.vcxproj.filters \
-	$(srcdir)/precomp.cpp \
-	$(srcdir)/pgAdmin3.rc \
-	$(srcdir)/ver_svn.bat \
-	$(srcdir)/ver_svn.sh
+	Makefile.deps \
+	pgAdmin3.vcxproj \
+	pgAdmin3.vcxproj.filters \
+	precomp.cpp \
+	pgAdmin3.rc \
+	ver_svn.bat \
+	ver_svn.sh
 
 # Make sure we always have these dependencies, even if dependency tracking
 # is turend off.  The leading dash keeps automake from trying to process this.
 -include Makefile.deps
 
-TMP_ui = 
+TMP_ui =
 
 # Include all the sub-Makefiles
-include $(srcdir)/agent/module.mk
-include $(srcdir)/ctl/module.mk
-include $(srcdir)/db/module.mk
-include $(srcdir)/dd/module.mk
-include $(srcdir)/debugger/module.mk
-include $(srcdir)/dlg/module.mk
-include $(srcdir)/frm/module.mk
-include $(srcdir)/include/module.mk
-include $(srcdir)/ogl/module.mk
-include $(srcdir)/pgscript/module.mk
-include $(srcdir)/schema/module.mk
-include $(srcdir)/slony/module.mk
-include $(srcdir)/gqb/module.mk
-include $(srcdir)/hotdraw/module.mk
-include $(srcdir)/ui/module.mk
-include $(srcdir)/utils/module.mk
+include agent/module.mk
+include ctl/module.mk
+include db/module.mk
+include dd/module.mk
+include debugger/module.mk
+include dlg/module.mk
+include frm/module.mk
+include include/module.mk
+include ogl/module.mk
+include pgscript/module.mk
+include schema/module.mk
+include slony/module.mk
+include gqb/module.mk
+include hotdraw/module.mk
+include ui/module.mk
+include utils/module.mk
 
 if SUN_CC
   __CFLAGS=""
@@ -68,7 +71,7 @@ endif
 if !APPBUNDLE
 
 nobase_dist_pkgdata_DATA = \
-	$(srcdir)/settings.ini
+	$(top_srcdir)/pgadmin/settings.ini
 
 
 if BUILD_DEBUG
@@ -85,7 +88,7 @@ install-exec-hook:
 else
 
 nobase_dist_data_DATA = \
-	$(srcdir)/settings.ini
+	$(top_srcdir)/pgadmin/settings.ini
 
 if BUILD_DEBUG
 nobase_dist_data_DATA += \

@@ -9,11 +9,11 @@
 #
 #######################################################################
 
-include $(srcdir)/dd/dditems/figures/module.mk
-include $(srcdir)/dd/dditems/handles/module.mk
-include $(srcdir)/dd/dditems/locators/module.mk
-include $(srcdir)/dd/dditems/tools/module.mk
-include $(srcdir)/dd/dditems/utilities/module.mk
+include dd/dditems/figures/module.mk
+include dd/dditems/handles/module.mk
+include dd/dditems/locators/module.mk
+include dd/dditems/tools/module.mk
+include dd/dditems/utilities/module.mk
 
 EXTRA_DIST += \
-	$(srcdir)/dd/dditems/module.mk
+	dd/dditems/module.mk

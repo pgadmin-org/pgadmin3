@@ -10,14 +10,14 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/hotdraw/handles/hdButtonHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdChangeConnectionEndHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdChangeConnectionHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdChangeConnectionStartHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdIHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdLineConnectionHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdLocatorHandle.h \
-	$(srcdir)/include/hotdraw/handles/hdPolyLineHandle.h
+	include/hotdraw/handles/hdButtonHandle.h \
+	include/hotdraw/handles/hdChangeConnectionEndHandle.h \
+	include/hotdraw/handles/hdChangeConnectionHandle.h \
+	include/hotdraw/handles/hdChangeConnectionStartHandle.h \
+	include/hotdraw/handles/hdIHandle.h \
+	include/hotdraw/handles/hdLineConnectionHandle.h \
+	include/hotdraw/handles/hdLocatorHandle.h \
+	include/hotdraw/handles/hdPolyLineHandle.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/hotdraw/handles/module.mk
+	include/hotdraw/handles/module.mk

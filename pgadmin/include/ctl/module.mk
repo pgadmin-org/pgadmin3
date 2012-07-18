@@ -10,32 +10,32 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/ctl/calbox.h \
-	$(srcdir)/include/ctl/ctlAuiNotebook.h \
-	$(srcdir)/include/ctl/ctlCheckTreeView.h \
-	$(srcdir)/include/ctl/ctlColourPicker.h \
-	$(srcdir)/include/ctl/ctlComboBox.h \
-	$(srcdir)/include/ctl/ctlListView.h \
-	$(srcdir)/include/ctl/ctlMenuToolbar.h \
-	$(srcdir)/include/ctl/ctlDefaultSecurityPanel.h \
-	$(srcdir)/include/ctl/ctlSeclabelPanel.h \
-	$(srcdir)/include/ctl/ctlSecurityPanel.h \
-	$(srcdir)/include/ctl/ctlSQLBox.h \
-	$(srcdir)/include/ctl/ctlSQLGrid.h \
-	$(srcdir)/include/ctl/ctlSQLResult.h \
-	$(srcdir)/include/ctl/ctlTree.h \
-	$(srcdir)/include/ctl/explainCanvas.h \
-	$(srcdir)/include/ctl/timespin.h \
-	$(srcdir)/include/ctl/wxgridsel.h \
-	$(srcdir)/include/ctl/xh_calb.h \
-	$(srcdir)/include/ctl/xh_ctlcombo.h \
-	$(srcdir)/include/ctl/xh_ctlcolourpicker.h \
-	$(srcdir)/include/ctl/xh_ctlchecktreeview.h \
-	$(srcdir)/include/ctl/xh_ctltree.h \
-	$(srcdir)/include/ctl/xh_sqlbox.h \
-	$(srcdir)/include/ctl/xh_timespin.h
+	include/ctl/calbox.h \
+	include/ctl/ctlAuiNotebook.h \
+	include/ctl/ctlCheckTreeView.h \
+	include/ctl/ctlColourPicker.h \
+	include/ctl/ctlComboBox.h \
+	include/ctl/ctlListView.h \
+	include/ctl/ctlMenuToolbar.h \
+	include/ctl/ctlDefaultSecurityPanel.h \
+	include/ctl/ctlSeclabelPanel.h \
+	include/ctl/ctlSecurityPanel.h \
+	include/ctl/ctlSQLBox.h \
+	include/ctl/ctlSQLGrid.h \
+	include/ctl/ctlSQLResult.h \
+	include/ctl/ctlTree.h \
+	include/ctl/explainCanvas.h \
+	include/ctl/timespin.h \
+	include/ctl/wxgridsel.h \
+	include/ctl/xh_calb.h \
+	include/ctl/xh_ctlcombo.h \
+	include/ctl/xh_ctlcolourpicker.h \
+	include/ctl/xh_ctlchecktreeview.h \
+	include/ctl/xh_ctltree.h \
+	include/ctl/xh_sqlbox.h \
+	include/ctl/xh_timespin.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/ctl/module.mk
+	include/ctl/module.mk
 
 

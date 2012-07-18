@@ -10,8 +10,8 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/dditems/utilities/ddPrecisionScaleDialog.cpp \
-	$(srcdir)/dd/dditems/utilities/ddSelectKindFksDialog.cpp \
-	$(srcdir)/dd/dditems/utilities/ddTableNameDialog.cpp
+	dd/dditems/utilities/ddPrecisionScaleDialog.cpp \
+	dd/dditems/utilities/ddSelectKindFksDialog.cpp \
+	dd/dditems/utilities/ddTableNameDialog.cpp
 EXTRA_DIST += \
-	$(srcdir)/dd/dditems/utilities/module.mk
+	dd/dditems/utilities/module.mk

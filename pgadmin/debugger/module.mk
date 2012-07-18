@@ -10,23 +10,23 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/debugger/ctlCodeWindow.cpp \
-	$(srcdir)/debugger/ctlMessageWindow.cpp \
-	$(srcdir)/debugger/ctlResultGrid.cpp \
-	$(srcdir)/debugger/ctlStackWindow.cpp \
-	$(srcdir)/debugger/ctlTabWindow.cpp \
-	$(srcdir)/debugger/ctlVarWindow.cpp \
-	$(srcdir)/debugger/dbgBreakPoint.cpp \
-	$(srcdir)/debugger/dbgDbResult.cpp \
- 	$(srcdir)/debugger/dbgPgConn.cpp \
-	$(srcdir)/debugger/dbgPgThread.cpp \
-	$(srcdir)/debugger/dbgResultset.cpp \
- 	$(srcdir)/debugger/dbgTargetInfo.cpp \
-	$(srcdir)/debugger/debugger.cpp \
-	$(srcdir)/debugger/dlgDirectDbg.cpp \
-	$(srcdir)/debugger/frmDebugger.cpp
+	debugger/ctlCodeWindow.cpp \
+	debugger/ctlMessageWindow.cpp \
+	debugger/ctlResultGrid.cpp \
+	debugger/ctlStackWindow.cpp \
+	debugger/ctlTabWindow.cpp \
+	debugger/ctlVarWindow.cpp \
+	debugger/dbgBreakPoint.cpp \
+	debugger/dbgDbResult.cpp \
+ 	debugger/dbgPgConn.cpp \
+	debugger/dbgPgThread.cpp \
+	debugger/dbgResultset.cpp \
+ 	debugger/dbgTargetInfo.cpp \
+	debugger/debugger.cpp \
+	debugger/dlgDirectDbg.cpp \
+	debugger/frmDebugger.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/debugger/module.mk
+	debugger/module.mk
 
 
