@@ -482,6 +482,12 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 					else
 						args += collection->GetDatabase()->GetConnection()->qtDbString(arg);
 				}
+				else
+				{
+					if (!args.IsEmpty())
+						args += wxT(", ");
+					args += collection->GetDatabase()->GetConnection()->qtDbString(wxEmptyString);
+				}
 				if (pos >= 0)
 					arglist = arglist.Mid(pos + 4);
 				else
