@@ -1062,13 +1062,13 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 			return;
 	}
 
-	EnableOK(false);
-
 	wxString sql = GetSql();
 	wxString sql2 = GetSql2();
 
 	if (!apply(sql, sql2))
 		return;
+
+	EnableOK(false);
 
 	if (statusBar)
 		statusBar->SetStatusText(_("Changes applied."));
