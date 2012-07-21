@@ -1443,7 +1443,10 @@ wxString pgSchemaObject::GetFullIdentifier() const
 
 wxString pgSchemaObject::GetQuotedFullIdentifier() const
 {
-	return schema->GetQuotedPrefix() + GetQuotedIdentifier();
+	if (schema->GetTypeName() == wxT("Table"))
+		return schema->GetSchema()->GetQuotedPrefix() + GetQuotedIdentifier();
+	else
+		return schema->GetQuotedPrefix() + GetQuotedIdentifier();
 }
 
 
