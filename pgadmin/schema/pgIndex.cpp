@@ -699,7 +699,7 @@ pgIndexBaseCollection::pgIndexBaseCollection(pgaFactory *factory, pgSchema *sch)
 
 void pgIndexBaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-	wxLogInfo(wxT("Displaying statistics for indexes on ") + GetTable()->GetName());
+	wxLogInfo(wxT("Displaying statistics for indexes on ") + GetSchema()->GetName());
 
 	bool hasSize = GetConnection()->HasFeature(FEATURE_SIZE);
 
@@ -723,8 +723,8 @@ void pgIndexBaseCollection::ShowStatistics(frmMain *form, ctlListView *statistic
 	       wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
 	       wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.refclassid=(SELECT oid FROM pg_class WHERE relname='pg_constraint'))\n")
 	       wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
-	       wxT("  WHERE schemaname = ") + qtDbString(GetTable()->GetSchema()->GetName())
-	       + wxT(" AND stat.relname = ") + qtDbString(GetTable()->GetName())
+	       wxT("  WHERE schemaname = ") + qtDbString(GetSchema()->GetSchema()->GetName())
+	       + wxT(" AND stat.relname = ") + qtDbString(GetSchema()->GetName())
 	       + wxT(" AND con.contype IS NULL")
 	       + wxT("\n ORDER BY indexrelname");
 

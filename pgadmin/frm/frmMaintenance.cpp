@@ -192,7 +192,7 @@ wxString frmMaintenance::GetSql()
 			if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_UNIQUE
 			        || object->GetMetaType() == PGM_PRIMARYKEY)
 			{
-				sql += object->GetTable()->GetQuotedFullIdentifier();
+				sql += object->GetSchema()->GetQuotedFullIdentifier();
 				if (conn->BackendMinimumVersion(8, 4))
 				{
 					sql += wxT(" USING ") + object->GetQuotedIdentifier();

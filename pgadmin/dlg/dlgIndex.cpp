@@ -601,7 +601,7 @@ wxString dlgIndex::GetSql()
 		else
 		{
 			if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
-				sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
+				sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetSchema()->GetName()) + wxT(".")
 				       + qtIdent(index->GetName()) +  wxT("\n  SET (FILLFACTOR=")
 				       + txtFillFactor->GetValue() + wxT(");\n");
 
@@ -609,12 +609,12 @@ wxString dlgIndex::GetSql()
 			{
 				if (index->GetName() != txtName->GetValue() &&
 				        !txtName->GetValue().IsEmpty())
-					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
+					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetSchema()->GetName()) + wxT(".")
 					       + qtIdent(index->GetName()) +  wxT("\n  RENAME TO ")
 					       + qtIdent(txtName->GetValue()) + wxT(";\n");
 
 				if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
-					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".") + qtIdent(name)
+					sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetSchema()->GetName()) + wxT(".") + qtIdent(name)
 					       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 					       +  wxT(";\n");
 			}
