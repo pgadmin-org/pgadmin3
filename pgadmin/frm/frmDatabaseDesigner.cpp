@@ -337,7 +337,7 @@ void frmDatabaseDesigner::OnClose(wxCloseEvent &event)
 		{
 			if (lastFile.IsEmpty())
 			{
-				wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.pgd"),
+				wxFileDialog openFileDialog( this, _("Save model"), wxT(""), wxT(""), wxT("*.pgd"),
 				                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
 				if (openFileDialog.ShowModal() == wxID_OK)
@@ -346,8 +346,8 @@ void frmDatabaseDesigner::OnClose(wxCloseEvent &event)
 					path.append(openFileDialog.GetDirectory());
 					path.append(wxFileName::GetPathSeparator());
 					path.append(openFileDialog.GetFilename());
-					if(!path.Lower().Matches(_("*.pgd")))
-						path.append(_(".pgd"));
+					if(!path.Lower().Matches(wxT("*.pgd")))
+						path.append(wxT(".pgd"));
 					lastFile = path;
 				}
 			}
@@ -571,7 +571,7 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnModelSaveAs(wxCommandEvent &event)
 {
-	wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.pgd"),
+	wxFileDialog openFileDialog( this, _("Save model"), wxT(""), wxT(""), wxT("*.pgd"),
 	                             wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 
 	if (openFileDialog.ShowModal() == wxID_OK)
@@ -580,8 +580,8 @@ void frmDatabaseDesigner::OnModelSaveAs(wxCommandEvent &event)
 		path.append( openFileDialog.GetDirectory() );
 		path.append( wxFileName::GetPathSeparator() );
 		path.append( openFileDialog.GetFilename() );
-		if(!path.Lower().Matches(_("*.pgd")))
-			path.append(_(".pgd"));
+		if(!path.Lower().Matches(wxT("*.pgd")))
+			path.append(wxT(".pgd"));
 		lastFile = path;
 		setModelChanged(false);
 		setExtendedTitle();
@@ -622,7 +622,7 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 	}
 
 	//Open Model
-	wxFileDialog openFileDialog(this, _("Open model"), _(""), _(""), _("*.pgd"),
+	wxFileDialog openFileDialog(this, _("Open model"), wxT(""), wxT(""), wxT("*.pgd"),
 	                            wxFD_OPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
 
 	if (openFileDialog.ShowModal() == wxID_OK)
@@ -631,8 +631,8 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 		path.append(openFileDialog.GetDirectory());
 		path.append(wxFileName::GetPathSeparator());
 		path.append(openFileDialog.GetFilename());
-		if(!path.Lower().Matches(_("*.pgd")))
-			path.append(_(".pgd"));
+		if(!path.Lower().Matches(wxT("*.pgd")))
+			path.append(wxT(".pgd"));
 		lastFile = path;
 
 		// Clean treeview, notebook, and sql pane
