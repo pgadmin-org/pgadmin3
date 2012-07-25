@@ -143,11 +143,12 @@ wxString dlgCheck::GetSql()
 			sql += wxT(" CONSTRAINT ") + qtIdent(name) + wxT("\n ");
 		}
 		sql += wxT(" CHECK ");
+		sql += GetDefinition();
 		if (connection->BackendMinimumVersion(9, 2) && chkNoInherit->GetValue())
 		{
-			sql += wxT("NO INHERIT ");
+			sql += wxT(" NO INHERIT");
 		}
-		sql += GetDefinition() + wxT(";\n");
+        sql += wxT(";\n");
 	}
 	else
 	{

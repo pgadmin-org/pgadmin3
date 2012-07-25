@@ -118,10 +118,10 @@ wxString pgCheck::GetConstraint()
 {
 	sql = GetQuotedIdentifier() +  wxT(" CHECK ");
 
-	if (GetDatabase()->BackendMinimumVersion(9, 2) && GetNoInherit())
-		sql += wxT("NO INHERIT ");
-
 	sql += wxT("(") + GetDefinition() + wxT(")");
+
+	if (GetDatabase()->BackendMinimumVersion(9, 2) && GetNoInherit())
+		sql += wxT(" NO INHERIT");
 
 	if (GetDatabase()->BackendMinimumVersion(9, 2) && !GetValid())
 		sql += wxT(" NOT VALID");
