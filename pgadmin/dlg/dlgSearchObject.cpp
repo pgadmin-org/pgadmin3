@@ -78,7 +78,7 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db)
 	aMap[_("Login Roles")] = wxT("Login Roles");
 	aMap[_("Group Roles")] = wxT("Group Roles");
 	aMap[_("FTS Configurations")] = wxT("FTS Configurations");
-	aMap[_("FTS Dictionarie")] = wxT("FTS Dictionaries");
+	aMap[_("FTS Dictionaries")] = wxT("FTS Dictionaries");
 	aMap[_("FTS Parsers")] = wxT("FTS Parsers");
 	aMap[_("FTS Templates")] = wxT("FTS Templates");
 	aMap[_("Foreign Data Wrappers")] = wxT("Foreign Data Wrappers");
