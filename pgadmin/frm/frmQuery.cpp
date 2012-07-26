@@ -2601,7 +2601,9 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 	{
 		if (sqlQuery->GetText().Len() < (unsigned int)settings->GetHistoryMaxQuerySize())
 		{
-			wxString tmp = sqlQuery->GetText();
+	        wxString tmp = sqlQuery->GetSelectedText();
+	        if (tmp.IsNull())
+	        	tmp = sqlQuery->GetText();
 			tmp.Replace(wxT("\n"), wxT(" "));
 			tmp.Replace(wxT("\r"), wxT(" "));
 			sqlQueries->Append(tmp);
