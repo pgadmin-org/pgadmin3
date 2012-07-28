@@ -119,8 +119,6 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
 	EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
 	EVT_MENU(MNU_EXPLAINANALYZE,    frmQuery::OnExplain)
-	EVT_MENU(MNU_BUFFERS,           frmQuery::OnBuffers)
-	EVT_MENU(MNU_TIMING,            frmQuery::OnTiming)
 	EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
 	EVT_MENU(MNU_AUTOROLLBACK,      frmQuery::OnAutoRollback)
 	EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
@@ -2036,8 +2034,8 @@ void frmQuery::OnExplain(wxCommandEvent &event)
 	if (conn->BackendMinimumVersion(9, 0))
 	{
 		bool costs = queryMenu->IsChecked(MNU_COSTS);
-		bool buffers = queryMenu->IsChecked(MNU_BUFFERS);
-		bool timing = queryMenu->IsChecked(MNU_TIMING);
+		bool buffers = queryMenu->IsChecked(MNU_BUFFERS) && analyze;
+		bool timing = queryMenu->IsChecked(MNU_TIMING) && analyze;
 
 		sql += wxT("(");
 		if (analyze)
@@ -2085,22 +2083,6 @@ void frmQuery::OnExplain(wxCommandEvent &event)
 	}
 
 	execQuery(sql, resultToRetrieve, true, offset, false, true, verbose);
-}
-
-void frmQuery::OnBuffers(wxCommandEvent &event)
-{
-	queryMenu->Enable(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_BUFFERS));
-	toolBar->EnableTool(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_BUFFERS));
-
-	settings->SetExplainBuffers(queryMenu->IsChecked(MNU_BUFFERS));
-}
-
-void frmQuery::OnTiming(wxCommandEvent &event)
-{
-	queryMenu->Enable(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_TIMING));
-	toolBar->EnableTool(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_TIMING));
-
-	settings->SetExplainTiming(queryMenu->IsChecked(MNU_TIMING));
 }
 
 // Update the main SQL query from the GQB if desired
@@ -2319,12 +2301,12 @@ void frmQuery::setTools(const bool running)
 	toolBar->EnableTool(MNU_EXECUTE, !running);
 	toolBar->EnableTool(MNU_EXECPGS, !running);
 	toolBar->EnableTool(MNU_EXECFILE, !running);
-	toolBar->EnableTool(MNU_EXPLAIN, (!running && !settings->GetExplainBuffers()));
+	toolBar->EnableTool(MNU_EXPLAIN, !running);
 	toolBar->EnableTool(MNU_CANCEL, running);
 	queryMenu->Enable(MNU_EXECUTE, !running);
 	queryMenu->Enable(MNU_EXECPGS, !running);
 	queryMenu->Enable(MNU_EXECFILE, !running);
-	queryMenu->Enable(MNU_EXPLAIN, (!running && !settings->GetExplainBuffers()));
+	queryMenu->Enable(MNU_EXPLAIN, !running);
 	queryMenu->Enable(MNU_EXPLAINANALYZE, !running);
 	queryMenu->Enable(MNU_CANCEL, running);
 	fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
