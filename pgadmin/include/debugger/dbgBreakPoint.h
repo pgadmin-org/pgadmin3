@@ -24,10 +24,10 @@ public:
 
 	enum eTargetType
 	{
-		TRIGGER,
-		FUNCTION,
-		PROCEDURE,
-		OID
+	    TRIGGER,
+	    FUNCTION,
+	    PROCEDURE,
+	    OID
 	};
 
 	dbgBreakPoint(eTargetType targetType, const wxString &target, const wxString &process ): m_targetType(targetType), m_target(target), m_targetProcess(process) {}

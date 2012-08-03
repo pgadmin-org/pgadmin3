@@ -23,10 +23,10 @@ class ddModelBrowser;
 
 enum
 {
-	DDGENCREATE = 6000,
-	DDGENALTER,
-	DDGENDROPCRE,
-	DDGENNOTHING
+    DDGENCREATE = 6000,
+    DDGENALTER,
+    DDGENDROPCRE,
+    DDGENNOTHING
 };
 
 WX_DECLARE_STRING_HASH_MAP( wxString , tablesMappingHashMap );

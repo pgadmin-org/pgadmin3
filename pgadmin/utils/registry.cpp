@@ -304,13 +304,13 @@ bool pgRegKey::HasValue(const wxString &strval)
 	return nRetVal == ERROR_SUCCESS;
 }
 
-bool pgRegKey::GetFirstKey(pgRegKey*& pkey, long &lIndex) const
+bool pgRegKey::GetFirstKey(pgRegKey *&pkey, long &lIndex) const
 {
 	lIndex = 0;
 	return GetNextKey(pkey, lIndex);
 }
 
-bool pgRegKey::GetNextKey(pgRegKey*& pKey, long &lIndex) const
+bool pgRegKey::GetNextKey(pgRegKey *&pKey, long &lIndex) const
 {
 	pKey = NULL;
 
@@ -335,7 +335,7 @@ bool pgRegKey::GetNextKey(pgRegKey*& pKey, long &lIndex) const
 
 	HKEY tmpRegKey = 0;
 	nError
-	= ::RegOpenKeyEx(m_hRoot, (LPCTSTR)strSubKey, RESERVED, (m_accessMode == PGREG_READ ? KEY_READ : KEY_ALL_ACCESS) | m_wowMode, &tmpRegKey);
+	    = ::RegOpenKeyEx(m_hRoot, (LPCTSTR)strSubKey, RESERVED, (m_accessMode == PGREG_READ ? KEY_READ : KEY_ALL_ACCESS) | m_wowMode, &tmpRegKey);
 
 	if (nError != ERROR_SUCCESS)
 	{

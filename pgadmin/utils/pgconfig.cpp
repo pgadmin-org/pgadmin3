@@ -370,14 +370,14 @@ bool IsSpaceChar(wxChar c, const wxChar *spaceChars = wxT("\t "))
 }
 
 
-void SkipSpace(const wxChar* &ptr, const wxChar *spaceChars = wxT("\t "))
+void SkipSpace(const wxChar *&ptr, const wxChar *spaceChars = wxT("\t "))
 {
 	while (*ptr && IsSpaceChar(*ptr))
 		ptr++;
 }
 
 
-void SkipNonspace(const wxChar* &ptr, const wxChar *spaceChars = wxT("\t "))
+void SkipNonspace(const wxChar *&ptr, const wxChar *spaceChars = wxT("\t "))
 {
 	while (*ptr && !IsSpaceChar(*ptr))
 		ptr++;

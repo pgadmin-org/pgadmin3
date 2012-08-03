@@ -17,8 +17,8 @@
 
 enum ddRemoveDeleteButtons
 {
-	DD_REMOVE = 31000,
-	DD_DELETE = 32000
+    DD_REMOVE = 31000,
+    DD_DELETE = 32000
 };
 
 class hdRemoveDeleteDialog : public wxDialog

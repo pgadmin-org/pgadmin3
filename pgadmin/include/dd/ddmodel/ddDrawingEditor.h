@@ -17,7 +17,7 @@ class frmDatabaseDesigner;
 
 enum
 {
-	MNU_NEWTABLE = 321
+    MNU_NEWTABLE = 321
 };
 
 class ddDatabaseDesign;

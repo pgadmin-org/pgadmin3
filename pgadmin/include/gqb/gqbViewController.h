@@ -39,8 +39,8 @@ class gqbView;
 
 enum pointerMode
 {
-	pt_normal,
-	pt_join
+    pt_normal,
+    pt_join
 };
 
 // Utility Class to avoid a bug when the event sash resize is called
@@ -67,10 +67,10 @@ private:
 // This enum is useful to select particular page from the tabs
 enum tabsIndex
 {
-	ti_colsGridPanel = 0,
-	ti_criteriaPanel,
-	ti_orderPanel,
-	ti_joinsPanel
+    ti_colsGridPanel = 0,
+    ti_criteriaPanel,
+    ti_orderPanel,
+    ti_joinsPanel
 };
 
 class gqbController: public wxObject

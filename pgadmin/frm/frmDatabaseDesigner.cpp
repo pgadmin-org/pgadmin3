@@ -685,8 +685,8 @@ void frmDatabaseDesigner::OnRenameDiagram(wxCommandEvent &event)
 {
 	hdDrawingView *view = (hdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	int diagramIndex = view->getIdx();
-    wxString msg;
-    msg.Printf(_("Rename diagram %s to:"), diagrams->GetPageText(diagramIndex).c_str());
+	wxString msg;
+	msg.Printf(_("Rename diagram %s to:"), diagrams->GetPageText(diagramIndex).c_str());
 	wxString name = wxGetTextFromUser(msg, _("Rename diagram..."), diagrams->GetPageText(diagramIndex), this);
 	if(!name.IsEmpty() && !name.IsSameAs(diagrams->GetPageText(diagramIndex), false))
 	{
@@ -702,8 +702,8 @@ void frmDatabaseDesigner::OnDeleteDiagramTab(wxAuiNotebookEvent &event)
 	wxAuiNotebook *ctrl = (wxAuiNotebook *)event.GetEventObject();
 	hdDrawingView *view = (hdDrawingView *) ctrl->GetPage(event.GetSelection());
 
-    wxString msg;
-    msg.Printf(_("Are you sure you want to delete diagram \"%s\" from model?"), view->getDrawing()->getName().c_str());
+	wxString msg;
+	msg.Printf(_("Are you sure you want to delete diagram \"%s\" from model?"), view->getDrawing()->getName().c_str());
 	int res = wxMessageBox(msg,
 	                       wxT("Delete diagram?"),
 	                       wxYES_NO | wxNO_DEFAULT,

@@ -23,9 +23,9 @@ class hdCanvasMenuTool;
 // Create View Class for MVC pattern of graphic library of pgAdmin
 enum
 {
-	CTL_TEXTTOOLID = 1979,
-	CTL_OKBUTTONID,
-	CTL_CANCELBUTTONID
+    CTL_TEXTTOOLID = 1979,
+    CTL_OKBUTTONID,
+    CTL_CANCELBUTTONID
 };
 
 class hdDrawingView : public wxScrolledWindow
