@@ -567,8 +567,8 @@ void frmMainConfig::FillList(wxArrayString *category)
 
 enum
 {
-	HINT_LISTEN_ADDRESSES,
-	HINT_AUTOVACUUM_CFG
+    HINT_LISTEN_ADDRESSES,
+    HINT_AUTOVACUUM_CFG
 };
 
 

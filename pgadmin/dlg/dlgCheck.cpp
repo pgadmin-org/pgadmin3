@@ -148,7 +148,7 @@ wxString dlgCheck::GetSql()
 		{
 			sql += wxT(" NO INHERIT");
 		}
-        sql += wxT(";\n");
+		sql += wxT(";\n");
 	}
 	else
 	{

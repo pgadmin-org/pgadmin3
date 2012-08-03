@@ -17,10 +17,10 @@
 
 enum
 {
-	SCHEMATYP_SYSTEM = 0,
-	SCHEMATYP_TEMP,
-	SCHEMATYP_USERSYS,
-	SCHEMATYP_NORMAL
+    SCHEMATYP_SYSTEM = 0,
+    SCHEMATYP_TEMP,
+    SCHEMATYP_USERSYS,
+    SCHEMATYP_NORMAL
 };
 
 class pgSchemaBaseFactory : public pgDatabaseObjFactory

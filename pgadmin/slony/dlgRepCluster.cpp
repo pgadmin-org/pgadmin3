@@ -857,7 +857,7 @@ void dlgRepCluster::OnEndProcess(wxProcessEvent &ev)
 
 // this is necessary because wxString::Replace is ridiculously slow on large strings.
 
-void AppendBuf(wxChar* &buf, int &buflen, int &len, const wxChar *str, int slen = -1)
+void AppendBuf(wxChar *&buf, int &buflen, int &len, const wxChar *str, int slen = -1)
 {
 	if (slen < 0)
 		slen = wxStrlen(str);

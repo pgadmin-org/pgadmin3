@@ -440,10 +440,10 @@ wxPoint &gqbQueryJoin::getAnchorsUsed()
 
 enum
 {
-	QRButton = 9000,
-	QRValue,
-	QRConnector,
-	QRtype
+    QRButton = 9000,
+    QRValue,
+    QRConnector,
+    QRtype
 };
 
 gqbQueryRestriction::gqbQueryRestriction()

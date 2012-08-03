@@ -18,14 +18,14 @@ class ddColumnFigure;
 
 enum ddColumnOptionType
 {
-	null = 321,
-	notnull
+    null = 321,
+    notnull
 };
 
 enum
 {
-	MNU_COLNULL = 321,
-	MNU_COLNOTNULL
+    MNU_COLNULL = 321,
+    MNU_COLNOTNULL
 };
 
 class ddColumnOptionIcon : public hdAbstractMenuFigure

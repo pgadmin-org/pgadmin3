@@ -23,7 +23,7 @@ class ReportGridPage;
 
 enum
 {
-	DDTABSGRID = 7100
+    DDTABSGRID = 7100
 };
 
 class ddGenerationWizard : public wxWizard

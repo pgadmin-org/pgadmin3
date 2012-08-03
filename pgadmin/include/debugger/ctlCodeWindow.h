@@ -180,9 +180,9 @@ private:
 
 	typedef enum
 	{
-		SESSION_TYPE_UNKNOWN,	// Session could be in-context or direct
-		SESSION_TYPE_INCONTEXT,	// Session is configured for in-context debugging
-		SESSION_TYPE_DIRECT		// Session is configured for direct debugging
+	    SESSION_TYPE_UNKNOWN,	// Session could be in-context or direct
+	    SESSION_TYPE_INCONTEXT,	// Session is configured for in-context debugging
+	    SESSION_TYPE_DIRECT		// Session is configured for direct debugging
 	} eSessionType;
 
 	eSessionType	m_sessionType;		// Debugging mode is in-context or direct?
@@ -193,9 +193,9 @@ private:
 
 	enum
 	{
-		MARKER_CURRENT    = 0x02,		// Current line marker
-		MARKER_CURRENT_BG = 0x04,		// Current line marker - background hilight
-		MARKER_BREAKPOINT = 0x01,		// Breakpoint marker
+	    MARKER_CURRENT    = 0x02,		// Current line marker
+	    MARKER_CURRENT_BG = 0x04,		// Current line marker - background hilight
+	    MARKER_BREAKPOINT = 0x01,		// Breakpoint marker
 	};
 
 	sourceHash	m_sourceCodeMap;

@@ -219,7 +219,8 @@ void ctlSQLResult::DisplayData(bool single)
 				w = -1;
 
 			SetColSize(col, w);
-			if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC) {
+			if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC)
+			{
 				/*
 				 * For numeric columns, set alignment to right.
 				 */
@@ -327,7 +328,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 			else
 			{
 				if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
-					settings->GetThousandsSeparator().Length() > 0)
+				        settings->GetThousandsSeparator().Length() > 0)
 				{
 					/* Add thousands separator */
 					wxString s = thread->DataSet()->GetVal(col);

@@ -18,16 +18,16 @@
 
 enum
 {
-	CTL_PROPSQL = 250,
-	CTL_MSG,
-	CTL_LBPRIV,
-	CTL_STATICGROUP,
-	CTL_CBGROUP,
-	CTL_ADDPRIV,
-	CTL_DELPRIV,
-	CTL_ALLPRIV,
-	CTL_ALLPRIVGRANT,
-	CTL_PRIVCB          // base for all privilege checkboxes, must be last
+    CTL_PROPSQL = 250,
+    CTL_MSG,
+    CTL_LBPRIV,
+    CTL_STATICGROUP,
+    CTL_CBGROUP,
+    CTL_ADDPRIV,
+    CTL_DELPRIV,
+    CTL_ALLPRIV,
+    CTL_ALLPRIVGRANT,
+    CTL_PRIVCB          // base for all privilege checkboxes, must be last
 };
 
 DECLARE_LOCAL_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
