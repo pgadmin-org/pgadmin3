@@ -92,7 +92,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 	if (result->columnExists(wxString(COL_ARG_DEFVALS, wxConvUTF8)))
 		m_argDefVals = result->getString( wxString(COL_ARG_DEFVALS, wxConvUTF8));
 
-	if (result->columnExists(wxString(COL_PACKAGE_OID, wxConvUTF8)))
+	if (result->columnExists(wxString(COL_IS_FUNCTION, wxConvUTF8)))
 		m_isFunction = result->getBool( wxString(COL_IS_FUNCTION, wxConvUTF8));
 	else
 		m_isFunction = true;
