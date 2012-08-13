@@ -1433,7 +1433,15 @@ void ctlCodeWindow::ResultAddBreakpoint( wxCommandEvent &event )
 		popupError(result);
 	else
 	{
-		if (m_dbgConn->GetIsEdb())
+		/*
+		 * In EnterpriseDB versions <= 9.1 the
+		 * pldbg_set_global_breakpoint function took five arguments,
+		 * the 2nd argument being the package's OID, if any. Starting
+		 * with 9.2, the package OID argument is gone, and the function
+		 * takes four arguments like the community version has always
+		 * done.
+		 */
+		if (m_dbgConn->GetIsEdb() && !m_dbgConn->BackendMinimumVersion(9, 2))
 			m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointEDB, m_sessionHandle.c_str(), result.getString(wxT("pkg")).c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT( "pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 		else
 			m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointPG, m_sessionHandle.c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT( "pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
@@ -1455,7 +1463,15 @@ void ctlCodeWindow::ResultLastBreakpoint( wxCommandEvent &event )
 		popupError(result);
 	else
 	{
-		if (m_dbgConn->GetIsEdb())
+		/*
+		 * In EnterpriseDB versions <= 9.1 the
+		 * pldbg_set_global_breakpoint function took five arguments,
+		 * the 2nd argument being the package's OID, if any. Starting
+		 * with 9.2, the package OID argument is gone, and the function
+		 * takes four arguments like the community version has always
+		 * done.
+		 */
+		if (m_dbgConn->GetIsEdb() && !m_dbgConn->BackendMinimumVersion(9, 2))
 			m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointEDB, m_sessionHandle.c_str(), result.getString(wxT("pkg")).c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT("pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT_WAIT);
 		else
 			m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointPG, m_sessionHandle.c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT("pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT_WAIT);
