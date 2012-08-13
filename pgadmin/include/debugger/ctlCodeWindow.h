@@ -210,6 +210,7 @@ private:
 	wxProgressDialog *m_progressBar;	// "Waiting for target" dialog
 	wxTimer	m_timer;
 	bool	findSourceInCache( const wxString &packageOID, const wxString &funcOID);
+	void	clearSourceCache();
 	void	getSource(const wxString &packageOID, const wxString &funcOID);
 	void	cacheSource(const wxString &packageOID, const wxString &funcOID, const wxString &sourceCode, const wxString &signature);
 	void	displaySource(const wxString &packageOID, const wxString &funcID);

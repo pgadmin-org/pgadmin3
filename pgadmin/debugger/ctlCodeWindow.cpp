@@ -153,6 +153,8 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
 	m_targetComplete = false;
 	m_targetAborted = false;
 
+	clearSourceCache();
+
 	wxWindowBase::SetFont(settings->GetSystemFont());
 
 	m_stackWindow = new ctlStackWindow(parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0);
@@ -343,7 +345,7 @@ void ctlCodeWindow::resumeLocalDebugging()
 	// request
 
 	// Clear the source cache in case someone updated the function in another session
-	m_sourceCodeMap.clear();
+	clearSourceCache();
 	m_displayedFuncOid = wxT("-1");
 	m_displayedPackageOid = wxT("-1");
 
@@ -1002,6 +1004,21 @@ bool ctlCodeWindow::findSourceInCache(const wxString &packageOID, const wxString
 		// FIXME: compare the xid and cid here, throw out out the cached copy (and return false) if they don't match
 		return(true);
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// clearSourceCache()
+//
+// (Re-)initializes the source cache.
+
+void ctlCodeWindow::clearSourceCache()
+{
+	m_sourceCodeMap.clear();
+
+	// Put a dummy entry for invalid function OID to the cache. This is
+	// displayed at least for inline code blocks, as we currently have
+	// no way to fetch the source for those.
+	m_sourceCodeMap[wxT("0")] = wsCodeCache(wxT("0"), wxT("0"), wxT("<source not available>"), wxT(""));	
 }
 
 ////////////////////////////////////////////////////////////////////////////////
