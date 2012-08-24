@@ -419,7 +419,7 @@ void dlgDomain::OnRemoveConstr(wxCommandEvent &ev)
 {
 	if (settings->GetConfirmDelete())
 	{
-		if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		if (wxMessageBox(_("Are you sure you wish to remove the selected constraint?"), _("Remove constraint?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 			return;
 	}
 

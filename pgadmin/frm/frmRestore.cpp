@@ -566,7 +566,7 @@ void frmRestore::OnOK(wxCommandEvent &ev)
 	{
 		if (processedFile == txtFilename->GetValue())
 		{
-			if (wxMessageBox(_("Are you sure you wish to run a restore from this file again?"), _("Repeat restore?"), wxICON_QUESTION | wxYES_NO) == wxNO)
+			if (wxMessageBox(_("Are you sure you wish to run a restore from this file again?"), _("Repeat restore?"), wxICON_QUESTION | wxYES_NO) != wxYES)
 				return;
 		}
 

@@ -2496,7 +2496,7 @@ void frmStatus::OnStatusCancelBtn(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)
@@ -2521,7 +2521,7 @@ void frmStatus::OnLocksCancelBtn(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)
@@ -2563,7 +2563,7 @@ void frmStatus::OnStatusTerminateBtn(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)
@@ -2588,7 +2588,7 @@ void frmStatus::OnLocksTerminateBtn(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)
@@ -2697,7 +2697,7 @@ void frmStatus::OnCommit(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to commit the selected prepared transactions?"), _("Commit transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to commit the selected prepared transactions?"), _("Commit transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)
@@ -2755,7 +2755,7 @@ void frmStatus::OnRollback(wxCommandEvent &event)
 	if (item < 0)
 		return;
 
-	if (wxMessageBox(_("Are you sure you wish to rollback the selected prepared transactions?"), _("Rollback transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to rollback the selected prepared transactions?"), _("Rollback transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) != wxYES)
 		return;
 
 	while  (item >= 0)

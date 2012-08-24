@@ -567,14 +567,14 @@ void frmBackup::OnOK(wxCommandEvent &ev)
 	{
 		if (processedFile == txtFilename->GetValue())
 		{
-			if (wxMessageBox(_("Are you sure you wish to run a backup to this file again?"), _("Repeat backup?"), wxICON_QUESTION | wxYES_NO) == wxNO)
+			if (wxMessageBox(_("Are you sure you wish to run a backup to this file again?"), _("Repeat backup?"), wxICON_QUESTION | wxYES_NO) != wxYES)
 				return;
 		}
 		else if (wxFile::Exists(txtFilename->GetValue()))
 		{
 			wxString msg;
 			msg.Printf(_("The file: \n\n%s\n\nalready exists. Do you want to overwrite it?"), txtFilename->GetValue().c_str());
-			if (wxMessageBox(msg, _("Overwrite file?"), wxICON_WARNING | wxYES_NO) == wxNO)
+			if (wxMessageBox(msg, _("Overwrite file?"), wxICON_WARNING | wxYES_NO) != wxYES)
 				return;
 		}
 		processedFile = txtFilename->GetValue();

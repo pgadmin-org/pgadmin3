@@ -1187,7 +1187,7 @@ resetFunctionStatsFactory::resetFunctionStatsFactory(menuFactoryList *list, wxMe
 
 wxWindow *resetFunctionStatsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to reset statistics of this function?"), _("Reset function statistics"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to reset statistics of this function?"), _("Reset function statistics"), wxYES_NO) != wxYES)
 		return 0;
 
 	((pgFunction *)obj)->ResetStats();

@@ -288,7 +288,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
 		wxString msg;
 		msg.Printf(_("The file: \n\n%s\n\nalready exists. Do you want to overwrite it?"), fn.GetFullPath().c_str());
 
-		if (wxMessageBox(msg, _("Overwrite file?"), wxYES_NO | wxICON_QUESTION) == wxNO)
+		if (wxMessageBox(msg, _("Overwrite file?"), wxYES_NO | wxICON_QUESTION) != wxYES)
 		{
 			if (rbHtml->GetValue())
 				txtHtmlFile->SetFocus();

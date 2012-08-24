@@ -839,7 +839,7 @@ bool frmMain::CheckAlive()
 													                    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()),
 													                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
-													closeIt = (dlg.ShowModal() == wxID_NO);
+													closeIt = (dlg.ShowModal() != wxID_YES);
 													userInformed = true;
 												}
 												if (closeIt)
@@ -892,7 +892,7 @@ bool frmMain::CheckAlive()
 								                    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()),
 								                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
-								closeIt = (dlg.ShowModal() == wxID_NO);
+								closeIt = (dlg.ShowModal() != wxID_YES);
 								userInformed = true;
 							}
 							if (closeIt)

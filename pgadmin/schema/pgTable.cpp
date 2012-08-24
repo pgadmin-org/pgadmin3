@@ -1775,7 +1775,7 @@ disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMe
 
 wxWindow *disableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to disable all triggers on this table?"), _("Disable triggers"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to disable all triggers on this table?"), _("Disable triggers"), wxYES_NO) != wxYES)
 		return 0;
 
 	if (!((pgTable *)obj)->EnableTriggers(false))
@@ -1803,7 +1803,7 @@ enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu
 
 wxWindow *enableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to enable all triggers on this table?"), _("Enable triggers"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to enable all triggers on this table?"), _("Enable triggers"), wxYES_NO) != wxYES)
 		return 0;
 
 	if (!((pgTable *)obj)->EnableTriggers(true))
@@ -1831,7 +1831,7 @@ truncateFactory::truncateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 
 wxWindow *truncateFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to truncate this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to truncate this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table"), wxYES_NO) != wxYES)
 		return 0;
 
 	((pgTable *)obj)->Truncate(false);
@@ -1858,7 +1858,7 @@ truncateCascadedFactory::truncateCascadedFactory(menuFactoryList *list, wxMenu *
 
 wxWindow *truncateCascadedFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to truncate this table and all tables that have foreign key references to this table?\n\nWARNING: This action will delete ALL data in the tables!"), _("Truncate table cascaded"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to truncate this table and all tables that have foreign key references to this table?\n\nWARNING: This action will delete ALL data in the tables!"), _("Truncate table cascaded"), wxYES_NO) != wxYES)
 		return 0;
 
 	((pgTable *)obj)->Truncate(true);
@@ -1885,7 +1885,7 @@ resetTableStatsFactory::resetTableStatsFactory(menuFactoryList *list, wxMenu *mn
 
 wxWindow *resetTableStatsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to reset statistics of this table?"), _("Reset statistics"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to reset statistics of this table?"), _("Reset statistics"), wxYES_NO) != wxYES)
 		return 0;
 
 	((pgTable *)obj)->ResetStats();
