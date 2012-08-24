@@ -229,7 +229,7 @@ void ctlCodeWindow::OnClose(wxCloseEvent &event)
 {
 	if (event.CanVeto() && !m_targetAborted && !m_targetComplete)
 	{
-		if (wxMessageBox(_("Are you sure you wish to abort the debugging session?\nThis will abort the function currently being debugged."), _("Close debugger"), wxICON_QUESTION | wxYES_NO) == wxNO)
+		if (wxMessageBox(_("Are you sure you wish to abort the debugging session?\nThis will abort the function currently being debugged."), _("Close debugger"), wxICON_QUESTION | wxYES_NO) != wxYES)
 		{
 			event.Veto();
 			return;

@@ -1606,7 +1606,7 @@ void frmQuery::OnClose(wxCloseEvent &event)
 			wxMessageDialog msg(this, _("A query is running. Do you wish to cancel it?"), _("Query"),
 			                    wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
 
-			if (msg.ShowModal() == wxID_NO)
+			if (msg.ShowModal() != wxID_YES)
 			{
 				event.Veto();
 				return;

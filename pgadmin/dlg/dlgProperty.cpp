@@ -678,7 +678,7 @@ void dlgProperty::OnChangeReadOnly(wxCommandEvent &ev)
 
 	if (showmessage)
 	{
-		if (wxMessageBox(_("Are you sure you wish to cancel your edit?"), _("SQL editor"), wxYES_NO | wxNO_DEFAULT) == wxNO)
+		if (wxMessageBox(_("Are you sure you wish to cancel your edit?"), _("SQL editor"), wxYES_NO | wxNO_DEFAULT) != wxYES)
 		{
 			chkReadOnly->SetValue(false);
 			return;
@@ -1058,7 +1058,7 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 {
 	if (!IsUpToDate())
 	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
 			return;
 	}
 
@@ -1083,7 +1083,7 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 #endif
 	if (!IsUpToDate())
 	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
 			return;
 	}
 
@@ -2214,7 +2214,7 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 #endif
 	if (!IsUpToDate())
 	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
 			return;
 	}
 

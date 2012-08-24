@@ -389,7 +389,7 @@ void dlgTrigger::OnChange(wxCommandEvent &ev)
 	{
 		if (lstColumns->GetItemCount() > 0)
 		{
-			if (wxMessageBox(_("Removing the UPDATE event will cause the column list to be cleared. Do you wish to continue?"), _("Remove UPDATE event?"), wxYES_NO) == wxNO)
+			if (wxMessageBox(_("Removing the UPDATE event will cause the column list to be cleared. Do you wish to continue?"), _("Remove UPDATE event?"), wxYES_NO) != wxYES)
 			{
 				chkUpdate->SetValue(true);
 				return;

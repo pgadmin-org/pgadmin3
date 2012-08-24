@@ -461,7 +461,7 @@ void dlgIndexConstraint::OnSelectType(wxCommandEvent &ev)
 
 	if (lstColumns->GetItemCount() > 0 && !changingDefault)
 	{
-		if (wxMessageBox(_("Changing the index type will cause the column list to be cleared. Do you wish to continue?"), _("Change index type?"), wxYES_NO) == wxNO)
+		if (wxMessageBox(_("Changing the index type will cause the column list to be cleared. Do you wish to continue?"), _("Change index type?"), wxYES_NO) != wxYES)
 		{
 			cbType->SetValue(m_previousType);
 			return;
