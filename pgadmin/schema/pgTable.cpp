@@ -1831,7 +1831,7 @@ truncateFactory::truncateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 
 wxWindow *truncateFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	if (wxMessageBox(_("Are you sure you wish to truncate this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table"), wxYES_NO) == wxNO)
+	if (wxMessageBox(_("Are you sure you wish to truncate this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table"), wxOK|wxCANCEL) == wxCANCEL)
 		return 0;
 
 	((pgTable *)obj)->Truncate(false);
