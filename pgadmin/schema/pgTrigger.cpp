@@ -400,14 +400,14 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	           wxT(" WHERE ");
 	if (collection->GetDatabase()->connection()->BackendMinimumVersion(9, 0))
 	{
-		trig_sql += wxT("NOT tgisinternal\n  AND ");
+		trig_sql += wxT("NOT tgisinternal");
 	}
 	else
 	{
-		trig_sql += wxT("tgconstraint=0 \n  AND ");
+		trig_sql += wxT("tgconstraint=0");
 	}
 	if (restriction.IsEmpty())
-		trig_sql += wxT("tgrelid = ") + collection->GetOidStr() + wxT("\n");
+		trig_sql += wxT("\n  AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
 	else
 		trig_sql += restriction + wxT("\n");
 	trig_sql += wxT(" ORDER BY tgname");
