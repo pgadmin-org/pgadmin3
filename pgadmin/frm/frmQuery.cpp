@@ -2581,21 +2581,42 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
 	if (sqlResult->RunStatus() == PGRES_TUPLES_OK || sqlResult->RunStatus() == PGRES_COMMAND_OK)
 	{
-		if (sqlQuery->GetText().Len() < (unsigned int)settings->GetHistoryMaxQuerySize())
+		// Get the executed query
+		wxString executedQuery = sqlQuery->GetSelectedText();
+		if (executedQuery.IsNull())
+			executedQuery = sqlQuery->GetText();
+
+		// Same query, but without return feeds and carriage returns
+		wxString executedQueryWithoutReturns = executedQuery;
+		executedQueryWithoutReturns.Replace(wxT("\n"), wxT(" "));
+		executedQueryWithoutReturns.Replace(wxT("\r"), wxT(" "));
+		executedQueryWithoutReturns = executedQueryWithoutReturns.Trim();
+
+		if (executedQuery.Len() < (unsigned int)settings->GetHistoryMaxQuerySize())
 		{
-			wxString tmp = sqlQuery->GetSelectedText();
-			if (tmp.IsNull())
-				tmp = sqlQuery->GetText();
-			tmp.Replace(wxT("\n"), wxT(" "));
-			tmp.Replace(wxT("\r"), wxT(" "));
-			sqlQueries->Append(tmp);
-			histoQueries.Add(sqlQuery->GetText());
+			// We put in the combo box the query without returns...
+			sqlQueries->Append(executedQueryWithoutReturns);
+
+			// .. but we save the query with returns in the array
+			// (so that we have the real query in the file)
+			histoQueries.Add(executedQuery);
+
+			// Finally, we save the queries
 			SaveQueries();
 		}
 
-		// Delete an old query if it matches the current one
-		unsigned int index = histoQueries.Index(sqlQueries->GetString(sqlQueries->GetCount() - 1), false);
-		if (index != (unsigned int)wxNOT_FOUND && index < ((unsigned int)sqlQueries->GetCount() - 1))
+		// Search a matching old query
+		unsigned int index = 0;
+		bool found = false;
+		while (!found && index < sqlQueries->GetCount())
+		{
+			found = sqlQueries->GetString(index) == executedQueryWithoutReturns;
+			if (!found)
+				index++;
+		}
+
+		// If we found one, delete it from the combobox and the array
+		if (found && index < (unsigned int)sqlQueries->GetCount() - 1)
 		{
 			histoQueries.RemoveAt(index);
 			sqlQueries->Delete(index);
