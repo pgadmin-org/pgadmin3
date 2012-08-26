@@ -848,11 +848,12 @@ void dlgProperty::ShowObject()
 				{
 					// second parent is the schema's node
 					wxTreeItemId schemanode = mainForm->GetBrowser()->GetItemParent(objectsnode);
-					if (objectsnode.IsOk())
+					pgObject *obj = mainForm->GetBrowser()->GetObject(schemanode);
+					if (schemanode.IsOk() && obj != NULL && obj->GetMetaType() == PGM_SCHEMA)
 					{
 						// third parent is the schemas' node
 						wxTreeItemId schemasnode = mainForm->GetBrowser()->GetItemParent(schemanode);
-						if (objectsnode.IsOk())
+						if (schemasnode.IsOk())
 						{
 							// we finally have the schemas' node, so we refresh it
 							pgObject *schemasnodeobj = mainForm->GetBrowser()->GetObject(schemasnode);
