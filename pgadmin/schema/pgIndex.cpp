@@ -247,7 +247,8 @@ void pgIndexBase::ReadColumnDetails()
 
 					opcname = res->GetVal(wxT("opcname"));
 					opclassesArray.Add(opcname);
-					coldef += wxT(" ") + opcname;
+					if (!opcname.IsEmpty())
+						coldef += wxT(" ") + opcname;
 
 					// Get the column options
 					if (GetConnection()->BackendMinimumVersion(8, 3))
