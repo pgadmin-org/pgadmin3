@@ -1849,7 +1849,7 @@ bool connectServerFactory::CheckEnable(pgObject *obj)
 
 disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-	mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected server."));
+	mnu->Append(id, _("Disconnec&t server"), _("Disconnect from the selected server."));
 }
 
 

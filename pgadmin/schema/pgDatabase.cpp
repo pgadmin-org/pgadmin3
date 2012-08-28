@@ -1303,7 +1303,7 @@ static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_png_
 
 disconnectDatabaseFactory::disconnectDatabaseFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-	mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected database."));
+	mnu->Append(id, _("Disconnec&t database"), _("Disconnect from the selected database."));
 }
 
 
