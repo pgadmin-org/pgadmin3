@@ -342,7 +342,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	             wxT("	left join pg_namespace ns on opf.opfnamespace = ns.oid ");
 
 
-	if(currentdb->BackendMinimumVersion(8, 4))
+	if(currentdb->BackendMinimumVersion(8, 4) && currentdb->GetConnection()->IsSuperuser())
 	{
 		searchSQL += wxT("	union ")
 		             wxT("	select 'Foreign Data Wrappers', fdwname, ':Foreign Data Wrappers/' || fdwname from pg_foreign_data_wrapper ")
