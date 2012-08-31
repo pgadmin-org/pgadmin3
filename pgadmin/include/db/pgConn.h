@@ -91,6 +91,7 @@ public:
 	       const bool sslcompression = true);
 	~pgConn();
 
+	bool IsSuperuser();
 	bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
 	bool HasFeature(int feature = 0, bool forceCheck = false);
 	bool BackendMinimumVersion(int major, int minor);

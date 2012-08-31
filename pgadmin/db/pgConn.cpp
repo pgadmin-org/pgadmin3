@@ -434,8 +434,14 @@ bool pgConn::HasPrivilege(const wxString &objTyp, const wxString &objName, const
 	return StrToBool(res);
 }
 
+bool pgConn::IsSuperuser()
+{
+	wxString res = ExecuteScalar(
+	                   wxT("SELECT rolsuper FROM pg_roles ")
+	                   wxT("WHERE rolname='") + qtIdent(GetUser()) + wxT("'"));
 
-
+	return StrToBool(res);
+}
 
 bool pgConn::BackendMinimumVersion(int major, int minor)
 {
