@@ -275,8 +275,22 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 		if (set_password && !obj->GetConnection()->GetPassword().IsEmpty())
 			wxSetEnv(wxT("PGPASSWORD"), obj->GetConnection()->GetPassword());
 
-		// Pass the SSL mode via the environment
+		// Pass the SSL settings via the environment
+		switch (obj->GetConnection()->GetSslMode())
+		{
+			case 1:
+				wxSetEnv(wxT("PGREQUIRESSL"), wxT("1"));
+				break;
+			case 2:
+				wxSetEnv(wxT("PGREQUIRESSL"), wxT("0"));
+				break;
+		}
+
 		wxSetEnv(wxT("PGSSLMODE"), obj->GetConnection()->GetSslModeName());
+		wxSetEnv(wxT("PGSSLCERT"), obj->GetConnection()->GetSSLCert());
+		wxSetEnv(wxT("PGSSLKEY"), obj->GetConnection()->GetSSLKey());
+		wxSetEnv(wxT("PGSSLROOTCERT"), obj->GetConnection()->GetSSLRootCert());
+		wxSetEnv(wxT("PGSSLCRL"), obj->GetConnection()->GetSSLCrl());
 	}
 	else
 	{
@@ -345,6 +359,15 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 	{
 		wxLogError(_("Failed to execute plugin %s (%s)"), title.c_str(), command.c_str());
 	}
+
+	// Reset the environment variables set by us
+	wxSetEnv(wxT("PGPASSWORD"), wxEmptyString);
+	wxSetEnv(wxT("PGSSLMODE"), wxEmptyString);
+	wxSetEnv(wxT("PGREQUIRESSL"), wxEmptyString);
+	wxSetEnv(wxT("PGSSLCERT"), wxEmptyString);
+	wxSetEnv(wxT("PGSSLKEY"), wxEmptyString);
+	wxSetEnv(wxT("PGSSLROOTCERT"), wxEmptyString);
+	wxSetEnv(wxT("PGSSLCRL"), wxEmptyString);
 
 	return 0;
 }
