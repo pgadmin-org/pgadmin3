@@ -226,6 +226,8 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 	wxString sql, pkgsrc;
 
+	wxString whereclause;
+
 	if (collection->GetConnection()->EdbMinimumVersion(9, 0))
 		pkgsrc = wxT("pg_catalog.edb_get_packagebodydef(nsp.oid) AS pkgbodysrc, ")
 		         wxT("pg_catalog.edb_get_packageheaddef(nsp.oid) AS pkgheadsrc,\n");
@@ -234,11 +236,15 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 2))
 	{
+		whereclause = wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"); 
+		if (collection->GetConnection()->EdbMinimumVersion(9, 2))
+			whereclause += wxT(" AND nspobjecttype = 0 ");
+
 		sql = wxT("SELECT nsp.oid, nsp.xmin, nspname AS pkgname,\n") + pkgsrc +
 		      wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n")
 		      wxT("  FROM pg_namespace nsp")
 		      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-		      wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
+		      + whereclause +
 		      + restriction +
 		      wxT("  ORDER BY nspname;");
 	}
