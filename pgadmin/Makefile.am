@@ -71,7 +71,7 @@ endif
 if !APPBUNDLE
 
 nobase_dist_pkgdata_DATA = \
-	$(top_srcdir)/pgadmin/settings.ini
+	$(srcdir)/settings.ini
 
 
 if BUILD_DEBUG
@@ -88,7 +88,7 @@ install-exec-hook:
 else
 
 nobase_dist_data_DATA = \
-	$(top_srcdir)/pgadmin/settings.ini
+	$(srcdir)/settings.ini
 
 if BUILD_DEBUG
 nobase_dist_data_DATA += \
