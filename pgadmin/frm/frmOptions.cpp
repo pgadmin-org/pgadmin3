@@ -59,7 +59,6 @@
 #define MISC_GURUHINTS_ITEM _("Guru hints")
 #define MISC_LOGGING_ITEM _("Logging")
 
-#define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
 #define txtEdbHelpPath              CTRL_TEXT("txtEdbHelpPath")
 #define txtGpHelpPath               CTRL_TEXT("txtGpHelpPath")
@@ -482,8 +481,7 @@ frmOptions::~frmOptions()
 
 void frmOptions::OnHelp(wxCommandEvent &ev)
 {
-	long page = nbOptions->GetSelection();
-	DisplayHelp(wxT("options-tab") + NumToStr(page + 1L), HELP_PGADMIN);
+	DisplayHelp(wxT("options"), HELP_PGADMIN);
 }
 
 void frmOptions::OnDefault(wxCommandEvent &ev)
