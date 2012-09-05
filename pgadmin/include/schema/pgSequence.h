@@ -51,6 +51,10 @@ public:
 	{
 		return lastValue;
 	}
+	wxLongLong GetNextValue() const
+	{
+			return nextValue;
+	}
 	wxLongLong GetMinValue() const
 	{
 		return minValue;
@@ -94,7 +98,7 @@ public:
 	}
 
 private:
-	wxLongLong lastValue, minValue, maxValue, cacheValue, increment;
+	wxLongLong lastValue, nextValue, minValue, maxValue, cacheValue, increment;
 	bool cycled, called, isReplicated;
 };
 

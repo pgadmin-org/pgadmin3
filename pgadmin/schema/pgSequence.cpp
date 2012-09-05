@@ -128,6 +128,10 @@ void pgSequence::UpdateValues()
 		increment = sequence->GetLongLong(wxT("increment_by"));
 		cycled = sequence->GetBool(wxT("is_cycled"));
 		called = sequence->GetBool(wxT("is_called"));
+		if (called)
+			nextValue = lastValue + increment;
+		else
+			nextValue = lastValue;
 
 		delete sequence;
 	}
@@ -178,6 +182,7 @@ void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Current value"), GetLastValue());
+		properties->AppendItem(_("Next value"), GetNextValue());
 		properties->AppendItem(_("Minimum"), GetMinValue());
 		properties->AppendItem(_("Maximum"), GetMaxValue());
 		properties->AppendItem(_("Increment"), GetIncrement());
