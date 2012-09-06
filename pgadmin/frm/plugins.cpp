@@ -361,13 +361,13 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 	}
 
 	// Reset the environment variables set by us
-	wxSetEnv(wxT("PGPASSWORD"), wxEmptyString);
-	wxSetEnv(wxT("PGSSLMODE"), wxEmptyString);
-	wxSetEnv(wxT("PGREQUIRESSL"), wxEmptyString);
-	wxSetEnv(wxT("PGSSLCERT"), wxEmptyString);
-	wxSetEnv(wxT("PGSSLKEY"), wxEmptyString);
-	wxSetEnv(wxT("PGSSLROOTCERT"), wxEmptyString);
-	wxSetEnv(wxT("PGSSLCRL"), wxEmptyString);
+	wxUnsetEnv(wxT("PGPASSWORD"));
+	wxUnsetEnv(wxT("PGSSLMODE"));
+	wxUnsetEnv(wxT("PGREQUIRESSL"));
+	wxUnsetEnv(wxT("PGSSLCERT"));
+	wxUnsetEnv(wxT("PGSSLKEY"));
+	wxUnsetEnv(wxT("PGSSLROOTCERT"));
+	wxUnsetEnv(wxT("PGSSLCRL"));
 
 	return 0;
 }
