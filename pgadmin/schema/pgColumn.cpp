@@ -317,12 +317,20 @@ wxString pgColumn::GetDefinition()
 	if (!GetCollation().IsEmpty() && GetCollation() != wxT("pg_catalog.\"default\""))
 		sql += wxT(" COLLATE ") + GetCollation();
 
+	wxString full_tabname = wxEmptyString;
 	if (GetDatabase()->BackendMinimumVersion(8, 1))
 	{
-		seqDefault1 = wxT("nextval('") + schema->GetPrefix() + GetTableName()
-		              + wxT("_") + GetName() + wxT("_seq'::regclass)");
-		seqDefault2 = wxT("nextval('\"") + schema->GetPrefix() + GetTableName()
-		              + wxT("_") + GetName() + wxT("_seq\"'::regclass)");
+		wxString schpref;
+
+		schpref = schema->GetQuotedPrefix();
+		full_tabname = GetTableName() + wxT("_") + GetName() + wxT("_seq");
+		full_tabname = qtIdent(full_tabname);
+
+		if (schpref != wxEmptyString)
+			full_tabname = schpref + full_tabname;
+
+		seqDefault1 = wxT("nextval('") + full_tabname + wxT("'::regclass)");
+		seqDefault2 = seqDefault1;
 	}
 	else
 	{
@@ -338,13 +346,43 @@ wxString pgColumn::GetDefinition()
 	        sql == wxT("pg_catalog.integer") || sql == wxT("pg_catalog.bigint"))
 	        && (GetDefault() == seqDefault1 || GetDefault() == seqDefault2))
 	{
-		if (sql.Right(6) == wxT("bigint"))
-			sql = wxT("bigserial");
-		else
-			sql = wxT("serial");
+		if (GetDatabase()->BackendMinimumVersion(8, 1))
+		{
+			pgSet *set = ExecuteSet(
+								wxT("SELECT classid\n")
+								wxT("  FROM pg_depend\n")
+								wxT(" WHERE refobjid=") + table->GetOidStr() +
+								wxT(" AND refobjsubid = ") + NumToStr(GetColNumber()) +
+								wxT(" AND objid = '") + full_tabname + wxT("'::regclass") +
+								wxT(" AND deptype='a'"));
 
-		if (GetNotNull())
-			sql += wxT(" NOT NULL");
+			if (set && set->NumRows())
+			{
+				if (sql.Right(6) == wxT("bigint"))
+					sql = wxT("bigserial");
+				else
+					sql = wxT("serial");
+			}
+
+			if (GetNotNull())
+				sql += wxT(" NOT NULL");
+
+			if (!set || !(set->NumRows()))
+				AppendIfFilled(sql, wxT(" DEFAULT "), GetDefault());
+
+			if (set)
+				delete set;
+		}
+		else
+		{
+			if (sql.Right(6) == wxT("bigint"))
+				sql = wxT("bigserial");
+			else
+				sql = wxT("serial");
+
+			if (GetNotNull())
+				sql += wxT(" NOT NULL");
+		}
 	}
 	else
 	{
