@@ -244,7 +244,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		      wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n")
 		      wxT("  FROM pg_namespace nsp")
 		      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-		      + whereclause +
+		      + whereclause 
 		      + restriction +
 		      wxT("  ORDER BY nspname;");
 	}
