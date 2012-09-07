@@ -1001,30 +1001,22 @@ void pgAdmin3::InitXtraPaths()
 
 		if (!programFiles.IsEmpty())
 		{
+			path.Add(programFiles + wxT("\\PostgreSQL\\9.3\\bin"));
 			path.Add(programFiles + wxT("\\PostgreSQL\\9.2\\bin"));
 			path.Add(programFiles + wxT("\\PostgreSQL\\9.1\\bin"));
 			path.Add(programFiles + wxT("\\PostgreSQL\\9.0\\bin"));
 			path.Add(programFiles + wxT("\\PostgreSQL\\8.4\\bin"));
-			path.Add(programFiles + wxT("\\PostgreSQL\\8.3\\bin"));
-			path.Add(programFiles + wxT("\\PostgreSQL\\8.2\\bin"));
-			path.Add(programFiles + wxT("\\PostgreSQL\\8.1\\bin"));
-			path.Add(programFiles + wxT("\\PostgreSQL\\8.0\\bin"));
-			path.Add(programFiles + wxT("\\PostgresPlus\\9.1SS\\bin"));
 			path.Add(programFiles + wxT("\\PostgresPlus\\9.0SS\\bin"));
 			path.Add(programFiles + wxT("\\PostgresPlus\\8.4SS\\bin"));
 		}
 
 		if (!programFilesX86.IsEmpty())
 		{
+			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.3\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.2\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.1\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.0\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\bin"));
-			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.3\\bin"));
-			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.2\\bin"));
-			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.1\\bin"));
-			path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.0\\bin"));
-			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.1SS\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.0SS\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgresPlus\\8.4SS\\bin"));
 		}
@@ -1032,26 +1024,22 @@ void pgAdmin3::InitXtraPaths()
 		wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
 		// Mac paths
+		path.Add(wxT("/Library/PostgreSQL/9.3/bin"));
 		path.Add(wxT("/Library/PostgreSQL/9.2/bin"));
 		path.Add(wxT("/Library/PostgreSQL/9.1/bin"));
 		path.Add(wxT("/Library/PostgreSQL/9.0/bin"));
 		path.Add(wxT("/Library/PostgreSQL/8.4/bin"));
-		path.Add(wxT("/Library/PostgreSQL/8.3/bin"));
-		path.Add(wxT("/Library/PostgresPlus/9.1SS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.0SS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/8.4SS/bin"));
-		path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
 
 		// Generic Unix paths
+		path.Add(wxT("/opt/PostgreSQL/9.3/bin"));
 		path.Add(wxT("/opt/PostgreSQL/9.2/bin"));
 		path.Add(wxT("/opt/PostgreSQL/9.1/bin"));
 		path.Add(wxT("/opt/PostgreSQL/9.0/bin"));
 		path.Add(wxT("/opt/PostgreSQL/8.4/bin"));
-		path.Add(wxT("/opt/PostgreSQL/8.3/bin"));
-		path.Add(wxT("/opt/PostgresPlus/9.1SS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.0SS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/8.4SS/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
 		path.Add(wxT("/usr/local/pgsql/bin"));
 		path.Add(wxT("/usr/local/bin"));
 		path.Add(wxT("/usr/bin"));
@@ -1075,14 +1063,9 @@ void pgAdmin3::InitXtraPaths()
 		wxPathList path;
 
 #ifdef __WXMSW__
-		path.Add(wxT("C:\\PostgresPlus\\8.3R2AS\\dbserver\\bin"));
-		path.Add(wxT("C:\\PostgresPlus\\8.3AS\\dbserver\\bin"));
-		path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
-		path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
-		path.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\bin"));
-
 		if (!programFiles.IsEmpty())
 		{
+			path.Add(programFiles + wxT("\\PostgresPlus\\9.3AS\\bin"));
 			path.Add(programFiles + wxT("\\PostgresPlus\\9.2AS\\bin"));
 			path.Add(programFiles + wxT("\\PostgresPlus\\9.1AS\\bin"));
 			path.Add(programFiles + wxT("\\PostgresPlus\\9.0AS\\bin"));
@@ -1091,6 +1074,7 @@ void pgAdmin3::InitXtraPaths()
 
 		if (!programFilesX86.IsEmpty())
 		{
+			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.3AS\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.2AS\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.1AS\\bin"));
 			path.Add(programFilesX86 + wxT("\\PostgresPlus\\9.0AS\\bin"));
@@ -1100,20 +1084,18 @@ void pgAdmin3::InitXtraPaths()
 		wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
 		// Mac paths
+		path.Add(wxT("/Library/PostgresPlus/9.3AS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.2AS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.1AS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/9.0AS/bin"));
 		path.Add(wxT("/Library/PostgresPlus/8.4AS/bin"));
-		path.Add(wxT("/Library/PostgresPlus/8.3R2AS/dbserver/bin"));
-		path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
 
 		// Generic Unix paths
+		path.Add(wxT("/opt/PostgresPlus/9.3AS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.2AS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.1AS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/9.0AS/bin"));
 		path.Add(wxT("/opt/PostgresPlus/8.4AS/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3R2AS/dbserver/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
 		path.Add(wxT("/usr/local/enterpriseDB/bin"));
 		path.Add(wxT("/usr/local/enterprisedb/bin"));
 		path.Add(wxT("/usr/local/edb/bin"));
@@ -1146,12 +1128,10 @@ void pgAdmin3::InitXtraPaths()
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
-			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
 
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
-			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
 		}
 
 		if (!programFilesX86.IsEmpty())
@@ -1159,12 +1139,10 @@ void pgAdmin3::InitXtraPaths()
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
-			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
 
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
-			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
 		}
 
 
@@ -1180,8 +1158,6 @@ void pgAdmin3::InitXtraPaths()
 		path.Add(wxT("/opt/local/greenplum-clients-3.3/bin"));
 		path.Add(wxT("/usr/local/greenplum-clients-3.2/bin"));
 		path.Add(wxT("/opt/local/greenplum-clients-3.2/bin"));
-		path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/bin"));
-		path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/bin"));
 
 		path.Add(wxT("/usr/local/greenplum-clients-4.0/lib"));
 		path.Add(wxT("/opt/local/greenplum-clients-4.0/lib"));
@@ -1189,8 +1165,6 @@ void pgAdmin3::InitXtraPaths()
 		path.Add(wxT("/opt/local/greenplum-clients-3.3/lib"));
 		path.Add(wxT("/usr/local/greenplum-clients-3.2/lib"));
 		path.Add(wxT("/opt/local/greenplum-clients-3.2/lib"));
-		path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/lib"));
-		path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/lib"));
 
 
 		wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
