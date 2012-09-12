@@ -2459,6 +2459,10 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 				            wxString::Format(_("%d rows affected."), insertedCount));
 			}
 		}
+		else if (sqlResult->RunStatus() == PGRES_EMPTY_QUERY)
+		{
+			showMessage(_("Empty query, not results."));
+		}
 		else
 		{
 			wxString errMsg, errMsg2;
