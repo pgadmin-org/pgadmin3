@@ -402,9 +402,13 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	{
 		trig_sql += wxT("NOT tgisinternal");
 	}
-	else
+	else if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
 	{
 		trig_sql += wxT("tgconstraint=0");
+	}
+	else
+	{
+		trig_sql += wxT("NOT tgisconstraint");
 	}
 	if (restriction.IsEmpty())
 		trig_sql += wxT("\n  AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
