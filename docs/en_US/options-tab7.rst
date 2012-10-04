@@ -1,9 +1,9 @@
 .. _options-tab7:
 
 
-*********************************
-pgAdmin Options - Tab 7 (Logging)
-*********************************
+******************************************
+`pgAdmin Options - Tab 7 (Logging)`:index:
+******************************************
 
 .. image:: images/options-logging.png
 

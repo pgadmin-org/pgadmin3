@@ -1,9 +1,9 @@
 .. _pgscript:
 
 
-*************************************
-pgScript Scripting Language Reference
-*************************************
+**********************************************
+`pgScript Scripting Language Reference`:index:
+**********************************************
 
 
 .. _pgscript-overview:

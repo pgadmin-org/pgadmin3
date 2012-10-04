@@ -1,9 +1,9 @@
 .. _commandline:
 
 
-***********************
-Command Line Parameters
-***********************
+********************************
+`Command Line Parameters`:index:
+********************************
 
 There are a number of command line options that may be passed to the pgAdmin executable
 when starting it.

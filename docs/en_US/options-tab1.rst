@@ -1,9 +1,9 @@
 .. _options-tab1:
 
 
-*********************************
-pgAdmin Options - Tab 1 (General)
-*********************************
+******************************************
+`pgAdmin Options - Tab 1 (General)`:index:
+******************************************
 
 .. image:: images/options-general.png
 

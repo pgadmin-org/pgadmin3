@@ -1,9 +1,9 @@
 .. _pgagent-install:
 
 
-********************
-pgAgent Installation
-********************
+*****************************
+`pgAgent Installation`:index:
+*****************************
 
 pgAgent runs as a daemon on Unix systems, and a service on Windows systems.
 In the majority of cases it will run on the database server itself - it is 

@@ -1,9 +1,9 @@
 .. _slony-execute:
 
 
-********************************
-Execute DDL scripts with Slony-I
-********************************
+*****************************************
+`Execute DDL scripts with Slony-I`:index:
+*****************************************
 
 .. image:: images/slony-execute.png
 

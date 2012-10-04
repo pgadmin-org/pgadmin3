@@ -1,9 +1,9 @@
 .. _query:
 
 
-**********
-Query tool
-**********
+*******************
+`Query tool`:index:
+*******************
 
 .. image:: images/query.png
 

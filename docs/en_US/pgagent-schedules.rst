@@ -1,9 +1,9 @@
 .. _pgagent-schedules:
 
 
-*****************
-pgAgent Schedules
-*****************
+**************************
+`pgAgent Schedules`:index:
+**************************
 
 Each Job is executed according to one or more schedules. Each time the
 job or any of its schedules are altered, the next runtime of the 

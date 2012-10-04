@@ -1,9 +1,9 @@
 .. _sample-xml:
 
 
-***************
-Sample XML Data
-***************
+************************
+`Sample XML Data`:index:
+************************
 
 The sample report below demonstrates the XML format that the
 pgadmin :ref:`Report Tool <reports>` will produce.

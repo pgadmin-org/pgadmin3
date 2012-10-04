@@ -1,9 +1,9 @@
 .. _status:
 
 
-**********************
-Database Server Status
-**********************
+*******************************
+`Database Server Status`:index:
+*******************************
 
 .. image:: images/status.png
 

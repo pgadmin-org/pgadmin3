@@ -1,9 +1,9 @@
 .. _options:
 
 
-***************
-pgAdmin Options
-***************
+************************
+`pgAdmin Options`:index:
+************************
 
 pgAdmin has a selection of configuration options to help it work
 as you prefer. If you think of an additional feature that should be

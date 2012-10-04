@@ -1,9 +1,9 @@
 .. _main:
 
 
-*******************
-pgAdmin Main Window
-*******************
+****************************
+`pgAdmin Main Window`:index:
+****************************
 
 .. image:: images/main.png
 

@@ -1,9 +1,9 @@
 .. _options-tab5:
 
 
-******************************************
-pgAdmin Options - Tab 5 (Query Tool Files)
-******************************************
+***************************************************
+`pgAdmin Options - Tab 5 (Query Tool Files)`:index:
+***************************************************
 
 .. image:: images/options-querytoolfiles.png
 

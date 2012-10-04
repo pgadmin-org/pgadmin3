@@ -1,9 +1,9 @@
 .. _bugreport:
 
 
-*************
-Bug Reporting
-*************
+**********************
+`Bug Reporting`:index:
+**********************
 
 If you think you encountered a bug in pgAdmin III, please check the
 following:

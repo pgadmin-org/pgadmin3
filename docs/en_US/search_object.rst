@@ -1,9 +1,9 @@
 .. _search_object:
 
 
-*************
-Object search
-*************
+**********************
+`Object search`:index:
+**********************
 
 .. image:: images/search.png
 

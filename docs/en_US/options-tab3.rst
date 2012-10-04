@@ -1,9 +1,9 @@
 .. _options-tab3:
 
 
-*********************************
-pgAdmin Options - Tab 3 (Browser)
-*********************************
+******************************************
+`pgAdmin Options - Tab 3 (Browser)`:index:
+******************************************
 
 .. image:: images/options-browser.png
 

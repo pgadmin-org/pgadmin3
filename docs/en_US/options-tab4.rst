@@ -1,9 +1,9 @@
 .. _options-tab4:
 
 
-************************************
-pgAdmin Options - Tab 4 (Query Tool)
-************************************
+*********************************************
+`pgAdmin Options - Tab 4 (Query Tool)`:index:
+*********************************************
 
 .. image:: images/options-querytool.png
 

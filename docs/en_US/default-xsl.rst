@@ -1,9 +1,9 @@
 .. _default-xsl:
 
 
-**********************
-Default XSL Stylesheet
-**********************
+*******************************
+`Default XSL Stylesheet`:index:
+*******************************
 
 For reference, and as a starting point for your own stylesheets,
 the builtin stylesheet that pgadmin uses to render XHTML report output

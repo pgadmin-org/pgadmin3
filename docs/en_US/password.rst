@@ -1,9 +1,9 @@
 .. _password:
 
 
-***************
-Change Password
-***************
+************************
+`Change Password`:index:
+************************
 
 .. image:: images/password.png
 

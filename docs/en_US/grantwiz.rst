@@ -1,9 +1,9 @@
 .. _grantwiz:
 
 
-************
-Grant Wizard
-************
+*********************
+`Grant Wizard`:index:
+*********************
 
 .. image:: images/grantwiz.png
 

@@ -1,9 +1,9 @@
 .. _gqb:
 
 
-***********************
-Graphical Query builder
-***********************
+********************************
+`Graphical Query builder`:index:
+********************************
 
 .. image:: images/gqb.png
 

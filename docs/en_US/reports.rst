@@ -1,9 +1,9 @@
 .. _reports:
 
 
-***********
-Report Tool
-***********
+********************
+`Report Tool`:index:
+********************
 
 pgAdmin includes a simple reporting engine which allows you to quickly
 generate reports from the queries you write in the :ref:`Query Tool <query>`,
