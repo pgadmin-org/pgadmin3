@@ -8,35 +8,35 @@ The OpenSSL Licence
 pgAdmin uses code from the OpenSSL project to provide support for
 SSL encrypted connections. The OpenSSL licence is included below:
 
-**Copyright (c) 1998-2004 The OpenSSL Project. All rights reserved.**
+**Copyright (c) 1998-2011 The OpenSSL Project.  All rights reserved.**
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
 are met:
 
-# Redistributions of source code must retain the above copyright
+* Redistributions of source code must retain the above copyright
   notice, this list of conditions and the following disclaimer.
 
-# Redistributions in binary form must reproduce the above copyright
+* Redistributions in binary form must reproduce the above copyright
   notice, this list of conditions and the following disclaimer in
   the documentation and/or other materials provided with the
   distribution.
 
-# All advertising materials mentioning features or use of this
+* All advertising materials mentioning features or use of this
   software must display the following acknowledgment:
   "This product includes software developed by the OpenSSL Project
   for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
 
-# The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+* The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
   endorse or promote products derived from this software without
   prior written permission. For written permission, please contact
   openssl-core@openssl.org.
 
-# Products derived from this software may not be called "OpenSSL"
+* Products derived from this software may not be called "OpenSSL"
   nor may "OpenSSL" appear in their names without prior written
   permission of the OpenSSL Project.
 
-# Redistributions of any form whatsoever must retain the following
+* Redistributions of any form whatsoever must retain the following
   acknowledgment:
   "This product includes software developed by the OpenSSL Project
   for use in the OpenSSL Toolkit (http://www.openssl.org/)"
