@@ -1,9 +1,9 @@
 .. _restore:
 
 
-*******
-Restore
-*******
+****************
+`Restore`:index:
+****************
 
 .. image:: images/restore.png
 .. image:: images/restore-2.png

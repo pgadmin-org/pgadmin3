@@ -1,9 +1,9 @@
 .. _options-tab6:
 
 
-*********************************
-pgAdmin Options - Tab 6 (Colours)
-*********************************
+******************************************
+`pgAdmin Options - Tab 6 (Colours)`:index:
+******************************************
 
 .. image:: images/options-colours.png
 

@@ -1,9 +1,9 @@
 .. _slony-functions:
 
 
-*************
-Slony-I tasks
-*************
+**********************
+`Slony-I tasks`:index:
+**********************
 
 In the appropriate context, pgAdmin III can trigger several maintenance tasks.
 

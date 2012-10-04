@@ -1,9 +1,9 @@
 .. _guruhints:
 
 
-**********
-Guru Hints
-**********
+*******************
+`Guru Hints`:index:
+*******************
 
 pgAdmin III has some functions included which should help to implement healthy 
 and good performing databases. They are the result of the long experience of the

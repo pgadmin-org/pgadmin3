@@ -1,8 +1,8 @@
 .. _slony:
 
 
-Slony-I support
-=============== 
+`Slony-I support`:index:
+========================
 
 pgAdmin III includes a frontend to Slony-I, the most popular master-slave
 replication solution for PostgreSQL. pgAdmin III  makes maintaining the

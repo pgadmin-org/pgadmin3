@@ -1,9 +1,9 @@
 .. _slony-example:
 
 
-********************************
-Slony-I example
-********************************
+************************
+`Slony-I example`:index:
+************************
 
 In this example, a master server is setup with two direct slaves. This example was
 written and tested using Slony-I v1.2.11 and PostgreSQL 8.2.5, running on a single

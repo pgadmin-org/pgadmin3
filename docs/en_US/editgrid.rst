@@ -1,9 +1,9 @@
 .. _editgrid:
 
 
-*********
-Edit Data
-*********
+******************
+`Edit Data`:index:
+******************
 
 .. image:: images/editgrid.png
 

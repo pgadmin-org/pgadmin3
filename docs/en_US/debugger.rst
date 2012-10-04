@@ -1,9 +1,9 @@
 .. _debugger:
 
 
-****************
-pgAdmin Debugger
-****************
+*************************
+`pgAdmin Debugger`:index:
+*************************
 
 .. image:: images/debugger.png
 

@@ -1,9 +1,9 @@
 .. _pgagent-jobs:
 
 
-************
-pgAgent Jobs
-************
+*********************
+`pgAgent Jobs`:index:
+*********************
 
 pgAgent runs 'jobs', each of which consists of :ref:`pgagent-steps` and 
 :ref:`pgagent-schedules`. To configure jobs on your

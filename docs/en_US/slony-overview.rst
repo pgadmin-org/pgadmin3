@@ -1,9 +1,9 @@
 .. _slony-overview:
 
 
-*********************************
-Slony-I with pgAdmin III overview
-*********************************
+******************************************
+`Slony-I with pgAdmin III overview`:index:
+******************************************
 
 .. image:: images/slony-overview.png
 

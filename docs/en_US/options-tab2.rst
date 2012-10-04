@@ -1,9 +1,9 @@
 .. _options-tab2:
 
 
-*************************************
-pgAdmin Options - Tab 2 (Preferences)
-*************************************
+**********************************************
+`pgAdmin Options - Tab 2 (Preferences)`:index:
+**********************************************
 
 .. image:: images/options-preferences.png
 

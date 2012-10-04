@@ -1,9 +1,9 @@
 .. _pgagent-steps:
 
 
-*************
-pgAgent Steps
-*************
+**********************
+`pgAgent Steps`:index:
+**********************
 
 Each Job consists of a number of steps, each of which may be an SQL script,
 or an operating system batch/shell script. Each step in a given job is run in 

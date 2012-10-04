@@ -1,9 +1,9 @@
 .. _macros:
 
 
-*****************
-Query Tool Macros
-*****************
+**************************
+`Query Tool Macros`:index:
+**************************
 
 .. image:: images/manage-macros.png
 

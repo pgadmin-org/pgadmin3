@@ -1,9 +1,9 @@
 .. _gridopts:
 
 
-*****************
-View Data Options
-*****************
+**************************
+`View Data Options`:index:
+**************************
 
 When "Apply Filter and View Data" is selected from the main menu,
 or the "Sort/Filter" toolbar button is pressed in the data viewer,

@@ -1,9 +1,9 @@
 .. _maintenance:
 
 
-**************************
-Maintain a database object
-**************************
+***********************************
+`Maintain a database object`:index:
+***********************************
 
 .. image:: images/maintenance.png
 

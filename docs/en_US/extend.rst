@@ -1,9 +1,9 @@
 .. _extend:
 
 
-*****************
-Extended features
-*****************
+**************************
+`Extended features`:index:
+**************************
 
 pgAdmin III's functionality can be further enhanced using the *adminpack* contrib
 module for PostgreSQL. This is a library of additional functions that may be installed 

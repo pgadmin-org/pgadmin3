@@ -1,9 +1,9 @@
 .. _export:
 
 
-*******************
-pgAdmin Data Export
-*******************
+****************************
+`pgAdmin Data Export`:index:
+****************************
 
 .. image:: images/export.png
 

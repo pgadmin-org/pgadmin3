@@ -1,9 +1,9 @@
 .. _backup:
 
 
-******
-Backup
-******
+***************
+`Backup`:index:
+***************
 
 .. image:: images/backup.png
 .. image:: images/backup-2.png

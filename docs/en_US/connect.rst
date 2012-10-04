@@ -1,9 +1,9 @@
 .. _connect:
 
 
-*****************
-Connect to server
-*****************
+**************************
+`Connect to server`:index:
+**************************
 
 .. image:: images/server.png
 
