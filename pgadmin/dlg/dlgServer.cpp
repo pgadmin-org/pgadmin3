@@ -363,6 +363,7 @@ int dlgServer::Go(bool modal)
 {
 	chkSSLCompression->Disable();
 
+	cbSSL->Clear();
 	cbSSL->Append(wxT(" "));
 
 #ifdef SSL
