@@ -350,7 +350,7 @@ void frmMainConfig::WriteFile(pgConn *conn)
 
 void frmMainConfig::DisplayFile(const wxString &str)
 {
-	lines.Clear();
+	Init();
 
 	filetype = wxTextFileType_Unix;
 	wxStringTokenizer strtok;
