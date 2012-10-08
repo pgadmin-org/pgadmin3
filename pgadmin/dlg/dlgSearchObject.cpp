@@ -454,9 +454,12 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		delete set;
 	}
 
-	lcResults->SetColumnWidth(0, wxLIST_AUTOSIZE);
-	lcResults->SetColumnWidth(1, wxLIST_AUTOSIZE);
-	lcResults->SetColumnWidth(2, wxLIST_AUTOSIZE);
+	if(lcResults->GetItemCount() > 0)
+	{
+		lcResults->SetColumnWidth(0, wxLIST_AUTOSIZE);
+		lcResults->SetColumnWidth(1, wxLIST_AUTOSIZE);
+		lcResults->SetColumnWidth(2, wxLIST_AUTOSIZE);
+	}
 }
 
 wxString dlgSearchObject::TranslatePath(wxString &path)
