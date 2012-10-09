@@ -1056,7 +1056,7 @@ wxString dlgFunction::GetSql()
 	}
 
 	if (isProcedure)
-		AppendComment(sql, wxT("PROCEDURE ") + name, function);
+		AppendComment(sql, wxT("PROCEDURE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), function);
 	else
 	{
 		AppendComment(sql, wxT("FUNCTION ") + name, function);
