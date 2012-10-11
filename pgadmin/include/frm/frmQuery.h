@@ -258,6 +258,7 @@ private:
 
 	bool aborted;
 	bool lastFileFormat;
+	bool m_loadingfile;
 
 	// A simple mutex-like flag to prevent concurrent script execution.
 	// Required because the pgScript parser isn't currently thread-safe :-(

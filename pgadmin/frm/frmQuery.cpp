@@ -216,7 +216,8 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	  pgScript(new pgsApplication(_conn)),
 	  pgsStringOutput(&pgsOutputString),
 	  pgsOutput(pgsStringOutput, wxEOL_UNIX),
-	  pgsTimer(new pgScriptTimer(this))
+	  pgsTimer(new pgScriptTimer(this)), 
+	  m_loadingfile(false)
 {
 	pgScript->SetCaller(this, PGSCRIPT_COMPLETE);
 
@@ -1623,6 +1624,14 @@ void frmQuery::OnClose(wxCloseEvent &event)
 		wxSleep(1);
 	}
 
+	if (m_loadingfile && event.CanVeto())
+	{
+		wxMessageBox(_("The query tool cannot be closed whilst a file is loading."), _("Warning"), wxICON_INFORMATION | wxOK);
+		event.Veto();
+
+		return;
+	}
+
 	if (CheckChanged(event.CanVeto()) && event.CanVeto())
 	{
 		event.Veto();
@@ -1695,6 +1704,7 @@ void frmQuery::OpenLastFile()
 	bool modeUnicode = settings->GetUnicodeFile();
 	wxUtfFile file(lastPath, wxFile::read, modeUnicode ? wxFONTENCODING_UTF8 : wxFONTENCODING_DEFAULT);
 
+	m_loadingfile = true;
 	if (file.IsOpened())
 		file.Read(str);
 
@@ -1712,6 +1722,7 @@ void frmQuery::OpenLastFile()
 			mainForm->UpdateAllRecentFiles();
 		}
 	}
+	m_loadingfile = false;
 }
 
 
