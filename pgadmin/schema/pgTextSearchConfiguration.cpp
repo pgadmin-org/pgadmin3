@@ -90,7 +90,7 @@ wxString pgTextSearchConfiguration::GetTranslatedMessage(int kindOfMessage) cons
 
 bool pgTextSearchConfiguration::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP TEXT SEARCH CONFIGURATION ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
+	wxString sql = wxT("DROP TEXT SEARCH CONFIGURATION ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(this->GetIdentifier());
 
 	if (cascaded)
 		sql += wxT(" CASCADE");
