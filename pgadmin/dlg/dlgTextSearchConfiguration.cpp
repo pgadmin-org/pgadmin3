@@ -339,7 +339,16 @@ void dlgTextSearchConfiguration::OnRemoveToken(wxCommandEvent &ev)
 wxString dlgTextSearchConfiguration::GetSql()
 {
 	wxString sql;
-	wxString objname = schema->GetQuotedPrefix() + qtIdent(config->GetName());
+	wxString objname;
+
+	if (config)
+	{
+		objname = schema->GetQuotedPrefix() + qtIdent(config->GetName());
+	}
+	else
+	{
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	}
 
 	if (cbParser->GetValue().Length() > 0)
 	{
