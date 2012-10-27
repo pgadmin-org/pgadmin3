@@ -50,7 +50,6 @@ wxString pgaSchedule::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case DDLREPORT:
 			message = _("pgAgent schedule DDL report");
-			message += wxT(" - ") + GetName();
 			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent schedule dependencies report");
@@ -74,7 +73,7 @@ wxString pgaSchedule::GetTranslatedMessage(int kindOfMessage) const
 	}
 
 	if (!message.IsEmpty() && !(kindOfMessage == DROPEXCLUDINGDEPS || kindOfMessage == DROPTITLE))
-		message += wxT(" ") + GetName();
+		message += wxT(" - ") + GetName();
 
 	return message;
 }

@@ -48,7 +48,6 @@ wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case DDLREPORT:
 			message = _("pgAgent job DDL report");
-			message += wxT(" - ") + GetName();
 			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent job dependencies report");
@@ -72,7 +71,7 @@ wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
 	}
 
 	if (!message.IsEmpty() && !(kindOfMessage == DROPEXCLUDINGDEPS || kindOfMessage == DROPTITLE))
-		message += wxT(" ") + GetName();
+		message += wxT(" - ") + GetName();
 
 	return message;
 }
