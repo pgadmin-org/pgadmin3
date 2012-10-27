@@ -46,7 +46,6 @@ wxString pgaStep::GetTranslatedMessage(int kindOfMessage) const
 			break;
 		case DDLREPORT:
 			message = _("pgAgent step DDL report");
-			message += wxT(" - ") + GetName();
 			break;
 		case DEPENDENCIESREPORT:
 			message = _("pgAgent step dependencies report");
@@ -70,7 +69,7 @@ wxString pgaStep::GetTranslatedMessage(int kindOfMessage) const
 	}
 
 	if (!message.IsEmpty() && !(kindOfMessage == DROPEXCLUDINGDEPS || kindOfMessage == DROPTITLE))
-		message += wxT(" ") + GetName();
+		message += wxT(" - ") + GetName();
 
 	return message;
 }
