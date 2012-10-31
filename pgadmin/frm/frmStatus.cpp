@@ -1295,7 +1295,7 @@ void frmStatus::OnRefreshUITimer(wxTimerEvent &event)
 void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 {
 	long pid = 0;
-	wxString pidcol = connection->BackendMinimumVersion(9, 2) ? wxT("pid") : wxT("procpid");
+	wxString pidcol = connection->BackendMinimumVersion(9, 2) ? wxT("p.pid") : wxT("p.procpid");
 	wxString querycol = connection->BackendMinimumVersion(9, 2) ? wxT("query") : wxT("current_query");
 
 	if (! viewMenu->IsChecked(MNU_STATUSPAGE))
@@ -1366,10 +1366,10 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 		q += wxT("state, date_trunc('second', state_change) AS state_change, ");
 
 	// Blocked by...
-	q +=   wxT("(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND (")
+	q +=   wxT("(SELECT min(l1.pid) FROM pg_locks l1 WHERE GRANTED AND (")
 	       wxT("relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=") + pidcol + wxT(" AND NOT granted)")
 	       wxT(" OR ")
-	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=") + pidcol + wxT(" AND NOT GRANTED)")
+	       wxT("transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=") + pidcol + wxT(" AND NOT granted)")
 	       wxT(")) AS blockedby,\n");
 
 	// Query
@@ -1391,7 +1391,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	q += wxT("AS slowquery\n");
 
 	// And the rest of the query...
-	q += wxT("FROM pg_stat_activity ")
+	q += wxT("FROM pg_stat_activity p ")
 	     wxT("ORDER BY ") + NumToStr((long)statusSortColumn) + wxT(" ") + statusSortOrder;
 
 	pgSet *dataSet1 = connection->ExecuteSet(q);
