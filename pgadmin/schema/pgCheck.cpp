@@ -234,7 +234,7 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 	{
 		while (!checks->Eof())
 		{
-			check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
+			check = new pgCheck(collection->GetSchema()->GetSchema(), checks->GetVal(wxT("conname")));
 
 			check->iSetOid(checks->GetOid(wxT("oid")));
 			check->iSetDefinition(checks->GetVal(wxT("consrc")));

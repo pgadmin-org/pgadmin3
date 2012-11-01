@@ -306,7 +306,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 	{
 		while (!foreignKeys->Eof())
 		{
-			foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
+			foreignKey = new pgForeignKey(collection->GetSchema()->GetSchema(), foreignKeys->GetVal(wxT("conname")));
 
 			foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
 			foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));

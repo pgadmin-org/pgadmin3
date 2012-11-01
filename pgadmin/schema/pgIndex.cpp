@@ -566,18 +566,18 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 			switch (*(indexes->GetCharPtr(wxT("contype"))))
 			{
 				case 0:
-					index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+					index = new pgIndex(collection->GetSchema()->GetSchema(), indexes->GetVal(wxT("idxname")));
 					break;
 				case 'p':
-					index = new pgPrimaryKey(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+					index = new pgPrimaryKey(collection->GetSchema()->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgPrimaryKey *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				case 'u':
-					index = new pgUnique(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+					index = new pgUnique(collection->GetSchema()->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgUnique *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				case 'x':
-					index = new pgExclude(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+					index = new pgExclude(collection->GetSchema()->GetSchema(), indexes->GetVal(wxT("idxname")));
 					((pgExclude *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
 					break;
 				default:
