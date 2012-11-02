@@ -96,6 +96,7 @@ frmMain::frmMain(const wxString &title)
 	msgLevel = 0;
 	lastPluginUtility = NULL;
 	pluginUtilityCount = 0;
+	m_refreshing = false;
 
 	dlgName = wxT("frmMain");
 	SetMinSize(wxSize(600, 450));

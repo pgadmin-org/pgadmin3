@@ -803,6 +803,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 
 void dlgProperty::ShowObject()
 {
+	mainForm->ObjectBrowserRefreshing(true);
 	pgObject *data = GetObject();
 
 	// We might have a parent to refresh. If so, the children will
@@ -911,6 +912,7 @@ void dlgProperty::ShowObject()
 		if (currobj)
 			mainForm->Refresh(currobj);
 	}
+	mainForm->ObjectBrowserRefreshing(false);
 }
 
 

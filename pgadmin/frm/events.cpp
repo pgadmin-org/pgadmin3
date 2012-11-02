@@ -362,6 +362,13 @@ void frmMain::OnPropRightClick(wxListEvent &event)
 
 void frmMain::OnTreeSelChanged(wxTreeEvent &event)
 {
+	/*
+        * Do not honour the tree selection change, while a property dialog is
+        * closed and refresh is in progress
+	*/
+	if (m_refreshing)
+		return;
+
 	denyCollapseItem = wxTreeItemId();
 	// Reset the listviews/SQL pane
 	if (event.GetItem())

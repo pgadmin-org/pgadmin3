@@ -161,6 +161,10 @@ public:
 
 	void SetItemBackgroundColour(wxTreeItemId item, wxColour colour);
 	wxString GetNodePath(wxTreeItemId node);
+	void ObjectBrowserRefreshing(bool refresh)
+	{
+		m_refreshing = refresh;
+	}
 
 private:
 	wxAuiManager manager;
@@ -187,6 +191,8 @@ private:
 	wxStopWatch stopwatch;
 	wxString timermsg;
 	long msgLevel;
+
+	bool m_refreshing;
 
 	wxTreeItemId denyCollapseItem;
 	pgObject *currentObject;
