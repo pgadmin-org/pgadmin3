@@ -569,14 +569,14 @@ wxString dlgIndexConstraint::GetSql()
 		}
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != index->GetTablespaceOid())
 		{
-			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
+			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
 			       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
 		}
 
 		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != index->GetFillFactor())
 		{
-			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
+			sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name)
 			       +  wxT("\n  SET (FILLFACTOR=")
 			       +  txtFillFactor->GetValue() + wxT(");\n");
 		}

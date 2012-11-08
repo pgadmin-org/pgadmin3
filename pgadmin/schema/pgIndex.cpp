@@ -102,7 +102,7 @@ wxString pgIndexBase::GetTranslatedMessage(int kindOfMessage) const
 
 bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP INDEX ") + this->GetSchema()->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+	wxString sql = wxT("DROP INDEX ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
 	if (cascaded)
 		sql += wxT(" CASCADE");
 	return GetDatabase()->ExecuteVoid(sql);
