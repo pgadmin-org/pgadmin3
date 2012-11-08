@@ -1228,7 +1228,7 @@ void frmQuery::OnClearHistory(wxCommandEvent &event)
 void frmQuery::OnFocus(wxFocusEvent &ev)
 {
 	if (wxDynamicCast(this, wxFrame))
-		updateMenu(ev.GetEventObject());
+		updateMenu();
 	else
 	{
 		frmQuery *wnd = (frmQuery *)GetParent();
@@ -1402,7 +1402,7 @@ bool frmQuery::relatesToWindow(wxWindow *which, wxWindow *related)
 	return false;
 }
 
-void frmQuery::updateMenu(wxObject *obj)
+void frmQuery::updateMenu(bool allowUpdateModelSize)
 {
 	bool canCut = false;
 	bool canCopy = false;
@@ -1448,7 +1448,11 @@ void frmQuery::updateMenu(wxObject *obj)
 	}
 
 	canSaveExplain = explainCanvas->GetDiagram()->GetCount() > 0;
-	canSaveGQB = controller->getView()->canSaveAsImage();
+
+	if (allowUpdateModelSize)
+	{
+		canSaveGQB = controller->getView()->canSaveAsImage();
+	}
 
 	toolBar->EnableTool(MNU_UNDO, canUndo);
 	editMenu->Enable(MNU_UNDO, canUndo);
@@ -1677,7 +1681,9 @@ void frmQuery::OnChangeStc(wxStyledTextEvent &event)
 		changed = true;
 		setExtendedTitle();
 	}
-	updateMenu();
+	// do not allow update of model size of GQB on input (key press) of each
+	// character of the query in Query Tool
+	updateMenu(false);
 }
 
 

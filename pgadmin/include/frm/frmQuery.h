@@ -220,7 +220,7 @@ private:
 	void OnTimer(wxTimerEvent &event);
 
 	void OpenLastFile();
-	void updateMenu(wxObject *obj = 0);
+	void updateMenu(bool allowUpdateModelSize = true);
 	void execQuery(const wxString &query, int resultToRetrieve = 0, bool singleResult = false, const int queryOffset = 0, bool toFile = false, bool explain = false, bool verbose = false);
 	void OnQueryComplete(wxCommandEvent &ev);
 	void completeQuery(bool done, bool explain, bool verbose);
