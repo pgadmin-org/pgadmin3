@@ -1097,7 +1097,17 @@ bool pgObject::CheckOpenDialogs(ctlTree *browser, wxTreeItemId node)
 		if (obj && obj->GetWindowPtr())
 			return true;
 
+		wxTreeItemIdValue subCookie;
+		wxTreeItemId subChildItem = browser->GetFirstChild(child, subCookie);
 		if (browser->IsExpanded(child))
+		{
+			if (CheckOpenDialogs(browser, child))
+				return true;
+		}
+		// It may be the case the user might have expanded the node opened the
+		// dialog and then collapsed the node again. This case is handled in the
+		// check below
+		else if (subChildItem && browser->GetItemData(subChildItem))
 		{
 			if (CheckOpenDialogs(browser, child))
 				return true;
