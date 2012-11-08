@@ -429,11 +429,26 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
 			if (settingRefreshOnClick == REFRESH_OBJECT_ONLY )
 			{
-				//We can not update the schema, because it would cause an update to the entire tree.
+				// We can not update the schema, because it would cause an update to the entire tree.
 				if (currentObject->GetTypeName() != wxT("Schema"))
 				{
 					wxTreeItemId currentItem = currentObject->GetId();
 
+					// Do not refresh and instead bail out if dialog of the currently selected
+					// node or it's child node is open, as refresh would delete this node's object
+					// and could cause a crash
+					pgObject *obj = NULL;
+					if (currentItem)
+						obj = browser->GetObject(currentItem);
+
+					if (obj && obj->CheckOpenDialogs(browser, currentItem))
+					{
+						properties->Freeze();
+						setDisplay(currentObject, properties, sqlPane);
+						properties->Thaw();
+						refresh = true;
+						return;
+					}
 
 					pgObject *newData = currentObject->Refresh(browser, currentItem);
 
