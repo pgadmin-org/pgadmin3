@@ -1405,8 +1405,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 	pgSet *tables;
 	if (collection->GetConnection()->BackendMinimumVersion(8, 0))
 	{
-		query = wxT("SELECT rel.oid, relname, rel.reltablespace AS spcoid, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
-		        wxT("relhassubclass, reltuples, description, conname, conkey,\n")
+		query = wxT("SELECT rel.oid, rel.relname, rel.reltablespace AS spcoid, spc.spcname, pg_get_userbyid(rel.relowner) AS relowner, rel.relacl, rel.relhasoids, ")
+		        wxT("rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,\n")
 		        wxT("       EXISTS(select 1 FROM pg_trigger\n")
 		        wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
 		        wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
@@ -1424,9 +1424,9 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		}
 
 		if (collection->GetConnection()->BackendMinimumVersion(9, 1))
-			query += wxT(", relpersistence \n");
+			query += wxT(", rel.relpersistence \n");
 		if (collection->GetConnection()->BackendMinimumVersion(8, 2))
-			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
+			query += wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor \n");
 		if (collection->GetConnection()->GetIsGreenplum())
 		{
 			query += wxT(", gpd.localoid, gpd.attrnums \n");
@@ -1434,8 +1434,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'compresslevel=([0-9]*)') AS compresslevel \n");
 			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'orientation=([a-z]*)') AS orientation \n");
 			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'compresstype=([a-z0-9]*)') AS compresstype \n");
-			query += wxT(", substring(array_to_string(reloptions, ',') from 'blocksize=([0-9]*)') AS blocksize \n");
-			query += wxT(", substring(array_to_string(reloptions, ',') from 'checksum=([a-z]*)') AS checksum \n");
+			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'blocksize=([0-9]*)') AS blocksize \n");
+			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'checksum=([a-z]*)') AS checksum \n");
 			if (collection->GetConnection()->GetIsGreenplum() && collection->GetConnection()->BackendMinimumVersion(8, 2, 9))
 				query += wxT(", rel.oid in (select parrelid from pg_partition) as ispartitioned\n");
 		}
@@ -1451,11 +1451,21 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 			         wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
 			         wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
 			         wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
-			         wxT(", rel.reloptions AS reloptions \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS toast_autovacuum_enabled \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age \n")
+                                 wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age \n")
+			         wxT(", rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions \n")
 			         wxT(", (CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
 		}
 		if (collection->GetConnection()->BackendMinimumVersion(9, 0))
-			query += wxT(", reloftype, typname\n");
+			query += wxT(", rel.reloftype, typ.typname\n");
 		if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 		{
 			query += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS labels");
@@ -1463,33 +1473,34 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		}
 
 		query += wxT("  FROM pg_class rel\n")
-		         wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
+		         wxT("  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace\n")
 		         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
-		         wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n");
+		         wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'\n");
+
+		// Add the toast table for vacuum parameters.
+		if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+			query += wxT("  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid\n");
+
 		if (collection->GetConnection()->GetIsGreenplum())
-		{
 			query += wxT("  LEFT OUTER JOIN gp_distribution_policy gpd ON gpd.localoid=rel.oid\n");
-			//if (collection->GetConnection()->GetIsGreenplum() && collection->GetConnection()->BackendMinimumVersion(8, 2, 9))
-			//	query += wxT(" LEFT OUTER JOIN pg_partition ON rel.oid = parrelid\n");
-		}
 
 		if (collection->GetConnection()->BackendMinimumVersion(9, 0))
-			query += wxT("LEFT JOIN pg_type ON reloftype=pg_type.oid\n");
+			query += wxT("LEFT JOIN pg_type typ ON rel.reloftype=typ.oid\n");
 
-		query += wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
+		query += wxT(" WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 
 		// Greenplum: Eliminate (sub)partitions from the display, only show the parent partitioned table
 		// and eliminate external tables
 		if (collection->GetConnection()->GetIsGreenplum() && collection->GetConnection()->BackendMinimumVersion(8, 2, 9))
-			query += wxT("AND rel.relstorage <> 'x' AND rel.oid NOT IN (select parchildrelid from pg_partition_rule)");
+			query += wxT("AND rel.relstorage <> 'x' AND rel.oid NOT IN (SELECT parchildrelid from pg_partition_rule)");
 
 		query += restriction +
-		         wxT(" ORDER BY relname");
+		         wxT(" ORDER BY rel.relname");
 	}
 	else
 	{
-		query = wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
-		        wxT("relhassubclass, reltuples, description, conname, conkey,\n")
+		query = wxT("SELECT rel.oid, rel.relname, pg_get_userbyid(rel.relowner) AS relowner, rel.relacl, rel.relhasoids, ")
+		        wxT("rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,\n")
 		        wxT("       (select count(*) FROM pg_trigger\n")
 		        wxT("                     WHERE tgrelid=rel.oid AND tgisconstraint = FALSE) AS triggercount,\n")
 		        wxT("       EXISTS(select 1 FROM pg_trigger\n")
@@ -1498,10 +1509,10 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		        wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n")
 		        wxT("  FROM pg_class rel\n")
 		        wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
-		        wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
-		        wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+		        wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'\n")
+		        wxT(" WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
 		        + restriction +
-		        wxT(" ORDER BY relname");
+		        wxT(" ORDER BY rel.relname");
 	}
 	tables = collection->GetDatabase()->ExecuteSet(query);
 	if (tables)
@@ -1570,44 +1581,24 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 				table->iSetHasToastTable(tables->GetBool(wxT("hastoasttable")));
 				if (table->GetHasToastTable())
 				{
-					pgSet *set = collection->GetDatabase()->ExecuteSet(
-					                 wxT("SELECT \n")
-					                 wxT("  substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
-					                 wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
-					                 wxT(", rel.reloptions AS reloptions \n")
-					                 wxT("FROM pg_catalog.pg_class rel \n")
-					                 wxT("WHERE rel.oid=(SELECT org_tbl.reltoastrelid FROM pg_catalog.pg_class org_tbl WHERE org_tbl.oid=")
-					                 + table->GetOidStr() + wxT(")"));
-					if (set)
-					{
-						table->iSetToastRelOptions(set->GetVal(wxT("reloptions")));
-						if (table->GetToastCustomAutoVacuumEnabled())
-						{
-							if (set->GetVal(wxT("autovacuum_enabled")).IsEmpty())
-								table->iSetToastAutoVacuumEnabled(2);
-							else if (set->GetBool(wxT("autovacuum_enabled")))
-								table->iSetToastAutoVacuumEnabled(1);
-							else
-								table->iSetToastAutoVacuumEnabled(0);
-							table->iSetToastAutoVacuumVacuumThreshold(set->GetVal(wxT("autovacuum_vacuum_threshold")));
-							table->iSetToastAutoVacuumVacuumScaleFactor(set->GetVal(wxT("autovacuum_vacuum_scale_factor")));
-							table->iSetToastAutoVacuumVacuumCostDelay(set->GetVal(wxT("autovacuum_vacuum_cost_delay")));
-							table->iSetToastAutoVacuumVacuumCostLimit(set->GetVal(wxT("autovacuum_vacuum_cost_limit")));
-							table->iSetToastAutoVacuumFreezeMinAge(set->GetVal(wxT("autovacuum_freeze_min_age")));
-							table->iSetToastAutoVacuumFreezeMaxAge(set->GetVal(wxT("autovacuum_freeze_max_age")));
-							table->iSetToastAutoVacuumFreezeTableAge(set->GetVal(wxT("autovacuum_freeze_table_age")));
+					table->iSetToastRelOptions(tables->GetVal(wxT("toast_reloptions")));
 
-						}
-						delete set;
-						set = 0;
+					if (table->GetToastCustomAutoVacuumEnabled())
+					{
+						if (tables->GetVal(wxT("toast_autovacuum_enabled")).IsEmpty())
+							table->iSetToastAutoVacuumEnabled(2);
+						else if (tables->GetBool(wxT("toast_autovacuum_enabled")))
+							table->iSetToastAutoVacuumEnabled(1);
+						else
+							table->iSetToastAutoVacuumEnabled(0);
+
+						table->iSetToastAutoVacuumVacuumThreshold(tables->GetVal(wxT("toast_autovacuum_vacuum_threshold")));
+						table->iSetToastAutoVacuumVacuumScaleFactor(tables->GetVal(wxT("toast_autovacuum_vacuum_scale_factor")));
+						table->iSetToastAutoVacuumVacuumCostDelay(tables->GetVal(wxT("toast_autovacuum_vacuum_cost_delay")));
+						table->iSetToastAutoVacuumVacuumCostLimit(tables->GetVal(wxT("toast_autovacuum_vacuum_cost_limit")));
+						table->iSetToastAutoVacuumFreezeMinAge(tables->GetVal(wxT("toast_autovacuum_freeze_min_age")));
+						table->iSetToastAutoVacuumFreezeMaxAge(tables->GetVal(wxT("toast_autovacuum_freeze_max_age")));
+						table->iSetToastAutoVacuumFreezeTableAge(tables->GetVal(wxT("toast_autovacuum_freeze_table_age")));
 					}
 				}
 			}
