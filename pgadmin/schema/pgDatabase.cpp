@@ -831,7 +831,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                datconnlimit + datcollate + datctype + seclabelsql +
 		                wxT("  FROM pg_database db\n")
 		                wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
-		                wxT("  LEFT OUTER JOIN pg_shdescription descr ON db.oid=descr.objoid\n")
+		                wxT("  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.objoid='pg_database'::regclass)\n")
 		                + restr +
 		                wxT(" ORDER BY datname"));
 	}
