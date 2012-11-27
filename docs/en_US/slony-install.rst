@@ -46,7 +46,7 @@ Create cluster and first node
 To install a Slony-I cluster on the first database, the "New Slony-I
 Cluster" dialog is used. It executes the official Slony-I cluster
 creation SQL scripts, which are located in the directory configured in
-the :ref:`Options <options-tab1>` dialog. 
+the :ref:`Options <options-browser>` dialog. 
 
 pgAdmin III needs to store information how to contact each individual
 node in the cluster. To achieve this, pgAdmin III uses the concept of

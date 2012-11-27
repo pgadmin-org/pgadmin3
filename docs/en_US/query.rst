@@ -18,7 +18,7 @@ written in UTF-8, which enables the storage of virtually all
 characters used throughout the world, according to the coding rules
 of the `Unicode Consortium <http://www.unicode.org>`_. If
 you select \*.\*, the setting from the :ref:`read/write unicode option
-<options-tab2>` is used.
+<options-query_tool>` is used.
 
 The edit entry window also contains autocompletion code to help you
 write queries. To use autocomplete, simply start typing your query
@@ -30,7 +30,7 @@ code from *psql*, the PostgreSQL command line interpreter and will
 generally be able to offer autocomplete options in the same places that
 it can in *psql*. You can optionally enable the Tab key to activate
 the autocomplete feature as well - the can be done on the
-:ref:`options dialog <options-tab4>`.
+:ref:`options dialog <options-query_tool>`.
 
 The editor also offers a number of features for helping with code formatting:
 
@@ -118,7 +118,7 @@ the combobox, you can add another connection to it.
 
 .. image:: images/query-connect.png
 
-In the :ref:`options dialog <options-tab4>`, you
+In the :ref:`options dialog <options-query_tool>`, you
 can specify a default limit for the rowset size to retrieve. By
 default, this value will be 100. If the number of rows to retrieve
 from the server exceeds this value, a message box will appear asking

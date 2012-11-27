@@ -22,5 +22,4 @@ The result is presented in the grid with object type, object name and
 the object tree path. You can click on a result row to select the object
 in the :ref:`browser <main>`. If the object is grey, this means
 that you don't have enabled those object types in the :ref:`Browser
-settings <options-tab3>` (third tab of the Options
-dialog), so you can't click on it.
+settings <options-browser>`, so you can't click on it.
