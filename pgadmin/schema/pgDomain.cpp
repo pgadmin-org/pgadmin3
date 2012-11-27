@@ -286,7 +286,7 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 	{
 		while (!domains->Eof())
 		{
-			domain = new pgDomain(collection->GetSchema()->GetSchema(), domains->GetVal(wxT("domname")));
+			domain = new pgDomain(collection->GetSchema(), domains->GetVal(wxT("domname")));
 
 			domain->iSetOid(domains->GetOid(wxT("oid")));
 			domain->iSetOwner(domains->GetVal(wxT("domainowner")));
