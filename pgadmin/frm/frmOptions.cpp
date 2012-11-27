@@ -52,7 +52,6 @@
 #define QUERYTOOL_HISTORYFILE_ITEM _("History file")
 #define DATABASEDESIGNER_ITEM _("Database Designer")
 #define SERVERSTATUS_ITEM _("Server status")
-#define PGAGENT_ITEM _("pgAgent")
 #define MISC_ITEM _("Miscellaneous")
 #define MISC_UI_ITEM _("User Interface")
 #define MISC_HELPPATH_ITEM _("Help paths")
@@ -138,7 +137,6 @@
 #define pnlQueryToolHistoryFile     CTRL_PANEL("pnlQueryToolHistoryFile")
 #define pnlDatabaseDesigner         CTRL_PANEL("pnlDatabaseDesigner")
 #define pnlServerStatus          	CTRL_PANEL("pnlServerStatus")
-#define pnlPgAgent          		CTRL_PANEL("pnlPgAgent")
 #define pnlMiscUI                	CTRL_PANEL("pnlMiscUI")
 #define pnlMiscHelpPath             CTRL_PANEL("pnlMiscHelpPath")
 #define pnlMiscGuruHints          	CTRL_PANEL("pnlMiscGuruHints")
@@ -443,8 +441,6 @@ frmOptions::frmOptions(frmMain *parent)
 
 	node = menus->AppendItem(root, SERVERSTATUS_ITEM);
 
-	node = menus->AppendItem(root, PGAGENT_ITEM);
-
 	node = menus->AppendItem(root, MISC_ITEM);
 	menus->AppendItem(node, MISC_UI_ITEM);
 	menus->AppendItem(node, MISC_HELPPATH_ITEM);
@@ -466,7 +462,6 @@ frmOptions::frmOptions(frmMain *parent)
 	pnlQueryToolMacros->Show(false);
 	pnlQueryToolHistoryFile->Show(false);
 	pnlServerStatus->Show(false);
-	pnlPgAgent->Show(false);
 	pnlMiscUI->Show(false);
 	pnlMiscHelpPath->Show(false);
 	pnlMiscGuruHints->Show(false);
@@ -944,7 +939,6 @@ void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 		pnlQueryToolHistoryFile->Show(false);
 		pnlDatabaseDesigner->Show(false);
 		pnlServerStatus->Show(false);
-		pnlPgAgent->Show(false);
 		pnlMiscUI->Show(false);
 		pnlMiscHelpPath->Show(false);
 		pnlMiscGuruHints->Show(false);
@@ -998,8 +992,6 @@ void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 			pickerSlowProcessColour->UpdateColour();
 			pickerBlockedProcessColour->UpdateColour();
 		}
-		else if (menus->GetItemText(sel) == PGAGENT_ITEM)
-			pnlPgAgent->Show(true);
 		else if (menus->GetItemText(sel) == MISC_UI_ITEM)
 			pnlMiscUI->Show(true);
 		else if (menus->GetItemText(sel) == MISC_HELPPATH_ITEM)
