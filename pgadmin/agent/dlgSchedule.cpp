@@ -134,11 +134,11 @@ int dlgSchedule::Go(bool modal)
 		recId = schedule->GetRecId();
 		txtID->SetValue(NumToStr(recId));
 		chkEnabled->SetValue(schedule->GetEnabled());
-		calStart->SetValue(schedule->GetStart());
+		calStart->SetValue(schedule->GetStart().GetDateOnly());
 		timStart->SetTime(schedule->GetStart());
 		if (schedule->GetEnd().IsValid())
 		{
-			calEnd->SetValue(schedule->GetEnd());
+			calEnd->SetValue(schedule->GetEnd().GetDateOnly());
 			timEnd->SetTime(schedule->GetEnd());
 		}
 		else
@@ -496,7 +496,6 @@ wxString dlgSchedule::GetUpdateSql()
 				vars.Append(wxT(", "));
 			vars.Append(wxT("jscstart = '") + DateToAnsiStr(calStart->GetValue() + timStart->GetValue()) + wxT("'"));
 		}
-
 
 		if (calEnd->GetValue().IsValid())
 		{
