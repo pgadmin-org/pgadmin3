@@ -136,7 +136,7 @@ int dlgUser::Go(bool modal)
 		txtID->SetValue(NumToStr(user->GetUserId()));
 		chkCreateDB->SetValue(user->GetCreateDatabase());
 		chkCreateUser->SetValue(user->GetSuperuser());
-		datValidUntil->SetValue(user->GetAccountExpires());
+		datValidUntil->SetValue(user->GetAccountExpires().GetDateOnly());
 		timValidUntil->SetTime(user->GetAccountExpires());
 		if (!connection->BackendMinimumVersion(7, 4))
 			txtName->Disable();
