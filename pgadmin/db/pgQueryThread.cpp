@@ -76,14 +76,19 @@ wxString pgQueryThread::GetMessagesAndClear()
 
 void pgQueryThread::appendMessage(const wxString &str)
 {
-	wxCriticalSectionLocker cs(criticalSection);
 	if (messages.IsEmpty())
 	{
 		if (str != wxT("\n"))
-			messages.Append(str);
+			appendMessageRaw(str);
 	}
 	else
-		messages.Append(wxT("\n") + str);
+		appendMessageRaw(wxT("\n") + str);
+}
+
+void pgQueryThread::appendMessageRaw(const wxString &str)
+{
+	wxCriticalSectionLocker cs(criticalSection);
+	messages.Append(str);
 }
 
 
@@ -137,6 +142,57 @@ int pgQueryThread::execute()
 
 		if (!res)
 			break;
+
+		if (PQresultStatus(res) == PGRES_COPY_IN)
+		{
+			PQputCopyEnd(conn->conn, "not supported by pgAdmin");
+		} 
+		if (PQresultStatus(res) == PGRES_COPY_OUT)
+		{
+			int copyrc;
+			char *buf;
+			int copyrows = 0;
+			int lastcopyrc = 0;
+
+			appendMessage(_("Query returned COPY data:\n"));
+
+			while((copyrc = PQgetCopyData(conn->conn, &buf, 1)) >= 0)
+			{
+				if (buf != NULL)
+				{
+					if (copyrows < 100)
+					{
+						wxString str(buf, wxConvUTF8);
+						appendMessageRaw(str);
+					} else if (copyrows == 100)
+						appendMessage(_("Query returned more than 100 COPY rows, discarding the rest...\n"));
+
+					PQfreemem(buf);
+				}
+				if (copyrc > 0)
+					copyrows++;
+				if (TestDestroy() && rc != -3)
+				{
+					if (!PQrequestCancel(conn->conn)) // could not abort; abort failed.
+						return(raiseEvent(-1));
+					rc = -3;
+				}
+				if (lastcopyrc == 0 && copyrc == 0)
+				{
+					Yield();
+					this->Sleep(10);
+				}
+				if (copyrc == 0)
+				{
+					if (!PQconsumeInput(conn->conn))
+						return(raiseEvent(0));
+				}
+				lastcopyrc = copyrc;
+			}
+			res = PQgetResult(conn->conn);
+			if (!res)
+				break;
+		}
 
 		resultsRetrieved++;
 		if (resultsRetrieved == resultToRetrieve)
