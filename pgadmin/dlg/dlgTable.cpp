@@ -1433,16 +1433,13 @@ wxString dlgTable::GetSql()
 	}
 
 	// Comments
-	if (!table)
+	for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
 	{
-		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
-		{
-			if (!lstColumns->GetText(pos, COL_COMMENTS).IsEmpty())
-				sql += wxT("COMMENT ON COLUMN ") + tabname
-				       + wxT(".") + qtIdent(lstColumns->GetText(pos, COL_NAME))
-				       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, COL_COMMENTS))
-				       + wxT(";\n");
-		}
+		if (!lstColumns->GetText(pos, COL_COMMENTS).IsEmpty())
+			sql += wxT("COMMENT ON COLUMN ") + tabname
+			       + wxT(".") + qtIdent(lstColumns->GetText(pos, COL_NAME))
+			       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, COL_COMMENTS))
+			       + wxT(";\n");
 	}
 
 	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
