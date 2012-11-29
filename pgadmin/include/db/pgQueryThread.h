@@ -63,6 +63,8 @@ private:
 
 	int execute();
 	int raiseEvent(int retval = 0);
+
+	void appendMessageRaw(const wxString &str);
 };
 
 #endif
