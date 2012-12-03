@@ -98,6 +98,8 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
 	EVT_BUTTON(wxID_HELP,                           dlgProperty::OnHelp)
 	EVT_BUTTON(wxID_OK,                             dlgProperty::OnOK)
 	EVT_BUTTON(wxID_APPLY,                          dlgProperty::OnApply)
+	EVT_BUTTON(wxID_CANCEL,                         dlgProperty::OnCancel)
+	EVT_CLOSE (                                     dlgProperty::OnClose)
 END_EVENT_TABLE();
 
 
@@ -231,6 +233,26 @@ void dlgProperty::EnableOK(bool enable)
 		if (statusBar)
 			statusBar->SetStatusText(wxEmptyString);
 	}
+}
+
+void dlgProperty::OnClose(wxCloseEvent &ev)
+{
+	// Sets the window pointer to NULL when the dialog gets closed
+	if (GetObject())
+	{
+		GetObject()->SetWindowPtr(NULL);
+	}
+	pgDialog::OnClose(ev);
+}
+
+void dlgProperty::OnCancel(wxCommandEvent &ev)
+{
+	// Sets the window pointer to NULL when the dialog gets closed
+	if (GetObject())
+	{
+		GetObject()->SetWindowPtr(NULL);
+	}
+	pgDialog::OnCancel(ev);
 }
 
 
@@ -826,10 +848,18 @@ void dlgProperty::ShowObject()
 				ownDialog = data->GetWindowPtr();
 				data->SetWindowPtr(NULL);
 			}
-			mainForm->Refresh(tblobj);
-			if (data)
+
+			// The Refresh call creates a new data object so we will use the newly
+			// created object and set it's window pointer to NULL.
+			// In addition, we set the dialog's object to the newly created object.
+			pgObject *newData = mainForm->Refresh(tblobj);
+			if (newData)
 			{
-				data->SetWindowPtr(ownDialog);
+				newData->SetWindowPtr(NULL);
+				if (ownDialog)
+					ownDialog->SetObject(newData);
+
+				// Note that the object's window pointer will be reset by dlgProperty::Apply.
 			}
 		}
 
@@ -973,6 +1003,13 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 	}
 
 	ShowObject();
+
+	// Reset the window pointer of the object to the current window as this may
+	// have been set to NULL during the refresh operation.
+	if (GetObject())
+	{
+		GetObject()->SetWindowPtr(this);
+	}
 
 	return true;
 }
@@ -1123,6 +1160,12 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 	{
 		EnableOK(true);
 		return;
+	}
+
+	// Sets the window pointer to NULL when the dialog gets closed
+	if (GetObject())
+	{
+		GetObject()->SetWindowPtr(NULL);
 	}
 
 	Destroy();

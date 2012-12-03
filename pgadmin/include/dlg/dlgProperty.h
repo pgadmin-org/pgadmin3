@@ -125,6 +125,9 @@ protected:
 	{
 		return true;
 	};
+	void OnClose(wxCloseEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+
 	void ShowObject();
 
 	void FillSQLTextfield();
