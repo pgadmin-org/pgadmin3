@@ -515,7 +515,7 @@ void frmMain::CreateMenus()
 }
 
 
-void frmMain::Refresh(pgObject *data)
+pgObject * frmMain::Refresh(pgObject *data)
 {
 	bool done = false;
 	pgObject *obj = NULL;
@@ -577,7 +577,7 @@ void frmMain::Refresh(pgObject *data)
 				{
 					CheckAlive();
 					browser->Thaw();
-					return;
+					return data;
 				}
 
 				wxTreeItemId delItem = currentItem;
@@ -600,6 +600,8 @@ void frmMain::Refresh(pgObject *data)
 
 	browser->Thaw();
 	EndMsg(done);
+
+	return currentObject;
 }
 
 void frmMain::OnCopy(wxCommandEvent &ev)

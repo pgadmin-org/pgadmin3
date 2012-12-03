@@ -34,6 +34,8 @@ public:
 	void SetObject(pgObject *obj)
 	{
 		view = (pgView *)obj;
+		if(seclabelPage)
+			seclabelPage->SetObject(obj);
 	}
 
 private:

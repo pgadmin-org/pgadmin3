@@ -32,6 +32,8 @@ public:
 	void SetObject(pgObject *obj)
 	{
 		function = (pgFunction *)obj;
+		if(seclabelPage)
+			seclabelPage->SetObject(obj);
 	}
 
 	wxString GetHelpPage(bool forCreate) const
