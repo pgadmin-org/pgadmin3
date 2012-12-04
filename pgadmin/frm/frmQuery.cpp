@@ -2478,7 +2478,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 		}
 		else if (sqlResult->RunStatus() == PGRES_EMPTY_QUERY)
 		{
-			showMessage(_("Empty query, not results."));
+			showMessage(_("Empty query, no results."));
 		}
 		else
 		{
