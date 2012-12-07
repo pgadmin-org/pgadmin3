@@ -659,7 +659,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 	                       wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
 	                       wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
 	                       wxT("  JOIN pg_language lng ON lng.oid=prolang\n")
-	                       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n")
+	                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=pr.oid AND des.classoid='pg_proc'::regclass)\n")
 	                       + restriction +
 	                       wxT(" ORDER BY proname"));
 

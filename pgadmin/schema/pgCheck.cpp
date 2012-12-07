@@ -213,7 +213,7 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 	    wxT("  FROM pg_constraint c\n")
 	    wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
 	    wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
-	    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	    wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid AND des.classoid='pg_constraint'::regclass)\n")
 	    wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
 	    + restriction + wxT("::oid\n")
 	    wxT("UNION\n")
@@ -223,7 +223,7 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
 	    wxT("  FROM pg_constraint c\n")
 	    wxT("  JOIN pg_type t ON t.oid=contypid\n")
 	    wxT("  JOIN pg_namespace nl ON nl.oid=typnamespace\n")
-	    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
+	    wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=t.oid AND des.classoid='pg_constraint'::regclass)\n")
 	    wxT(" WHERE contype = 'c' AND contypid =  ") + NumToStr(collection->GetOid())
 	    + restriction + wxT("::oid\n")
 	    wxT(" ORDER BY conname");

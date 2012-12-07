@@ -831,7 +831,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                datconnlimit + datcollate + datctype + seclabelsql +
 		                wxT("  FROM pg_database db\n")
 		                wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
-		                wxT("  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.objoid='pg_database'::regclass)\n")
+		                wxT("  LEFT OUTER JOIN pg_shdescription descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n")
 		                + restr +
 		                wxT(" ORDER BY datname"));
 	}
@@ -847,7 +847,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
 		                wxT("  LEFT OUTER JOIN ")
 		                + wxString(collection->GetConnection()->BackendMinimumVersion(8, 2) ? wxT("pg_shdescription") : wxT("pg_description")) +
-		                wxT(" descr ON db.oid=descr.objoid\n")
+		                wxT(" descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n")
 		                + restr +
 		                wxT(" ORDER BY datname"));
 	else
@@ -857,7 +857,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                wxT("has_database_privilege(db.oid, 'CREATE') as cancreate,\n")
 		                wxT("descr.description\n")
 		                wxT("  FROM pg_database db\n")
-		                wxT("  LEFT OUTER JOIN pg_description descr ON db.oid=descr.objoid\n")
+		                wxT("  LEFT OUTER JOIN pg_description descr ON (db.oid=descr.objoid AND descr.classoid='pg_database'::regclass)\n")
 		                + restr +
 		                wxT(" ORDER BY datname"));
 

@@ -1474,7 +1474,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 
 		query += wxT("  FROM pg_class rel\n")
 		         wxT("  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace\n")
-		         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
+		         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
 		         wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'\n");
 
 		// Add the toast table for vacuum parameters.
@@ -1508,7 +1508,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		        wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
 		        wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n")
 		        wxT("  FROM pg_class rel\n")
-		        wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
+		        wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
 		        wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'\n")
 		        wxT(" WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
 		        + restriction +

@@ -200,7 +200,7 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
 		       wxT("  LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler\n")
 		       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
-		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+		       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=fdw.oid AND des.objsubid=0 AND des.classoid='pg_foreign_data_wrapper'::regclass)\n")
 		       + restriction + wxT("\n")
 		       wxT(" ORDER BY fdwname");
 	}
@@ -213,7 +213,7 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 		      wxT("pg_get_userbyid(fdwowner) as fdwowner\n");
 		sql += wxT("  FROM pg_foreign_data_wrapper fdw\n")
 		       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator\n")
-		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=fdw.oid AND des.objsubid=0\n")
+		       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=fdw.oid AND des.objsubid=0 AND des.classoid='pg_foreign_data_wrapper'::regclass)\n")
 		       + restriction + wxT("\n")
 		       wxT(" ORDER BY fdwname");
 	}

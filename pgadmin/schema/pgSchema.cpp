@@ -512,7 +512,7 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
 		      wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
 		      wxT("       FALSE as cancreate\n")
 		      wxT("  FROM pg_namespace nsp\n")
-		      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+		      wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)\n")
 		      + restr +
 		      wxT(" ORDER BY 1, nspname");
 	}
@@ -537,7 +537,7 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
 			sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=nsp.oid) AS providers");
 		}
 		sql += wxT("\n  FROM pg_namespace nsp\n")
-		       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+		       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)\n")
 		       + restr +
 		       wxT(" ORDER BY 1, nspname");
 	}

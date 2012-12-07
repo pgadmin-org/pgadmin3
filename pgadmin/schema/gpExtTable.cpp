@@ -489,7 +489,7 @@ pgObject *gpExtTableFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	pgSet *extTables = collection->GetDatabase()->ExecuteSet(
 	                       wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS exttableowner, c.relacl AS relacl, description \n")
 	                       wxT("  FROM pg_class c\n")
-	                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
+	                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
 	                       wxT(" WHERE  (c.relkind = 'x' OR (c.relkind = 'r' AND c.relstorage = 'x'))\n")
 	                       wxT("   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
 	                       + restriction

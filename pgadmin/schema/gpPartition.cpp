@@ -137,7 +137,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	query += wxT("  FROM pg_class rel JOIN pg_partition_rule pr ON(rel.oid = pr.parchildrelid) JOIN pg_partition p ON (pr.paroid = p.oid)\n")
 	         wxT("  JOIN pg_inherits i ON (rel.oid = i.inhrelid) \n")
 	         wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
-	         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
+	         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
 	         wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n");
 	query += wxT("  LEFT OUTER JOIN gp_distribution_policy gpd ON gpd.localoid=rel.oid\n");
 	query += wxT(" WHERE relkind = 'r' ");

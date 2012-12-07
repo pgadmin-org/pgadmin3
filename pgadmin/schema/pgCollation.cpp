@@ -169,7 +169,7 @@ pgObject *pgCollationFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	                        wxT("       pg_get_userbyid(c.collowner) as cowner, description\n")
 	                        wxT("  FROM pg_collation c\n")
 	                        wxT("  JOIN pg_namespace n ON n.oid=c.collnamespace\n")
-	                        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	                        wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid AND des.classoid='pg_collation'::regclass)\n")
 	                        wxT(" WHERE c.collnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
 	                        + restriction +
 	                        wxT(" ORDER BY c.collname"));

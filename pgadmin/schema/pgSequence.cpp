@@ -290,7 +290,7 @@ pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=cl.oid) AS providers");
 	}
 	sql += wxT("\n  FROM pg_class cl\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=cl.oid AND des.classoid='pg_class'::regclass)\n")
 	       wxT(" WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr()
 	       + restriction + wxT("\n")
 	       wxT(" ORDER BY relname");

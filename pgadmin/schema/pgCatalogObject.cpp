@@ -115,7 +115,7 @@ pgObject *pgCatalogObjectFactory::CreateObjects(pgCollection *collection, ctlTre
 
 	wxString qry = wxT("SELECT c.oid, c.relname, pg_get_userbyid(relowner) AS owner, description\n")
 	               wxT("  FROM pg_class c\n")
-	               wxT("  LEFT OUTER JOIN pg_description d ON d.objoid=c.oid\n")
+	               wxT("  LEFT OUTER JOIN pg_description d ON (d.objoid=c.oid AND d.classoid='pg_class'::regclass)\n")
 	               wxT("  WHERE relnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n");
 
 	qry += restriction +

@@ -460,7 +460,7 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	sql += wxT("\n  FROM pg_type t\n")
 	       wxT("  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n")
 	       wxT("  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n");
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=t.oid AND des.classoid='pg_type'::regclass)\n");
 
 	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
 		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");

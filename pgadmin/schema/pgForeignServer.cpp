@@ -196,7 +196,7 @@ pgObject *pgForeignServerFactory::CreateObjects(pgCollection *collection, ctlTre
 	      wxT("pg_get_userbyid(srvowner) as srvowner\n")
 	      wxT("  FROM pg_foreign_server srv\n")
 	      wxT("  LEFT OUTER JOIN pg_foreign_data_wrapper fdw on fdw.oid=srvfdw\n")
-	      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=srv.oid AND des.objsubid=0\n")
+	      wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=srv.oid AND des.objsubid=0 AND des.classoid='pg_foreign_server'::regclass)\n")
 	      wxT(" WHERE srvfdw = ") + collection->GetOidStr()
 	      + restriction + wxT("\n")
 	      wxT(" ORDER BY srvname");

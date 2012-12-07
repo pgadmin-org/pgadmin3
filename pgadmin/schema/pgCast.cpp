@@ -172,7 +172,7 @@ pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	                   wxT("  JOIN pg_namespace nt ON nt.oid=tt.typnamespace\n")
 	                   wxT("  LEFT JOIN pg_proc pr ON pr.oid=castfunc\n")
 	                   wxT("  LEFT JOIN pg_namespace np ON np.oid=pr.pronamespace\n")
-	                   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ca.oid AND des.objsubid=0\n")
+	                   wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=ca.oid AND des.objsubid=0 AND des.classoid='pg_cast'::regclass)\n")
 	                   + restriction + systemRestriction +
 	                   wxT(" ORDER BY st.typname, tt.typname"));
 

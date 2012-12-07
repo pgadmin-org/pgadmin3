@@ -295,7 +295,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 	       wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
 	       wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
 	       wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=ct.oid AND des.classoid='pg_constraint'::regclass)\n")
 	       wxT(" WHERE contype='f' AND conrelid = ") + collection->GetOidStr()
 	       + restriction + wxT("\n")
 	       wxT(" ORDER BY conname");

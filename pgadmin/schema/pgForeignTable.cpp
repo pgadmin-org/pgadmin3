@@ -360,7 +360,7 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 	                wxT("  FROM pg_class c\n")
 	                wxT("  JOIN pg_foreign_table ft ON c.oid=ft.ftrelid\n")
 	                wxT("  LEFT OUTER JOIN pg_foreign_server fs ON ft.ftserver=fs.oid\n")
-	                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+	                wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid AND des.classoid='pg_class'::regclass)\n")
 	                wxT(" WHERE c.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
 	                + restriction +
 	                wxT(" ORDER BY c.relname");

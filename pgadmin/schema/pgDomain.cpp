@@ -273,7 +273,7 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 	sql += wxT("\n   FROM pg_type d\n")
 	       wxT("  JOIN pg_type b ON b.oid = d.typbasetype\n")
 	       wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n");
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=d.oid AND des.classoid='pg_type'::regclass)\n");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 		sql += wxT("  LEFT OUTER JOIN pg_collation c ON d.typcollation=c.oid\n")
 		       wxT("  LEFT OUTER JOIN pg_namespace cn ON c.collnamespace=cn.oid\n");

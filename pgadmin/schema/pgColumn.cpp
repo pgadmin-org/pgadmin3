@@ -585,7 +585,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	       wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
 	       wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
 	       wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=att.attrelid AND adnum=att.attnum\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=att.attrelid AND des.objsubid=att.attnum\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=att.attrelid AND des.objsubid=att.attnum AND des.classoid='pg_attribute'::regclass)\n")
 	       wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=att.attrelid AND refobjsubid=att.attnum\n")
 	       wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
 	       wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=att.attrelid AND indisprimary\n");
