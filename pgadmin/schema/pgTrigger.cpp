@@ -394,7 +394,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 	           wxT("  FROM pg_trigger t\n")
 	           wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
 	           wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
-	           wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
+	           wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=t.oid AND des.classoid='pg_trigger'::regclass)\n")
 	           wxT("  LEFT OUTER JOIN pg_proc p ON p.oid=t.tgfoid\n")
 	           wxT("  LEFT OUTER JOIN pg_language l ON l.oid=p.prolang\n")
 	           wxT(" WHERE ");

@@ -184,7 +184,7 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	if (collection->GetConnection()->BackendMinimumVersion(9, 0))
 		sql += wxT("  LEFT OUTER JOIN pg_proc ip on ip.oid=laninline\n");
 	sql += wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=lan.oid AND des.objsubid=0\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=lan.oid AND des.objsubid=0 AND des.classoid='pg_language'::regclass)\n")
 	       wxT(" WHERE lanispl IS TRUE")
 	       + restriction + wxT("\n")
 	       wxT(" ORDER BY lanname");

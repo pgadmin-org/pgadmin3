@@ -162,7 +162,7 @@ pgObject *pgConversionFactory::CreateObjects(pgCollection *collection, ctlTree *
 	                         wxT("  FROM pg_conversion co\n")
 	                         wxT("  JOIN pg_proc pr ON pr.oid=conproc\n")
 	                         wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
-	                         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=co.oid AND des.objsubid=0\n")
+	                         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=co.oid AND des.objsubid=0 AND des.classoid='pg_conversion'::regclass)\n")
 	                         wxT(" WHERE connamespace = ") + collection->GetSchema()->GetOidStr()
 	                         + restriction + wxT("\n")
 	                         wxT(" ORDER BY conname"));

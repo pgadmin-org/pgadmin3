@@ -208,7 +208,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	                   wxT("  FROM pg_rewrite rw\n")
 	                   wxT("  JOIN pg_class cl ON cl.oid=rw.ev_class\n")
 	                   wxT("  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n")
-	                   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rw.oid\n")
+	                   wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rw.oid AND des.classoid='pg_rewrite'::regclass)\n")
 	                   wxT(" WHERE ev_class = ") + NumToStr(collection->GetOid())
 	                   + restriction + wxT("\n")
 	                   wxT(" ORDER BY rw.rulename"));

@@ -271,7 +271,7 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                wxT("  JOIN pg_type et on et.oid=op.oprresult\n")
 		                wxT("  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n")
 		                wxT("  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n")
-		                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
+		                wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=op.oid AND des.classoid='pg_operator'::regclass)\n")
 		                wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr()
 		                + restriction + wxT("\n")
 		                wxT(" ORDER BY op.oprname"));
@@ -294,7 +294,7 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		                wxT("  LEFT OUTER JOIN pg_operator rso ON rso.oid=op.oprrsortop\n")
 		                wxT("  LEFT OUTER JOIN pg_operator lco ON lco.oid=op.oprltcmpop\n")
 		                wxT("  LEFT OUTER JOIN pg_operator gco ON gco.oid=op.oprgtcmpop\n")
-		                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
+		                wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=op.oid AND des.classoid='pg_operator'::regclass)\n")
 		                wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr()
 		                + restriction + wxT("\n")
 		                wxT(" ORDER BY op.oprname"));

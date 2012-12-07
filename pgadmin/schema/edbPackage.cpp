@@ -243,7 +243,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		sql = wxT("SELECT nsp.oid, nsp.xmin, nspname AS pkgname,\n") + pkgsrc +
 		      wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n")
 		      wxT("  FROM pg_namespace nsp")
-		      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+		      wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)\n")
 		      + whereclause 
 		      + restriction +
 		      wxT("  ORDER BY nspname;");

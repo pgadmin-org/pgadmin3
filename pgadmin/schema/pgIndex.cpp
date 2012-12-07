@@ -552,8 +552,8 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
 	         wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.refclassid=(SELECT oid FROM pg_class WHERE relname='pg_constraint') AND dep.deptype='i')\n")
 	         wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
-	         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
-	         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
+	         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=cls.oid AND des.classoid='pg_class'::regclass)\n")
+	         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0 AND des.classoid='pg_constraint'::regclass)\n")
 	         wxT(" WHERE indrelid = ") + collection->GetOidStr()
 	         + restriction + wxT("\n")
 	         wxT(" ORDER BY cls.relname");

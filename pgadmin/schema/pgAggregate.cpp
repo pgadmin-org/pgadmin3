@@ -266,7 +266,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	                    wxT("  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n")
 	                    wxT("  JOIN pg_type tt on tt.oid=aggtranstype\n")
 	                    wxT("  JOIN pg_type tf on tf.oid=prorettype\n")
-	                    wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=aggfnoid::oid\n")
+	                    wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=aggfnoid::oid AND des.classoid='pg_aggregate'::regclass)\n")
 	                    wxT(" WHERE pronamespace = ") + collection->GetSchema()->GetOidStr()
 	                    + restriction
 	                    + wxT("\n ORDER BY aggname"));

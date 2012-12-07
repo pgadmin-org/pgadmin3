@@ -427,7 +427,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 		sql += wxT(",\nsubstring(array_to_string(c.reloptions, ',') FROM 'security_barrier=([a-z|0-9]*)') AS security_barrier");
 	}
 	sql += wxT("\n  FROM pg_class c\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
 	       wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
 	       wxT("           SELECT r.rulename FROM pg_rewrite r\n")
 	       wxT("            WHERE ((r.ev_class = c.oid)\n")
