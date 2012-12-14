@@ -216,7 +216,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	  pgScript(new pgsApplication(_conn)),
 	  pgsStringOutput(&pgsOutputString),
 	  pgsOutput(pgsStringOutput, wxEOL_UNIX),
-	  pgsTimer(new pgScriptTimer(this)), 
+	  pgsTimer(new pgScriptTimer(this)),
 	  m_loadingfile(false)
 {
 	pgScript->SetCaller(this, PGSCRIPT_COMPLETE);

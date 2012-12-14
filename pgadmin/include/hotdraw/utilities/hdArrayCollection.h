@@ -67,7 +67,7 @@ public:
 	void replaceAtIndex(hdObject *item, int index);
 	void deleteAll();
 	void removeAll();
-	hdObject*&operator[](size_t index)
+	hdObject *&operator[](size_t index)
 	{
 		return ddArray[index];
 	}

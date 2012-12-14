@@ -53,7 +53,7 @@ public:
 	}
 	wxLongLong GetNextValue() const
 	{
-			return nextValue;
+		return nextValue;
 	}
 	wxLongLong GetMinValue() const
 	{

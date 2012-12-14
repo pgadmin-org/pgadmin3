@@ -515,7 +515,7 @@ void frmMain::CreateMenus()
 }
 
 
-pgObject * frmMain::Refresh(pgObject *data)
+pgObject *frmMain::Refresh(pgObject *data)
 {
 	bool done = false;
 	pgObject *obj = NULL;

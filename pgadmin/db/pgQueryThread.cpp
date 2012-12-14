@@ -146,7 +146,7 @@ int pgQueryThread::execute()
 		if (PQresultStatus(res) == PGRES_COPY_IN)
 		{
 			PQputCopyEnd(conn->conn, "not supported by pgAdmin");
-		} 
+		}
 		if (PQresultStatus(res) == PGRES_COPY_OUT)
 		{
 			int copyrc;
@@ -164,7 +164,8 @@ int pgQueryThread::execute()
 					{
 						wxString str(buf, wxConvUTF8);
 						appendMessageRaw(str);
-					} else if (copyrows == 100)
+					}
+					else if (copyrows == 100)
 						appendMessage(_("Query returned more than 100 COPY rows, discarding the rest...\n"));
 
 					PQfreemem(buf);

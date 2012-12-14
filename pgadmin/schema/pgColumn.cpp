@@ -349,12 +349,12 @@ wxString pgColumn::GetDefinition()
 		if (GetDatabase()->BackendMinimumVersion(8, 1))
 		{
 			pgSet *set = ExecuteSet(
-								wxT("SELECT classid\n")
-								wxT("  FROM pg_depend\n")
-								wxT(" WHERE refobjid=") + table->GetOidStr() +
-								wxT(" AND refobjsubid = ") + NumToStr(GetColNumber()) +
-								wxT(" AND objid = '") + full_tabname + wxT("'::regclass") +
-								wxT(" AND deptype='a'"));
+			                 wxT("SELECT classid\n")
+			                 wxT("  FROM pg_depend\n")
+			                 wxT(" WHERE refobjid=") + table->GetOidStr() +
+			                 wxT(" AND refobjsubid = ") + NumToStr(GetColNumber()) +
+			                 wxT(" AND objid = '") + full_tabname + wxT("'::regclass") +
+			                 wxT(" AND deptype='a'"));
 
 			if (set && set->NumRows())
 			{
