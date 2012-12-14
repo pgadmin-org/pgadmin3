@@ -1018,7 +1018,7 @@ void ctlCodeWindow::clearSourceCache()
 	// Put a dummy entry for invalid function OID to the cache. This is
 	// displayed at least for inline code blocks, as we currently have
 	// no way to fetch the source for those.
-	m_sourceCodeMap[wxT("0")] = wsCodeCache(wxT("0"), wxT("0"), wxT("<source not available>"), wxT(""));	
+	m_sourceCodeMap[wxT("0")] = wsCodeCache(wxT("0"), wxT("0"), wxT("<source not available>"), wxT(""));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

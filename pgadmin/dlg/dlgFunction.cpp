@@ -979,7 +979,7 @@ wxString dlgFunction::GetSql()
 	if (function)
 	{
 		name = schema->GetQuotedPrefix() + qtIdent(name)
-			+ wxT("(") + GetArgs(false, true) + wxT(")");
+		       + wxT("(") + GetArgs(false, true) + wxT(")");
 
 		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
 		AppendSchemaChange(sql, wxT("FUNCTION ") + name);

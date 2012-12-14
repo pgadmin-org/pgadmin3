@@ -236,7 +236,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 2))
 	{
-		whereclause = wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"); 
+		whereclause = wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n");
 		if (collection->GetConnection()->EdbMinimumVersion(9, 2))
 			whereclause += wxT(" AND nspobjecttype = 0 ");
 
@@ -244,7 +244,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		      wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n")
 		      wxT("  FROM pg_namespace nsp")
 		      wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)\n")
-		      + whereclause 
+		      + whereclause
 		      + restriction +
 		      wxT("  ORDER BY nspname;");
 	}
