@@ -1728,6 +1728,7 @@ void frmQuery::OpenLastFile()
 			mainForm->UpdateAllRecentFiles();
 		}
 	}
+	sqlQuery->SetFocus();
 	m_loadingfile = false;
 }
 
