@@ -2103,6 +2103,20 @@ int dlgDefaultSecurityProperty::Go(bool modal, bool createDefPrivs, const wxStri
                                    const wxString &defPrivsOnSeqs, const wxString &defPrivsOnFuncs,
                                    const wxString &defPrivsOnTypes)
 {
+	if (securityPage)
+	{
+		if (cbOwner && !cbOwner->GetCount())
+		{
+			if (!GetObject())
+				cbOwner->Append(wxEmptyString);
+			AddGroups(cbOwner);
+			AddUsers(cbOwner);
+		}
+
+		securityPage->SetConnection(connection);
+		//securityPage->Layout();
+	}
+
 	int res = dlgSecurityProperty::Go(modal);
 
 	if (defaultSecurityPage)
