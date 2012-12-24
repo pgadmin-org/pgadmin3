@@ -426,7 +426,7 @@ int dlgForeignKey::Go(bool modal)
 			sql += wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
 
 		sql += systemRestriction +
-		       wxT(" ORDER BY nsp.oid, relname");
+		       wxT(" ORDER BY nspname, relname");
 
 		pgSet *set = connection->ExecuteSet(sql);
 
