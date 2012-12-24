@@ -394,6 +394,17 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		}
 		else
 			browser->AppendCollection(this, catalogObjectFactory);
+
+		if (GetConnection()->BackendMinimumVersion(9, 0))
+		{
+			m_defPrivsOnTables = GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = ") + GetOidStr() + wxT(" AND defaclobjtype='r'"));
+			m_defPrivsOnSeqs   = GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = ") + GetOidStr() + wxT(" AND defaclobjtype='S'"));
+			m_defPrivsOnFuncs  = GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = ") + GetOidStr() + wxT(" AND defaclobjtype='f'"));
+		}
+		if (GetConnection()->BackendMinimumVersion(9, 2))
+		{
+			m_defPrivsOnTypes = GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = ") + GetOidStr() + wxT(" AND defaclobjtype='T'"));
+		}
 	}
 
 
