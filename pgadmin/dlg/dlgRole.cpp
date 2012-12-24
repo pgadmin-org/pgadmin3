@@ -359,7 +359,7 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
 		                    _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
 		                    _("Confirm superuser deletion"),
 		                    wxICON_EXCLAMATION | wxYES_NO | wxNO_DEFAULT);
-		if (dlg.ShowModal() != wxYES)
+		if (dlg.ShowModal() != wxID_YES)
 		{
 			chkSuperuser->SetValue(true);
 			return;
