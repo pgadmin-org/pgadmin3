@@ -232,6 +232,18 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 
 	menuBar->Append(editMenu, _("&Edit"));
 
+	actionMenu = new wxMenu();
+	actionMenu->Append(MNU_REFRESH, _("Refresh\tCtrl-R"), _("Refresh the selected panel"), wxITEM_NORMAL);
+	actionMenu->AppendSeparator();
+	actionMenu->Append(MNU_COPY_QUERY, _("Copy to query tool\tCtrl-Shift-C"), _("Open the query tool with the selected query"), wxITEM_NORMAL);
+	actionMenu->Append(MNU_CANCEL, _("Cancel query\tDel"), _("Cancel the selected query"), wxITEM_NORMAL);
+	actionMenu->Append(MNU_TERMINATE, _("Terminate backend\tShift-Del"), _("Terminate the selected backend"), wxITEM_NORMAL);
+	actionMenu->AppendSeparator();
+	actionMenu->Append(MNU_COMMIT, _("Commit prepared transaction"), _("Commit the selected prepared transaction"), wxITEM_NORMAL);
+	actionMenu->Append(MNU_ROLLBACK, _("Rollback prepared transaction"), _("Rollback the selected prepared transaction"), wxITEM_NORMAL);
+
+	menuBar->Append(actionMenu, _("&Action"));
+
 	viewMenu = new wxMenu();
 	viewMenu->Append(MNU_STATUSPAGE, _("&Activity\tCtrl-Alt-A"), _("Show or hide the activity tab."), wxITEM_CHECK);
 	viewMenu->Append(MNU_LOCKPAGE, _("&Locks\tCtrl-Alt-L"), _("Show or hide the locks tab."), wxITEM_CHECK);
@@ -311,6 +323,10 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	toolBar->EnableTool(MNU_TERMINATE, false);
 	toolBar->EnableTool(MNU_COMMIT, false);
 	toolBar->EnableTool(MNU_ROLLBACK, false);
+	actionMenu->Enable(MNU_CANCEL, false);
+	actionMenu->Enable(MNU_TERMINATE, false);
+	actionMenu->Enable(MNU_COMMIT, false);
+	actionMenu->Enable(MNU_ROLLBACK, false);
 	cbLogfiles->Enable(false);
 	btnRotateLog->Enable(false);
 
@@ -1872,6 +1888,7 @@ void frmStatus::checkConnection()
 			xactTimer->Stop();
 		if (logTimer)
 			logTimer->Stop();
+		actionMenu->Enable(MNU_REFRESH, false);
 		toolBar->EnableTool(MNU_REFRESH, false);
 		statusBar->SetStatusText(_("Connection broken."));
 	}
@@ -2829,21 +2846,30 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 		if(statusList->GetSelectedItemCount() > 0)
 		{
 			toolBar->EnableTool(MNU_CANCEL, true);
+			actionMenu->Enable(MNU_CANCEL, true);
 			if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
+            {
 				toolBar->EnableTool(MNU_TERMINATE, true);
+	            actionMenu->Enable(MNU_TERMINATE, true);
+            }
 		}
 		else
 		{
 			toolBar->EnableTool(MNU_CANCEL, false);
+			actionMenu->Enable(MNU_CANCEL, false);
 			toolBar->EnableTool(MNU_TERMINATE, false);
+	        actionMenu->Enable(MNU_TERMINATE, false);
 		}
 	}
 	toolBar->EnableTool(MNU_COMMIT, false);
+	actionMenu->Enable(MNU_COMMIT, false);
 	toolBar->EnableTool(MNU_ROLLBACK, false);
+	actionMenu->Enable(MNU_ROLLBACK, false);
 	cbLogfiles->Enable(false);
 	btnRotateLog->Enable(false);
 
 	editMenu->Enable(MNU_COPY, statusList->GetFirstSelected() >= 0);
+	actionMenu->Enable(MNU_COPY_QUERY, statusList->GetFirstSelected() >= 0);
 	toolBar->EnableTool(MNU_COPY_QUERY, statusList->GetFirstSelected() >= 0);
 }
 
@@ -2864,21 +2890,30 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 		if(lockList->GetSelectedItemCount() > 0)
 		{
 			toolBar->EnableTool(MNU_CANCEL, true);
+			actionMenu->Enable(MNU_CANCEL, true);
 			if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
+            {
 				toolBar->EnableTool(MNU_TERMINATE, true);
+	            actionMenu->Enable(MNU_TERMINATE, true);
+            }
 		}
 		else
 		{
 			toolBar->EnableTool(MNU_CANCEL, false);
+			actionMenu->Enable(MNU_CANCEL, false);
 			toolBar->EnableTool(MNU_TERMINATE, false);
+	        actionMenu->Enable(MNU_TERMINATE, false);
 		}
 	}
 	toolBar->EnableTool(MNU_COMMIT, false);
+	actionMenu->Enable(MNU_COMMIT, false);
 	toolBar->EnableTool(MNU_ROLLBACK, false);
+	actionMenu->Enable(MNU_ROLLBACK, false);
 	cbLogfiles->Enable(false);
 	btnRotateLog->Enable(false);
 
 	editMenu->Enable(MNU_COPY, lockList->GetFirstSelected() >= 0);
+	actionMenu->Enable(MNU_COPY_QUERY, false);
 	toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 
@@ -2897,19 +2932,26 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
 	if(xactList->GetSelectedItemCount() > 0)
 	{
 		toolBar->EnableTool(MNU_COMMIT, true);
+	    actionMenu->Enable(MNU_COMMIT, true);
 		toolBar->EnableTool(MNU_ROLLBACK, true);
+	    actionMenu->Enable(MNU_ROLLBACK, true);
 	}
 	else
 	{
 		toolBar->EnableTool(MNU_COMMIT, false);
+	    actionMenu->Enable(MNU_COMMIT, false);
 		toolBar->EnableTool(MNU_ROLLBACK, false);
+	    actionMenu->Enable(MNU_ROLLBACK, false);
 	}
 	toolBar->EnableTool(MNU_CANCEL, false);
+	actionMenu->Enable(MNU_CANCEL, false);
 	toolBar->EnableTool(MNU_TERMINATE, false);
+	actionMenu->Enable(MNU_TERMINATE, false);
 	cbLogfiles->Enable(false);
 	btnRotateLog->Enable(false);
 
 	editMenu->Enable(MNU_COPY, xactList->GetFirstSelected() >= 0);
+	actionMenu->Enable(MNU_COPY_QUERY, false);
 	toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 
@@ -2935,9 +2977,14 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
 		toolBar->EnableTool(MNU_TERMINATE, false);
 		toolBar->EnableTool(MNU_COMMIT, false);
 		toolBar->EnableTool(MNU_ROLLBACK, false);
+		actionMenu->Enable(MNU_CANCEL, false);
+		actionMenu->Enable(MNU_TERMINATE, false);
+		actionMenu->Enable(MNU_COMMIT, false);
+		actionMenu->Enable(MNU_ROLLBACK, false);
 	}
 
 	editMenu->Enable(MNU_COPY, logList->GetFirstSelected() >= 0);
+	actionMenu->Enable(MNU_COPY_QUERY, false);
 	toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 

@@ -139,6 +139,7 @@ private:
 	ctlListView   *xactList;
 	ctlListView   *logList;
 
+	wxMenu        *actionMenu;
 	wxMenu        *statusPopupMenu;
 	wxMenu        *lockPopupMenu;
 	wxMenu        *xactPopupMenu;
