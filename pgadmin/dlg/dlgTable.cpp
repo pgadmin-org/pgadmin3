@@ -835,7 +835,7 @@ wxString dlgTable::GetSql()
 			definition = tmpDef.Item(index);
 			// We don't need to quote the table because it's already quoted
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-			       + definition + wxT("\n  NO INHERIT;\n");
+			       + wxT("\n  NO INHERIT ") + definition + wxT(";\n");
 		}
 		// Add the INHERIT COLUMNs...
 		sql += tmpsql;
