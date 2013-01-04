@@ -1488,6 +1488,8 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 			statusList->DeleteItem(row);
 
 		statusList->Thaw();
+	    wxListEvent ev;
+	    OnSelStatusItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
@@ -1625,6 +1627,8 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 			lockList->DeleteItem(row);
 
 		lockList->Thaw();
+	    wxListEvent ev;
+	    OnSelLockItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
@@ -1703,6 +1707,8 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 			xactList->DeleteItem(row);
 
 		xactList->Thaw();
+	    wxListEvent ev;
+	    OnSelXactItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
