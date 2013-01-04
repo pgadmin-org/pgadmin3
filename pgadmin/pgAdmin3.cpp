@@ -273,7 +273,8 @@ bool pgAdmin3::OnInit()
 	{
 #if wxCHECK_VERSION(2, 9, 0)
 		// wxCmdLineEntryDesc is one of the few places in 2.9 where wxT()s have any effect...they break the build
-		{wxCMD_LINE_SWITCH, "h", "help", _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_SWITCH, "v", "version", _("show the version, and quit"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_SWITCH, "h", "help", _("show this help message, and quit"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 		{wxCMD_LINE_OPTION, "s", "server", _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, "S", "serverstatus", _("open server status window"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, "Sc", "serverstatusconnect", _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
@@ -290,7 +291,8 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, "c", NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_SWITCH, "t", NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
 #else
-		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_SWITCH, wxT("v"), wxT("version"), _("show the version, and quit"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show the version, and quit"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("S"), wxT("serverstatus"), _("open server status window"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
@@ -346,6 +348,12 @@ bool pgAdmin3::OnInit()
 	::wxInitAllImageHandlers();
 
 	appearanceFactory = new pgAppearanceFactory();
+
+	if (cmdParser.Found(wxT("v")))
+    {
+		wxPrintf(_T("%s %s\n"), appearanceFactory->GetLongAppName().c_str(), VERSION_STR);
+        return false;
+    }
 
 	// Setup logging
 	InitLogger();
