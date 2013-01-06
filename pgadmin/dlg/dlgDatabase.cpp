@@ -766,9 +766,9 @@ wxString dlgDatabase::GetSql()
 		// check for removed vars
 		for (pos = 0 ; pos < (int)vars.GetCount() ; pos += 3)
 		{
-			username = vars.Item(index);
-			varname = vars.Item(index + 1);
-			varvalue = vars.Item(index + 2);
+			username = vars.Item(pos);
+			varname = vars.Item(pos + 1);
+			varvalue = vars.Item(pos + 2);
 
 			if (username.Length() == 0)
 			{
