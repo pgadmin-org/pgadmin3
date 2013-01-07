@@ -63,4 +63,3 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
 	$(srcdir)/include/schema/module.mk
-
