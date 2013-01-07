@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2012, The pgAdmin Development Team
+// Copyright (C) 2002 - 2013, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // ddPrecisionScaleDialog.h - Utility dialog class to allow user input of precision and scale
