@@ -34,23 +34,43 @@
 pgTable::pgTable(pgSchema *newSchema, const wxString &newName)
 	: pgSchemaObject(newSchema, tableFactory, newName)
 {
-	inheritedTableCount = 0;
-	rowsCounted = false;
-	showExtendedStatistics = false;
-	distributionIsRandom = false;
+	Init();
 }
 
 pgTable::pgTable(pgSchema *newSchema, pgaFactory &newFactory, const wxString &newName)
 	: pgSchemaObject(newSchema, newFactory, newName)
 {
-	inheritedTableCount = 0;
-	rowsCounted = false;
-	showExtendedStatistics = false;
-	distributionIsRandom = false;
+	Init();
 }
 
 pgTable::~pgTable()
 {
+}
+
+
+void pgTable::Init()
+{
+	rows = 0;
+	estimatedRows = 0.0;
+
+	hasToastTable = false;
+	autovacuum_enabled = 0; 
+	toast_autovacuum_enabled = 0;
+
+	isPartitioned = false;
+	hasOids = false; 
+	unlogged = false; 
+	hasSubclass = false; 
+	rowsCounted = false;
+	isReplicated = false; 
+	showExtendedStatistics = false; 
+	distributionIsRandom = false;
+
+	inheritedTableCount = 0; 
+	triggerCount = 0;
+
+	tablespaceOid = 0;
+	ofTypeOid = 0;
 }
 
 
