@@ -534,6 +534,8 @@ private:
 	void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
 	void AppendStuffNoSql(wxString &sql, ctlTree *browser, pgaFactory &factory);
 
+	void Init();
+
 	wxULongLong rows;
 	double estimatedRows;
 
