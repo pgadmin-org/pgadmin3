@@ -292,7 +292,7 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_SWITCH, "t", NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
 #else
 		{wxCMD_LINE_SWITCH, wxT("v"), wxT("version"), _("show the version, and quit"), wxCMD_LINE_VAL_NONE},
-		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show the version, and quit"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show the help message, and quit"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("S"), wxT("serverstatus"), _("open server status window"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
