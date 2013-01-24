@@ -376,16 +376,17 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
 	entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
 	entries[2].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
-	entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
-	entries[4].Set(wxACCEL_CTRL,                (int)'R',      MNU_REPLACE);
-	entries[5].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-	entries[6].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
-	entries[7].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-	entries[8].Set(wxACCEL_CTRL,                (int)'A',       MNU_SELECTALL);
-	entries[9].Set(wxACCEL_CMD,                (int)'A',       MNU_SELECTALL);
-	entries[10].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
-	entries[11].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
-	entries[12].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
+	entries[3].Set(wxACCEL_CMD,                 (int)'S',      MNU_SAVE);
+	entries[4].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
+	entries[5].Set(wxACCEL_CTRL,                (int)'R',      MNU_REPLACE);
+	entries[6].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
+	entries[7].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
+	entries[8].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+	entries[9].Set(wxACCEL_CTRL,                (int)'A',       MNU_SELECTALL);
+	entries[10].Set(wxACCEL_CMD,                (int)'A',       MNU_SELECTALL);
+	entries[11].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+	entries[12].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
+	entries[13].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
 
 	wxAcceleratorTable accel(12, entries);
 	SetAcceleratorTable(accel);
