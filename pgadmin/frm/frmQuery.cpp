@@ -371,7 +371,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	UpdateRecentFiles();
 
-	wxAcceleratorEntry entries[13];
+	wxAcceleratorEntry entries[14];
 
 	entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
 	entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
