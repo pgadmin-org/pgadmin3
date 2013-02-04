@@ -373,10 +373,6 @@ int dlgTable::Go(bool modal)
 						pgForeignKey *obj = (pgForeignKey *)data;
 						wxString def = obj->GetDefinition();
 
-						def.Replace(wxT("\n"), wxT(" "));
-						while (def.Contains(wxT("  ")))
-							def.Replace(wxT("  "), wxT(" "));
-
 						lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), def);
 						constraintsDefinition.Add(obj->GetDefinition());
 						previousConstraints.Add(obj->GetQuotedIdentifier()
