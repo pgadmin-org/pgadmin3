@@ -210,8 +210,11 @@ int dlgRole::Go(bool modal)
 		chkUpdateCat->SetValue(role->GetUpdateCatalog());
 		chkCanLogin->SetValue(role->GetCanLogin());
 		chkReplication->SetValue(role->GetReplication());
-		datValidUntil->SetValue(role->GetAccountExpires().GetDateOnly());
-		timValidUntil->SetTime(role->GetAccountExpires());
+		if (role->GetAccountExpires().IsValid())
+		{
+			datValidUntil->SetValue(role->GetAccountExpires().GetDateOnly());
+			timValidUntil->SetTime(role->GetAccountExpires());
+		}
 		txtConnectionLimit->SetValue(NumToStr(role->GetConnectionLimit()));
 		txtComment->SetValue(role->GetComment());
 
@@ -322,27 +325,27 @@ void dlgRole::OnOK(wxCommandEvent &ev)
 
 void dlgRole::OnChangeCal(wxCalendarEvent &ev)
 {
-	CheckChange();
-
 	bool timEn = ev.GetDate().IsValid();
 	timValidUntil->Enable(timEn);
 	if (!timEn)
 		timValidUntil->SetTime(wxDefaultDateTime);
 	else
 		timValidUntil->SetTime(wxDateTime::Today());
+
+	CheckChange();
 }
 
 
 void dlgRole::OnChangeDate(wxDateEvent &ev)
 {
-	CheckChange();
-
 	bool timEn = ev.GetDate().IsValid();
 	timValidUntil->Enable(timEn);
 	if (!timEn)
 		timValidUntil->SetTime(wxDefaultDateTime);
 	else
 		timValidUntil->SetTime(wxDateTime::Today());
+
+	CheckChange();
 }
 
 void dlgRole::OnChangeSpin(wxSpinEvent &ev)
@@ -647,7 +650,7 @@ wxString dlgRole::GetSql()
 				}
 			}
 		}
-		if (DateToStr(datValidUntil->GetValue()) != DateToStr(role->GetAccountExpires()))
+		if (!datValidUntil->GetValue().IsValid() || DateToStr(datValidUntil->GetValue() + timValidUntil->GetValue()) != DateToStr(role->GetAccountExpires()))
 		{
 			if (datValidUntil->GetValue().IsValid())
 				options += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue()));
