@@ -136,8 +136,11 @@ int dlgUser::Go(bool modal)
 		txtID->SetValue(NumToStr(user->GetUserId()));
 		chkCreateDB->SetValue(user->GetCreateDatabase());
 		chkCreateUser->SetValue(user->GetSuperuser());
-		datValidUntil->SetValue(user->GetAccountExpires().GetDateOnly());
-		timValidUntil->SetTime(user->GetAccountExpires());
+		if (user->GetAccountExpires().IsValid())
+		{
+			datValidUntil->SetValue(user->GetAccountExpires().GetDateOnly());
+			timValidUntil->SetTime(user->GetAccountExpires());
+		}
 		if (!connection->BackendMinimumVersion(7, 4))
 			txtName->Disable();
 		txtID->Disable();
@@ -198,27 +201,27 @@ wxString dlgUser::GetHelpPage() const
 
 void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 {
-	CheckChange();
-
 	bool timEn = ev.GetDate().IsValid();
 	timValidUntil->Enable(timEn);
 	if (!timEn)
 		timValidUntil->SetTime(wxDefaultDateTime);
 	else
 		timValidUntil->SetTime(wxDateTime::Today());
+
+	CheckChange();
 }
 
 
 void dlgUser::OnChangeDate(wxDateEvent &ev)
 {
-	CheckChange();
-
 	bool timEn = ev.GetDate().IsValid();
 	timValidUntil->Enable(timEn);
 	if (!timEn)
 		timValidUntil->SetTime(wxDefaultDateTime);
 	else
 		timValidUntil->SetTime(wxDateTime::Today());
+
+	CheckChange();
 }
 
 void dlgUser::OnChangeSpin(wxSpinEvent &ev)
@@ -445,7 +448,7 @@ wxString dlgUser::GetSql()
 				options += wxT(" NOCREATEUSER");
 		}
 
-		if (DateToStr(datValidUntil->GetValue()) != DateToStr(user->GetAccountExpires()))
+		if (!datValidUntil->GetValue().IsValid() || DateToStr(datValidUntil->GetValue()) != DateToStr(user->GetAccountExpires()))
 		{
 			if (datValidUntil->GetValue().IsValid())
 				options += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue()));
