@@ -40,8 +40,8 @@ The editor also offers a number of features for helping with code formatting:
 * Block outdent text that has been indented using the current tab settings using Shift+Tab.
 * Comment out SQL by selecting some text and pressing the Control+K.
 * Uncomment SQL by selecting some text starting with a comment and pressing Control+Shift+K.
-* Shift the selected text to upper case by pressing Control+Shift+U.
-* Shift the selected text to lower case by pressing Control+U.
+* Shift the selected text to upper case by pressing Control+U.
+* Shift the selected text to lower case by pressing Control+Shift+U.
 
 If you prefer to build your queries graphically, you can use the
 :ref:`gqb` to generate the SQL for you.
