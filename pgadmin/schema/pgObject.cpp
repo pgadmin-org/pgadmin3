@@ -441,6 +441,10 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
 	if (this->IsCollection())
 		return;
 
+	// Bail out if this is a pgAgent object, as they use the OID for IDs
+	if (GetMetaType() == PGM_JOB || GetMetaType() == PGM_SCHEDULE || GetMetaType() == PGM_STEP)
+		return;
+
 	wxString where;
 	if (wh.IsEmpty())
 	{
@@ -607,6 +611,10 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
 void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &wh)
 {
 	if (this->IsCollection())
+		return;
+
+	// Bail out if this is a pgAgent object, as they use the OID for IDs
+	if (GetMetaType() == PGM_JOB || GetMetaType() == PGM_SCHEDULE || GetMetaType() == PGM_STEP)
 		return;
 
 	wxString where;
