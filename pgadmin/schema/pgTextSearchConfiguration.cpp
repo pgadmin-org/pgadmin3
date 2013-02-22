@@ -241,13 +241,6 @@ pgObject *pgTextSearchConfigurationFactory::CreateObjects(pgCollection *collecti
 					maps->MoveNext();
 				}
 
-				if (tokenToAdd.Length() > 0 &&
-				        !tokenToAdd.BeforeFirst('/').IsSameAs(maps->GetVal(wxT("tokenalias")), false))
-				{
-					config->GetTokens().Add(tokenToAdd);
-					tokenToAdd = wxT("");
-				}
-
 				delete maps;
 			}
 
