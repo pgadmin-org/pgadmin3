@@ -109,6 +109,14 @@ wxString pgSchema::GetTranslatedMessage(int kindOfMessage) const
 		case DEPENDENTS:
 			message = _("Schema dependents");
 			break;
+		case BACKUPTITLE:
+			message = wxString::Format(_("Backup schema \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
+		case RESTORETITLE:
+			message = wxString::Format(_("Restore schema \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
 	}
 
 	return message;

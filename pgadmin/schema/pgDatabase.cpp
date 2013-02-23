@@ -110,6 +110,14 @@ wxString pgDatabase::GetTranslatedMessage(int kindOfMessage) const
 		case DEPENDENTS:
 			message = _("Database dependents");
 			break;
+		case BACKUPTITLE:
+			message = wxString::Format(_("Backup database \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
+		case RESTORETITLE:
+			message = wxString::Format(_("Restore database \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
 	}
 
 	return message;

@@ -120,6 +120,14 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		case DROPTITLE:
 			message = _("Drop object?");
 			break;
+		case BACKUPTITLE:
+			message = wxString::Format(_("Backup \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
+		case RESTORETITLE:
+			message = wxString::Format(_("Restore \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
 	}
 	//message += wxT(" ") + factory->GetTypeName();
 

@@ -141,6 +141,14 @@ wxString pgTable::GetTranslatedMessage(int kindOfMessage) const
 		case DEPENDENTS:
 			message = _("Table dependents");
 			break;
+		case BACKUPTITLE:
+			message = wxString::Format(_("Backup table \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
+		case RESTORETITLE:
+			message = wxString::Format(_("Restore table \"%s\""),
+			                           GetFullIdentifier().c_str());
+			break;
 	}
 
 	return message;
