@@ -120,6 +120,7 @@ void pgExtension::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
+		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Schema"), GetSchemaStr());
 		properties->AppendYesNoItem(_("Relocatable?"), GetIsRelocatable());
 		properties->AppendItem(_("Version"), GetVersion());
@@ -146,7 +147,7 @@ pgObject *pgExtensionFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	wxString sql;
 	pgExtension *extension = 0;
 
-	sql = wxT("select x.oid, x.extname, n.nspname, x.extrelocatable, x.extversion, e.comment")
+	sql = wxT("select x.oid, pg_get_userbyid(extowner) AS owner, x.extname, n.nspname, x.extrelocatable, x.extversion, e.comment")
 	      wxT("  FROM pg_extension x\n")
 	      wxT("  JOIN pg_namespace n on x.extnamespace=n.oid\n")
 	      wxT("  join pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name\n")
@@ -162,6 +163,7 @@ pgObject *pgExtensionFactory::CreateObjects(pgCollection *collection, ctlTree *b
 			extension = new pgExtension(extensions->GetVal(wxT("extname")));
 			extension->iSetDatabase(collection->GetDatabase());
 			extension->iSetOid(extensions->GetOid(wxT("oid")));
+			extension->iSetOwner(extensions->GetVal(wxT("owner")));
 			extension->iSetSchemaStr(extensions->GetVal(wxT("nspname")));
 			extension->iSetIsRelocatable(extensions->GetBool(wxT("extrelocatable")));
 			extension->iSetVersion(extensions->GetVal(wxT("extversion")));
