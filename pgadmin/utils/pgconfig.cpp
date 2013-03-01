@@ -388,6 +388,7 @@ pgHbaConfigLine::pgHbaConfigLine(const wxString &line)
 {
 	item = -1;
 	isValid = false;
+	isComment = true;
 	connectType = PGC_INVALIDCONF;
 	method = PGC_INVALIDMETHOD;
 	Init(line);
