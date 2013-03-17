@@ -342,8 +342,8 @@ wxString pgColumn::GetDefinition()
 		              + wxT("_") + GetName() + wxT("_seq\"'::text)");
 	}
 
-	if ((sql == wxT("integer") || sql == wxT("bigint") ||
-	        sql == wxT("pg_catalog.integer") || sql == wxT("pg_catalog.bigint"))
+	if ((sql == wxT("integer") || sql == wxT("bigint") || sql == wxT("smallint") ||
+	        sql == wxT("pg_catalog.integer") || sql == wxT("pg_catalog.bigint") || sql == wxT("pg_catalog.smallint"))
 	        && (GetDefault() == seqDefault1 || GetDefault() == seqDefault2))
 	{
 		if (GetDatabase()->BackendMinimumVersion(8, 1))
@@ -360,6 +360,8 @@ wxString pgColumn::GetDefinition()
 			{
 				if (sql.Right(6) == wxT("bigint"))
 					sql = wxT("bigserial");
+				else if (sql.Right(8) == wxT("smallint"))
+					sql = wxT("smallserial");
 				else
 					sql = wxT("serial");
 			}
@@ -377,6 +379,8 @@ wxString pgColumn::GetDefinition()
 		{
 			if (sql.Right(6) == wxT("bigint"))
 				sql = wxT("bigserial");
+			else if (sql.Right(8) == wxT("smallint"))
+				sql = wxT("smallserial");
 			else
 				sql = wxT("serial");
 

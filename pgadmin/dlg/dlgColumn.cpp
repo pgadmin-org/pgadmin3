@@ -407,7 +407,7 @@ wxString dlgColumn::GetSql()
 	wxString sql;
 	wxString name = GetName();
 
-	bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
+	bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial") || cbDatatype->GetValue() == wxT("smallserial"));
 
 	if (table)
 	{
@@ -698,7 +698,7 @@ void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
 	CheckLenEnable();
 	txtLength->Enable(isVarLen);
 
-	bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
+	bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial") || cbDatatype->GetValue() == wxT("smallserial"));
 	txtDefault->Enable(!isSerial);
 
 	CheckChange();

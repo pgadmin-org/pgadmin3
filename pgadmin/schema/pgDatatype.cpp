@@ -213,6 +213,10 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition, bool addSer
 
 	if (addSerials)
 	{
+		if (db->GetConnection()->BackendMinimumVersion(9, 2))
+        {
+		    sql += wxT(" UNION SELECT 'smallserial', 0, 2, 'b', 0, 'pg_catalog', false\n");
+        }
 		sql += wxT(" UNION SELECT 'bigserial', 0, 8, 'b', 0, 'pg_catalog', false\n");
 		sql += wxT(" UNION SELECT 'serial', 0, 4, 'b', 0, 'pg_catalog', false\n");
 	}

@@ -2556,6 +2556,9 @@ wxString sqlTable::GetColLabelValue(int col)
 		case (Oid)PGOID_TYPE_SERIAL8:
 			label += wxT("bigserial");
 			break;
+		case (Oid)PGOID_TYPE_SERIAL2:
+			label += wxT("smallserial");
+			break;
 		default:
 			label += columns[col].displayTypeName;
 			break;
