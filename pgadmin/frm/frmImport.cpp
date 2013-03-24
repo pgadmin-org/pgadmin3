@@ -213,7 +213,9 @@ void frmImport::OnOK(wxCommandEvent &ev)
 			query += wxT("FORMAT '") + cbFormat->GetValue() + wxT("'");
 			if (chkOids->GetValue())
 				query += wxT(", OIDS");
-			if (!cbDelimiter->GetValue().IsEmpty())
+			if (cbDelimiter->GetValue() == wxT("[tab]"))
+				query += wxT(", DELIMITER E'\\t'");
+			else if (!cbDelimiter->GetValue().IsEmpty())
 				query += wxT(", DELIMITER ") + connection->qtDbString(cbDelimiter->GetValue());
 			if (!txtNull->GetValue().IsEmpty())
 				query += wxT(", NULL ") + connection->qtDbString(txtNull->GetValue());
