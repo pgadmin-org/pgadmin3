@@ -10,66 +10,6 @@
 #
 #######################################################################
 
-# Check for aclocal 1.9/1.10/1.11
-echo "Checking aclocal..."
-
-RET=`type aclocal-1.12 > /dev/null 2>&1 || echo fail`
-if [ x$RET != xfail ];
-then
-  ACLOCAL=aclocal-1.12
-else
-  RET=`type aclocal-1.11 > /dev/null 2>&1 || echo fail`
-  if [ x$RET != xfail ];
-  then
-    ACLOCAL=aclocal-1.11
-  else
-    RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
-    if [ x$RET != xfail ];
-    then
-      ACLOCAL=aclocal-1.10
-    else
-      RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
-      if [ x$RET != xfail ];
-      then
-        ACLOCAL=aclocal-1.9
-      else
-        echo "ERROR: this script requires aclocal-1.9, aclocal-1.10, aclocal-1.11 or aclocal-1.12"
-        exit 1
-      fi
-    fi
-  fi
-fi
-
-
-# Check for automake 1.9/1.10/1.11/1.12
-echo "Checking automake..."
-RET=`type automake-1.12 > /dev/null 2>&1 || echo fail`
-if [ x$RET != xfail ];
-then
-  AUTOMAKE=automake-1.12
-else
-  RET=`type automake-1.11 > /dev/null 2>&1 || echo fail`
-  if [ x$RET != xfail ];
-  then
-    AUTOMAKE=automake-1.11
-  else
-    RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
-    if [ x$RET != xfail ];
-    then
-      AUTOMAKE=automake-1.10
-    else
-      RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
-      if [ x$RET != xfail ];
-      then
-        AUTOMAKE=automake-1.9
-      else
-        echo "ERROR: this script requires automake-1.9, automake-1.10, automake-1.11 or automake-1.12"
-        exit 1
-      fi
-    fi
-  fi
-fi
-
 # Insert the version number wherever it's needed
 echo "Stamping the version number..."
 LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print $3}'`
@@ -95,7 +35,7 @@ fi
 
 set -x
 
-$ACLOCAL && \
+aclocal && \
 autoheader && \
-$AUTOMAKE --foreign --add-missing --copy && \
+automake --foreign --add-missing --copy && \
 autoconf
