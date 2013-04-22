@@ -1014,7 +1014,8 @@ wxString pgObject::GetPrivileges(const wxString &allPattern, const wxString &str
 
 wxString pgObject::GetGrant(const wxString &allPattern, const wxString &_grantFor, const wxString &_column)
 {
-	wxString grant, str, user, grantFor;
+	wxString grant, str, user, grantFor, tmpUser;
+
 	if (_grantFor.IsNull())
 	{
 		grantFor = GetTypeName();
@@ -1033,6 +1034,11 @@ wxString pgObject::GetGrant(const wxString &allPattern, const wxString &_grantFo
 		}
 		else
 		{
+			// checks if certain privilege is granted to public
+			bool grantedToPublic = false;
+			// checks if certain privilege is granted to owner
+			bool grantedToOwner = false;
+
 			queryTokenizer acls(acl.Mid(1, acl.Length() - 2), ',');
 			while (acls.HasMoreTokens())
 			{
@@ -1043,11 +1049,15 @@ wxString pgObject::GetGrant(const wxString &allPattern, const wxString &_grantFo
 				user = str.BeforeFirst('=');
 				str = str.AfterFirst('=').BeforeFirst('/');
 				if (user == wxT(""))
+				{
 					user = wxT("public");
+					grantedToPublic = true;
+				}
 				else
 				{
 					if (user.Left(6) == wxT("group "))
 					{
+						tmpUser = user.Mid(6);
 						if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
 							user = wxT("GROUP ") + qtIdent(user.Mid(8, user.Length() - 10));
 						else
@@ -1055,15 +1065,31 @@ wxString pgObject::GetGrant(const wxString &allPattern, const wxString &_grantFo
 					}
 					else
 					{
+						tmpUser = user;
 						if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
 							user = qtIdent(user.Mid(2, user.Length() - 4));
 						else
 							user = qtIdent(user);
 					}
+
+					if (tmpUser.Contains(owner))
+						grantedToOwner = true;
 				}
 
 				grant += GetPrivileges(allPattern, str, grantFor, user, qtIdent(_column));
 			}
+
+			str = wxEmptyString;
+			int metaType = GetMetaType();
+
+			// We check here that whether the user has revoked prvileges granted to databases, functions
+			// and languages. If so then this must be part of reverse engineered sql statement
+			if (!grantedToPublic && (metaType == PGM_LANGUAGE || metaType == PGM_FUNCTION || metaType == PGM_DATABASE))
+				grant += GetPrivileges(allPattern, str, grantFor, wxT("public"), qtIdent(_column));
+			// We check here that whether the owner has revoked prvileges on himself to this postgres
+			// object. If so then this must be part of reverse engineered sql statement
+			if (!grantedToOwner)
+				grant += GetPrivileges(allPattern, str, grantFor, qtIdent(owner), qtIdent(_column));
 		}
 	}
 	return grant;

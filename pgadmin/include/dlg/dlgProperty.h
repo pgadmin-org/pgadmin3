@@ -262,6 +262,7 @@ protected:
 	virtual int Go(bool modal = false);
 	bool DisablePrivilege(const wxString &priv);
 	void SetPrivilegesLayout();
+	void AppendCurrentAcl(const wxString &name, const wxString &value);
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);

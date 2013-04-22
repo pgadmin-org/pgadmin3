@@ -245,7 +245,9 @@ enum
     SLM_SEQUENCE,
     SLM_SET,
     SLM_SUBSCRIPTION,
-    SLM_TABLE
+    SLM_TABLE,
+
+    PGM_LANGUAGE
 };
 
 

@@ -45,6 +45,15 @@ dlgLanguage::dlgLanguage(pgaFactory *f, frmMain *frame, pgLanguage *node, pgObje
 {
 	language = node;
 	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
+	if (!node)
+	{
+		int icon = PGICON_PUBLIC;
+		wxString name = wxT("public");
+		wxString value = wxT("U");
+		securityPage->lbPrivileges->AppendItem(icon, name, value);
+		AppendCurrentAcl(name, value);
+	}
 }
 
 pgObject *dlgLanguage::GetObject()

@@ -268,6 +268,7 @@ wxString pgLanguageCollection::GetTranslatedMessage(int kindOfMessage) const
 pgLanguageFactory::pgLanguageFactory()
 	: pgDatabaseObjFactory(__("Language"), __("New Language..."), __("Create a new Language."), language_png_img, language_sm_png_img)
 {
+	metaType = PGM_LANGUAGE;
 }
 
 pgCollection *pgLanguageFactory::CreateCollection(pgObject *obj)
