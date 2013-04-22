@@ -1827,6 +1827,24 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
 					currentAcl.Add(name + wxT("=") + value);
 				}
 			}
+			else
+			{
+				int icon = PGICON_PUBLIC;
+				wxString name = wxT("public");
+				wxString value;
+				if (obj->GetMetaType() == PGM_DATABASE)
+					value = wxT("Tc");
+				else if (obj->GetMetaType() == PGM_FUNCTION)
+					value = wxT("X");
+				else if (obj->GetMetaType() == PGM_LANGUAGE)
+					value = wxT("U");
+
+				if (value != wxEmptyString)
+				{
+					securityPage->lbPrivileges->AppendItem(icon, name, value);
+					currentAcl.Add(name + wxT("=") + value);
+				}
+			}
 		}
 	}
 	else
@@ -1965,6 +1983,12 @@ bool dlgSecurityProperty::DisablePrivilege(const wxString &priv)
 		return securityPage->DisablePrivilege(priv);
 	else
 		return true;
+}
+
+void dlgSecurityProperty::AppendCurrentAcl(const wxString &name, const wxString &value)
+{
+	if (!(name.IsEmpty() && value.IsEmpty()))
+		currentAcl.Add(name + wxT("=") + value);
 }
 
 

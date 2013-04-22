@@ -89,6 +89,15 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
 	dirtyVars = false;
 
 	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
+	if (!node)
+	{
+		int icon = PGICON_PUBLIC;
+		wxString name = wxT("public");
+		wxString value = wxT("Tc");
+		securityPage->lbPrivileges->AppendItem(icon, name, value);
+		AppendCurrentAcl(name, value);
+	}
 }
 
 pgObject *dlgDatabase::GetObject()

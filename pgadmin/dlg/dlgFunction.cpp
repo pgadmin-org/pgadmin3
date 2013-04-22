@@ -135,6 +135,15 @@ dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSche
 
 	txtArguments->Disable();
 
+	if (!node)
+	{
+		int icon = PGICON_PUBLIC;
+		wxString name = wxT("public");
+		wxString value = wxT("X");
+		securityPage->lbPrivileges->AppendItem(icon, name, value);
+		AppendCurrentAcl(name, value);
+	}
+
 	bool bVal;
 	settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
 	if (!bVal)
