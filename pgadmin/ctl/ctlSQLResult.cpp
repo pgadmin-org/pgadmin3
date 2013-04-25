@@ -320,7 +320,14 @@ wxString sqlResultTable::GetValue(int row, int col)
 				return thread->DataSet()->GetVal(col);
 		}
 		else
-			return thread->DataSet()->ColName(col);
+		{
+			wxString data = thread->DataSet()->GetVal(col);
+
+			if (data.Length() > settings->GetMaxColSize())
+				return thread->DataSet()->GetVal(col).Left(settings->GetMaxColSize()) + wxT(" (...)"); 
+			else
+				return thread->DataSet()->GetVal(col);
+		}
 	}
 	return wxEmptyString;
 }
