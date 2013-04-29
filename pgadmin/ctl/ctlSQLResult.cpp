@@ -201,7 +201,7 @@ void ctlSQLResult::DisplayData(bool single)
 		int w;
 
 		size_t hdrIndex = 0;
-		long col, nCols = thread->DataSet()->NumCols();
+		long col, nCols = thread->DataSet()->NumCols();		
 
 		for (col = 0 ; col < nCols ; col++)
 		{
@@ -327,12 +327,23 @@ wxString sqlResultTable::GetValue(int row, int col)
 				return wxT("<NULL>");
 			else
 			{
+
+				wxString decimalMark = wxT(".");
+				wxString s = wxEmptyString;
+				s = thread->DataSet()->GetVal(col);
+
+				if(thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
+						settings->GetDecimalMark().Length() > 0)
+				{
+					decimalMark = settings->GetDecimalMark();
+					s.Replace(wxT("."), decimalMark);
+
+				}
 				if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
 				        settings->GetThousandsSeparator().Length() > 0)
 				{
-					/* Add thousands separator */
-					wxString s = thread->DataSet()->GetVal(col);
-					size_t pos = s.find(wxT("."));
+					/* Add thousands separator */					
+					size_t pos = s.find(decimalMark);
 					if (pos == wxString::npos)
 						pos = s.length();
 					while (pos > 3)

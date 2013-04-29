@@ -369,6 +369,16 @@ public:
 	{
 		WriteBool(wxT("frmQuery/AutoRollback"), newval);
 	}
+	wxString GetDecimalMark() const
+	{
+		wxString s;
+		Read(wxT("DecimalMark"), &s, wxEmptyString);
+		return s;
+	}
+	void SetDecimalMark(const wxString &newval) 
+	{		
+		Write(wxT("DecimalMark"), newval);
+	}
 	bool GetLineNumber() const
 	{
 		bool b;

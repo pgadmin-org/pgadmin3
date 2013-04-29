@@ -85,6 +85,7 @@
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
+#define txtDecimalMark	            CTRL_TEXT("txtDecimalMark")
 #define txtThousandsSeparator       CTRL_TEXT("txtThousandsSeparator")
 #define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
@@ -302,6 +303,7 @@ frmOptions::frmOptions(frmMain *parent)
 	txtThousandsSeparator->SetValue(settings->GetThousandsSeparator());
 	chkAutoRollback->SetValue(settings->GetAutoRollback());
 	chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
+	txtDecimalMark->SetValue(settings->GetDecimalMark());
 	chkShowNotices->SetValue(settings->GetShowNotices());
 
 	txtPgHelpPath->SetValue(settings->GetPgHelpPath());
@@ -573,6 +575,13 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 		return;
 	}
 
+	//Check decimal mark <> thousands separator
+	if(txtDecimalMark->GetValue() == txtThousandsSeparator->GetValue())
+	{
+		wxMessageBox(_("Decimal mark and thousands separator must not be equal"), _("Error"), wxICON_ERROR | wxOK);
+		return;
+	}
+
 	// Clean and check the help paths
 	txtPgHelpPath->SetValue(CleanHelpPath(txtPgHelpPath->GetValue()));
 	if (!HelpPathValid(txtPgHelpPath->GetValue()))
@@ -661,6 +670,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
 	settings->SetStickySql(chkStickySql->GetValue());
 	settings->SetIndicateNull(chkIndicateNull->GetValue());
+	settings->SetDecimalMark(txtDecimalMark->GetValue());
 	settings->SetThousandsSeparator(txtThousandsSeparator->GetValue());
 	settings->SetAutoRollback(chkAutoRollback->GetValue());
 	settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
