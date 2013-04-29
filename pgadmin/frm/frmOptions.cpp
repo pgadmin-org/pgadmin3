@@ -577,11 +577,15 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 		return;
 	}
 
-	//Check decimal mark <> thousands separator
-	if(txtDecimalMark->GetValue() == txtThousandsSeparator->GetValue())
+
+	if (txtDecimalMark->GetValue() != wxEmptyString)
 	{
-		wxMessageBox(_("Decimal mark and thousands separator must not be equal"), _("Error"), wxICON_ERROR | wxOK);
-		return;
+		// Check decimal mark <> thousands separator
+		if (txtDecimalMark->GetValue() == txtThousandsSeparator->GetValue())
+		{
+			wxMessageBox(_("The decimal mark and thousands separator must not be equal."), _("Error"), wxICON_ERROR | wxOK);
+			return;
+		}
 	}
 
 	// Clean and check the help paths
