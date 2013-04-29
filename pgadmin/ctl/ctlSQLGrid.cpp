@@ -149,14 +149,63 @@ wxString ctlSQLGrid::GetExportLine(int row, wxArrayInt cols)
 	return str;
 }
 
+wxString ctlSQLGrid::GetColumnName(int colNum)
+{
+	wxString columnName = GetColLabelValue(colNum);
+	columnName = columnName.Left(columnName.find(wxT("\n")));	
+	return columnName;
+}
+
+void ctlSQLGrid::AppendColumnHeader(wxString &str, int start, int end) 
+{
+	size_t i, arrsize;
+	arrsize = (end - start + 1);
+	wxArrayInt columns;
+	
+	for(i = 0; i < arrsize; i++)
+	{
+		columns.Add(start + i);
+	}
+
+	AppendColumnHeader(str, columns);
+}
+
+void ctlSQLGrid::AppendColumnHeader(wxString &str, wxArrayInt columns)
+{
+	if(settings->GetColumnNames())
+	{
+		bool CopyQuoting = (settings->GetCopyQuoting() == 1 || settings->GetCopyQuoting() == 2);
+		size_t i;
+
+		for(i = 0; i < columns.Count() ; i++)
+		{
+			long columnPos = columns.Item(i);
+			if(i > 0)
+				str.Append(settings->GetCopyColSeparator());
+
+			if(CopyQuoting)
+				str.Append(settings->GetCopyQuoteChar());
+			str.Append(GetColumnName(columnPos));
+			if(CopyQuoting)
+				str.Append(settings->GetCopyQuoteChar());		
+		
+		}
+		str.Append(END_OF_LINE);
+	}
+}
+
 int ctlSQLGrid::Copy()
 {
 	wxString str;
 	int copied = 0;
 	size_t i;
 
+	
+
 	if (GetSelectedRows().GetCount())
 	{
+		AppendColumnHeader(str, 0, (GetNumberCols() - 1));		
+		
 		wxArrayInt rows = GetSelectedRows();
 
 		for (i = 0 ; i < rows.GetCount() ; i++)
@@ -173,6 +222,8 @@ int ctlSQLGrid::Copy()
 	{
 		wxArrayInt cols = GetSelectedCols();
 		size_t numRows = GetNumberRows();
+
+		AppendColumnHeader(str, cols);
 
 		for (i = 0 ; i < numRows ; i++)
 		{
@@ -194,6 +245,8 @@ int ctlSQLGrid::Copy()
 		y1 = GetSelectionBlockTopLeft()[0].GetRow();
 		y2 = GetSelectionBlockBottomRight()[0].GetRow();
 
+		AppendColumnHeader(str, x1, x2);
+
 		for (i = y1; i <= y2; i++)
 		{
 			str.Append(GetExportLine(i, x1, x2));
@@ -210,6 +263,8 @@ int ctlSQLGrid::Copy()
 
 		row = GetGridCursorRow();
 		col = GetGridCursorCol();
+
+		AppendColumnHeader(str, col, col);
 
 		str.Append(GetExportLine(row, col, col));
 		copied = 1;

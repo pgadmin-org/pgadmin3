@@ -86,6 +86,7 @@
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
 #define txtDecimalMark	            CTRL_TEXT("txtDecimalMark")
+#define chkColumnNames				CTRL_CHECKBOX("chkColumnNames")
 #define txtThousandsSeparator       CTRL_TEXT("txtThousandsSeparator")
 #define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
@@ -304,6 +305,7 @@ frmOptions::frmOptions(frmMain *parent)
 	chkAutoRollback->SetValue(settings->GetAutoRollback());
 	chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
 	txtDecimalMark->SetValue(settings->GetDecimalMark());
+	chkColumnNames->SetValue(settings->GetColumnNames());
 	chkShowNotices->SetValue(settings->GetShowNotices());
 
 	txtPgHelpPath->SetValue(settings->GetPgHelpPath());
@@ -671,6 +673,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetStickySql(chkStickySql->GetValue());
 	settings->SetIndicateNull(chkIndicateNull->GetValue());
 	settings->SetDecimalMark(txtDecimalMark->GetValue());
+	settings->SetColumnNames(chkColumnNames->GetValue());
 	settings->SetThousandsSeparator(txtThousandsSeparator->GetValue());
 	settings->SetAutoRollback(chkAutoRollback->GetValue());
 	settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());

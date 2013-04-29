@@ -379,6 +379,16 @@ public:
 	{		
 		Write(wxT("DecimalMark"), newval);
 	}
+	bool GetColumnNames() const
+	{
+		bool b;
+		Read(wxT("ColumnNames"), &b, false);
+		return b;
+	}
+	void SetColumnNames(const bool newval)
+	{
+		WriteBool(wxT("ColumnNames"), newval);
+	}
 	bool GetLineNumber() const
 	{
 		bool b;

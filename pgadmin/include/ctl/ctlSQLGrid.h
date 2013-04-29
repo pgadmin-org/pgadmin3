@@ -44,6 +44,10 @@ public:
 private:
 	void OnCopy(wxCommandEvent &event);
 	void OnMouseWheel(wxMouseEvent &event);
+	wxString GetColumnName(int colNum);
+	void AppendColumnHeader(wxString &str, int start, int end);
+	void AppendColumnHeader(wxString &str, wxArrayInt columns);
+
 };
 
 #endif
