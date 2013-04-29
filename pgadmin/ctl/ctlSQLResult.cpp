@@ -141,7 +141,9 @@ int ctlSQLResult::Abort()
 	{
 		((sqlResultTable *)GetTable())->SetThread(0);
 
-		thread->Delete();
+		thread->CancelExecution();
+		thread->Wait();
+
 		delete thread;
 	}
 	thread = 0;
@@ -250,7 +252,7 @@ wxString ctlSQLResult::GetErrorMessage()
 
 pgError ctlSQLResult::GetResultError()
 {
-	return conn->GetLastResultError();
+	return thread->GetResultError();
 }
 
 long ctlSQLResult::NumRows() const

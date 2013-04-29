@@ -17,7 +17,7 @@
 // App headers
 #include "debugger/ctlMessageWindow.h"
 
-IMPLEMENT_CLASS( ctlMessageWindow, wxTextCtrl )
+IMPLEMENT_CLASS(ctlMessageWindow, wxTextCtrl)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ctlMessageWindow constructor
@@ -25,20 +25,20 @@ IMPLEMENT_CLASS( ctlMessageWindow, wxTextCtrl )
 //  Initialize the grid control and clear it out....
 //
 
-ctlMessageWindow::ctlMessageWindow( wxWindow *parent, wxWindowID id )
-	: wxTextCtrl( parent, wxID_ANY, wxT(""), wxPoint(0, 0), wxSize(0, 0),
-	              wxTE_MULTILINE | wxTE_READONLY)
+ctlMessageWindow::ctlMessageWindow(wxWindow *parent, wxWindowID id)
+	: wxTextCtrl(parent, wxID_ANY, wxT(""), wxPoint(0, 0), wxSize(0, 0),
+	             wxTE_MULTILINE | wxTE_READONLY)
 {
 	SetFont(settings->GetSQLFont());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// addMessage()
+// AddMessage()
 //
 //    Adds the message in the 'DBMS Messages' window.
 //
 
-void ctlMessageWindow::addMessage( wxString message )
+void ctlMessageWindow::AddMessage(wxString message)
 {
 	AppendText(message + wxT("\n"));
 }
@@ -49,13 +49,13 @@ void ctlMessageWindow::addMessage( wxString message )
 //    Removes the given message from the 'DBMS Messages' window.
 //
 
-void ctlMessageWindow::delMessage( const char *name )
+void ctlMessageWindow::DelMessage(const char *name)
 {
 	SetValue(wxT(""));
 }
 
 
-wxString ctlMessageWindow::getMessage( int row )
+wxString ctlMessageWindow::GetMessage(int row)
 {
-	return( GetValue());
+	return(GetValue());
 }

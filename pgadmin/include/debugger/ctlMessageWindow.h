@@ -23,21 +23,14 @@
 
 class ctlMessageWindow : public wxTextCtrl
 {
-	DECLARE_CLASS( ctlMessageWindow )
+	DECLARE_CLASS(ctlMessageWindow)
 
 public:
-	ctlMessageWindow( wxWindow *parent, wxWindowID id );
+	ctlMessageWindow(wxWindow *parent, wxWindowID id);
 
-	void	addMessage( wxString message );	// Add a message to the window
-	void	delMessage( const char *name = NULL );								     // Remove a message from the window
-	wxString	getMessage( int row );
-
-private:
-
-	typedef struct
-	{
-		int	m_row;		// Row number for this variable/grid cell
-	} gridCell;
+	void     AddMessage(wxString message);	// Add a message to the window
+	void     DelMessage(const char *name = NULL);								     // Remove a message from the window
+	wxString GetMessage(int row);
 };
 
 #endif

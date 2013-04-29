@@ -20,7 +20,6 @@
 // App headers
 #include "db/pgSet.h"
 #include "db/pgConn.h"
-#include "db/pgQueryThread.h"
 #include "utils/sysLogger.h"
 #include "utils/pgDefs.h"
 

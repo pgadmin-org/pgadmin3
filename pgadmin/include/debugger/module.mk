@@ -10,19 +10,15 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	include/debugger/ctlCodeWindow.h \
+	include/debugger/dbgController.h \
+	include/debugger/dbgModel.h \
 	include/debugger/ctlMessageWindow.h \
 	include/debugger/ctlResultGrid.h \
 	include/debugger/ctlStackWindow.h \
 	include/debugger/ctlTabWindow.h \
 	include/debugger/ctlVarWindow.h \
 	include/debugger/dbgBreakPoint.h \
-	include/debugger/dbgConnProp.h \
 	include/debugger/dbgConst.h \
-	include/debugger/dbgDbResult.h \
-	include/debugger/dbgPgConn.h \
-	include/debugger/dbgPgThread.h \
- 	include/debugger/dbgResultset.h \
 	include/debugger/dbgTargetInfo.h \
  	include/debugger/debugger.h \
 	include/debugger/dlgDirectDbg.h \

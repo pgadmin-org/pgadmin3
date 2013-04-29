@@ -10,17 +10,15 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	debugger/ctlCodeWindow.cpp \
 	debugger/ctlMessageWindow.cpp \
 	debugger/ctlResultGrid.cpp \
 	debugger/ctlStackWindow.cpp \
 	debugger/ctlTabWindow.cpp \
 	debugger/ctlVarWindow.cpp \
 	debugger/dbgBreakPoint.cpp \
-	debugger/dbgDbResult.cpp \
- 	debugger/dbgPgConn.cpp \
-	debugger/dbgPgThread.cpp \
-	debugger/dbgResultset.cpp \
+	debugger/dbgController.cpp \
+	debugger/dbgEvents.cpp \
+	debugger/dbgModel.cpp \
  	debugger/dbgTargetInfo.cpp \
 	debugger/debugger.cpp \
 	debugger/dlgDirectDbg.cpp \

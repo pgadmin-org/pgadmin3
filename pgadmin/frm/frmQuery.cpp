@@ -159,7 +159,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_TIMER(CTL_TIMERSIZES,       frmQuery::OnAdjustSizesTimer)
 	EVT_TIMER(CTL_TIMERFRM,         frmQuery::OnTimer)
 // These fire when the queries complete
-	EVT_MENU(QUERY_COMPLETE,        frmQuery::OnQueryComplete)
+	EVT_PGQUERYRESULT(QUERY_COMPLETE, frmQuery::OnQueryComplete)
 	EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
 	EVT_AUINOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
 	EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
@@ -2415,7 +2415,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
 
 // When the query completes, it raises an event which we process here.
-void frmQuery::OnQueryComplete(wxCommandEvent &ev)
+void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 {
 	QueryExecInfo *qi = (QueryExecInfo *)ev.GetClientData();
 

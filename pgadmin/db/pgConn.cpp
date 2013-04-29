@@ -52,7 +52,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 pgConn::pgConn(const wxString &server, const wxString &service, const wxString &hostaddr, const wxString &database, const wxString &username, const wxString &password,
                int port, const wxString &rolename, int sslmode, OID oid, const wxString &applicationname,
                const wxString &sslcert, const wxString &sslkey, const wxString &sslrootcert, const wxString &sslcrl,
-               const bool sslcompression)
+               const bool sslcompression) : m_cancelConn(NULL)
 {
 	wxString msg;
 
@@ -324,7 +324,10 @@ bool pgConn::DoConnect()
 void pgConn::Close()
 {
 	if (conn)
+	{
+		CancelExecution();
 		PQfinish(conn);
+	}
 	conn = 0;
 	connStatus = PGCONN_BAD;
 }
@@ -350,11 +353,26 @@ bool pgConn::Reconnect()
 }
 
 
-pgConn *pgConn::Duplicate()
+pgConn *pgConn::Duplicate(const wxString &_appName)
 {
-	return new pgConn(wxString(save_server), wxString(save_service), wxString(save_hostaddr), wxString(save_database), wxString(save_username), wxString(save_password),
-	                  save_port, save_rolename, save_sslmode, save_oid,
-	                  save_applicationname, save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl, save_sslcompression);
+	pgConn *res = new pgConn(wxString(save_server), wxString(save_service),
+	                         wxString(save_hostaddr), wxString(save_database), wxString(save_username),
+	                         wxString(save_password), save_port, save_rolename, save_sslmode, save_oid,
+	                         _appName.IsEmpty() ? save_applicationname : _appName, save_sslcert, save_sslkey,
+	                         save_sslrootcert, save_sslcrl, save_sslcompression);
+
+	// Save the version and features information from the existing connection
+	res->majorVersion = majorVersion;
+	res->minorVersion = minorVersion;
+	res->patchVersion = patchVersion;
+	res->isEdb = isEdb;
+	res->isGreenplum = isGreenplum;
+	res->reservedNamespaces = reservedNamespaces;
+
+	for (size_t index = FEATURE_INITIALIZED; index < FEATURE_LAST; index++)
+		res->features[index] = features[index];
+
+	return res;
 }
 
 
@@ -714,7 +732,11 @@ bool pgConn::ExecuteVoid(const wxString &sql, bool reportError)
 	PGresult *qryRes;
 
 	wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+
+	SetConnCancel();
 	qryRes = PQexec(conn, sql.mb_str(*conv));
+	ResetConnCancel();
+
 	lastResultStatus = PQresultStatus(qryRes);
 	SetLastResultError(qryRes);
 
@@ -734,7 +756,7 @@ bool pgConn::ExecuteVoid(const wxString &sql, bool reportError)
 
 
 
-wxString pgConn::ExecuteScalar(const wxString &sql)
+wxString pgConn::ExecuteScalar(const wxString &sql, bool reportError)
 {
 	wxString result;
 
@@ -743,14 +765,18 @@ wxString pgConn::ExecuteScalar(const wxString &sql)
 		// Execute the query and get the status.
 		PGresult *qryRes;
 		wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+
+		SetConnCancel();
 		qryRes = PQexec(conn, sql.mb_str(*conv));
+		ResetConnCancel();
+
 		lastResultStatus = PQresultStatus(qryRes);
 		SetLastResultError(qryRes);
 
 		// Check for errors
 		if (lastResultStatus != PGRES_TUPLES_OK && lastResultStatus != PGRES_COMMAND_OK)
 		{
-			LogError();
+			LogError(!reportError);
 			PQclear(qryRes);
 			return wxEmptyString;
 		}
@@ -775,14 +801,17 @@ wxString pgConn::ExecuteScalar(const wxString &sql)
 	return result;
 }
 
-pgSet *pgConn::ExecuteSet(const wxString &sql)
+pgSet *pgConn::ExecuteSet(const wxString &sql, bool reportError)
 {
 	// Execute the query and get the status.
 	if (GetStatus() == PGCONN_OK)
 	{
 		PGresult *qryRes;
 		wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+
+		SetConnCancel();
 		qryRes = PQexec(conn, sql.mb_str(*conv));
+		ResetConnCancel();
 
 		lastResultStatus = PQresultStatus(qryRes);
 		SetLastResultError(qryRes);
@@ -792,14 +821,17 @@ pgSet *pgConn::ExecuteSet(const wxString &sql)
 			pgSet *set = new pgSet(qryRes, this, *conv, needColQuoting);
 			if (!set)
 			{
-				wxLogError(__("Couldn't create a pgSet object!"));
+				if (reportError)
+					wxLogError(_("Couldn't create a pgSet object!"));
+				else
+					wxLogQuietError(_("Couldn't create a pgSet object!"));
 				PQclear(qryRes);
 			}
 			return set;
 		}
 		else
 		{
-			LogError();
+			LogError(!reportError);
 			PQclear(qryRes);
 		}
 	}
@@ -924,7 +956,15 @@ void pgConn::LogError(const bool quiet)
 bool pgConn::IsAlive()
 {
 	if (GetStatus() != PGCONN_OK)
+	{
+		if (conn)
+		{
+			PQfinish(conn);
+			conn = 0;
+			connStatus = PGCONN_BROKEN;
+		}
 		return false;
+	}
 
 	PGresult *qryRes = PQexec(conn, "SELECT 1;");
 	lastResultStatus = PQresultStatus(qryRes);
@@ -965,6 +1005,59 @@ int pgConn::GetStatus() const
 void pgConn::Reset()
 {
 	PQreset(conn);
+}
+
+
+void pgConn::SetConnCancel(void)
+{
+	wxMutexLocker  lock(m_cancelConnMutex);
+	PGcancel      *oldCancelConn = m_cancelConn;
+
+	m_cancelConn = NULL;
+
+	if (oldCancelConn != NULL)
+		PQfreeCancel(oldCancelConn);
+
+	if (!conn)
+		return;
+
+	m_cancelConn = PQgetCancel(conn);
+
+}
+
+
+void pgConn::ResetConnCancel(void)
+{
+	wxMutexLocker  lock(m_cancelConnMutex);
+	PGcancel      *oldCancelConn = m_cancelConn;
+
+	m_cancelConn = NULL;
+
+	if (oldCancelConn != NULL)
+		PQfreeCancel(oldCancelConn);
+}
+
+
+void pgConn::CancelExecution(void)
+{
+	char           errbuf[256];
+	wxMutexLocker  lock(m_cancelConnMutex);
+
+	if (m_cancelConn)
+	{
+		PGcancel *cancelConn = m_cancelConn;
+		m_cancelConn = NULL;
+
+		if (PQcancel(cancelConn, errbuf, sizeof(errbuf)))
+		{
+			SetLastResultError(NULL, wxT("Cancel request sent"));
+		}
+		else
+		{
+			SetLastResultError(NULL, wxString::Format(wxT("Could not send cancel request:\n%s"), errbuf));
+		}
+		PQfreeCancel(cancelConn);
+	}
 }
 
 
@@ -1101,14 +1194,14 @@ bool pgConn::TableHasColumn(wxString schemaname, wxString tblname, const wxStrin
 		schemaname.Replace(wxT("'"), wxT("''"));
 
 		wxString sql
-		    = wxT("SELECT a.attname AS colname FROM pg_catalog.pg_attribute a ") \
-		      wxT("WHERE a.attrelid = (SELECT c.oid FROM pg_catalog.pg_class c ") \
-		      wxT("                    LEFT JOIN pg_catalog.pg_namespace n ON ") \
-		      wxT("                                    n.oid = c.relnamespace ") \
-		      wxT("                    WHERE c.relname ~ '^(") + tblname + wxT(")$' AND ") \
-		      wxT("                          n.nspname ~ '^(") + schemaname + wxT(")$') AND ") \
-		      wxT("      a.attnum > 0 AND NOT a.attisdropped ") \
-		      wxT("ORDER BY a.attnum");
+		= wxT("SELECT a.attname AS colname FROM pg_catalog.pg_attribute a ") \
+		  wxT("WHERE a.attrelid = (SELECT c.oid FROM pg_catalog.pg_class c ") \
+		  wxT("                    LEFT JOIN pg_catalog.pg_namespace n ON ") \
+		  wxT("                                    n.oid = c.relnamespace ") \
+		  wxT("                    WHERE c.relname ~ '^(") + tblname + wxT(")$' AND ") \
+		  wxT("                          n.nspname ~ '^(") + schemaname + wxT(")$') AND ") \
+		  wxT("      a.attnum > 0 AND NOT a.attisdropped ") \
+		  wxT("ORDER BY a.attnum");
 
 		pgSet *set = ExecuteSet(sql);
 		if (set)
@@ -1129,3 +1222,88 @@ bool pgConn::TableHasColumn(wxString schemaname, wxString tblname, const wxStrin
 	return false;
 }
 
+void pgError::SetError(PGresult *_res, wxMBConv *_conv)
+{
+	if (!_conv)
+	{
+		_conv = &wxConvLibc;
+	}
+	if (_res)
+	{
+		msg_primary = wxString(PQresultErrorField(_res, PG_DIAG_MESSAGE_PRIMARY), *_conv);
+		severity = wxString(PQresultErrorField(_res, PG_DIAG_SEVERITY), *_conv);
+		sql_state = wxString(PQresultErrorField(_res, PG_DIAG_SQLSTATE), *_conv);
+		msg_detail = wxString(PQresultErrorField(_res, PG_DIAG_MESSAGE_DETAIL), *_conv);
+		msg_hint = wxString(PQresultErrorField(_res, PG_DIAG_MESSAGE_HINT), *_conv);
+		statement_pos = wxString(PQresultErrorField(_res, PG_DIAG_STATEMENT_POSITION), *_conv);
+		internal_pos = wxString(PQresultErrorField(_res, PG_DIAG_INTERNAL_POSITION), *_conv);
+		internal_query = wxString(PQresultErrorField(_res, PG_DIAG_INTERNAL_QUERY), *_conv);
+		context = wxString(PQresultErrorField(_res, PG_DIAG_CONTEXT), *_conv);
+		source_file = wxString(PQresultErrorField(_res, PG_DIAG_SOURCE_FILE), *_conv);
+		source_line = wxString(PQresultErrorField(_res, PG_DIAG_SOURCE_LINE), *_conv);
+		source_function = wxString(PQresultErrorField(_res, PG_DIAG_SOURCE_FUNCTION), *_conv);
+	}
+	else
+	{
+		msg_primary = wxEmptyString;
+		severity = wxEmptyString;
+		sql_state = wxEmptyString;
+		msg_detail = wxEmptyString;
+		msg_hint = wxEmptyString;
+		statement_pos = wxEmptyString;
+		internal_pos = wxEmptyString;
+		internal_query = wxEmptyString;
+		context = wxEmptyString;
+		source_file = wxEmptyString;
+		source_line = wxEmptyString;
+		source_function = wxEmptyString;
+	}
+
+	wxString errMsg;
+
+	if (severity != wxEmptyString && msg_primary != wxEmptyString)
+		errMsg = severity + wxT(": ") + msg_primary;
+	else if (msg_primary != wxEmptyString)
+		errMsg = msg_primary;
+
+	if (!sql_state.IsEmpty())
+	{
+		if (!errMsg.EndsWith(wxT("\n")))
+			errMsg += wxT("\n");
+		errMsg += _("SQL state: ");
+		errMsg += sql_state;
+	}
+
+	if (!msg_detail.IsEmpty())
+	{
+		if (!errMsg.EndsWith(wxT("\n")))
+			errMsg += wxT("\n");
+		errMsg += _("Detail: ");
+		errMsg += msg_detail;
+	}
+
+	if (!msg_hint.IsEmpty())
+	{
+		if (!errMsg.EndsWith(wxT("\n")))
+			errMsg += wxT("\n");
+		errMsg += _("Hint: ");
+		errMsg += msg_hint;
+	}
+
+	if (!statement_pos.IsEmpty())
+	{
+		if (!errMsg.EndsWith(wxT("\n")))
+			errMsg += wxT("\n");
+		errMsg += _("Character: ");
+		errMsg += statement_pos;
+	}
+
+	if (!context.IsEmpty())
+	{
+		if (!errMsg.EndsWith(wxT("\n")))
+			errMsg += wxT("\n");
+		errMsg += _("Context: ");
+		errMsg += context;
+	}
+	formatted_msg = errMsg;
+}

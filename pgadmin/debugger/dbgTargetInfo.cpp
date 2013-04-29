@@ -14,32 +14,14 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/tokenzr.h>
-#include <wx/arrimpl.cpp>
 
 // App headers
 #include "debugger/dbgTargetInfo.h"
-#include "debugger/dbgResultset.h"
-#include "debugger/dbgPgConn.h"
+#include "debugger/dbgConst.h"
+#include "utils/misc.h"
+#include "utils/pgfeatures.h"
 
 #include <stdexcept>
-
-WX_DEFINE_OBJARRAY( wsArgInfoArray );
-
-#define COL_TARGET_NAME    	"targetname"
-#define COL_SCHEMA_NAME    	"nspname"
-#define COL_LANGUAGE_NAME    "lanname"
-#define COL_ARG_NAMES    	"argnames"
-#define COL_ARG_MODES    	"argmodes"
-#define COL_ARG_TYPES    	"argtypenames"
-#define COL_ARG_TYPEOIDS    "argtypeoids"
-#define COL_ARG_DEFVALS     "argdefvals"
-#define COL_IS_FUNCTION    	"isfunc"
-#define COL_TARGET_OID    	"target"
-#define COL_PACKAGE_OID    	"pkg"
-#define COL_FQ_NAME    	    "fqname"		/* Fully qualified name	*/
-#define COL_RETURNS_SET    	"proretset"
-#define COL_RETURN_TYPE    	"rettype"
 
 ////////////////////////////////////////////////////////////////////////////////
 // dbgTargetInfo constructor
@@ -61,234 +43,594 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 //    This class offers a number of (inline) member functions that you can call
 //  to extract the above information after it's been queried from the server.
 
-dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char targetType )
+dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
+	: m_args(NULL), m_inputParamCnt(0), m_hasVariadic(false)
 {
-	wxString query =
-	    wxT("select t.*, ")
-	    wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypenames, t.argtypes as argtypeoids,")
-	    wxT("  l.lanname, n.nspname, p.proretset, y.typname AS rettype")
-	    wxT(" from")
-	    wxT("  pldbg_get_target_info( '%s', '%c' ) t , pg_namespace n, pg_language l, pg_proc p, pg_type y")
-	    wxT(" where")
-	    wxT("  n.oid = t.schema and ")
-	    wxT("  l.oid = t.targetlang and " )
-	    wxT("  p.oid = t.target and ")
-	    wxT("  y.oid = t.returntype");
+	wxMBConv *conv = _conn->GetConv();
+	wxString targetQuery =
+	    wxT("SELECT\n")
+	    wxT("	p.proname AS name, l.lanname, p.proretset, p.prorettype, y.typname AS rettype,\n")
+	    wxT("	CASE WHEN proallargtypes IS NOT NULL THEN\n")
+	    wxT("			pg_catalog.array_to_string(ARRAY(\n")
+	    wxT("				SELECT\n")
+	    wxT("					pg_catalog.format_type(p.proallargtypes[s.i], NULL)\n")
+	    wxT("				FROM\n")
+	    wxT("					pg_catalog.generate_series(0, pg_catalog.array_upper(\n")
+	    wxT("						p.proallargtypes, 1)) AS s(i)), ',')\n")
+	    wxT("		ELSE\n")
+	    wxT("			pg_catalog.array_to_string(ARRAY(\n")
+	    wxT("				SELECT\n")
+	    wxT("					pg_catalog.format_type(p.proargtypes[s.i], NULL)\n")
+	    wxT("				FROM\n")
+	    wxT("					pg_catalog.generate_series(0, pg_catalog.array_upper(\n")
+	    wxT("						p.proargtypes, 1)) AS s(i)), ',')\n")
+	    wxT("	END AS proargtypenames,\n")
+	    wxT("	CASE WHEN proallargtypes IS NOT NULL THEN\n")
+	    wxT("			pg_catalog.array_to_string(ARRAY(\n")
+	    wxT("				SELECT proallargtypes[s.i] FROM\n")
+	    wxT("					pg_catalog.generate_series(0, pg_catalog.array_upper(proallargtypes, 1)) s(i)), ',')\n")
+	    wxT("		ELSE\n")
+	    wxT("			pg_catalog.array_to_string(ARRAY(\n")
+	    wxT("				SELECT proargtypes[s.i] FROM\n")
+	    wxT("					pg_catalog.generate_series(0, pg_catalog.array_upper(proargtypes, 1)) s(i)), ',')\n")
+	    wxT("	END AS proargtypes,\n")
+	    wxT("	pg_catalog.array_to_string(p.proargnames, ',') AS proargnames,\n")
+	    wxT("	pg_catalog.array_to_string(proargmodes, ',') AS proargmodes,\n");
 
-	dbgResultset *result = new dbgResultset(conn->waitForCommand(wxString::Format(query, target.c_str(), targetType)));
-
-	if(result->getCommandStatus() != PGRES_TUPLES_OK)
-		throw( std::runtime_error( result->getRawErrorMessage()));
-
-	m_name     	 = result->getString( wxString(COL_TARGET_NAME, wxConvUTF8));
-	m_schema   	 = result->getString( wxString(COL_SCHEMA_NAME, wxConvUTF8));
-	m_language 	 = result->getString( wxString(COL_LANGUAGE_NAME, wxConvUTF8));
-	m_argNames 	 = result->getString( wxString(COL_ARG_NAMES, wxConvUTF8));
-	m_argModes 	 = result->getString( wxString(COL_ARG_MODES, wxConvUTF8));
-	m_argTypes 	 = result->getString( wxString(COL_ARG_TYPES, wxConvUTF8));
-	m_argTypeOids = result->getString( wxString(COL_ARG_TYPEOIDS, wxConvUTF8));
-
-	// get arg defvals if they exist
-	if (result->columnExists(wxString(COL_ARG_DEFVALS, wxConvUTF8)))
-		m_argDefVals = result->getString( wxString(COL_ARG_DEFVALS, wxConvUTF8));
-
-	if (result->columnExists(wxString(COL_IS_FUNCTION, wxConvUTF8)))
-		m_isFunction = result->getBool( wxString(COL_IS_FUNCTION, wxConvUTF8));
-	else
-		m_isFunction = true;
-
-	m_oid      	 = result->getLong( wxString(COL_TARGET_OID, wxConvUTF8));
-
-	if (result->columnExists(wxString(COL_PACKAGE_OID, wxConvUTF8)))
-		m_pkgOid = result->getLong( wxString(COL_PACKAGE_OID, wxConvUTF8));
-	else
-		m_pkgOid = 0;
-
-	m_fqName	 = result->getString( wxString(COL_FQ_NAME, wxConvUTF8));
-	m_returnsSet = result->getBool( wxString(COL_RETURNS_SET, wxConvUTF8));
-	m_returnType = result->getString( wxString(COL_RETURN_TYPE, wxConvUTF8));
-
-	// Parse out the argument types, names, and modes
-
-	// By creating a tokenizer with wxTOKEN_STRTOK and a delimiter string
-	// that contains ",{}", we can parse out PostgreSQL array strings like:
-	//	 {int, varchar, numeric}
-
-	wxStringTokenizer names(m_argNames, wxT( ",{}" ), wxTOKEN_STRTOK);
-	wxStringTokenizer types(m_argTypes, wxT( ",{}" ), wxTOKEN_STRTOK);
-	wxStringTokenizer typeOids(m_argTypeOids, wxT( ",{}" ), wxTOKEN_STRTOK);
-	wxStringTokenizer modes(m_argModes, wxT( ",{}" ), wxTOKEN_STRTOK);
-	wxStringTokenizer defvals(m_argDefVals, wxT( ",{}" ), wxTOKEN_STRTOK);
-
-	// Create one wsArgInfo for each target argument
-
-	m_argInCount = m_argOutCount = m_argInOutCount = 0;
-	int	argCount = 0;
-
-	while( types.HasMoreTokens())
+	if (_conn->GetIsEdb())
 	{
-		argCount++;
+		targetQuery +=
+		    wxT("	CASE WHEN n.nspparent <> 0 THEN n.oid ELSE 0 END AS pkg,\n")
+		    wxT("	CASE WHEN n.nspparent <> 0 THEN n.nspname ELSE '' END AS pkgname,\n")
+		    wxT("	CASE WHEN n.nspparent <> 0 THEN (SELECT oid FROM pg_proc WHERE pronamespace=n.oid AND proname='cons') ELSE 0 END AS pkgconsoid,\n")
+		    wxT("	CASE WHEN n.nspparent <> 0 THEN g.oid ELSE n.oid END AS schema,\n")
+		    wxT("	CASE WHEN n.nspparent <> 0 THEN g.nspname ELSE n.nspname END AS schemaname,\n")
+		    wxT("	NOT (l.lanname = 'edbspl' AND protype = '1') AS isfunc,\n");
+	}
+	else
+	{
+		targetQuery +=
+		    wxT("	0 AS pkg,\n")
+		    wxT("	'' AS pkgname,\n")
+		    wxT("	0 AS pkgconsoid,\n")
+		    wxT("	n.oid     AS schema,\n")
+		    wxT("	n.nspname AS schemaname,\n")
+		    wxT("	true AS isfunc,\n");
+	}
+	if (_conn->BackendMinimumVersion(8, 4))
+	{
+		targetQuery += wxT("	pg_catalog.pg_get_function_identity_arguments(p.oid) AS signature,");
+	}
+	else if (_conn->BackendMinimumVersion(8, 1))
+	{
+		targetQuery +=
+		    wxT("	CASE\n")
+		    wxT("		WHEN proallargtypes IS NOT NULL THEN pg_catalog.array_to_string(ARRAY(\n")
+		    wxT("			SELECT\n")
+		    wxT("				CASE\n")
+		    wxT("					WHEN p.proargmodes[s.i] = 'i' THEN ''\n")
+		    wxT("					WHEN p.proargmodes[s.i] = 'o' THEN 'OUT '\n")
+		    wxT("					WHEN p.proargmodes[s.i] = 'b' THEN 'INOUT '\n")
+		    wxT("					WHEN p.proargmodes[s.i] = 'v' THEN 'VARIADIC '\n")
+		    wxT("				END ||\n")
+		    wxT("				CASE WHEN COALESCE(p.proargnames[s.i], '') = '' THEN ''\n")
+		    wxT("					ELSE p.proargnames[s.i] || ' '\n")
+		    wxT("				END ||\n")
+		    wxT("				pg_catalog.format_type(p.proallargtypes[s.i], NULL)\n")
+		    wxT("			FROM\n")
+		    wxT("				pg_catalog.generate_series(1, pg_catalog.array_upper(p.proallargtypes, 1)) AS s(i)\n")
+		    wxT("			WHERE p.proargmodes[s.i] != 't'\n")
+		    wxT("			), ', ')\n")
+		    wxT("		ELSE\n")
+		    wxT("			pg_catalog.array_to_string(ARRAY(\n")
+		    wxT("				SELECT\n")
+		    wxT("					CASE\n")
+		    wxT("						WHEN COALESCE(p.proargnames[s.i+1], '') = '' THEN ''\n")
+		    wxT("						ELSE p.proargnames[s.i+1] || ' '\n")
+		    wxT("					END ||\n")
+		    wxT("					pg_catalog.format_type(p.proargtypes[s.i], NULL)\n")
+		    wxT("				FROM\n")
+		    wxT("					pg_catalog.generate_series(1, pg_catalog.array_upper(p.proargtypes, 1)) AS s(i)\n")
+		    wxT("				), ', ')\n")
+		    wxT("	END AS signature,\n");
+	}
+	else
+	{
+		targetQuery += wxT("	'' AS signature,");
+	}
 
-		wxString	argName = names.GetNextToken();
-		wxString    defVal;
+	if (_conn->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+	{
+		// EnterpriseDB 8.3R2
+		if(!_conn->BackendMinimumVersion(8, 4))
+		{
+			targetQuery +=
+			    wxT("	pg_catalog.array_to_string(ARRAY(\n")
+			    wxT("	SELECT\n")
+			    wxT("		CASE WHEN p.proargdefvals[x.j] != '-' THEN\n")
+			    wxT("			pg_catalog.pg_get_expr(p.proargdefvals[x.j], 'pg_catalog.pg_class'::regclass, true)\n")
+			    wxT("		ELSE '-' END\n")
+			    wxT("	FROM\n")
+			    wxT("		pg_catalog.generate_series(1, pg_catalog.array_upper(p.proargdefvals, 1)) AS x(j)\n")
+			    wxT("	), ',') AS proargdefaults,\n")
+			    wxT("	CASE WHEN p.proargdefvals IS NULL THEN '0'\n")
+			    wxT("		ELSE pg_catalog.array_upper(p.proargdefvals, 1)::text END AS pronargdefaults\n");
+		}
+		else
+		{
+			targetQuery +=
+			    wxT("	pg_catalog.pg_get_expr(p.proargdefaults, 'pg_catalog.pg_class'::regclass, false) AS proargdefaults,\n")
+			    wxT("	p.pronargdefaults\n");
+		}
+	}
+	else
+	{
+		targetQuery +=
+		    wxT("	'' AS proargdefaults, 0 AS pronargdefaults\n");
+	}
+	targetQuery +=
+	    wxT("FROM\n")
+	    wxT("	pg_catalog.pg_proc p\n")
+	    wxT("	LEFT JOIN pg_catalog.pg_namespace n ON p.pronamespace = n.oid\n")
+	    wxT("	LEFT JOIN pg_catalog.pg_language l ON p.prolang = l.oid\n")
+	    wxT("	LEFT JOIN pg_catalog.pg_type y ON p.prorettype = y.oid\n");
+	if(_conn->GetIsEdb())
+	{
+		targetQuery +=
+		    wxT("	LEFT JOIN pg_catalog.pg_namespace g ON n.nspparent = g.oid\n");
+	}
+	targetQuery +=
+	    wxString::Format(wxT("WHERE p.oid = %ld"), (long)_target);
 
-		if( argName.IsEmpty())
-			argName.Printf( wxT( "$%d" ), argCount );
+	pgSet *set = _conn->ExecuteSet(targetQuery);
+
+	if (conv == NULL)
+	{
+		conv = &wxConvLibc;
+	}
+
+	if (!set || _conn->GetLastResultStatus() != PGRES_TUPLES_OK)
+	{
+		if (set)
+			delete set;
+		wxLogError(_("Could not fetch information about the debugger target.\n") +
+		           _conn->GetLastError());
+
+		throw (std::runtime_error(
+		           (const char *)(_conn->GetLastError().c_str())));
+	}
+
+	if (set->NumRows() == 0)
+	{
+		delete set;
+
+		wxLogError(_("Can't find the debugging target"));
+		throw (std::runtime_error("Can't find target!"));
+	}
+
+	m_oid           = _target;
+	m_name          = set->GetVal(wxT("name"));
+	m_schema        = set->GetVal(wxT("schemaname"));
+	m_package       = set->GetVal(wxT("pkgname"));
+	m_language      = set->GetVal(wxT("lanname"));
+	m_returnType    = set->GetVal(wxT("rettype"));
+	m_funcSignature = set->GetVal(wxT("signature"));
+	m_isFunction    = set->GetBool(wxT("isfunc"));
+	m_returnsSet    = set->GetBool(wxT("proretset"));
+	m_pkgOid        = set->GetLong(wxT("pkg"));
+	m_pkgInitOid    = set->GetLong(wxT("pkgconsoid"));
+	m_schemaOid     = set->GetLong(wxT("schema"));
+	m_fqName        = m_schema + wxT(".") +
+	                  (m_pkgOid == 0 ? wxT("") : (m_package + wxT("."))) + m_name;
+
+	wxArrayString argModes, argNames, argTypes, argTypeOids, argDefVals,
+	              argBaseTypes;
+
+	// Fetch Argument Modes (if available)
+	if (!set->IsNull(set->ColNumber(wxT("proargmodes"))))
+	{
+		wxString tmp;
+		tmp = set->GetVal(wxT("proargmodes"));
+
+		if (!tmp.IsEmpty())
+			getArrayFromCommaSeparatedList(tmp, argModes);
+	}
+	// Fetch Argument Names (if available)
+	if (!set->IsNull(set->ColNumber(wxT("proargnames"))))
+	{
+		wxString tmp;
+		tmp = set->GetVal(wxT("proargnames"));
+
+		if (!tmp.IsEmpty())
+			getArrayFromCommaSeparatedList(tmp, argNames);
+	}
+	// Fetch Argument Type-Names (if available)
+	if (!set->IsNull(set->ColNumber(wxT("proargtypenames"))))
+	{
+		wxString tmp;
+		tmp = set->GetVal(wxT("proargtypenames"));
+
+		if (!tmp.IsEmpty())
+			getArrayFromCommaSeparatedList(tmp, argTypes);
+	}
+	// Fetch Argument Type-Names (if available)
+	if (!set->IsNull(set->ColNumber(wxT("proargtypes"))))
+	{
+		wxString tmp;
+		tmp = set->GetVal(wxT("proargtypes"));
+		if (!tmp.IsEmpty())
+			getArrayFromCommaSeparatedList(tmp, argTypeOids);
+	}
+
+	size_t nArgDefs = (size_t)set->GetLong(wxT("pronargdefaults"));
+	// Fetch Argument Default Values (if available)
+	if (!set->IsNull(set->ColNumber(wxT("proargdefaults"))) && nArgDefs != 0)
+	{
+		wxString tmp;
+		tmp = set->GetVal(wxT("proargdefaults"));
+
+		if (!tmp.IsEmpty())
+			getArrayFromCommaSeparatedList(tmp, argDefVals);
+	}
+
+	wxString argName, argDefVal;
+	short    argMode;
+	Oid      argTypeOid;
+	size_t   argCnt = argTypes.Count();
+
+	// This function/procedure does not take any arguments
+	if (argCnt == 0)
+	{
+		return;
+	}
+
+	size_t idx = 0;
+	m_args = new pgDbgArgs();
+
+	for (; idx < argCnt; idx++)
+	{
+		argTypeOid = (Oid)strtoul(argTypeOids[idx].mb_str(wxConvUTF8), 0, 10);
+		argDefVal  = wxEmptyString;
+
+		argName = wxEmptyString;
+		if (idx < argNames.Count())
+			argName = argNames[idx];
+
+		if (argName.IsEmpty())
+			argName.Printf( wxT( "dbgParam%d" ), (idx + 1));
+
+		if (idx < argModes.Count())
+		{
+			wxString tmp = argModes[idx];
+			switch ((tmp.c_str())[0])
+			{
+				case 'i':
+					argMode = pgParam::PG_PARAM_IN;
+					m_inputParamCnt++;
+					break;
+				case 'b':
+					m_inputParamCnt++;
+					argMode = pgParam::PG_PARAM_INOUT;
+					break;
+				case 'o':
+					argMode = pgParam::PG_PARAM_OUT;
+					break;
+				case 'v':
+					m_inputParamCnt++;
+					argMode = pgParam::PG_PARAM_VARIADIC;
+					m_hasVariadic = true;
+					break;
+				case 't':
+					continue;
+				default:
+					m_inputParamCnt++;
+					argMode = pgParam::PG_PARAM_IN;
+					break;
+			}
+		}
+		else
+		{
+			m_inputParamCnt++;
+			argMode = pgParam::PG_PARAM_IN;
+		}
 
 		// In EDBAS 90, if an SPL-function has both an OUT-parameter
 		// and a return value (which is not possible on PostgreSQL otherwise),
 		// the return value is transformed into an extra OUT-parameter
 		// named "_retval_"
-		if (argName == wxT("_retval_") && conn->EdbMinimumVersion(9, 0))
+		if (argName == wxT("_retval_") && _conn->EdbMinimumVersion(9, 0))
 		{
 			// this will be the return type for this object
-			m_returnType = types.GetNextToken();
+			m_returnType = argTypes[idx];
 
-			// consume uniformly, mode will definitely be "OUT"
-			modes.GetNextToken();
-
-			// ignore OID also..
-			typeOids.GetNextToken();
 			continue;
 		}
 
-		wsArgInfo	argInfo( argName, types.GetNextToken(), modes.GetNextToken(), typeOids.GetNextToken());
-
-		if( argInfo.getMode() == wxT( "i" ))
-			m_argInCount++;
-		else if( argInfo.getMode() == wxT( "o" ))
-			m_argOutCount++;
-		else if( argInfo.getMode() == wxT( "b" ))
-			m_argInOutCount++;
-
-		// see if this arg has a def value and add if so. If we see an empty
-		// string "", what should we do? Infact "" might be a valid default
-		// value in some cases, so for now store "" too. Note that we will
-		// store the "" only if this is stringlike type and nothing otherwise..
-		defVal = (defvals.GetNextToken()).Strip ( wxString::both );
-		if (argInfo.isValidDefVal(defVal))
-		{
-			// remove starting/trailing quotes
-			defVal.Replace( wxT( "\"" ), wxT( "" ));
-			argInfo.setValue(defVal);
-		}
-
-		m_argInfo.Add( argInfo );
+		m_args->Add(new dbgArgInfo(argName, argTypes[idx], argTypeOid, argMode));
 	}
 
-	// Get the package initializer function OID. On 8.1 or below, this is
-	// assumed to be the same as the package OID. On 8.2, we have an API :-)
-	if (conn->EdbMinimumVersion(8, 2))
+	if (m_args->GetCount() == 0)
 	{
-		PGresult *res;
+		delete m_args;
+		m_args = NULL;
 
-		m_pkgInitOid = 0;
-		res = conn->waitForCommand( wxT( "SELECT pldbg_get_pkg_cons(") + NumToStr(m_pkgOid) + wxT(");"));
+		return;
+	}
 
-		if (PQresultStatus(res) == PGRES_TUPLES_OK)
+	if (nArgDefs != 0)
+	{
+		argCnt = m_args->GetCount();
+
+		// Set the default as the value for the argument
+		for (idx = argCnt - 1; idx >= 0; idx--)
 		{
-			// Retrieve the query result and return it.
-			m_pkgInitOid = StrToLong(wxString(PQgetvalue(res, 0, 0), wxConvUTF8));
+			dbgArgInfo *arg = (dbgArgInfo *)((*m_args)[idx]);
 
-			// Cleanup & exit
-			PQclear(res);
+			if (arg->GetMode() == pgParam::PG_PARAM_INOUT ||
+			        arg->GetMode() == pgParam::PG_PARAM_IN)
+			{
+				nArgDefs--;
+
+				if (argDefVals[nArgDefs] != wxT("-"))
+				{
+					arg->SetDefault(argDefVals[nArgDefs]);
+				}
+
+				if (nArgDefs == 0)
+				{
+					break;
+				}
+			}
 		}
 	}
-	else if (conn->GetIsEdb())
-		m_pkgInitOid = m_pkgOid;
-	else
-		m_pkgInitOid = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // operator[]
 //
-//    This operator function makes it easy to index into the m_argInfo[] array
+//    This operator function makes it easy to index into the m_args array
 //    using concise syntax.
-
-wsArgInfo &dbgTargetInfo::operator[]( int index )
+dbgArgInfo *dbgTargetInfo::operator[](int index)
 {
-	return( m_argInfo[index] );
+	if (m_args == NULL)
+		return (dbgArgInfo *)NULL;
+
+	if (index < 0 || index >= (int)m_args->GetCount())
+		return (dbgArgInfo *)NULL;
+
+	return (dbgArgInfo *)((*m_args)[index]);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// wsArgInfo constructor
-//
-//    A wsArgInfo object contains information about a function (or procedure)
-//  argument.  Inside of each wsArgInfo object, we store the name of the argument,
-//    the argument type, and the argument mode (IN (i), OUT (o), or INOUT (b)).
-//
-//    Once the user has had a chance to enter values for each of the IN and INOUT
-//    arguments, we store those values inside of the corresponding wsArgInfo objects
-
-wsArgInfo::wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode, const wxString &argTypeOid)
-	: m_name( argName.Strip( wxString::both )),
-	  m_type( argType.Strip( wxString::both )),
-	  m_mode( argMode == wxT( "" ) ? wxT( "i" ) : argMode.Strip( wxString::both )),
-	  m_value()
+dbgArgInfo::dbgArgInfo(const wxString &_name, const wxString &_type, Oid _typeOid,
+                       short _mode)
+	: m_name(_name), m_type(_type), m_typeOid(_typeOid), m_mode(_mode),
+	  m_hasDefault(false), m_useDefault(false), m_null(NULL)
 {
-	long oid;
-	argTypeOid.ToLong(&oid);
-	m_typeOid = (Oid)oid;
+	if (!_type.EndsWith(wxT("[]"), &m_baseType))
+	{
+		m_baseType = wxEmptyString;
+	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// quoteValue()
-//
-//    This function will extract the argument value from the given wsArgInfo object
-//  and will wrap that value in single quotes (unless the value has already been
-//    quoted).  If the argument value (entered by the user) is blank, we return NULL
-//    instead of a quoted string.
-//
-//    NOTE: we quote all value regardless of type - it's perfectly valid to quote a
-//        numeric (or boolean) value in PostgreSQL
 
-const wxString wsArgInfo::quoteValue()
+pgParam *dbgArgInfo::GetParam(wxMBConv *_conv)
 {
-	if (m_value == wxT(""))
-		return (wxT("NULL"));
-	else if (m_value == wxT("''"))
-		return (wxT("''"));
-	else if (m_value == wxT("\\'\\'"))
-		return (wxT("'\\'\\''"));
-	else if (m_value[0] == '\'' )
-		return (m_value);
-	else
-		return(wxString(wxT("'") + m_value + wxT("'")));
+	return new pgParam(m_typeOid,
+	                   (m_null ? (wxString *)NULL : &m_val),
+	                   _conv, m_mode);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// isValidDefVal()
-//
-//    This function checks if the passed in defvalue is sane or not. If it is
-//    empty, nothing needs to be done. However if the backend returns "", then
-//    we need to entertain this as valid input only for stringlike types. Else
-//    we ignore. Obviously if defval is anything other than "", we need to
-//    honor it
-//
-
-bool wsArgInfo::isValidDefVal(const wxString defValue)
+bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 {
-	if (defValue.IsEmpty())
+	wxASSERT(_thread != NULL);
+
+	if (_thread == NULL)
 		return false;
 
-	if (defValue != wxT("\"\""))
-		return true;
-	else
-	{
-		// return true only if the type is a stringlike type..
-		switch (getTypeOid())
-		{
-			case PGOID_TYPE_CHAR:
-			case PGOID_TYPE_NAME:
-			case PGOID_TYPE_TEXT:
-			case PGOID_TYPE_BPCHAR:
-			case PGOID_TYPE_VARCHAR:
-			case PGOID_TYPE_CSTRING:
-				return true;
+	pgConn *conn = _thread->GetConn();
 
-			default:
-				return false;
+	pgParamsArray *params   = NULL;
+	wxString       strQuery;
+	bool           useCallable = false;
+
+	// Basically - we can call the function/target three ways:
+	// 1. If it is a edbspl procedure, we can use callable statement
+	// 2. If the database server is of type EnterpriseDB, and
+	//    function/procedure is type 'edbspl', we should use the anonymous
+	//    function block for:
+	//    a. Version < 9.0
+	//    b. Package function/procedure
+	// 3. Otherwise, we should use the simple function call (except using EXEC
+	//    for the procedure in 'edbspl' instead of using SELECT)
+	if (_thread->SupportCallableStatement() &&
+	        m_language == wxT("edbspl") &&
+	        !m_isFunction)
+	{
+		useCallable = true;
+		strQuery = wxT("CALL ") + m_fqName + wxT("(");
+
+		if (m_args)
+		{
+			params = new pgParamsArray();
+			wxMBConv *conv = conn->GetConv();
+
+			for(int idx = 0; idx < (int)m_args->GetCount(); idx++)
+			{
+				params->Add(((*m_args)[idx])->GetParam(conv));
+
+				if (idx != 0)
+					strQuery += wxT(", ");
+				strQuery += wxString::Format(wxT("$%d::"), idx + 1) +
+				            ((*m_args)[idx])->GetTypeName();
+			}
+		}
+		strQuery += wxT(")");
+	}
+	else if (m_language == wxT("edbspl") && conn->GetIsEdb() &&
+	         (!conn->BackendMinimumVersion(9, 0) || m_pkgOid != 0))
+	{
+		wxString strDeclare, strStatement;
+
+		if (!m_isFunction)
+		{
+			strStatement = wxT("\tEXEC ") + m_fqName;
+		}
+		else if (m_args && m_args->GetCount() > 0 && conn->BackendMinimumVersion(8, 4))
+		{
+			strStatement = wxT("\tPERFORM ") + m_fqName;
+		}
+		else
+		{
+			strStatement = wxT("\tSELECT ") + m_fqName;
+		}
+
+		if (m_args && m_args->GetCount() > 0)
+		{
+			strStatement.Append(wxT("("));
+
+			for(int idx = 0, firstProcessed = false; idx < (int)m_args->GetCount(); idx++)
+			{
+				dbgArgInfo *arg = (*m_args)[idx];
+
+				if (!conn->EdbMinimumVersion(8, 4) &&
+				        arg->GetMode() == pgParam::PG_PARAM_OUT &&
+				        (!m_isFunction || m_language == wxT("edbspl")))
+				{
+					if (firstProcessed)
+						strStatement.Append(wxT(", "));
+					firstProcessed = true;
+
+					strStatement.Append(wxT("NULL::")).Append(arg->GetTypeName());
+				}
+				else if (conn->EdbMinimumVersion(8, 4) &&
+				         (arg->GetMode() == pgParam::PG_PARAM_OUT ||
+				          arg->GetMode() == pgParam::PG_PARAM_INOUT))
+				{
+					if (!m_isFunction || m_language == wxT("edbspl"))
+					{
+						wxString strParam = wxString::Format(wxT("param%d"), idx);
+
+						strDeclare.Append(wxT("\t"))
+						.Append(strParam)
+						.Append(wxT(" "))
+						.Append(arg->GetTypeName());
+
+						if (arg->GetMode() == pgParam::PG_PARAM_INOUT)
+						{
+							strDeclare.Append(wxT(" := "))
+							.Append(arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
+							.Append(wxT("::"))
+							.Append(arg->GetTypeName());
+						}
+						strDeclare.Append(wxT(";\n"));
+
+						if (firstProcessed)
+							strStatement.Append(wxT(", "));
+						firstProcessed = true;
+
+						strStatement.Append(strParam);
+					}
+					else if (arg->GetMode() == pgParam::PG_PARAM_INOUT)
+					{
+						if (firstProcessed)
+							strStatement.Append(wxT(", "));
+						firstProcessed = true;
+
+						strStatement.Append(
+						    arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
+						.Append(wxT("::"))
+						.Append(arg->GetTypeName());
+					}
+				}
+				else
+				{
+					if (firstProcessed)
+						strStatement.Append(wxT(", "));
+					firstProcessed = true;
+
+					if (arg->GetMode() == pgParam::PG_PARAM_VARIADIC)
+						strStatement.Append(wxT("VARIADIC "));
+
+					strStatement.Append(
+					    arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
+					.Append(wxT("::"))
+					.Append(arg->GetTypeName());
+				}
+			}
+			strStatement.Append(wxT(")"));
+
+			if (conn->BackendMinimumVersion(8, 4))
+			{
+				strQuery = wxT("DECLARE\n") +
+				           strDeclare + wxT("BEGIN\n") + strStatement + wxT("END;");
+			}
+			else
+			{
+				strQuery = strStatement;
+			}
+		}
+		else if (!m_isFunction && m_language == wxT("edbspl"))
+		{
+			strQuery = strStatement;
+		}
+		else
+		{
+			strQuery = strStatement.Append(wxT("()"));
 		}
 	}
+	else
+	{
+		if (!m_isFunction)
+		{
+			strQuery = wxT("EXEC ") + m_fqName + wxT("(");
+		}
+		else if (m_returnType == wxT("record"))
+		{
+			strQuery = wxT("SELECT ") + m_fqName + wxT("(");
+		}
+		else
+		{
+			strQuery = wxT("SELECT * FROM ") + m_fqName + wxT("(");
+		}
+
+		if (m_args)
+		{
+			params = new pgParamsArray();
+			wxMBConv *conv = conn->GetConv();
+
+			for(int idx = 0; idx < (int)m_args->GetCount(); idx++)
+			{
+				dbgArgInfo *arg = (*m_args)[idx];
+
+				if (arg->GetMode() != pgParam::PG_PARAM_OUT)
+				{
+					params->Add(arg->GetParam(conv));
+
+					if (idx != 0)
+						strQuery += wxT(", ");
+
+					if (arg->GetMode() == pgParam::PG_PARAM_VARIADIC)
+						strQuery += wxT("VARIADIC ");
+
+					strQuery += wxString::Format(wxT("$%d::"), idx + 1) +
+					            ((*m_args)[idx])->GetTypeName();
+				}
+			}
+
+			/*
+			 * The function may not have IN/IN OUT/VARIADIC arguments, but only
+			 * OUT one(s).
+			 */
+			if (params->GetCount() == 0)
+			{
+				delete params;
+				params = NULL;
+			}
+		}
+		strQuery += wxT(")");
+	}
+
+	_thread->AddQuery(strQuery, params, RESULT_ID_DIRECT_TARGET_COMPLETE, NULL, useCallable);
+
+	return true;
 }

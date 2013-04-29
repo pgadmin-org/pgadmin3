@@ -491,7 +491,11 @@ void ExecutionDialog::Abort()
 	if (thread)
 	{
 		if (thread->IsRunning())
-			thread->Delete();
+		{
+			thread->CancelExecution();
+			thread->Wait();
+		}
+
 		delete thread;
 		thread = 0;
 	}

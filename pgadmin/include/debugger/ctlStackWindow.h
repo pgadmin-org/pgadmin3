@@ -28,16 +28,57 @@
 #include <wx/grid.h>
 #include <wx/laywin.h>
 #include <wx/listbox.h>
+#include <wx/clntdata.h>
+
+class dbgStackFrame : public wxClientData
+{
+public:
+	dbgStackFrame(const wxString &_level, const wxString &_pkg,
+	              const wxString &_func, const wxString &_desc)
+		: m_level(_level), m_func(_func), m_pkg(_pkg), m_desc(_desc) {}
+
+	dbgStackFrame(const dbgStackFrame &s)
+		: m_level(s.m_level), m_func(s.m_func), m_pkg(s.m_pkg), m_desc(s.m_pkg) {}
+
+	const wxString &GetLevel() const
+	{
+		return m_level;
+	}
+	const wxString &GetFunction() const
+	{
+		return m_func;
+	}
+	const wxString &GetPackage() const
+	{
+		return m_pkg;
+	}
+	const wxString &GetDescription() const
+	{
+		return m_desc;
+	}
+
+private:
+	wxString m_level, m_func, m_pkg, m_desc;
+};
+
+WX_DECLARE_LIST(dbgStackFrame, dbgStackFrameList);
+
 
 class ctlStackWindow : public wxListBox
 {
 	DECLARE_CLASS( ctlVarWindow )
 
 public:
+	ctlStackWindow(wxWindow *parent, wxWindowID id,
+	               const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+	               long style = wxCLIP_CHILDREN | wxSW_3D,
+	               const wxString &name = wxT("stackWindow"));
 
-	ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = wxCLIP_CHILDREN | wxSW_3D, const wxString &name = wxT( "stackWindow" ));
-	void clear();											// Remove all frames from the stack trace
-	void setStack(const wxArrayString &stack);			// Add an array of frames to the stack trace
+	// Remove all frames from the stack trace
+	void ClearStack();
+	// Add an array of frames to the stack trace
+	void SetStack(const dbgStackFrameList &stacks, int selected = -1);
+	void SelectFrame(const wxString &pkg, const wxString &frm);
 };
 
 #endif

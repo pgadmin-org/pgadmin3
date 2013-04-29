@@ -12,8 +12,8 @@
 pgadmin3_SOURCES += \
 	  include/db/pgConn.h \
 	  include/db/pgQueryThread.h \
+	  include/db/pgQueryResultEvent.h \
 	  include/db/pgSet.h
-
 
 EXTRA_DIST += \
     include/db/module.mk

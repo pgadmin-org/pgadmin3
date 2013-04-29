@@ -27,71 +27,100 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef DBGDIRECT_H
-#define DBGDIRECT_H
+#ifndef DLGDIRECTDBG_H
+#define DLGDIRECTDBG_H
+
+#include <wx/wx.h>
+#include <wx/grid.h>
+#include <wx/strconv.h>
 
 #include "dlg/dlgClasses.h"
-#include "debugger/dbgBreakPoint.h"
-#include "debugger/dbgConnProp.h"
-#include "debugger/frmDebugger.h"
 
-class dbgTargetInfo;
-class dbgPgConn;
-class ctlCodeWindow;
+class dbgArgInfo;
+class frmDebugger;
+class dbgController;
+
+class ctlGridCellBoolEditor : public wxGridCellBoolEditor
+{
+public:
+	ctlGridCellBoolEditor(dbgArgInfo *_arg = NULL);
+	void BeginEdit (int _row, int _col, wxGrid *_grid);
+	wxGridCellEditor *Clone() const;
+
+	dbgArgInfo *GetArg()
+	{
+		return m_arg;
+	}
+
+private:
+	dbgArgInfo *m_arg;
+};
+
+class dlgDirectDbg;
+
+class dbgArgValueEvaluator : public wxThread
+{
+public:
+	dbgArgValueEvaluator(pgConn *, dlgDirectDbg *);
+
+	void *Entry();
+	void  CancelEval();
+	static void NoticeHandler(void *, const char *);
+
+private:
+	pgConn       *m_conn;
+	dlgDirectDbg *m_dlg;
+
+	bool          m_cancelled;
+};
+
 
 class dlgDirectDbg : public pgDialog
 {
-	DECLARE_CLASS( dlgDirectDbg )
+	DECLARE_CLASS(dlgDirectDbg)
 
 public:
+	dlgDirectDbg(frmDebugger *_parent, dbgController *_controller,
+	             pgConn *_conn);
 
-	dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnProp &connProp );
-	dbgBreakPointList &getBreakpointList();
-	void setupParamWindow();
-	bool startDebugging();
-	bool GetCancelled()
+	enum
 	{
-		return m_cancelled;
+		COL_NAME = 0, // Column 0 contains the variable name
+		COL_TYPE,     // Type of column
+		COL_NULL,     // Value Set to NULL (yes/no)
+		COL_EXPR,     // Value is an expression (yes/no)
+		COL_VALUE,    // Value (constant ,or an expression)
+		COL_USE_DEF,  // Use the default value
+		COL_DEF_VAL   // Default value for the column
 	};
 
 private:
 
-	enum
-	{
-	    COL_NAME = 0,	// Column 0 contains the variable name
-	    COL_TYPE,	// This column contains the variable type
-	    COL_VALUE	// This column contains the variable value
-	};
+	void PopulateParamGrid();
 
-	wxString	m_target;	// Target name (function/procedure signature or OID)
-	bool		m_isFunc;
-	const dbgConnProp &m_connProp;	// Connection properties (used to connect to the server)
-	dbgTargetInfo     *m_targetInfo;	// Detailed information about the target (like argument types, name, ...)
-	dbgPgConn         *m_conn;		// The connection to the server
-	ctlCodeWindow     *m_codeWindow;		// A pointer to the debugger window that we'll create
-	dbgBreakPointList m_breakpoints;		// List of initial breakpoints to create
-	frmDebugger		 *m_parent;
-	bool m_cancelled;
+	void OnOk(wxCommandEvent &event);
+	void OnCancel(wxCommandEvent &event);
+	void OnClickGridLabel(wxGridEvent &event);
 
-	bool loadTargetInfo( const wxString &target, const dbgConnProp &connProp, char targetType );
-	void populateParamGrid();
-	void OnOk( wxCommandEvent &event );
-	void OnCancel( wxCommandEvent &event );
-	void OnClose( wxCloseEvent &event );
-	void OnTargetComplete( wxCommandEvent &event );
-	void OnDebug( wxCommandEvent &event );
-	void OnNoticeReceived( wxCommandEvent &event );
-	bool activateDebugger( );
+	void ResultArgsUpdated(wxCommandEvent &);
+	void ResultArgsUpdateError(wxCommandEvent &);
 
-	void saveSettings();
-	void loadSettings();
-	void setBreakpoint( long pkgOid, long funcOid );
-	void invokeTarget();
-	void invokeTargetCallable();
-	void invokeTargetStatement();
+	void SaveSettings();
+	void LoadSettings();
+	// Function to retrive last cell value if the provieded parameter value is an invalid.
+	void LoadLastCellSetting(int row_number, int array_row_number,
+	                         int index_number, bool isArray);
+
+	wxGrid *GetParamsGrid();
+	bool DebugPkgConstructor();
+
+	dbgController        *m_controller;
+	pgConn               *m_conn;
+	dbgArgValueEvaluator *m_thread;
+
+	friend class dbgArgValueEvaluator;
 
 	DECLARE_EVENT_TABLE()
-
 };
 
 #endif

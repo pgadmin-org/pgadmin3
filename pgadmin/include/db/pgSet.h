@@ -131,6 +131,14 @@ public:
 		return conv;
 	}
 
+	wxString GetCommandStatus() const
+	{
+		if (res)
+		{
+			return wxString(PQcmdStatus(res), conv);
+		}
+		return wxEmptyString;
+	}
 
 protected:
 	pgConn *conn;

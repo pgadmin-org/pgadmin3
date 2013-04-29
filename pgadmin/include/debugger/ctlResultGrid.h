@@ -25,12 +25,13 @@
 
 class ctlResultGrid : public wxGrid
 {
-	DECLARE_CLASS( ctlResultGrid )
+	DECLARE_CLASS(ctlResultGrid)
 
 public:
-	ctlResultGrid( wxWindow *parent, wxWindowID id );
+	ctlResultGrid(wxWindow *parent, wxWindowID id);
 
-	void	fillGrid( PGresult *result );	// Copy a result set into the grid
+	// Copy a result set into the grid
+	void	FillResult(pgSet *set);
 };
 
 #endif

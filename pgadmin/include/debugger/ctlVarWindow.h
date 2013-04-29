@@ -35,38 +35,40 @@
 
 class ctlVarWindow : public wxGrid
 {
-	DECLARE_CLASS( ctlVarWindow )
+	DECLARE_CLASS(ctlVarWindow)
 
 public:
-	ctlVarWindow( wxWindow *parent, wxWindowID id );
+	ctlVarWindow(wxWindow *parent, wxWindowID id);
 
-	void	addVar( wxString name, wxString value, wxString type, bool readOnly );	// Add a variable to the window
-	void	delVar( wxString name = wxEmptyString);								    // Remove a variable from the window
-	wxString	getVarName( int row );
-	wxString	getVarValue( int row );
+	// Add a variable to the window
+	void AddVar(wxString name, wxString value, wxString type, bool readOnly);
+	// Remove a variable from the window
+	void DelVar(wxString name = wxEmptyString);
+
+	wxString GetVarName(int row);
+	wxString GetVarValue(int row);
 
 private:
 
 	// The content of a grid cell is defined by the gridCell structure
-
 	typedef struct
 	{
-		int		m_row;	 // Row number for this variable/grid cell
-		wxString	m_value; // Variable value
-		wxString	m_type;	 // Variable type
+		int      m_row;   // Row number for this variable/grid cell
+		wxString m_value; // Variable value
+		wxString m_type;  // Variable type
 	} gridCell;
 
 	enum
 	{
-	    COL_NAME = 0,		// Column 0 contains the variable name
-	    COL_TYPE,		// This column contains the variable type
-	    COL_VALUE		// This column contains the variable value
+		COL_NAME = 0,		// Column 0 contains the variable name
+		COL_TYPE,		// This column contains the variable type
+		COL_VALUE		// This column contains the variable value
 	};
 
 	// The m_cells hash translates variable names into gridCell references
 public:
-	WX_DECLARE_STRING_HASH_MAP( gridCell, wsCellHash );
-	WX_DECLARE_HASH_SET( wxString, wxStringHash, wxStringEqual, wsStringSet );
+	WX_DECLARE_STRING_HASH_MAP(gridCell, wsCellHash);
+	WX_DECLARE_HASH_SET(wxString, wxStringHash, wxStringEqual, wsStringSet);
 
 private:
 	wsStringSet	m_hiddenNames;	// List of hidden variable names

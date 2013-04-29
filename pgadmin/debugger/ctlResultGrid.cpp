@@ -39,15 +39,24 @@ ctlResultGrid::ctlResultGrid( wxWindow *parent, wxWindowID id )
 //    Given a result set handle, this function copies the values in that result
 //  set into the grid.
 
-void ctlResultGrid::fillGrid( PGresult *result )
+void ctlResultGrid::FillResult(pgSet *set)
 {
-	int    rowCount = PQntuples( result );
-	int    colCount = PQnfields( result );
+	// Clear out the old results (if any) and resize
+	// grid to match the result set
+	if( GetNumberRows())
+		DeleteRows( 0, GetNumberRows());
+	if( GetNumberCols())
+		DeleteCols( 0, GetNumberCols());
+
+	if (!set)
+		return;
+
+	int rowCount = set->NumRows();
+	int colCount = set->NumCols();
 
 	// If this PGresult represents a non-query command
 	// (like an INSERT), there won't be any columns in
 	// the result set - just return
-
 	if( colCount == 0 )
 		return;
 
@@ -55,42 +64,34 @@ void ctlResultGrid::fillGrid( PGresult *result )
 
 	BeginBatch();
 
-	// Clear out the old results (if any) and resize
-	// grid to match the result set
+	AppendRows(rowCount);
+	AppendCols(colCount);
 
-	if( GetNumberRows())
-		DeleteRows( 0, GetNumberRows());
-	if( GetNumberCols())
-		DeleteCols( 0, GetNumberCols());
-
-	AppendRows( rowCount );
-	AppendCols( colCount );
-
-	EnableEditing( false );
+	EnableEditing(false);
 
 	// Copy the column names from the result set into the column headers
-
-	for( int col = 0; col < colCount; ++col )
-		SetColLabelValue( col, wxString( PQfname( result, col ), wxConvUTF8 ));
+	int row = 0,
+	    col;
+	for(col = 0; col < colCount; ++col)
+		SetColLabelValue(col, set->ColName(col));
 
 	// Now copy each value from the result set into the grid
-
-	for( int row = 0; row < rowCount; ++row )
+	while(!set->Eof())
 	{
-		for( int col = 0; col < colCount; ++col )
+		for(col = 0; col < colCount; ++col)
 		{
-			if( PQgetisnull( result, row, col ))
-				SetCellValue( row, col, wxT( "" ));
+			if(set->IsNull(col))
+				SetCellValue(row, col, wxT(""));
 			else
-				SetCellValue( row, col, wxString( PQgetvalue( result, row, col ), wxConvUTF8 ));
+				SetCellValue(row, col, set->GetVal(col));
 		}
+		row++;
+		set->MoveNext();
 	}
 
 	// Resize each column to fit its content
-
-	AutoSizeColumns( false );
+	AutoSizeColumns(false);
 
 	// Enable repaints
-
 	EndBatch();
 }

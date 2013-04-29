@@ -24,33 +24,33 @@
 // status enums
 enum
 {
-    PGCONN_OK = CONNECTION_OK,
-    PGCONN_BAD = CONNECTION_BAD,
-    PGCONN_REFUSED,
-    PGCONN_DNSERR,
-    PGCONN_ABORTED,     // connect user aborted
-    PGCONN_BROKEN       // tcp/pipe broken
+	PGCONN_OK = CONNECTION_OK,
+	PGCONN_BAD = CONNECTION_BAD,
+	PGCONN_REFUSED,
+	PGCONN_DNSERR,
+	PGCONN_ABORTED,     // connect user aborted
+	PGCONN_BROKEN       // tcp/pipe broken
 };
 
 enum
 {
-    PGCONN_EMPTY_QUERY = PGRES_EMPTY_QUERY,
-    PGCONN_COMMAND_OK = PGRES_COMMAND_OK,
-    PGCONN_TUPLES_OK = PGRES_TUPLES_OK,
-    PGCONN_COPY_OUT = PGRES_COPY_OUT,
-    PGCONN_COPY_IN = PGRES_COPY_IN,
-    PGCONN_BAD_RESPONSE = PGRES_BAD_RESPONSE,
-    PGCONN_NONFATAL_ERROR = PGRES_NONFATAL_ERROR,
-    PGCONN_FATAL_ERROR = PGRES_FATAL_ERROR
+	PGCONN_EMPTY_QUERY = PGRES_EMPTY_QUERY,
+	PGCONN_COMMAND_OK = PGRES_COMMAND_OK,
+	PGCONN_TUPLES_OK = PGRES_TUPLES_OK,
+	PGCONN_COPY_OUT = PGRES_COPY_OUT,
+	PGCONN_COPY_IN = PGRES_COPY_IN,
+	PGCONN_BAD_RESPONSE = PGRES_BAD_RESPONSE,
+	PGCONN_NONFATAL_ERROR = PGRES_NONFATAL_ERROR,
+	PGCONN_FATAL_ERROR = PGRES_FATAL_ERROR
 };
 
 enum
 {
-    PGCONN_TXSTATUS_IDLE = PQTRANS_IDLE,
-    PGCONN_TXSTATUS_ACTIVE = PQTRANS_ACTIVE,
-    PGCONN_TXSTATUS_INTRANS = PQTRANS_INTRANS,
-    PGCONN_TXSTATUS_INERROR = PQTRANS_INERROR,
-    PGCONN_TXSTATUS_UNKNOWN = PQTRANS_UNKNOWN
+	PGCONN_TXSTATUS_IDLE = PQTRANS_IDLE,
+	PGCONN_TXSTATUS_ACTIVE = PQTRANS_ACTIVE,
+	PGCONN_TXSTATUS_INTRANS = PQTRANS_INTRANS,
+	PGCONN_TXSTATUS_INERROR = PQTRANS_INERROR,
+	PGCONN_TXSTATUS_UNKNOWN = PQTRANS_UNKNOWN
 };
 
 // Our version of a pgNotify
@@ -77,8 +77,9 @@ typedef struct pgError
 	wxString source_line;
 	wxString source_function;
 	wxString formatted_msg;
-} pgError;
 
+	void SetError(PGresult *_res = NULL, wxMBConv *_conv = NULL);
+} pgError;
 
 class pgConn
 {
@@ -110,7 +111,7 @@ public:
 	bool GetIsGreenplum();
 	wxString EncryptPassword(const wxString &user, const wxString &password);
 	wxString qtDbString(const wxString &value);
-	pgConn *Duplicate();
+	pgConn *Duplicate(const wxString &_appName = wxT(""));
 
 	static void ExamineLibpqVersion();
 	static double GetLibpqVersion()
@@ -126,8 +127,10 @@ public:
 	void Close();
 	bool Reconnect();
 	bool ExecuteVoid(const wxString &sql, bool reportError = true);
-	wxString ExecuteScalar(const wxString &sql);
-	pgSet *ExecuteSet(const wxString &sql);
+	wxString ExecuteScalar(const wxString &sql, bool reportError = true);
+	pgSet *ExecuteSet(const wxString &sql, bool reportError = true);
+	void CancelExecution(void);
+
 	wxString GetHostAddr() const
 	{
 		return save_hostaddr;
@@ -257,12 +260,16 @@ public:
 	bool TableHasColumn(wxString schemaname, wxString tblname, const wxString &colname);
 
 protected:
-	PGconn *conn;
+	PGconn   *conn;
+	PGcancel *m_cancelConn;
+	wxMutex   m_cancelConnMutex;
 	int lastResultStatus;
 
 	int connStatus;
 
 	void SetLastResultError(PGresult *res, const wxString &msg = wxEmptyString);
+	void SetConnCancel(void);
+	void ResetConnCancel(void);
 	pgError lastResultError;
 
 	wxMBConv *conv;

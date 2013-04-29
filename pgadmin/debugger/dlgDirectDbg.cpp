@@ -16,37 +16,38 @@
 #include <wx/grid.h>
 
 // App headers
-#include "debugger/dlgDirectDbg.h"
-#include "debugger/frmDebugger.h"
-#include "debugger/dbgTargetInfo.h"
-#include "debugger/dbgPgConn.h"
-#include "debugger/ctlResultGrid.h"
-#include "debugger/dbgResultset.h"
+#include "ctl/ctlAuiNotebook.h"
+#include "db/pgConn.h"
+#include "db/pgQueryThread.h"
+#include "db/pgQueryResultEvent.h"
+#include "schema/pgObject.h"
 #include "debugger/dbgConst.h"
-#include "debugger/dbgDbResult.h"
-#include "debugger/ctlCodeWindow.h"
+#include "debugger/dbgBreakPoint.h"
+#include "debugger/dbgController.h"
+#include "debugger/dbgModel.h"
+#include "debugger/ctlStackWindow.h"
+#include "debugger/ctlMessageWindow.h"
+#include "debugger/ctlTabWindow.h"
+#include "debugger/frmDebugger.h"
+#include "debugger/dlgDirectDbg.h"
 
 #include "images/debugger.pngc"
-
-#include <stdexcept>
 
 #define lblMessage                  CTRL_STATIC("lblMessage")
 #define grdParams                   CTRL("grdParams", wxGrid)
 #define chkPkgInit                  CTRL_CHECKBOX("chkPkgInit")
+#define btnDebug                    CTRL_BUTTON("wxID_OK")
 
-IMPLEMENT_CLASS( dlgDirectDbg, pgDialog )
+IMPLEMENT_CLASS(dlgDirectDbg, pgDialog)
 
-BEGIN_EVENT_TABLE( dlgDirectDbg, pgDialog )
-	EVT_BUTTON( wxID_OK,                    dlgDirectDbg::OnOk )
-	EVT_BUTTON( wxID_CANCEL,                dlgDirectDbg::OnCancel )
-	EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,  dlgDirectDbg::OnDebug )
-	EVT_BUTTON( MENU_ID_NOTICE_RECEIVED, dlgDirectDbg::OnNoticeReceived )
-
-	EVT_MENU( RESULT_ID_DIRECT_TARGET_COMPLETE, dlgDirectDbg::OnTargetComplete )
-
-	EVT_CLOSE( dlgDirectDbg::OnClose )
-
+BEGIN_EVENT_TABLE(dlgDirectDbg, pgDialog)
+	EVT_BUTTON(wxID_OK,                               dlgDirectDbg::OnOk)
+	EVT_BUTTON(wxID_CANCEL,                           dlgDirectDbg::OnCancel)
+	EVT_GRID_CMD_LABEL_LEFT_CLICK(XRCID("grdParams"), dlgDirectDbg::OnClickGridLabel)
+	EVT_MENU(RESULT_ID_ARGS_UPDATED,                  dlgDirectDbg::ResultArgsUpdated)
+	EVT_MENU(RESULT_ID_ARGS_UPDATE_ERROR,             dlgDirectDbg::ResultArgsUpdateError)
 END_EVENT_TABLE()
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // dlgDirectDbg constructor
@@ -62,855 +63,996 @@ END_EVENT_TABLE()
 //  EXEC statement that invokes the target (with the parameter values
 //  provided by the user).
 
-dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnProp &connProp )
-	: m_connProp(connProp),
-	  m_targetInfo(NULL),
-	  m_conn(NULL),
-	  m_codeWindow(NULL),
-	  m_parent (parent),
-	  m_cancelled (false)
+dlgDirectDbg::dlgDirectDbg(frmDebugger *_parent, dbgController *_controller,
+                           pgConn *_conn)
+	: m_controller(_controller), m_thread(NULL), m_conn(_conn)
 {
+	int width, height, totalWidth = 0;
+
 	wxWindowBase::SetFont(settings->GetSystemFont());
-	LoadResource(m_parent, wxT("dlgDirectDbg"));
+	LoadResource(_parent, wxT("dlgDirectDbg"));
 
 	// Icon
 	SetIcon(*debugger_png_ico);
 	RestorePosition();
-}
 
-////////////////////////////////////////////////////////////////////////////////
-// setupParamWindow()
-//
-//    This function lays out the parameter prompt window.  It contains a grid that
-//  displays the name and type of each IN (and IN/OUT) parameter and a place to
-//  enter a value for each of those parameters.  It also contains an OK button
-//    and a CANCEL button
-
-void dlgDirectDbg::setupParamWindow( )
-{
-	// Add three columns to the grid control:
-	//   (Parameter) Name, Type, and Value
-	grdParams->CreateGrid( 0, 3 );
-	grdParams->SetColLabelValue( COL_NAME,  _( "Name" ));
-	grdParams->SetColLabelValue( COL_TYPE,  _( "Type" ));
-	grdParams->SetColLabelValue( COL_VALUE, _( "Value" ));
-	grdParams->SetRowLabelSize( 25 );
-	grdParams->SetColSize( 0, 75 );
-	grdParams->SetColSize( 1, 100 );
-	grdParams->SetColSize( 2, grdParams->GetClientSize().x - 210 );
-	grdParams->SetColLabelSize( 18 );
+	grdParams->SetRowLabelSize(wxGRID_AUTOSIZE);
+	grdParams->SetColLabelSize(20);
+	grdParams->AutoSizeColumns(true);
 
 	chkPkgInit->SetValue(false);
-	chkPkgInit->Disable();
+
+	PopulateParamGrid();
+
+	LoadSettings();
+
+	for(int i = 0; i < 7; i++)
+		grdParams->AutoSizeColumn(i, true);
+
+	// Extend grid to it's parent width
+	grdParams->GetClientSize(&width, &height);
+	for (int i = 0; i < 6; i++)
+	{
+		totalWidth += grdParams->GetColumnWidth(i);
+	}
+	// Total client width - total six column widths - the first (an empty) column
+	// width
+	grdParams->SetColumnWidth(COL_DEF_VAL, width - totalWidth - 100);
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
-// startDebugging()
+// PopulateParamGrid()
 //
-//    This function initializes *this with information about the target function
-//  (or procedure), constructs a grid that prompts the user for parameter values,
-//  and then displays the prompt dialog to the user.  Call this function after
-//  you construct a dlgDirectDbg (obviously) when you're ready to display the
-//  prompt dialog to the user.
-
-bool dlgDirectDbg::startDebugging( void )
+//    This function reads parameter descriptions from m_targetInfo and adds a
+//    new row to the grid control for each IN (or IN/OUT, VARAIADIC) parameter.
+//    Each row displays the parameter name, the data type, and an entry box
+//    where the user can type in a value for that parameter
+//
+void dlgDirectDbg::PopulateParamGrid()
 {
-	// First, figure out what kind of target we are going to debug.
-	// The caller filled in our m_breakpoint list with the name and
-	// type of each target that he's interested in.
-	//
-	// FIXME: For now, we only allow one initial breakpoint for direct
-	//          debugging - you can create other breakpoints once you see
-	//          the source code.
+	pgDbgArgs *args = m_controller->GetTargetInfo()->GetArgs();
 
-	dbgBreakPointList::Node *node = m_breakpoints.GetFirst();
+	// If the target is defined within package, offer the user
+	// a chance to debug the initializer (there may or may not
+	// be an initializer, we don't really know at this point)
+	if(m_controller->GetTargetInfo()->GetPkgOid() == 0)
+		chkPkgInit->Disable();
+	else
+		chkPkgInit->Enable();
 
-	wxASSERT_MSG( node != NULL, wxT( "Expected to find at least one target on the command line" ));
-
-	dbgBreakPoint *breakpoint = node->GetData();
-
-	m_target = breakpoint->getTarget();
-
-	char    targetType = 0;
-
-	switch( breakpoint->getTargetType())
+	if (!args)
 	{
-		case dbgBreakPoint::TRIGGER:
-			targetType = 't';
-			break;
-		case dbgBreakPoint::FUNCTION:
-			targetType = 'f';
-			break;
-		case dbgBreakPoint::PROCEDURE:
-			targetType = 'p';
-			break;
-		case dbgBreakPoint::OID:
-			targetType = 'o';
-			break;
-		default:
-		{
-			wxASSERT_MSG( false, wxT( "Unexpected target type" ));
-			break;
-		}
+		grdParams->SetColLabelValue(COL_NAME, _("No arguments required"));
+		grdParams->SetColSize(0, 350);
+		return;
 	}
 
-	if (!loadTargetInfo( m_target, m_connProp, targetType ))
-		return false;
+	// Add seven columns to the grid control:
+	// - Name, Type, NULL?, EXPR?, Value, Default?, And Default Value
+	grdParams->CreateGrid(0, 7);
 
-	populateParamGrid();
-	return true;
-}
+	grdParams->SetColLabelValue(COL_NAME, _("Name"));
+	grdParams->SetColLabelValue(COL_TYPE, _("Type"));
+	grdParams->SetColLabelValue(COL_NULL, _("Null?"));
+	grdParams->SetColLabelValue(COL_EXPR, _("Expression?"));
+	grdParams->SetColLabelValue(COL_VALUE, _("Value"));
+	grdParams->SetColLabelValue(COL_USE_DEF, _("Use default?"));
+	grdParams->SetColLabelValue(COL_DEF_VAL, _("Default Value"));
 
-////////////////////////////////////////////////////////////////////////////////
-// loadTargetInfo()
-//
-//    This function establishes a connection to the server and creates a new
-//  dbgTargetInfo object that loads information about the debug target (that is,
-//  the function or procedure of interest).  Call this function with two
-//  arguments: target should contain the signature of a function or procedure
-//  or the OID of a function or procedure and connProp should contain the
-//  information required to connect to the server (like the hostname, port number,
-//  and user name).
+	size_t idx = 0;
 
-bool dlgDirectDbg::loadTargetInfo( const wxString &target, const dbgConnProp &connProp, char targetType )
-{
-	// Connect to the server using the connection properties contained in connProp
-
-	m_conn = new dbgPgConn(m_parent, connProp);
-
-	if( m_conn && m_conn->isConnected())
+	for(size_t pIdx = 0; pIdx < args->Count(); pIdx++)
 	{
-		if( getenv( "DEBUGGER_INIT" ))
-		{
-			PQclear( m_conn->waitForCommand( wxString(getenv( "DEBUGGER_INIT" ), wxConvUTF8 )));
-		}
-
-		// Our proxy API may throw (perfectly legitimate) errors at us (for example,
-		// if the target process ends while we are waiting for a breakpoint) - apparently
-		// those error messages scare the user when they show up in the log, so we'll
-		// just suppress logging for this session
-
-		PQclear( m_conn->waitForCommand( wxT( "SET log_min_messages TO fatal" )));
-
-		// Now load information about the target into m_targetInfo (note:
-		// the dbgTargetInfo() constructor queries the server for all
-		// required information)
-
-		try
-		{
-			m_targetInfo = new dbgTargetInfo( target, m_conn, targetType );
-		}
-		catch( const std::runtime_error &error )
-		{
-			wxLogError(wxT("%s"), wxString(error.what(), wxConvUTF8).c_str());
-			m_conn->Close();
-			return false;
-		}
-
-		this->SetTitle(m_targetInfo->getName());
-	}
-
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// populateParamGrid()
-//
-//    This function reads parameter descriptions from m_targetInfo and adds a new
-//  row to the grid control for each IN (or IN/OUT) parameter.  Each row displays
-//    the parameter name, the data type, and an entry box where the user can type
-//  in a value for that parameter
-
-void dlgDirectDbg::populateParamGrid( )
-{
-	// First, try to load default values from a previous invocation into
-	// m_targetInfo (assuming that we're debugging the same target this
-	// time around)
-
-	loadSettings();
-
-	int i = 0;
-
-	for( int count = 0; count < m_targetInfo->getArgCount(); ++count )
-	{
-		wsArgInfo &arg = ((*m_targetInfo)[count] );
+		dbgArgInfo *arg = (*args)[pIdx];
 
 		// If this is an IN parameter (or an IN/OUT parameter), add
 		// a new row to the grid
-
-		if( arg.getMode() != wxT( "o" ))
+		if(arg->GetMode() != pgParam::PG_PARAM_OUT)
 		{
-			grdParams->AppendRows( 1 );
-			grdParams->SetCellValue( i, COL_NAME,  arg.getName());
+			grdParams->AppendRows(1);
+			grdParams->SetCellValue(idx, COL_NAME,  arg->GetName());
 
 			// Make it obvious which are variadics
-			if (arg.getMode() != wxT( "v" ))
-				grdParams->SetCellValue( i, COL_TYPE,  arg.getType());
+			if (arg->GetMode() != pgParam::PG_PARAM_VARIADIC)
+			{
+				grdParams->SetRowLabelValue(idx, wxEmptyString);
+				grdParams->SetCellValue(idx, COL_TYPE, arg->GetTypeName());
+
+				if (!arg->IsArray())
+				{
+					// Is the value an expression?
+					grdParams->SetCellEditor(idx, COL_EXPR, new ctlGridCellBoolEditor());
+					grdParams->SetCellRenderer(idx, COL_EXPR, new wxGridCellBoolRenderer());
+					grdParams->SetCellValue(idx, COL_EXPR, wxT(""));
+				}
+				else
+				{
+					grdParams->SetCellBackgroundColour(idx, COL_EXPR, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(idx, COL_VALUE, wxColour(235, 235, 235, 90));
+				}
+
+				// Use the default value?
+				grdParams->SetCellRenderer(idx, COL_USE_DEF, new wxGridCellBoolRenderer());
+				grdParams->SetCellEditor(idx, COL_USE_DEF, new ctlGridCellBoolEditor());
+			}
 			else
-				grdParams->SetCellValue( i, COL_TYPE, arg.getType() + wxT(" VARIADIC"));
+			{
+				grdParams->SetCellValue(idx, COL_TYPE, wxT("VARIADIC ") + arg->GetTypeName());
+				grdParams->SetRowLabelValue(idx, wxEmptyString);
 
-			grdParams->SetCellValue( i, COL_VALUE, arg.getValue());
+				grdParams->AppendRows(1);
+				grdParams->SetRowLabelValue(idx + 1, wxT("+"));
+				grdParams->SetCellValue(idx + 1, COL_NAME, _("Click '+/-' to add/remove value to variadic"));
 
-			grdParams->SetReadOnly( i, COL_NAME,  true );
-			grdParams->SetReadOnly( i, COL_TYPE,  true );
-			grdParams->SetReadOnly( i, COL_VALUE, false );
+				grdParams->SetCellBackgroundColour(idx + 1, COL_EXPR,    wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx + 1, COL_VALUE,   wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx + 1, COL_USE_DEF, wxColour(235, 235, 235, 90));
+			}
 
-			i++;
+			// Set value to NULL?
+			grdParams->SetCellEditor(idx, COL_NULL, new ctlGridCellBoolEditor(arg));
+			grdParams->SetCellRenderer(idx, COL_NULL, new wxGridCellBoolRenderer());
+			grdParams->SetCellValue(idx, COL_NULL, wxT(""));
+
+			if (arg->HasDefault())
+			{
+				// Whenever the default value is available, use that by default
+				grdParams->SetCellValue(idx, COL_USE_DEF, wxT("1"));
+				grdParams->SetCellValue(idx, COL_DEF_VAL, arg->Default());
+
+				// When "Use Defalut?" is enabled, disable VALUE, NULL? and
+				// EXPR? columns
+				grdParams->SetReadOnly(idx, COL_USE_DEF, false);
+				grdParams->SetReadOnly(idx, COL_VALUE, false);
+				grdParams->SetReadOnly(idx, COL_EXPR, false);
+			}
+			else
+			{
+				grdParams->SetCellValue(idx, COL_USE_DEF, wxT(""));
+				grdParams->SetCellValue(idx, COL_DEF_VAL, _("<No default value>"));
+
+				// When default value is not available, we should ask the user
+				// to enter them
+				grdParams->SetReadOnly(idx, COL_USE_DEF, true);
+				grdParams->SetReadOnly(idx, COL_VALUE, arg->IsArray());
+				grdParams->SetReadOnly(idx, COL_EXPR, arg->IsArray());
+
+				grdParams->SetCellBackgroundColour(idx, COL_USE_DEF, wxColour(235, 235, 235, 90));
+				if (arg->IsArray())
+				{
+					grdParams->SetCellBackgroundColour(idx, COL_VALUE, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(idx, COL_EXPR, wxColour(235, 235, 235, 90));
+				}
+			}
+
+			grdParams->SetReadOnly(idx, COL_NULL, false);
+			grdParams->SetReadOnly(idx, COL_NAME, true);
+			grdParams->SetReadOnly(idx, COL_TYPE, true);
+			grdParams->SetReadOnly(idx, COL_DEF_VAL, true);
+			grdParams->SetCellBackgroundColour(idx, COL_NAME,    wxColour(235, 235, 235, 90));
+			grdParams->SetCellBackgroundColour(idx, COL_TYPE,    wxColour(235, 235, 235, 90));
+			grdParams->SetCellBackgroundColour(idx, COL_DEF_VAL, wxColour(235, 235, 235, 90));
+
+			idx++;
+
+			if (arg->GetMode() != pgParam::PG_PARAM_VARIADIC &&
+			        arg->IsArray())
+			{
+				grdParams->AppendRows(1);
+
+				grdParams->SetRowLabelValue(idx, wxT("+"));
+				grdParams->SetCellValue(idx, COL_NAME, _("Click '+/-' to add/remove value to the array"));
+
+				grdParams->SetReadOnly(idx, COL_NAME,    true);
+				grdParams->SetReadOnly(idx, COL_TYPE,    true);
+				grdParams->SetReadOnly(idx, COL_NULL,    true);
+				grdParams->SetReadOnly(idx, COL_EXPR,    true);
+				grdParams->SetReadOnly(idx, COL_VALUE,   true);
+				grdParams->SetReadOnly(idx, COL_USE_DEF, true);
+				grdParams->SetReadOnly(idx, COL_DEF_VAL, true);
+
+				grdParams->SetCellBackgroundColour(idx, COL_NAME,    wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_TYPE,    wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_NULL,    wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_EXPR,    wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_VALUE,   wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_USE_DEF, wxColour(235, 235, 235, 90));
+				grdParams->SetCellBackgroundColour(idx, COL_DEF_VAL, wxColour(235, 235, 235, 90));
+
+				idx++;
+			}
 		}
 	}
 
 	// Move the cursor to the first value (so that the user
 	// can just start typing)
 
-	grdParams->SetGridCursor( 0, COL_VALUE );
+	grdParams->SetGridCursor(0, COL_VALUE);
 	grdParams->SetFocus();
-
-	// If the target is defined within package, offer the user
-	// a chance to debug the initializer (there may or may not
-	// be an initializer, we don't really know at this point)
-
-	if( m_targetInfo->getPkgOid() == 0 )
-		chkPkgInit->Disable();
-	else
-		chkPkgInit->Enable();
-
-	// Set the columns' size
-
-	grdParams->SetColSize(COL_NAME, 200);
-	grdParams->SetColSize(COL_TYPE, 100);
-	grdParams->SetColSize(COL_VALUE, 150);
-
-	// If the target function has no parameters (and it's not defined within
-	// a package), there's no good reason to wait for the user to hit the Ok
-	// button before we invoke the target...
-
-	if((m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0 ) && ( m_targetInfo->getPkgOid() == 0))
-	{
-		grdParams->AppendRows( 1 );
-		grdParams->SetReadOnly( i, COL_NAME,  true );
-		grdParams->SetReadOnly( i, COL_TYPE,  true );
-		grdParams->SetReadOnly( i, COL_VALUE, true );
-
-		grdParams->SetCellValue( 0, COL_NAME, _( "No arguments required" ));
-		wxFont font = grdParams->GetCellFont( 0, COL_NAME );
-		font.SetStyle( wxFONTSTYLE_ITALIC );
-		grdParams->SetCellFont( 0, COL_NAME, font );
-
-		activateDebugger();
-	}
-	else
-	{
-		this->ShowModal();
-	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// OnOk()
-//
-//    This event handler is called when the user clicks the OK button - we call the
-//  activateDebugger() function to set the required breakpoint and invoke the
-//  target (after nabbing any parameter values from the prompt dialog)
-
-void dlgDirectDbg::OnOk( wxCommandEvent &event )
+void dlgDirectDbg::LoadLastCellSetting(int row_number, int parameter_index,
+                                       int index_array_bound, bool isArray)
 {
-	activateDebugger();
+	wxString lastValue, valKey;
+	dbgTargetInfo *target = m_controller->GetTargetInfo();
+	long num;
+
+	settings->Read(wxT("Debugger/Proc/OID"), &num, -1L);
+	if(num != target->GetOid())
+	{
+		return;
+	}
+	else
+	{
+		if(!isArray)
+		{
+			// Non array elements cell index is 0
+			valKey = wxString::Format(wxT("Debugger/Proc/%d/0/"), parameter_index);
+			settings->Read(valKey + wxT("VAL"), &lastValue, wxEmptyString);
+			grdParams->SetCellValue(row_number, COL_VALUE, lastValue);
+		}
+		else
+		{
+			long arrCnt;
+
+			settings->Read(
+			    wxString::Format(
+			        wxT("Debugger/Proc/%d/"), parameter_index)
+			    + wxT("ArrCnt"), &arrCnt, 0L);
+
+			// Refresh an entire array element
+			for( int i = 0; i <= index_array_bound && i <= arrCnt - 1; i++ )
+			{
+				valKey = wxString::Format(wxT("Debugger/Proc/%d/%d/"), parameter_index, i);
+				settings->Read(valKey + wxT("VAL"), &lastValue, wxEmptyString);
+				grdParams->SetCellValue(row_number - index_array_bound + i, COL_VALUE,
+				                        lastValue);
+			}
+		}
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// loadSettings()
+// LoadSettings()
 //
 //    Loads default values from our .ini file. We save the OID of the most
 //    recent direct-debugging target when close a session. If we're direct-
 //    debugging the same target this time around, we load the argument values
 //    from the .ini file.
-
-void dlgDirectDbg::loadSettings()
+void dlgDirectDbg::LoadSettings()
 {
-	long        lastOID;
+	long     num, arrCnt;
+	wxString tmp, key;
+	bool     initPkgCon = false;
 
-	settings->Read( wxT( "Debugger/Proc/OID" ), &lastOID, -1 );
+	settings->Read(wxT("Debugger/Proc/OID"), &num, -1L);
 
-	if( lastOID == m_targetInfo->getOid())
+	dbgTargetInfo *target = m_controller->GetTargetInfo();
+	pgDbgArgs *args = m_controller->GetTargetInfo()->GetArgs();
+
+	if (num != target->GetOid())
 	{
-		int    count = 0;
+		chkPkgInit->SetValue(target->GetPkgInitOid() != 0L);
+		chkPkgInit->Enable(target->GetPkgInitOid() != 0L);
 
-		for( int i = 0; i < m_targetInfo->getArgCount(); ++i )
+		return;
+	}
+	else
+	{
+		settings->Read(wxT("Debugger/Proc/initialize_package_constructor"), &initPkgCon, true);
+
+		chkPkgInit->SetValue(&initPkgCon && target->GetPkgInitOid() != 0L);
+		chkPkgInit->Enable(target->GetPkgInitOid() != 0L);
+	}
+
+	settings->Read(wxT("Debugger/Proc/args"), &num, 0L);
+
+	if (num <= 0L)
+		return;
+
+	if (!args)
+		return;
+
+	for (int cnt = 0, row = 0; cnt < num && cnt < (int)args->Count();)
+	{
+		ctlGridCellBoolEditor *editor =
+		    dynamic_cast<ctlGridCellBoolEditor *>(
+		        grdParams->GetCellEditor(row, COL_NULL));
+		dbgArgInfo *arg
+		= editor != NULL ? editor->GetArg() : NULL;
+
+		if (arg == NULL)
 		{
-			wsArgInfo &arg = (*m_targetInfo)[i];
+			row++;
 
-			if( arg.getMode() != wxT( "o" ))
-			{
-				settings->Read( wxString::Format( wxT( "Debugger/Proc/argValue%d" ), ++count ), &(arg.getValue()), wxT( "" ));
-			}
+			continue;
 		}
+
+		key = wxString::Format(wxT("Debugger/Proc/%d/"), cnt);
+
+		// Use NULL?
+		settings->Read(key + wxT("NULL"), &tmp, wxEmptyString);
+		grdParams->SetCellValue(row, COL_NULL, tmp);
+
+		// Use Default (if available)
+		settings->Read(key + wxT("USE_DEF"), &tmp, wxEmptyString);
+		grdParams->SetCellValue(row, COL_USE_DEF, tmp);
+
+		// Is Array/VARIADIC?
+		settings->Read(key + wxT("ArrCnt"), &arrCnt, 0L);
+
+		if (arrCnt > 0L)
+		{
+			// An individual variable can be an expression or can be the 'NULL' value
+			wxString valKey, strVal, strExpr, strNull;
+
+			for (int idx = 0; idx < arrCnt; idx++, row++)
+			{
+				valKey = wxString::Format(wxT("Debugger/Proc/%d/%d/"), cnt, idx);
+
+				// Use 'NULL'?
+				settings->Read(valKey + wxT("NULL"), &strNull, wxEmptyString);
+
+				// Use EXPR?
+				settings->Read(valKey + wxT("EXPR"), &strExpr, wxEmptyString);
+
+				// Value
+				settings->Read(valKey + wxT("VAL"), &strVal, wxEmptyString);
+
+				if (arg->IsArray())
+				{
+					int arrRow = row + 1;
+
+					if (idx == 0)
+					{
+						grdParams->SetReadOnly(row, COL_EXPR, true);
+						grdParams->SetReadOnly(row, COL_VALUE, true);
+
+						grdParams->SetCellBackgroundColour(row, COL_EXPR,  wxColour(235, 235, 235, 90));
+						grdParams->SetCellBackgroundColour(row, COL_VALUE, wxColour(235, 235, 235, 90));
+
+						grdParams->SetRowLabelValue(
+						    row, wxString::Format(wxT("%d"), cnt + 1));
+					}
+					grdParams->InsertRows(arrRow, 1, false);
+					grdParams->SetRowLabelValue(arrRow, wxT("-"));
+
+					grdParams->SetCellValue(arrRow, COL_TYPE, arg->GetBaseType());
+
+					// Is the value an expression?
+					grdParams->SetCellEditor(arrRow, COL_EXPR, new ctlGridCellBoolEditor());
+					grdParams->SetCellRenderer(arrRow, COL_EXPR,
+					                           new wxGridCellBoolRenderer());
+					grdParams->SetCellValue(arrRow, COL_EXPR, strExpr);
+
+					// Set value to NULL?
+					grdParams->SetCellEditor(arrRow, COL_NULL,
+					                         new ctlGridCellBoolEditor(arg));
+					grdParams->SetCellRenderer(arrRow, COL_NULL,
+					                           new wxGridCellBoolRenderer());
+					grdParams->SetCellValue(arrRow, COL_NULL, strNull);
+
+					// Set value
+					grdParams->SetCellValue(arrRow, COL_VALUE, strVal);
+
+					grdParams->SetReadOnly(arrRow, COL_NULL, false);
+					grdParams->SetReadOnly(arrRow, COL_EXPR, false);
+					grdParams->SetReadOnly(arrRow, COL_VALUE, false);
+
+					grdParams->SetCellBackgroundColour(arrRow, COL_NAME,    wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow, COL_TYPE,    wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow, COL_USE_DEF, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow, COL_DEF_VAL, wxColour(235, 235, 235, 90));
+
+					grdParams->SetReadOnly(arrRow + 1, COL_NAME,    true);
+					grdParams->SetReadOnly(arrRow + 1, COL_TYPE,    true);
+					grdParams->SetReadOnly(arrRow + 1, COL_NULL,    true);
+					grdParams->SetReadOnly(arrRow + 1, COL_EXPR,    true);
+					grdParams->SetReadOnly(arrRow + 1, COL_VALUE,   true);
+					grdParams->SetReadOnly(arrRow + 1, COL_USE_DEF, true);
+					grdParams->SetReadOnly(arrRow + 1, COL_DEF_VAL, true);
+
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_NAME, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_TYPE, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_NULL, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_EXPR, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_VALUE, wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_USE_DEF,
+					                                   wxColour(235, 235, 235, 90));
+					grdParams->SetCellBackgroundColour(arrRow + 1, COL_DEF_VAL,
+					                                   wxColour(235, 235, 235, 90));
+
+					grdParams->SetRowLabelValue(arrRow + 1, wxT("+"));
+				}
+				else
+				{
+					grdParams->SetCellValue(row, COL_VALUE, strVal);
+					grdParams->SetCellValue(row, COL_EXPR, strExpr);
+					grdParams->SetCellValue(row, COL_NULL, strNull);
+
+					grdParams->SetReadOnly(row, COL_NULL, false);
+					grdParams->SetReadOnly(row, COL_EXPR, false);
+					grdParams->SetReadOnly(row, COL_VALUE, false);
+
+					grdParams->SetRowLabelValue(
+					    row, wxString::Format(wxT("%d"), cnt + 1));
+				}
+			}
+			if (arg->IsArray())
+				row++;
+		}
+		cnt++;
+	}
+}
+
+
+void dlgDirectDbg::OnOk(wxCommandEvent &_ev)
+{
+	if (m_thread)
+		return;
+
+	grdParams->Enable(false);
+	btnDebug->Enable(false);
+
+	m_thread = new dbgArgValueEvaluator(m_conn, this);
+
+	if (m_thread->Create() != wxTHREAD_NO_ERROR)
+	{
+		delete m_thread;
+		m_thread = NULL;
+
+		wxLogError(_("Failed to create a debugging thread."));
+		EndModal(wxID_CANCEL);
+
+		return;
+	}
+
+	m_thread->Run();
+}
+
+
+void dlgDirectDbg::OnCancel(wxCommandEvent &_ev)
+{
+	if (m_thread)
+	{
+		m_thread->CancelEval();
+
+		m_thread->Wait();
+
+		delete m_thread;
+		m_thread = NULL;
+	}
+	_ev.Skip();
+}
+
+void dlgDirectDbg::OnClickGridLabel(wxGridEvent &_ev)
+{
+	if (_ev.AltDown() || _ev.ControlDown() || _ev.ShiftDown())
+	{
+		_ev.Skip();
+
+		return;
+	}
+
+	int row = _ev.GetRow();
+	int col = _ev.GetCol();
+
+	if (row < 0 || col > 0)
+	{
+		_ev.Skip();
+
+		return;
+	}
+
+	wxString strLabel = grdParams->GetRowLabelValue(row);
+
+	if (strLabel == wxT("+"))
+	{
+		wxASSERT(row != 0);
+
+		ctlGridCellBoolEditor *editor =
+		    dynamic_cast<ctlGridCellBoolEditor *>(
+		        grdParams->GetCellEditor(row - 1, COL_NULL));
+		dbgArgInfo *arg
+		= editor != NULL ? editor->GetArg() : NULL;
+
+		grdParams->InsertRows(row, 1, false);
+		grdParams->SetRowLabelValue(row, wxT("-"));
+
+		grdParams->SetCellValue(row, COL_TYPE, arg->GetBaseType());
+		grdParams->SetCellBackgroundColour(row, COL_TYPE, wxColour(235, 235, 235, 90));
+		grdParams->SetCellBackgroundColour(row, COL_NAME, wxColour(235, 235, 235, 90));
+		grdParams->SetCellBackgroundColour(row, COL_USE_DEF, wxColour(235, 235, 235, 90));
+		grdParams->SetCellBackgroundColour(row, COL_DEF_VAL, wxColour(235, 235, 235, 90));
+
+		// Is the value an expression?
+		grdParams->SetCellEditor(row, COL_EXPR, new ctlGridCellBoolEditor());
+		grdParams->SetCellRenderer(row, COL_EXPR, new wxGridCellBoolRenderer());
+		grdParams->SetCellValue(row, COL_EXPR, wxT(""));
+
+		// Set value to NULL?
+		grdParams->SetCellEditor(row, COL_NULL, new ctlGridCellBoolEditor(arg));
+		grdParams->SetCellRenderer(row, COL_NULL, new wxGridCellBoolRenderer());
+		grdParams->SetCellValue(row, COL_NULL, wxT("1"));
+
+		row++;
+		grdParams->SetRowLabelValue(row, wxT("+"));
+	}
+	else if (strLabel == wxT("-"))
+	{
+		dbgArgInfo *arg = NULL;
+		grdParams->DeleteRows(row, 1, false);
+	}
+	else
+		return;
+
+	// Update the row labels
+	ctlGridCellBoolEditor *editor = NULL;
+	dbgArgInfo *arg = NULL,
+	            *prev = NULL;
+	wxString strName;
+
+	int totalRows = grdParams->GetNumberRows(),
+	    idx = 0;
+	row = 0;
+
+	while (row < totalRows)
+	{
+		editor =
+		    dynamic_cast<ctlGridCellBoolEditor *>(
+		        grdParams->GetCellEditor(row, COL_NULL));
+		arg	= editor != NULL ? editor->GetArg() : NULL;
+		strName = grdParams->GetCellValue(row, COL_NAME);
+
+		if (strName.IsEmpty() && arg)
+			grdParams->SetRowLabelValue(row, wxT("-"));
+		else if (!strName.IsEmpty() && !arg)
+			grdParams->SetRowLabelValue(row, wxT("+"));
+		else
+		{
+			idx++;
+			grdParams->SetRowLabelValue(row, wxString::Format(wxT("%d"), idx));
+		}
+
+		row++;
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// saveSettings()
+// SaveSettings()
 //
 //    Save default values to our .ini file. We save the OID of the most
 //    recent direct-debugging target when close a session. We also save the
-//  value of each argument - if you debug the same target again next time,
+//    value of each argument - if you debug the same target again next time,
 //    loadSettings() will initialize the parameter-values window with the
 //    same parameter values that you entered in this session.
-
-void dlgDirectDbg::saveSettings()
-{
-	settings->WriteLong( wxT( "Debugger/Proc/OID" ), m_targetInfo->getOid());
-
-	int    count = 0;
-
-	for( int i = 0; i < m_targetInfo->getArgCount(); ++i )
-	{
-		wsArgInfo &arg = ( *m_targetInfo)[i];
-
-		if( arg.getMode() != wxT( "o" ))
-		{
-			settings->Write( wxString::Format( wxT( "Debugger/Proc/argName%d" ), ++count ), arg.getName());
-			settings->Write( wxString::Format( wxT( "Debugger/Proc/argType%d" ),   count ), arg.getType());
-			settings->Write( wxString::Format( wxT( "Debugger/Proc/argValue%d" ),  count ), wxString((arg.getValue() == wxT("NULL") ? wxEmptyString : arg.getValue().c_str())));
-		}
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// OnCancel()
 //
-//    This event handler is called when the user clicks the Cancel button - we
-//    close the connection to the server and then close ourself.
-
-void dlgDirectDbg::OnCancel( wxCommandEvent &event )
+void dlgDirectDbg::SaveSettings()
 {
-	// This will raise close event which is handled by
-	// dlgDirectDbg::OnClose().
-	m_cancelled = true;
-	Close();
-}
+	wxString    strName, strExpr, strVal, strNull, strDef, strKey, strValExpr;
+	dbgArgInfo *prev = NULL,
+	            *arg = NULL;
+	int         row = 0,
+	            idx = -1,
+	            arrCnt = 1;
 
-////////////////////////////////////////////////////////////////////////////////
-// OnClose()
-//
-//    wxWidgets invokes this event handler when the user closes the parameter
-//    window. We close the connection with server and raise close event for
-//    MainFrame.
+	// Save the current function/procedure/trigger OID
+	settings->WriteLong(wxT("Debugger/Proc/OID"),
+	                    m_controller->GetTargetInfo()->GetOid());
 
-void dlgDirectDbg::OnClose( wxCloseEvent &event )
-{
-	// Destroy the grid - required as it seems to create threads in some cases
-	if (grdParams)
+	// Save - whether we need to debug the package constructor
+	settings->WriteBool(wxT("Debugger/Proc/initialize_package_constructor"),
+	                    (chkPkgInit->IsEnabled() && chkPkgInit->GetValue()));
+
+	for (; row < grdParams->GetNumberRows(); row++)
 	{
-		grdParams->Destroy();
-		delete grdParams;
-	}
+		ctlGridCellBoolEditor *editor =
+		    dynamic_cast<ctlGridCellBoolEditor *>(
+		        grdParams->GetCellEditor(row, COL_NULL));
+		arg	= editor != NULL ? editor->GetArg() : NULL;
 
-	// Close the debugger (proxy) connection
-	if (m_conn)
-	{
-		m_conn->Close();
-		delete m_conn;
-		m_conn = NULL;
-	}
-
-	// Closing frmMain from here leads to recursive call
-	// to OnClose function on windows
-#ifndef __WXWIN__
-	// This will inform the MainWindow to close.
-	// if it's not visible yet.
-	if (m_parent->IsShown())
-		event.Skip();
-	else
-		m_parent->Close();
-#endif // __WXWIN__
-
-	if ( this->IsModal() )
-	{
-		if ( m_cancelled )
-			EndModal( wxID_CANCEL );
-		else
-			EndModal( wxID_OK);
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// activateDebugger()
-//
-//    This function is called after the user has filled in any parameter values
-//  and clicked the Ok button.  activateDebugger() extracts the paramter values
-//  from the grid control and copies those values into our dbgTargetInfo object
-//  (m_targetInfo).  Next, we set a breakpoint at the target, and, finally,
-//  we invoke the target function/procedure
-
-bool dlgDirectDbg::activateDebugger( )
-{
-	// Unset the completed flag (if it exists)
-	if (m_codeWindow)
-		m_codeWindow->m_targetComplete = false;
-
-	// Copy the parameter values from the grid into m_targetInfo
-	int i = 0;
-
-	for( int count = 0; count < m_targetInfo->getArgCount(); ++count )
-	{
-		wsArgInfo &arg = (*m_targetInfo)[count];
-
-		// Populate the ArgInfo object's IN or INOUT variables only, OUT
-		// variables will be assigned NULL later on.
-
-		if(arg.getMode() != wxT("o"))
+		// This should be the information for add/remove values for an array
+		if (arg == NULL)
 		{
-			arg.setValue( grdParams->GetCellValue(i, COL_VALUE));
-			i++;
+			continue;
 		}
-	}
-
-	// Write the target OID and argument values to our settings file
-	// so that we can default them next time around
-	saveSettings();
-
-	// Now set a breakpoint at the target (note: the call to setBreakpoint()
-	// will hang until the  server sends us a response)
-
-	try
-	{
-		// Debug the initialiser. We can only do so once, so unset, and disable
-		// the option after setting the breakpoint
-		if( chkPkgInit->GetValue())
-			setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgInitOid());
-
-		chkPkgInit->SetValue(false);
-		chkPkgInit->Disable();
-
-		setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getOid());
-	}
-	catch( const std::runtime_error &error )
-	{
-		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Cannot create breakpoint" ), wxOK | wxICON_ERROR );
-		return( false );
-	}
-
-	// And invoke the target (note: the call to invokeTarget() will *NOT*
-	// wait for a result set from the server - instead, OnResultReady() will
-	// be called when the result set is ready)
-
-	try
-	{
-		invokeTarget();
-	}
-	catch( const std::runtime_error &error )
-	{
-		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Cannot invoke target" ), wxOK | wxICON_ERROR );
-		return( false );
-	}
-
-	return( true );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// setBreakpoint()
-//
-//    This function creates a breakpoint at the target.  For now, we always create
-//  a breakpoint by calling edb_procoid_debug() or plpgsql_procoid_debug() with
-//  the OID of the target.  Later, we'll change this function to use the
-//  new CREATE BREAKPOINT command.
-
-void dlgDirectDbg::setBreakpoint(long pkgOid, long funcOid)
-{
-	dbgResultset *result;
-
-	if (m_conn->DebuggerApiVersion() <= DEBUGGER_V2_API)
-	{
-		if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
-			result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select edb_oid_debug( %ld, %ld );"), pkgOid, funcOid)));
-		else
-			result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select plpgsql_oid_debug( %ld, %ld );"),  pkgOid, funcOid)));
-	}
-	else
-	{
-		if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
-			result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select edb_oid_debug(%ld);"), funcOid)));
-		else
-			result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select plpgsql_oid_debug(%ld);"), funcOid)));
-	}
-
-	if( result->getCommandStatus() != PGRES_TUPLES_OK )
-		throw( std::runtime_error( result->getRawErrorMessage()));
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// invokeTarget()
-//
-//    This function invokes the debugger target (that is, the function or procedure
-//  that the user wants to debug).  If the target is a function, we generate a
-//  SELECT statement; if the target is a procedure, we generate an EXEC statement.
-//  In either case, we build the argument list from the argument values found
-//  in m_targetInfo
-
-void dlgDirectDbg::invokeTarget()
-{
-	// If we have access the the EDB extended libpq functions,
-	// and this is a stored procedure, we should execute the
-	// procedure using the callable statement interface to allow
-	// us to retrieve the OUT/INOUT parameter results.
-	// Otherwise, just SELECT/EXEC it as per normal.
-#ifdef __WXMSW__
-	if (!m_conn->EdbMinimumVersion(9, 0) &&
-	        !m_targetInfo->getIsFunction() &&
-	        PQiGetOutResult &&
-	        PQiPrepareOut &&
-	        PQiSendQueryPreparedOut)
-		invokeTargetCallable();
-	else
-#else
-#ifdef EDB_LIBPQ
-	if (!m_conn->EdbMinimumVersion(9, 0) &&
-	        !m_targetInfo->getIsFunction())
-		invokeTargetCallable();
-	else
-#endif
-#endif
-		invokeTargetStatement();
-
-	// Since parameter window has done its job, we need to hide
-	// it and let code window come in front.
-	if (m_codeWindow)
-	{
-		m_codeWindow->enableTools();
-		m_codeWindow->resumeLocalDebugging();
-	}
-
-	this->Show( false );
-}
-
-void dlgDirectDbg::invokeTargetCallable()
-{
-	dbgPgParams *params = new dbgPgParams();
-
-	wxString query = wxT("CALL ") + m_targetInfo->getFQName() + wxT("(");
-
-	// Setup the param struct.
-	params->nParams = m_targetInfo->getArgCount();
-	params->paramTypes = new Oid[params->nParams];
-	params->paramValues = new char*[params->nParams];
-	params->paramModes = new int[params->nParams];
-
-	// Iterate through the parameters, adding them to the param
-	// struct and the statement as we go.
-	for( int i = 0; i < params->nParams; ++i )
-	{
-		wsArgInfo &arg = (*m_targetInfo)[i];
-
-		params->paramTypes[i] = arg.getTypeOid();
-
-		if(arg.getMode() == wxT("o")) // OUT
+		else if (prev != arg)
 		{
-			params->paramModes[i] = 2;
-			params->paramValues[i] = 0;
-		}
-		else if(arg.getMode() == wxT("b")) // IN OUT
-		{
-			params->paramModes[i] = 3;
+			idx++;
+			prev = arg;
 
-			int len = arg.getValue().Length() + 1;
-			char *tmp = new char[len];
-			snprintf(tmp, len, "%s", (const char *)arg.getValue().mb_str(wxConvUTF8));
-			if (strcmp(tmp, "") == 0)
-				params->paramValues[i] = 0;
-			else if (strcmp(tmp, "''") == 0)
-				params->paramValues[i] = (char *)"";
-			else if (strcmp(tmp, "\\'\\'") == 0)
-				params->paramValues[i] = (char *)"''";
-			else
-				params->paramValues[i] = tmp;
-		}
-		else // IN
-		{
-			params->paramModes[i] = 1;
-
-			int len = arg.getValue().Length() + 1;
-			char *tmp = new char[len];
-			snprintf(tmp, len, "%s", (const char *)arg.getValue().mb_str(wxConvUTF8));
-			if (strcmp(tmp, "") == 0)
-				params->paramValues[i] = 0;
-			else if (strcmp(tmp, "''") == 0)
-				params->paramValues[i] = (char *)"";
-			else if (strcmp(tmp, "\\'\\'") == 0)
-				params->paramValues[i] = (char *)"''";
-			else
-				params->paramValues[i] = tmp;
-		}
-
-		if (i)
-			query += wxT(", ");
-		query += wxString::Format(wxT("$%d::"), i + 1) + arg.getType();
-
-	}
-
-	query += wxT(");");
-
-	// And send the completed command to the server - we'll get
-	// a dbgDbResult event when the command completes (and that
-	// event will get routed to dlgDirectDbg::OnResultReady())
-	m_conn->startCommand( query, GetEventHandler(), RESULT_ID_DIRECT_TARGET_COMPLETE, params );
-}
-
-void dlgDirectDbg::invokeTargetStatement()
-{
-	wxString query, declareStatement;
-	if (!m_conn->EdbMinimumVersion(8, 4))
-		query = m_targetInfo->getIsFunction() ? wxT( "SELECT " ) : wxT( "EXEC " );
-	else
-	{
-		query = wxT("SELECT");
-		if (!m_targetInfo->getIsFunction())
-			query = wxT("EXEC ");
-		else if (m_targetInfo->getLanguage() == wxT("edbspl"))
-			query = wxT("PERFORM ");
-	}
-
-	// If this is a function, and the return type is not record, or
-	// we have at least one OUT/INOUT param, we should select from
-	// the function to get a full resultset.
-	if (m_targetInfo->getIsFunction() && m_targetInfo->getLanguage() != wxT("edbspl") &&
-	        (m_targetInfo->getReturnType() != wxT("record") ||
-	         m_targetInfo->getArgInOutCount() > 0 ||
-	         m_targetInfo->getArgOutCount() > 0))
-		query.Append(wxT("* FROM "));
-
-	// Stuff the verb (SELECT or EXEC), schema, and target name into the query
-	query.Append(m_targetInfo->getFQName());
-
-	// Now append the argument list
-	query.Append(wxT("("));
-
-	for(int i = 0; i < m_targetInfo->getArgCount(); ++i)
-	{
-		wsArgInfo &arg = (*m_targetInfo)[i];
-
-		if(arg.getMode() == wxT("o") && !m_conn->EdbMinimumVersion(8, 4))
-		{
-			if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
-				query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
-		}
-		else if (m_conn->EdbMinimumVersion(8, 4) && (arg.getMode() == wxT("o") || arg.getMode() == wxT("b")))
-		{
-			if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
+			if (arg->IsArray())
 			{
-				wxString strParam = wxString::Format(wxT("param%d"), i);
-				declareStatement +=  strParam + wxT(" ") + arg.getType();
-				if (arg.getMode() == wxT("b"))
-				{
-					declareStatement += wxT(" := ") + arg.quoteValue();
-					if (!arg.quoteValue().Contains(wxT("::")))
-						declareStatement += wxT("::") + arg.getType();
-				}
-				declareStatement += wxT(";\n");
-				query.Append(strParam + wxT(", "));
+				arrCnt = 0;
 			}
-			else if (arg.getMode() != wxT("o"))
+			else
 			{
-				if (!arg.quoteValue().Contains(wxT("::")))
-					query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
-				else
-					query.Append( arg.quoteValue() + wxT(", "));
+				arrCnt = 1;
 			}
 		}
-		else if(arg.getMode() == wxT("v"))
-			query.Append( arg.getValue() + wxT(", "));
 		else
 		{
-			if (!arg.quoteValue().Contains(wxT("::")))
-				query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
-			else
-				query.Append( arg.quoteValue() + wxT(", "));
+			arrCnt++;
 		}
-	}
 
-	if (query.EndsWith(wxT(", ")))
-		query = query.Left(query.Length() - 2);
-	else if (query.EndsWith(wxT("(")))
-		query = query.Left(query.Length() - 1);
+		settings->WriteInt(wxString::Format(wxT("Debugger/Proc/%d/ArrCnt"), idx), arrCnt);
 
-	// And terminate the argument list
-	if(m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0)
-	{
-		/*
-		 * edbspl function/procedure with OUT parameter takes value/variable as an input
-		 */
-		if (m_conn->GetIsEdb())
+		if ((arrCnt == 0 && arg->IsArray()) ||
+		        (arrCnt == 1 && !arg->IsArray()))
 		{
-			if (m_targetInfo->getArgCount() == 0)
-			{
-				if (m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() != wxT("edbspl"))
-					query.Append(wxT("()"));
-			}
-			else if (m_targetInfo->getLanguage() != wxT("edbspl"))
-				query.Append(wxT("()"));
-			else
-				query.Append(wxT(")"));
+			// Use Default (if available)
+			settings->Write(wxString::Format(wxT("Debugger/Proc/%d/USE_DEF"), idx),
+			                grdParams->GetCellValue(row, COL_USE_DEF));
+
+			// Use NULL?
+			settings->Write(wxString::Format(wxT("Debugger/Proc/%d/NULL"), idx),
+			                grdParams->GetCellValue(row, COL_NULL));
+
+			if (arrCnt == 0 && arg->IsArray())
+				continue;
 		}
-		else if (m_targetInfo->getIsFunction())
-			query.Append(wxT("()"));
-	}
-	else
-	{
-		query.Append(wxT(")"));
+
+		strKey = wxString::Format(wxT("Debugger/Proc/%d/%d/"), idx, arrCnt - 1);
+
+		// Use NULL?
+		settings->Write(strKey + wxT("NULL"),
+		                grdParams->GetCellValue(row, COL_NULL));
+
+		// Is value EXPR?
+		settings->Write(strKey + wxT("EXPR"),
+		                grdParams->GetCellValue(row, COL_EXPR));
+
+		// Value
+		settings->Write(strKey + wxT("VAL"),
+		                grdParams->GetCellValue(row, COL_VALUE));
 	}
 
-	if (m_conn->EdbMinimumVersion(8, 4) && (m_targetInfo->getLanguage() == wxT("edbspl") || !m_targetInfo->getIsFunction()))
-	{
-		wxString tmpQuery = wxT("DECLARE\n")
-		                    + declareStatement
-		                    + wxT("BEGIN\n")
-		                    + query + wxT(";\n")
-		                    + wxT("END;");
-		query = tmpQuery;
-	}
-
-	// And send the completed command to the server - we'll get
-	// a dbgDbResult event when the command completes (and that
-	// event will get routed to dlgDirectDbg::OnResultReady())
-	m_conn->startCommand( query, GetEventHandler(), RESULT_ID_DIRECT_TARGET_COMPLETE );
+	// Save the number of arguments
+	settings->WriteLong(wxT("Debugger/Proc/args"), (long)(idx + 1));
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-// OnTargetComplete()
-//
-//    This event handler is called when the target function/procedure completes
-//  and a result set (or error) has been returned by the server.  The event
-//  object contains a pointer to the result set.
-//
-//  For now, we display an error message (if an error occurred) or write the
-//  command status to the status bar (if the target completed without error).
-//
-//  We should really display the complete result set somewhere too.
+ctlGridCellBoolEditor::ctlGridCellBoolEditor(dbgArgInfo *_arg)
+	: m_arg(_arg)
+{}
 
-void dlgDirectDbg::OnTargetComplete( wxCommandEvent &event )
+
+void ctlGridCellBoolEditor::BeginEdit(int _row, int _col, wxGrid *_grid)
 {
-	// Extract the result set handle from the event and log the status info
+	wxGridCellBoolEditor::BeginEdit(_row, _col, _grid);
 
-	PGresult    *result = (PGresult *)event.GetClientData();
-
-	wxLogInfo( wxT( "OnTargetComplete() called\n" ));
-	wxLogInfo( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
-
-	// If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
-	if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
+	wxFocusEvent event (wxEVT_KILL_FOCUS);
+	if (m_control)
 	{
-		wxString    message( PQresultErrorMessage( result ), wxConvUTF8 );
-
-		message.Replace( wxT( "\n" ), wxT( " " ));
-
-		m_parent->getStatusBar()->SetStatusText( message, 1 );
-		char *state = PQresultErrorField(result, PG_DIAG_SQLSTATE);
-
-		// Don't bother telling the user that he aborted - he already knows!
-		// Depending on the stage, m_conn might not be set all! so check for
-		// that first
-		if (m_conn)
-		{
-			if (state != NULL && strcmp(state, "57014"))
-				wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
-			else
-				wxLogInfo( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
-		}
+		m_control->GetEventHandler()->AddPendingEvent(event);
 	}
+}
+
+
+wxGrid *dlgDirectDbg::GetParamsGrid()
+{
+	return grdParams;
+}
+
+bool dlgDirectDbg::DebugPkgConstructor()
+{
+	return chkPkgInit->IsEnabled() && chkPkgInit->GetValue();
+}
+
+
+wxGridCellEditor *ctlGridCellBoolEditor::Clone() const
+{
+	return new ctlGridCellBoolEditor(m_arg);
+}
+
+
+void dlgDirectDbg::ResultArgsUpdated(wxCommandEvent &_ev)
+{
+	SaveSettings();
+	SavePosition();
+
+	if (m_thread)
+	{
+		m_thread->CancelEval();
+		m_thread->Wait();
+
+		delete m_thread;
+		m_thread = NULL;
+	}
+
+	if (IsModal())
+		EndModal(wxID_OK);
 	else
+		Destroy();
+}
+
+
+void dlgDirectDbg::ResultArgsUpdateError(wxCommandEvent &_ev)
+{
+	if (_ev.GetInt() == pgQueryResultEvent::PGQ_CONN_LOST)
 	{
-		wxString message( PQcmdStatus( result ), wxConvUTF8 );
-
-		message.Replace( wxT( "\r" ), wxT( "" ));
-		message.Replace( wxT( "\n" ), wxT( " " ));
-
-		m_parent->getStatusBar()->SetStatusText( message, 1 );
-
-		// If this result set has any columns, add a result grid to the code window so
-		// we can show the results to the user
-
-		if( m_codeWindow && PQnfields( result ))
+		if(wxMessageBox(
+		            _("Connection to the database server lost!\nDo you want to try to reconnect to the server?"),
+		            _("Connection Lost"), wxICON_ERROR | wxICON_QUESTION | wxYES_NO) == wxID_YES)
 		{
-			m_codeWindow->OnResultSet( result );
+			if (m_thread)
+			{
+				m_thread->CancelEval();
+
+				m_thread->Wait();
+
+				delete m_thread;
+				m_thread = NULL;
+			}
+			m_conn->Reconnect();
+
+			return;
 		}
-	}
+		EndModal(wxID_CANCEL);
 
-	if (m_codeWindow)
-	{
-		m_codeWindow->m_targetComplete = true;
-		m_codeWindow->disableTools( );
-	}
-
-	// Do not show if aborted
-	if ( m_codeWindow && m_codeWindow->m_targetAborted )
 		return;
+	}
 
-	this->Show( true );
+	if (m_thread)
+	{
+		m_thread->CancelEval();
+		m_thread->Wait();
+
+		delete m_thread;
+		m_thread = NULL;
+	}
+
+	wxLogError(_ev.GetString());
+
+	grdParams->Enable(true);
+	btnDebug->Enable(true);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// OnNoticeReceived()
-//
-//    This event handler is called when a notice is received from the server (in
-//  response to our invoking the target).  For now, we just forward this event
-//  to the debugger window (m_codeWindow) and the notification message is added
-//  to the debugger's message window.
-//
-//  When/if we get around to adding a result set window to this class, we should
-//  also add a message window too and display notice messages here instead of in
-//  the debugger window.
 
-void dlgDirectDbg::OnNoticeReceived( wxCommandEvent &event )
+void dbgArgValueEvaluator::NoticeHandler(void *, const char *)
 {
-	if( m_codeWindow )
-		m_codeWindow->OnNoticeReceived( event );
+	// Ignore the notices
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// OnDebug()
-//
-//    This event handler is called when a PLDBGBREAK notice is received from the
-//  server.  A quick review:  we've already set a breakpoint at the target and
-//  then we invoked the target (using the parameter values entered by the user).
-//  Now we're waiting for a result set from the target.  Since we set a breakpoint
-//  inside of the target, the server will send us a specially crafted NOTICE
-//  that tells use which port to attach to in order to contact the debugger
-//  server - that's what 'event' contains.
-//
-//  When we get the PLDBGBREAK message (inside of 'event'), we create a new
-//  debugger window by calling glMainFrame->addDebug() and let that window
-//  take over for a while.  When the target finally completes, we'll get a
-//  a dbgDbResult event and handle the result set inside of OnResultReady()
 
-void dlgDirectDbg::OnDebug( wxCommandEvent &event )
+void *dbgArgValueEvaluator::Entry()
 {
-	// This event contains a string of the form:
-	//     /path/debugger -k --database=db --host=host --port=port --user=user &"
-	// We can use that string to launch a separate debugger client.
-	//
-	// The event also contains a pointer to a map that contains keyword=value
-	// pairs for the debugger connection properties.  To get to that map, we
-	// call event.GetClientData().  Once we have the map, we can look for the
-	// debugger connection properties such as "database", "host", "port", ...
+	bool argNull, nullVal, useDef;
+	wxString strVal, strValExpr;
+	dbgArgInfo *prev = NULL,
+	            *arg = NULL;
 
-	dbgConnProp *debugProps = (dbgConnProp *)event.GetClientData();
+	wxGrid *grd = m_dlg->GetParamsGrid();
 
-	m_codeWindow = m_parent->addDebug( *debugProps );
+	m_dlg->m_controller->GetTargetInfo()->DebugPackageConstructor()
+	= m_dlg->DebugPkgConstructor();
 
-	if (m_codeWindow)
-		m_codeWindow->startLocalDebugging();
+	m_conn->RegisterNoticeProcessor(dbgArgValueEvaluator::NoticeHandler, NULL);
 
-	this->Show( false );
+	for (int row = 0, idx = 0, arrCnt = 1, arr_idx_bound = 0;
+	        row < grd->GetNumberRows() && !m_cancelled; row++)
+	{
+		ctlGridCellBoolEditor *editor =
+		    dynamic_cast<ctlGridCellBoolEditor *>(
+		        grd->GetCellEditor(row, dlgDirectDbg::COL_NULL));
+		arg	= editor != NULL ? editor->GetArg() : NULL;
+
+		// This should be the information for add/remove values for an array
+		if (arg == NULL)
+		{
+			// prev was an array, can we fetch value for the same
+			if (prev && !prev->Null())
+			{
+				wxString res =
+				    m_conn->ExecuteScalar(
+				        wxT("SELECT ARRAY[") + strValExpr + wxT("]::") + prev->GetTypeName(),
+				        false);
+
+				if (m_cancelled)
+				{
+					m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+					return (void *)NULL;
+				}
+				if (m_conn->GetStatus() == PGCONN_BAD)
+				{
+					wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_ARGS_UPDATE_ERROR);
+
+					ev.SetInt(pgQueryResultEvent::PGQ_CONN_LOST);
+
+					m_dlg->GetEventHandler()->AddPendingEvent(ev);
+
+					m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+					return (void *)NULL;
+				}
+				if (m_conn->GetLastResultStatus() == PGRES_TUPLES_OK)
+				{
+					prev->Value() = res;
+				}
+				else
+				{
+					wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_ARGS_UPDATE_ERROR);
+					wxString strName = prev->GetName();
+					wxString strMsg;
+
+					if (strName.IsEmpty())
+					{
+						ev.SetString(
+						    wxString::Format(
+						        _("The specified value for argument #%d is not valid.\nPlease re-enter the value for it."),
+						        idx));
+					}
+					else
+					{
+						ev.SetString(
+						    wxString::Format(
+						        _("Specified value for argument '%s' is not valid.\nPlease re-enter the value for it."),
+						        strName.c_str()));
+					}
+					ev.SetInt(pgQueryResultEvent::PGQ_RESULT_ERROR);
+					m_dlg->LoadLastCellSetting(row - 1, idx - 1, arr_idx_bound - 1, true);
+					m_dlg->GetEventHandler()->AddPendingEvent(ev);
+
+					m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+					return (void *)NULL;
+
+				}
+				prev = NULL;
+				arr_idx_bound = 0;
+			}
+
+			continue;
+		}
+		else if (prev != arg)
+		{
+			idx++;
+			argNull = false;
+			nullVal = false;
+			useDef  = false;
+
+			strValExpr = wxEmptyString;
+		}
+
+		if (prev != arg)
+		{
+			prev = arg;
+
+			// Use Default (if available)
+			arg->UseDefault() = wxGridCellBoolEditor::IsTrueValue(
+			                        grd->GetCellValue(row, dlgDirectDbg::COL_USE_DEF));
+			// NULL?
+			arg->Null() = wxGridCellBoolEditor::IsTrueValue(
+			                  grd->GetCellValue(row, dlgDirectDbg::COL_NULL));
+
+			if (arg->UseDefault())
+				strValExpr = arg->Default();
+
+			if (arg->IsArray())
+				continue;
+		}
+
+		// Use NULL?
+		//
+		//   Keep this just before 'Use Default' column as - we may have non-empty
+		//   value in the 'VAL' column
+
+		if (!arg->UseDefault() || !arg->Null())
+		{
+			if (!strValExpr.IsEmpty())
+			{
+				strValExpr += wxT(", ");
+			}
+
+			if (wxGridCellBoolEditor::IsTrueValue(
+			            grd->GetCellValue(row, dlgDirectDbg::COL_NULL)))
+			{
+				strValExpr += wxT("NULL");
+			}
+			else if (wxGridCellBoolEditor::IsTrueValue(
+			             grd->GetCellValue(row, dlgDirectDbg::COL_EXPR)))
+			{
+				strValExpr += grd->GetCellValue(row, dlgDirectDbg::COL_VALUE);
+			}
+			else
+			{
+				strValExpr += m_conn->qtDbString(
+				                  grd->GetCellValue(row, dlgDirectDbg::COL_VALUE));
+			}
+			strValExpr.Append(wxT("::"))
+			.Append(arg->IsArray() ?
+			        arg->GetBaseType() : arg->GetTypeName());
+
+			if(arg->IsArray())
+			{
+				arr_idx_bound ++;
+			}
+		}
+
+		if (!arg->IsArray() && !arg->Null())
+		{
+			pgSet *set =
+			    m_conn->ExecuteSet(wxT("SELECT ") + strValExpr, false);
+
+			if (m_cancelled)
+			{
+				return (void *)NULL;
+			}
+			if (m_conn->GetStatus() == PGCONN_BAD)
+			{
+				wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_ARGS_UPDATE_ERROR);
+
+				ev.SetString(_("Connection to the database server lost!"));
+				ev.SetInt(pgQueryResultEvent::PGQ_CONN_LOST);
+
+				m_dlg->GetEventHandler()->AddPendingEvent(ev);
+
+				m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+				if (set)
+					delete set;
+
+				return (void *)NULL;
+			}
+			if (m_conn->GetLastResultStatus() == PGRES_TUPLES_OK &&
+			        set && set->NumRows() > 0L)
+			{
+				if (set->IsNull(0))
+				{
+					arg->Null() = true;
+				}
+				else
+				{
+					arg->Null() = false;
+					arg->Value() = set->GetVal(0);
+				}
+			}
+			else
+			{
+				wxString strName = arg->GetName();
+
+				if (strName.IsEmpty())
+					strName = wxString::Format(_("Param#%d"), idx);
+
+				wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_ARGS_UPDATE_ERROR);
+
+				ev.SetString(
+				    wxString::Format(_("Please re-enter the value for argument '%s'."),
+				                     strName.c_str()));
+				ev.SetInt(pgQueryResultEvent::PGQ_RESULT_ERROR);
+
+				m_dlg->GetEventHandler()->AddPendingEvent(ev);
+				m_dlg->LoadSettings();
+				// For scalar variable, always index of array bound is 0.
+				m_dlg->LoadLastCellSetting(row, idx - 1, 0, false);
+				m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+				return (void *)NULL;
+			}
+		}
+	}
+
+	wxCommandEvent ev(wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_ARGS_UPDATED);
+	m_dlg->GetEventHandler()->AddPendingEvent(ev);
+
+	m_conn->RegisterNoticeProcessor(NULL, NULL);
+
+	return (void *)NULL;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// getBreakpointList()
-//
-//    This function returns a non-const reference to our breakpoint list.  The
-//  caller typically populates this list before calling startDebugging() - we
-//  set a breakpoint for each member of the list
 
-dbgBreakPointList &dlgDirectDbg::getBreakpointList()
+void dbgArgValueEvaluator::CancelEval()
 {
-	return( m_breakpoints );
+	m_cancelled = true;
+
+	if (m_conn->GetTxStatus() == PGCONN_TXSTATUS_ACTIVE)
+		m_conn->CancelExecution();
 }
 
+dbgArgValueEvaluator::dbgArgValueEvaluator(pgConn *_conn, dlgDirectDbg *_dlg)
+	: wxThread(wxTHREAD_JOINABLE), m_conn(_conn), m_dlg(_dlg), m_cancelled(false)
+{}

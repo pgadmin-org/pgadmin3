@@ -21,36 +21,29 @@
 class dbgBreakPoint
 {
 public:
+	dbgBreakPoint(const wxString &_funcOid, const wxString &_pkgOid = wxT("-1"),
+	              const int &_lineNo = -1)
+		: m_func(_funcOid), m_pkg(_pkgOid), m_lineNo(_lineNo) {}
 
-	enum eTargetType
+	wxString &GetFunctionOid()
 	{
-	    TRIGGER,
-	    FUNCTION,
-	    PROCEDURE,
-	    OID
-	};
+		return m_func;
+	}
+	wxString &GetPackageOid()
+	{
+		return m_pkg;
+	}
+	int      &GetLineNo()
+	{
+		return m_lineNo;
+	}
 
-	dbgBreakPoint(eTargetType targetType, const wxString &target, const wxString &process ): m_targetType(targetType), m_target(target), m_targetProcess(process) {}
-
-	eTargetType   getTargetType()
-	{
-		return( m_targetType );
-	}
-	wxString     &getTarget()
-	{
-		return( m_target );
-	}
-	wxString     &getTargetProcess()
-	{
-		return( m_targetProcess );
-	}
 private:
-	eTargetType 	m_targetType;
-	wxString	m_target;
-	wxString	m_targetProcess;
-
+	wxString m_func;
+	wxString m_pkg;
+	int      m_lineNo;
 };
 
-WX_DECLARE_LIST( dbgBreakPoint, dbgBreakPointList );
+WX_DECLARE_LIST(dbgBreakPoint, dbgBreakPointList);
 
 #endif

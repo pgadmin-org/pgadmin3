@@ -24,11 +24,7 @@
 #define FRMDEBUGGER_H
 
 #include <wx/aui/aui.h>
-
-#include "ctl/ctlSQLBox.h"
-#include "frm/frmMain.h"
-#include "debugger/dbgConnProp.h"
-#include "debugger/ctlTabWindow.h"
+#include <wx/progdlg.h>
 
 //
 // This number MUST be incremented if changing any of the default perspectives
@@ -45,113 +41,141 @@
 #endif
 #endif
 
-enum
-{
-    MENU_ID_EXECUTE = 10001,            // Execute command entered by user
-
-    MENU_ID_TOGGLE_BREAK,               // Set/Unset breakpoint
-    MENU_ID_CLEAR_ALL_BREAK,            // Clear all breakpoints
-    MENU_ID_CONTINUE,                   // Continue
-    MENU_ID_STEP_OVER,                  // Step over
-    MENU_ID_STEP_INTO,                  // Step into
-    MENU_ID_STOP,                       // Stop debugging
-
-    MENU_ID_SPAWN_DEBUGGER,             // Spawn a separate debugger process
-    MENU_ID_NOTICE_RECEIVED,            // NOTICE received from server
-    WINDOW_ID_STACK,                    // Tree-control window
-    WINDOW_ID_CONSOLE,                  // Console window
-    WINDOW_ID_TABS,                     // Tab window
-    WINDOW_ID_BREAKPOINTS,              // Breakpoints window
-    WINDOW_ID_RESULT_GRID,              // Results window
-    WINDOW_ID_COMMAND,                  // Command window
-    SOCKET_ID_DEBUG,                    // Debugger Socket ID
-
-    MENU_ID_VIEW_TOOLBAR,               // View menu options
-    MENU_ID_VIEW_STACKPANE,
-    MENU_ID_VIEW_OUTPUTPANE,
-    MENU_ID_VIEW_DEFAULTVIEW,
-
-    RESULT_ID_ATTACH_TO_PORT,           // Debugger - attach to port completed
-    RESULT_ID_BREAKPOINT,               // Debugger - breakpoint reached
-    RESULT_ID_GET_VARS,                 // Debugger - variable list complete
-    RESULT_ID_GET_STACK,                // Debugger - stack trace complete
-    RESULT_ID_GET_BREAKPOINTS,          // Debugger - breakpoint list complete
-    RESULT_ID_GET_SOURCE,               // Debugger - source code listing complete
-    RESULT_ID_NEW_BREAKPOINT,           // Debugger - set breakpoint complete
-    RESULT_ID_NEW_BREAKPOINT_WAIT,      // Debugger - set breakpoint complete, wait for target progress
-    RESULT_ID_DEL_BREAKPOINT,           // Debugger - drop breakpoint complete
-    RESULT_ID_DEPOSIT_VALUE,            // Debugger - deposit value complete
-    RESULT_ID_ABORT_TARGET,             // Debugger - abort target (cancel function)
-    RESULT_ID_ADD_BREAKPOINT,           // Debugger - target info received, now set a breakpoint
-    RESULT_ID_LISTENER_CREATED,         // Debugger - global listener created
-    RESULT_ID_TARGET_READY,             // Debugger - target session attached
-    RESULT_ID_LAST_BREAKPOINT,          // Debugger - last breakpoint created
-
-    RESULT_ID_DIRECT_TARGET_COMPLETE,   // DirectDebug - target function complete
-
-    ID_DEBUG_INITIALIZER,               // Debugger - debug package initializer? checkbox
-};
-
+// Debugger Controller
+class dbgController;
+class frmMain;
+class ctlTabWindow;
 class ctlResultGrid;
 class ctlVarWindow;
-class ctlCodeWindow;
-class dlgDirectDbg;
-class wxSizeReportCtrl;
+class ctlSQLBox;
+class dbgCachedStack;
 
 class frmDebugger : public pgFrame
 {
-	DECLARE_CLASS( frmDebugger )
+	DECLARE_CLASS(frmDebugger)
 
 public:
-	frmDebugger(frmMain *parent, const wxString &title);
+	frmDebugger(frmMain *_parent, dbgController *_controller,
+	            const wxString &_title);
 	virtual ~frmDebugger();
 
-	dlgDirectDbg   *addDirectDbg( const dbgConnProp &connProp );        // Create a new direct-debugging window
-	ctlCodeWindow  *addDebug( const dbgConnProp &props );               // Create a new debugger window
-	wxStatusBar   *getStatusBar()
+	void SetupDebugger();
+
+	void SetStatusText(const wxString &_status);
+
+	ctlTabWindow *GetTabWindow()
 	{
-		return( m_statusBar );    // Returns pointer to the status bar
+		return m_tabWindow;
+	}
+	ctlStackWindow *GetStackWindow()
+	{
+		return m_stackWindow;
+	}
+	ctlMessageWindow *GetMessageWindow()
+	{
+		return m_tabWindow->GetMessageWindow();
 	}
 
-	wxMenuBar     *m_menuBar;       // Menu bar
-	ctlMenuToolbar     *m_toolBar;       // Frames' toolbar
-	wxMenu        *m_viewMenu;      // View menu (can be modified by wxCodeWindow)
-	wxMenu        *m_debugMenu;     // Debug menu (can be modified by wxCodeWindow)
+	ctlVarWindow *GetVarWindow(bool create)
+	{
+		return m_tabWindow->GetVarWindow(create);
+	}
+	ctlVarWindow *GetParamWindow(bool create)
+	{
+		return m_tabWindow->GetParamWindow(create);
+	}
+	ctlVarWindow *GetPkgVarWindow(bool create)
+	{
+		return m_tabWindow->GetPkgVarWindow(create);
+	}
+	ctlResultGrid *GetResultWindow()
+	{
+		return m_tabWindow->GetResultWindow();
+	}
 
-	wxAuiManager manager;
-	ctlCodeWindow   *m_standaloneDebugger;      // Standalone debugger window
-	dlgDirectDbg    *m_standaloneDirectDbg;     // Standalone direct debugger
+	void           DisplaySource(dbgCachedStack &);
+
+	void EnableToolsAndMenus(bool enable = true);
+	void UnhilightCurrentLine();
+	void HighlightLine(int _lineNo);
+	void ClearBreakpointMarkers();
+	void MarkBreakpoint(int lineNo);
+	void CloseProgressBar();
+	void LaunchWaitingDialog(const wxString &msg = wxEmptyString);
 
 private:
-	wxStatusBar    *m_statusBar;    // Frame's status bar
 
-	wxMenuBar    *setupMenuBar( void );
-	ctlMenuToolbar    *setupToolBar( void );
-	wxStatusBar  *setupStatusBar( void );
+	int  GetLineNo();
+	bool IsBreakpoint(int _lineNo);
+	void ClearAllBreakpoints();
 
-	frmMain *m_parent;
+	wxMenuBar      *SetupMenuBar( void );
+	ctlMenuToolbar *SetupToolBar( void );
+	wxStatusBar    *SetupStatusBar( void );
+
+	enum
+	{
+		MARKER_CURRENT    = 0x02,       // Current line marker
+		MARKER_CURRENT_BG = 0x04,       // Current line marker - background hilight
+		MARKER_BREAKPOINT = 0x01,       // Breakpoint marker
+	};
+
+private:
+	// Menu bar
+	wxMenuBar        *m_menuBar;
+	// Frames' toolbar
+	ctlMenuToolbar   *m_toolBar;
+	// View menu (can be modified by wxCodeWindow)
+	wxMenu           *m_viewMenu;
+	// Debug menu (can be modified by wxCodeWindow)
+	wxMenu           *m_debugMenu;
+
+	wxAuiManager      m_manager;
+	// Frame's status bar
+	wxStatusBar      *m_statusBar;
+	// Main Frame
+	frmMain          *m_parent;
+	// Debugger Controller
+	dbgController    *m_controller;
+
+	// Stack Window
+	ctlStackWindow   *m_stackWindow;
+	// Tab Window
+	ctlTabWindow     *m_tabWindow;
+	// Function Code Viewer
+	ctlSQLBox        *m_codeViewer;
+	// Timer
+	wxTimer           m_timer;
+	// "Waiting for target" dialog
+	wxProgressDialog *m_progressBar;
+
+	// Operation Status
+	wxString          m_statusTxt;
 
 	DECLARE_EVENT_TABLE()
 
-	void OnExecute( wxCommandEvent &event );
-	void OnDebugCommand( wxCommandEvent &event );
-	void OnSelectFrame( wxCommandEvent &event );
-	void OnMarginClick( wxStyledTextEvent &event );     // Set/clear breakpoint on margin click
-	void OnPositionStc( wxStyledTextEvent &event );
-	void OnVarChange( wxGridEvent &event );
-	void OnClose( wxCloseEvent &event );
-	void OnExit( wxCommandEvent &event );
-	void OnSize( wxSizeEvent &event );
-	void OnEraseBackground(wxEraseEvent &event);
-	void OnHelp(wxCommandEvent &event);
-	void OnContents(wxCommandEvent &event);
+	// Idle processor
+	void OnTimer(wxTimerEvent &_ev);
 
-	void OnToggleToolBar(wxCommandEvent &event);
-	void OnToggleStackPane(wxCommandEvent &event);
-	void OnToggleOutputPane(wxCommandEvent &event);
-	void OnAuiUpdate(wxAuiManagerEvent &event);
-	void OnDefaultView(wxCommandEvent &event);
+	void OnExecute(wxCommandEvent &_ev);
+	void OnDebugCommand(wxCommandEvent &_ev);
+	void OnSelectFrame(wxCommandEvent &_ev);
+	// Toggle break-point on margin click
+	void OnMarginClick(wxStyledTextEvent &_ev);
+	void OnPositionStc(wxStyledTextEvent &_ev);
+	void OnVarChange(wxGridEvent &_ev);
+	void OnClose(wxCloseEvent &_ev);
+	void OnExit(wxCommandEvent &_ev);
+	void OnSize(wxSizeEvent &_ev);
+	void OnEraseBackground(wxEraseEvent &_ev);
+	void OnHelp(wxCommandEvent &_ev);
+	void OnContents(wxCommandEvent &_ev);
 
+	void OnToggleToolBar(wxCommandEvent &_ev);
+	void OnToggleStackPane(wxCommandEvent &_ev);
+	void OnToggleOutputPane(wxCommandEvent &_ev);
+	void OnAuiUpdate(wxAuiManagerEvent &_ev);
+	void OnDefaultView(wxCommandEvent &_ev);
 };
 
 #endif

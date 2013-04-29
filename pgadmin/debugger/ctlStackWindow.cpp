@@ -13,10 +13,12 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/tokenzr.h>
+#include <wx/listimpl.cpp>
 
 // App headers
 #include "debugger/ctlStackWindow.h"
+
+WX_DEFINE_LIST(dbgStackFrameList);
 
 IMPLEMENT_CLASS(ctlStackWindow, wxListBox)
 
@@ -33,27 +35,54 @@ ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint &p
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// clear()
+// ClearStack()
 //
 //    Remove all stack frames from the display
 //
-
-void ctlStackWindow::clear()
+void ctlStackWindow::ClearStack()
 {
 	Set(0, NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// setStack()
+// SetStack()
 //
 //    Add an array of stack frames to the display
 //
-
-
-void ctlStackWindow::setStack(const wxArrayString &stack )
+void ctlStackWindow::SetStack(const dbgStackFrameList &stacks, int selected)
 {
-	for(size_t i = 0; i < stack.GetCount(); ++i)
+	Set(0, NULL);
+
+	for (dbgStackFrameList::Node *node = stacks.GetFirst(); node;
+	        node = node->GetNext())
 	{
-		Append(stack[i]);
+		dbgStackFrame *frame = node->GetData();
+		Append(frame->GetDescription(), (wxClientData *)frame);
+	}
+	if (selected != -1)
+	{
+		SetSelection(selected);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// SelectFrame()
+//
+//    Select the frame based on the input function and package
+//
+void ctlStackWindow::SelectFrame(const wxString &pkg, const wxString &func)
+{
+	int cnt = GetCount();
+
+	for (int idx = 0; idx < cnt; idx++)
+	{
+		dbgStackFrame *frame = (dbgStackFrame *)GetClientObject(idx);
+
+		if (frame && frame->GetFunction() == func && frame->GetPackage() == pkg)
+		{
+			SetSelection(idx);
+
+			return;
+		}
 	}
 }

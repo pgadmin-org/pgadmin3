@@ -13,6 +13,7 @@
 #define __FRM_QUERY_H
 
 #include "ctl/ctlAuiNotebook.h"
+#include "db/pgQueryResultEvent.h"
 #include "dlg/dlgClasses.h"
 #include "gqb/gqbViewController.h"
 #include "gqb/gqbModel.h"
@@ -222,7 +223,7 @@ private:
 	void OpenLastFile();
 	void updateMenu(bool allowUpdateModelSize = true);
 	void execQuery(const wxString &query, int resultToRetrieve = 0, bool singleResult = false, const int queryOffset = 0, bool toFile = false, bool explain = false, bool verbose = false);
-	void OnQueryComplete(wxCommandEvent &ev);
+	void OnQueryComplete(pgQueryResultEvent &ev);
 	void completeQuery(bool done, bool explain, bool verbose);
 	void OnScriptComplete(wxCommandEvent &ev);
 	void setTools(const bool running);
