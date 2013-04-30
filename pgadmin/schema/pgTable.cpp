@@ -54,19 +54,19 @@ void pgTable::Init()
 	estimatedRows = 0.0;
 
 	hasToastTable = false;
-	autovacuum_enabled = 0; 
+	autovacuum_enabled = 0;
 	toast_autovacuum_enabled = 0;
 
 	isPartitioned = false;
-	hasOids = false; 
-	unlogged = false; 
-	hasSubclass = false; 
+	hasOids = false;
+	unlogged = false;
+	hasSubclass = false;
 	rowsCounted = false;
-	isReplicated = false; 
-	showExtendedStatistics = false; 
+	isReplicated = false;
+	showExtendedStatistics = false;
 	distributionIsRandom = false;
 
-	inheritedTableCount = 0; 
+	inheritedTableCount = 0;
 	triggerCount = 0;
 
 	tablespaceOid = 0;

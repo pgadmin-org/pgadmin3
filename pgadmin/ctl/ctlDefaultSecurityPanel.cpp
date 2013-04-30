@@ -537,9 +537,9 @@ void ctlDefaultPrivilegesPanel::Update(wxString strDefPrivs)
 	cbGroups->Clear();
 	cbGroups->Append(wxT("public"));
 	for (; index < m_defSecurityPanel->m_groups.GetCount(); index++)
-    {
+	{
 		cbGroups->Append(m_defSecurityPanel->m_groups[index]);
-    }
+	}
 
 	if (!strDefPrivs.IsEmpty())
 	{
