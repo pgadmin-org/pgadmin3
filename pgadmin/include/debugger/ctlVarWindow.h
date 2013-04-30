@@ -60,9 +60,9 @@ private:
 
 	enum
 	{
-		COL_NAME = 0,		// Column 0 contains the variable name
-		COL_TYPE,		// This column contains the variable type
-		COL_VALUE		// This column contains the variable value
+	    COL_NAME = 0,		// Column 0 contains the variable name
+	    COL_TYPE,		// This column contains the variable type
+	    COL_VALUE		// This column contains the variable value
 	};
 
 	// The m_cells hash translates variable names into gridCell references

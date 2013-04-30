@@ -85,13 +85,13 @@ public:
 
 	enum
 	{
-		COL_NAME = 0, // Column 0 contains the variable name
-		COL_TYPE,     // Type of column
-		COL_NULL,     // Value Set to NULL (yes/no)
-		COL_EXPR,     // Value is an expression (yes/no)
-		COL_VALUE,    // Value (constant ,or an expression)
-		COL_USE_DEF,  // Use the default value
-		COL_DEF_VAL   // Default value for the column
+	    COL_NAME = 0, // Column 0 contains the variable name
+	    COL_TYPE,     // Type of column
+	    COL_NULL,     // Value Set to NULL (yes/no)
+	    COL_EXPR,     // Value is an expression (yes/no)
+	    COL_VALUE,    // Value (constant ,or an expression)
+	    COL_USE_DEF,  // Use the default value
+	    COL_DEF_VAL   // Default value for the column
 	};
 
 private:

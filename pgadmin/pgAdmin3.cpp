@@ -350,10 +350,10 @@ bool pgAdmin3::OnInit()
 	appearanceFactory = new pgAppearanceFactory();
 
 	if (cmdParser.Found(wxT("v")))
-    {
+	{
 		wxPrintf(_T("%s %s\n"), appearanceFactory->GetLongAppName().c_str(), VERSION_STR);
-        return false;
-    }
+		return false;
+	}
 
 	// Setup logging
 	InitLogger();

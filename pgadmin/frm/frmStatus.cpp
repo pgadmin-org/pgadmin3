@@ -1504,8 +1504,8 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 			statusList->DeleteItem(row);
 
 		statusList->Thaw();
-	    wxListEvent ev;
-	    OnSelStatusItem(ev);
+		wxListEvent ev;
+		OnSelStatusItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
@@ -1643,8 +1643,8 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 			lockList->DeleteItem(row);
 
 		lockList->Thaw();
-	    wxListEvent ev;
-	    OnSelLockItem(ev);
+		wxListEvent ev;
+		OnSelLockItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
@@ -1723,8 +1723,8 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 			xactList->DeleteItem(row);
 
 		xactList->Thaw();
-	    wxListEvent ev;
-	    OnSelXactItem(ev);
+		wxListEvent ev;
+		OnSelXactItem(ev);
 		statusBar->SetStatusText(_("Done."));
 	}
 	else
@@ -2848,17 +2848,17 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 			toolBar->EnableTool(MNU_CANCEL, true);
 			actionMenu->Enable(MNU_CANCEL, true);
 			if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
-            {
+			{
 				toolBar->EnableTool(MNU_TERMINATE, true);
-	            actionMenu->Enable(MNU_TERMINATE, true);
-            }
+				actionMenu->Enable(MNU_TERMINATE, true);
+			}
 		}
 		else
 		{
 			toolBar->EnableTool(MNU_CANCEL, false);
 			actionMenu->Enable(MNU_CANCEL, false);
 			toolBar->EnableTool(MNU_TERMINATE, false);
-	        actionMenu->Enable(MNU_TERMINATE, false);
+			actionMenu->Enable(MNU_TERMINATE, false);
 		}
 	}
 	toolBar->EnableTool(MNU_COMMIT, false);
@@ -2892,17 +2892,17 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 			toolBar->EnableTool(MNU_CANCEL, true);
 			actionMenu->Enable(MNU_CANCEL, true);
 			if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
-            {
+			{
 				toolBar->EnableTool(MNU_TERMINATE, true);
-	            actionMenu->Enable(MNU_TERMINATE, true);
-            }
+				actionMenu->Enable(MNU_TERMINATE, true);
+			}
 		}
 		else
 		{
 			toolBar->EnableTool(MNU_CANCEL, false);
 			actionMenu->Enable(MNU_CANCEL, false);
 			toolBar->EnableTool(MNU_TERMINATE, false);
-	        actionMenu->Enable(MNU_TERMINATE, false);
+			actionMenu->Enable(MNU_TERMINATE, false);
 		}
 	}
 	toolBar->EnableTool(MNU_COMMIT, false);
@@ -2932,16 +2932,16 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
 	if(xactList->GetSelectedItemCount() > 0)
 	{
 		toolBar->EnableTool(MNU_COMMIT, true);
-	    actionMenu->Enable(MNU_COMMIT, true);
+		actionMenu->Enable(MNU_COMMIT, true);
 		toolBar->EnableTool(MNU_ROLLBACK, true);
-	    actionMenu->Enable(MNU_ROLLBACK, true);
+		actionMenu->Enable(MNU_ROLLBACK, true);
 	}
 	else
 	{
 		toolBar->EnableTool(MNU_COMMIT, false);
-	    actionMenu->Enable(MNU_COMMIT, false);
+		actionMenu->Enable(MNU_COMMIT, false);
 		toolBar->EnableTool(MNU_ROLLBACK, false);
-	    actionMenu->Enable(MNU_ROLLBACK, false);
+		actionMenu->Enable(MNU_ROLLBACK, false);
 	}
 	toolBar->EnableTool(MNU_CANCEL, false);
 	actionMenu->Enable(MNU_CANCEL, false);

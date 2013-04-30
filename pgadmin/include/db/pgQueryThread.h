@@ -27,11 +27,11 @@ class pgParam : public wxObject
 public:
 	enum
 	{
-		PG_PARAM_IN       = 1,
-		PG_PARAM_OUT      = 2,
-		PG_PARAM_INOUT    = 3,
-		PG_PARAM_VARIADIC = 4,
-		PG_PARAM_TABLE    = 5
+	    PG_PARAM_IN       = 1,
+	    PG_PARAM_OUT      = 2,
+	    PG_PARAM_INOUT    = 3,
+	    PG_PARAM_VARIADIC = 4,
+	    PG_PARAM_TABLE    = 5
 	};
 
 	// Any data

@@ -392,7 +392,7 @@ void frmDebugger::UnhilightCurrentLine()
 	if (m_codeViewer)
 	{
 		int lineNo
-		= m_codeViewer->MarkerNext(0, MARKERINDEX_TO_MARKERMASK(MARKER_CURRENT));
+		    = m_codeViewer->MarkerNext(0, MARKERINDEX_TO_MARKERMASK(MARKER_CURRENT));
 
 		if(lineNo != -1)
 		{

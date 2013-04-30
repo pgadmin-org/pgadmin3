@@ -375,8 +375,8 @@ public:
 		Read(wxT("DecimalMark"), &s, wxEmptyString);
 		return s;
 	}
-	void SetDecimalMark(const wxString &newval) 
-	{		
+	void SetDecimalMark(const wxString &newval)
+	{
 		Write(wxT("DecimalMark"), newval);
 	}
 	bool GetColumnNames() const

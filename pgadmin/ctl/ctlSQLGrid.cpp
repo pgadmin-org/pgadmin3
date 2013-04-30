@@ -152,16 +152,16 @@ wxString ctlSQLGrid::GetExportLine(int row, wxArrayInt cols)
 wxString ctlSQLGrid::GetColumnName(int colNum)
 {
 	wxString columnName = GetColLabelValue(colNum);
-	columnName = columnName.Left(columnName.find(wxT("\n")));	
+	columnName = columnName.Left(columnName.find(wxT("\n")));
 	return columnName;
 }
 
-void ctlSQLGrid::AppendColumnHeader(wxString &str, int start, int end) 
+void ctlSQLGrid::AppendColumnHeader(wxString &str, int start, int end)
 {
 	size_t i, arrsize;
 	arrsize = (end - start + 1);
 	wxArrayInt columns;
-	
+
 	for(i = 0; i < arrsize; i++)
 	{
 		columns.Add(start + i);
@@ -187,8 +187,8 @@ void ctlSQLGrid::AppendColumnHeader(wxString &str, wxArrayInt columns)
 				str.Append(settings->GetCopyQuoteChar());
 			str.Append(GetColumnName(columnPos));
 			if(CopyQuoting)
-				str.Append(settings->GetCopyQuoteChar());		
-		
+				str.Append(settings->GetCopyQuoteChar());
+
 		}
 		str.Append(END_OF_LINE);
 	}
@@ -200,12 +200,12 @@ int ctlSQLGrid::Copy()
 	int copied = 0;
 	size_t i;
 
-	
+
 
 	if (GetSelectedRows().GetCount())
 	{
-		AppendColumnHeader(str, 0, (GetNumberCols() - 1));		
-		
+		AppendColumnHeader(str, 0, (GetNumberCols() - 1));
+
 		wxArrayInt rows = GetSelectedRows();
 
 		for (i = 0 ; i < rows.GetCount() ; i++)

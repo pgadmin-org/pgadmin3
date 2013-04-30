@@ -1194,14 +1194,14 @@ bool pgConn::TableHasColumn(wxString schemaname, wxString tblname, const wxStrin
 		schemaname.Replace(wxT("'"), wxT("''"));
 
 		wxString sql
-		= wxT("SELECT a.attname AS colname FROM pg_catalog.pg_attribute a ") \
-		  wxT("WHERE a.attrelid = (SELECT c.oid FROM pg_catalog.pg_class c ") \
-		  wxT("                    LEFT JOIN pg_catalog.pg_namespace n ON ") \
-		  wxT("                                    n.oid = c.relnamespace ") \
-		  wxT("                    WHERE c.relname ~ '^(") + tblname + wxT(")$' AND ") \
-		  wxT("                          n.nspname ~ '^(") + schemaname + wxT(")$') AND ") \
-		  wxT("      a.attnum > 0 AND NOT a.attisdropped ") \
-		  wxT("ORDER BY a.attnum");
+		    = wxT("SELECT a.attname AS colname FROM pg_catalog.pg_attribute a ") \
+		      wxT("WHERE a.attrelid = (SELECT c.oid FROM pg_catalog.pg_class c ") \
+		      wxT("                    LEFT JOIN pg_catalog.pg_namespace n ON ") \
+		      wxT("                                    n.oid = c.relnamespace ") \
+		      wxT("                    WHERE c.relname ~ '^(") + tblname + wxT(")$' AND ") \
+		      wxT("                          n.nspname ~ '^(") + schemaname + wxT(")$') AND ") \
+		      wxT("      a.attnum > 0 AND NOT a.attisdropped ") \
+		      wxT("ORDER BY a.attnum");
 
 		pgSet *set = ExecuteSet(sql);
 		if (set)

@@ -362,7 +362,7 @@ void dlgDirectDbg::LoadSettings()
 		    dynamic_cast<ctlGridCellBoolEditor *>(
 		        grdParams->GetCellEditor(row, COL_NULL));
 		dbgArgInfo *arg
-		= editor != NULL ? editor->GetArg() : NULL;
+		    = editor != NULL ? editor->GetArg() : NULL;
 
 		if (arg == NULL)
 		{
@@ -557,7 +557,7 @@ void dlgDirectDbg::OnClickGridLabel(wxGridEvent &_ev)
 		    dynamic_cast<ctlGridCellBoolEditor *>(
 		        grdParams->GetCellEditor(row - 1, COL_NULL));
 		dbgArgInfo *arg
-		= editor != NULL ? editor->GetArg() : NULL;
+		    = editor != NULL ? editor->GetArg() : NULL;
 
 		grdParams->InsertRows(row, 1, false);
 		grdParams->SetRowLabelValue(row, wxT("-"));
@@ -828,7 +828,7 @@ void *dbgArgValueEvaluator::Entry()
 	wxGrid *grd = m_dlg->GetParamsGrid();
 
 	m_dlg->m_controller->GetTargetInfo()->DebugPackageConstructor()
-	= m_dlg->DebugPkgConstructor();
+	    = m_dlg->DebugPkgConstructor();
 
 	m_conn->RegisterNoticeProcessor(dbgArgValueEvaluator::NoticeHandler, NULL);
 

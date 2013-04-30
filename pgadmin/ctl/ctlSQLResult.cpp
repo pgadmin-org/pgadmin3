@@ -203,7 +203,7 @@ void ctlSQLResult::DisplayData(bool single)
 		int w;
 
 		size_t hdrIndex = 0;
-		long col, nCols = thread->DataSet()->NumCols();		
+		long col, nCols = thread->DataSet()->NumCols();
 
 		for (col = 0 ; col < nCols ; col++)
 		{
@@ -335,7 +335,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 				s = thread->DataSet()->GetVal(col);
 
 				if(thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
-						settings->GetDecimalMark().Length() > 0)
+				        settings->GetDecimalMark().Length() > 0)
 				{
 					decimalMark = settings->GetDecimalMark();
 					s.Replace(wxT("."), decimalMark);
@@ -344,7 +344,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 				if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
 				        settings->GetThousandsSeparator().Length() > 0)
 				{
-					/* Add thousands separator */					
+					/* Add thousands separator */
 					size_t pos = s.find(decimalMark);
 					if (pos == wxString::npos)
 						pos = s.length();
@@ -361,7 +361,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 					wxString data = thread->DataSet()->GetVal(col);
 
 					if (data.Length() > settings->GetMaxColSize())
-						return thread->DataSet()->GetVal(col).Left(settings->GetMaxColSize()) + wxT(" (...)"); 
+						return thread->DataSet()->GetVal(col).Left(settings->GetMaxColSize()) + wxT(" (...)");
 					else
 						return thread->DataSet()->GetVal(col);
 				}
