@@ -125,6 +125,14 @@ public:
 	{
 		isClustered = b;
 	}
+	bool GetIsValid() const
+	{
+		return isValid;
+	}
+	void iSetIsValid(const bool b)
+	{
+		isValid = b;
+	}
 	wxString GetIdxTable() const
 	{
 		return idxTable;
@@ -280,7 +288,7 @@ private:
 	wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
 	long columnCount;
 	wxArrayString columnList, ordersArray, nullsArray, opclassesArray, collationsArray;
-	bool isUnique, isPrimary, isExclude, isClustered;
+	bool isUnique, isPrimary, isExclude, isClustered, isValid;
 	bool deferrable, deferred, showExtendedStatistics;
 	OID relTableOid, tablespaceOid;
 	wxString fillFactor;

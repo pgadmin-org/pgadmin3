@@ -399,6 +399,7 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 		properties->AppendYesNoItem(_("Unique?"), GetIsUnique());
 		properties->AppendYesNoItem(_("Primary?"), GetIsPrimary());
 		properties->AppendYesNoItem(_("Clustered?"), GetIsClustered());
+		properties->AppendYesNoItem(_("Valid?"), GetIsValid());
 		properties->AppendItem(_("Access method"), GetIndexType());
 		properties->AppendItem(_("Constraint"), GetConstraint());
 		properties->AppendYesNoItem(_("System index?"), GetSystemObject());
@@ -539,7 +540,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 		projoin =   wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n")
 		            wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
 	}
-	query = wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
+	query = wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisvalid, indisunique, indisprimary, n.nspname,\n")
 	        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description WHEN 'u' THEN desp.description WHEN 'x' THEN desp.description ELSE des.description END AS description,\n")
 	        wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n");
 	if (collection->GetConnection()->BackendMinimumVersion(8, 2))
@@ -587,6 +588,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 
 			index->iSetOid(indexes->GetOid(wxT("oid")));
 			index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
+			index->iSetIsValid(indexes->GetBool(wxT("indisvalid")));
 			index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
 			index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
 			index->iSetIsExclude(*(indexes->GetCharPtr(wxT("contype"))) == 'x');

@@ -189,6 +189,7 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
 		properties->AppendYesNoItem(_("Unique?"), GetIsUnique());
 		properties->AppendYesNoItem(_("Primary?"), GetIsPrimary());
 		properties->AppendYesNoItem(_("Clustered?"), GetIsClustered());
+		properties->AppendYesNoItem(_("Valid?"), GetIsValid());
 		properties->AppendItem(_("Access method"), GetIndexType());
 		properties->AppendItem(_("Constraint"), GetConstraint());
 		properties->AppendYesNoItem(_("System index?"), GetSystemObject());
