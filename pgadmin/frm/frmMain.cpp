@@ -85,9 +85,16 @@
 #include "schema/pgCheck.h"
 #include "schema/pgDomain.h"
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+#include "utils/sshTunnel.h"
+#endif
 
 #if wxDIALOG_UNIT_COMPATIBILITY
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
+#endif
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+DEFINE_EVENT_TYPE(SSH_TUNNEL_ERROR_EVENT);
 #endif
 
 frmMain::frmMain(const wxString &title)
@@ -243,6 +250,14 @@ frmMain::~frmMain()
 
 	if (treeContextMenu)
 		delete treeContextMenu;
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	if(pgadminTunnelThread && pgadminTunnelThread->IsAlive())
+	{
+		pgadminTunnelThread->Cleanup();
+		pgadminTunnelThread = NULL;
+	}
+#endif
 }
 
 
@@ -1027,7 +1042,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 	wxMilliSleep(100);
 	wxSafeYield();
 
-	int res = server->Connect(this, true);
+	int res = server->Connect(this, true, wxEmptyString, false, true);
 
 	// Check the result, and handle it as appropriate
 	wxTreeItemId item;
@@ -1198,7 +1213,14 @@ void frmMain::StoreServers()
 					settings->Write(key + wxT("SSLRootCert"), server->GetSSLRootCert());
 					settings->Write(key + wxT("SSLCrl"), server->GetSSLCrl());
 					settings->WriteBool(key + wxT("SSLCompression"), server->GetSSLCompression());
-
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+					settings->WriteBool(key + wxT("SSHTunnel"), server->GetSSHTunnel());
+					settings->Write(key + wxT("TunnelHost"), server->GetTunnelHost());
+					settings->Write(key + wxT("TunnelUserName"), server->GetTunnelUserName());
+					settings->WriteBool(key + wxT("TunnelModePwd"), server->GetAuthModePwd());
+					settings->Write(key + wxT("PublicKeyFile"), server->GetPublicKeyFile());
+					settings->Write(key + wxT("IdentityFile"), server->GetIdentityFile());
+#endif
 					pgCollection *coll = browser->FindCollection(databaseFactory, server->GetId());
 					if (coll)
 					{
@@ -1346,6 +1368,12 @@ void frmMain::SetItemBackgroundColour(wxTreeItemId item, wxColour colour)
 	}
 }
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+void frmMain::OnSSHTunnelEvent(wxCommandEvent &event)
+{
+	wxLogError(event.GetString());
+}
+#endif
 
 /////////////////////////////////////////
 

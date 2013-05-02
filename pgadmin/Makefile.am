@@ -49,6 +49,7 @@ include gqb/module.mk
 include hotdraw/module.mk
 include ui/module.mk
 include utils/module.mk
+include libssh2/module.mk
 
 if SUN_CC
   __CFLAGS=""

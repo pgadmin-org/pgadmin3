@@ -23,6 +23,11 @@ pgadmin3_SOURCES += \
 	utils/utffile.cpp \
 	utils/macros.cpp
 
+if BUILD_SSH_TUNNEL
+pgadmin3_SOURCES += \
+	utils/sshTunnel.cpp
+endif
+
 EXTRA_DIST += \
 	utils/module.mk \
 	utils/tab-complete.inc \

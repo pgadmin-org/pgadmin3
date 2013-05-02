@@ -77,6 +77,11 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
 #ifdef __WXGTK__
 	EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
 #endif
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	EVT_COMMAND (wxID_ANY, SSH_TUNNEL_ERROR_EVENT, frmMain::OnSSHTunnelEvent)
+#endif
+
 END_EVENT_TABLE()
 
 void frmMain::OnChildFocus(wxChildFocusEvent &event)

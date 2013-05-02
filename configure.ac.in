@@ -22,6 +22,11 @@ AM_CONDITIONAL([SUN_CXX], [test x$SUN_CXX_COMPILER = xyes])
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h stdlib.h])
+AC_CHECK_HEADERS([errno.h fcntl.h stdio.h unistd.h sys/uio.h])
+AC_CHECK_HEADERS([sys/select.h sys/socket.h sys/ioctl.h sys/time.h])
+AC_CHECK_HEADERS([sys/un.h], [have_sys_un_h=yes], [have_sys_un_h=no])
+AM_CONDITIONAL([HAVE_SYS_UN_H], test "x$have_sys_un_h" = xyes)
+AC_CONFIG_HEADERS([pgadmin/include/libssh2/libssh2_config.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -63,6 +68,73 @@ CHECK_LIBXML2
 
 LOCATE_LIBXSLT
 SETUP_LIBXSLT
+
+# Configure parameters
+AC_ARG_WITH(libgcrypt,
+	AC_HELP_STRING([--with-libgcrypt],[Use Libgcrypt for crypto]),
+	use_libgcrypt=$withval,use_libgcrypt=auto)
+AC_ARG_WITH(openssl,
+	AC_HELP_STRING([--with-openssl],[Use OpenSSL for crypto]),
+	use_openssl=$withval,use_openssl=auto)
+AC_ARG_WITH(libz,
+	AC_HELP_STRING([--with-libz],[Use Libz for compression]),
+	use_libz=$withval,use_libz=auto)
+
+# Look for OpenSSL (default)
+if test "$use_openssl" != "no" && test "$use_libgcrypt" != "yes"; then
+	AC_LIB_HAVE_LINKFLAGS([ssl], [crypto], [#include <openssl/ssl.h>])
+	LIBSREQUIRED=libssl,libcrypto
+fi
+
+# Look for libgcrypt
+if test "$ac_cv_libssl" != "yes" && test "$use_libgcrypt" != "no"; then
+	AC_LIB_HAVE_LINKFLAGS([gcrypt], [], [#include <gcrypt.h>])
+	LIBSREQUIRED=libgcrypt
+fi
+
+AC_SUBST(LIBSREQUIRED)
+
+if test "$ac_cv_libssl" != "yes" && test "$ac_cv_libgcrypt" != "yes"; then
+	AC_MSG_NOTICE([cannot find OpenSSL or Libgcrypt, try --with-libssl-prefix=PATH or --with-libgcrypt-prefix=PATH])
+	BUILD_SSH_TUNNEL="no"
+else
+	BUILD_SSH_TUNNEL="yes"
+fi
+AM_CONDITIONAL([BUILD_SSH_TUNNEL], [test x$BUILD_SSH_TUNNEL = xyes])
+
+if test "$ac_cv_libssl" = "yes"; then
+	CPPFLAGS="$CPPFLAGS -DHAVE_OPENSSL_CRYPTO"
+	LDFLAGS="$LDFLAGS -lssl -lcrypto"
+fi
+
+if test "$ac_cv_libgcrypt" = "yes"; then
+	CPPFLAGS="$CPPFLAGS -DHAVE_GCRYPT"
+	LDFLAGS="$LDFLAGS -lgcrypt"
+	AC_DEFINE(LIBSSH2_LIBGCRYPT, 1, [Use libgcrypt])
+fi
+AM_CONDITIONAL(LIBGCRYPT, test "$ac_cv_libgcrypt" = "yes")
+
+# Not all OpenSSL have AES-CTR functions.
+if test "$ac_cv_libssl" = "yes"; then
+	save_LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS $LIBSSL"
+	AC_CHECK_FUNCS(EVP_aes_128_ctr)
+	LDFLAGS="$save_LDFLAGS"
+fi
+
+# Look for Libz
+if test "$use_libz" != "no"; then
+	AC_LIB_HAVE_LINKFLAGS([z], [], [#include <zlib.h>])
+	if test "$ac_cv_libz" != yes; then
+		AC_MSG_NOTICE([Cannot find libz, disabling compression])
+		AC_MSG_NOTICE([Try --with-libz-prefix=PATH if you know you have it])
+	else
+		LDFLAGS="$LDFLAGS -lz"
+		AC_DEFINE(LIBSSH2_HAVE_ZLIB, 1, [Compile in zlib support])
+	fi
+fi
+
+CURL_CHECK_NONBLOCKING_SOCKET
 
 LOCATE_SPHINX
 AM_CONDITIONAL([SPHINX_BUILD], [test x$SPHINX_BUILD != x])

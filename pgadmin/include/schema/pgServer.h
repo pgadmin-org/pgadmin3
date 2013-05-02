@@ -15,9 +15,8 @@
 #include "db/pgConn.h"
 #include "pgCollection.h"
 
-
 class frmMain;
-
+class pgServer;
 
 class pgServerFactory : public pgaFactory
 {
@@ -37,11 +36,19 @@ protected:
 };
 extern pgServerFactory serverFactory;
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+class CSSHTunnelThread;
+#endif
 
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""), const wxString &newService = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432, bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0, const wxString &colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX), const wxString &group = wxEmptyString);
+	pgServer(const wxString &newServer = wxT(""), const wxString &newHostAddr = wxT(""), const wxString &newDescription = wxT(""),
+	         const wxString &newService = wxT(""), const wxString &newDatabase = wxT(""), const wxString &newUsername = wxT(""), int newPort = 5432,
+	         bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0,
+	         const wxString &colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX), const wxString &group = wxEmptyString,
+	         bool sshTunnel = false, const wxString &newTunnelHost = wxEmptyString, const wxString &newTunnelUserName = wxEmptyString, bool authModePwd = true,
+	         const wxString &newTunnelPassword = wxEmptyString, const wxString &newPublicKey = wxEmptyString, const wxString &newIdentityFile = wxEmptyString);
 	~pgServer();
 	int GetIconId();
 
@@ -50,7 +57,7 @@ public:
 		return wxT("Server");
 	}
 	wxString GetTranslatedMessage(int kindOfMessage) const;
-	int Connect(frmMain *form, bool askPassword = true, const wxString &pwd = wxEmptyString, bool forceStorePassword = false);
+	int Connect(frmMain *form, bool askPassword = true, const wxString &pwd = wxEmptyString, bool forceStorePassword = false, bool askTunnelPassword = false);
 	bool Disconnect(frmMain *form);
 	void StorePassword();
 	bool GetPasswordIsStored();
@@ -390,7 +397,6 @@ public:
 		return conn;
 	}
 
-
 	wxString GetSSLCert() const
 	{
 		return sslcert;
@@ -433,6 +439,82 @@ public:
 		sslcompression = b;
 	}
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	//SSH Tunnel
+	bool GetSSHTunnel() const
+	{
+		return sshTunnel;
+	}
+	void iSetSSHTunnel(const bool b)
+	{
+		sshTunnel = b;
+	}
+	bool GetAuthModePwd() const
+	{
+		return authModePwd;
+	}
+	void iSetAuthModePwd(const bool b)
+	{
+		authModePwd = b;
+	}
+	wxString GetLocalListenHost() const
+	{
+		return local_listenhost;
+	}
+	void SetLocalListenHost(const wxString &s)
+	{
+		local_listenhost = s;
+	}
+	int GetLocalListenPort() const
+	{
+		return local_listenport;
+	}
+	void SetLocalListenPort(int newVal)
+	{
+		local_listenport = newVal;
+	}
+	wxString GetTunnelHost() const
+	{
+		return tunnelHost;
+	}
+	void SetTunnelHost(const wxString &s)
+	{
+		tunnelHost = s;
+	}
+	wxString GetTunnelUserName() const
+	{
+		return tunnelUserName;
+	}
+	void SetTunnelUserName(const wxString &s)
+	{
+		tunnelUserName = s;
+	}
+	wxString GetTunnelPassword() const
+	{
+		return tunnelPassword;
+	}
+	void SetTunnelPassword(const wxString &s)
+	{
+		tunnelPassword = s;
+	}
+	wxString GetPublicKeyFile() const
+	{
+		return publicKeyFile;
+	}
+	void SetPublicKeyFile(const wxString &s)
+	{
+		publicKeyFile = s;
+	}
+	wxString GetIdentityFile() const
+	{
+		return identityFile;
+	}
+	void SetIdentityFile(const wxString &s)
+	{
+		identityFile = s;
+	}
+#endif
+
 	void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where = wxEmptyString);
 	void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where = wxEmptyString);
 
@@ -455,10 +537,21 @@ private:
 	wxString group;
 	wxString sslcert, sslkey, sslrootcert, sslcrl;
 	bool sslcompression;
+	bool sshTunnel;
 
 	bool inRecovery, replayPaused;
 	wxString receiveLoc, replayLoc, replayTimestamp;
 	wxDateTime confLoadedSince;
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	bool createSSHTunnel();
+
+	//SSH Tunnel
+	CSSHTunnelThread *tunnelObj;
+	bool authModePwd;
+	int local_listenport;
+	wxString tunnelHost, tunnelUserName, tunnelPassword, publicKeyFile, identityFile, local_listenhost;
+#endif
 
 #ifdef WIN32
 	SC_HANDLE scmHandle;

@@ -652,7 +652,7 @@ wxString pgConn::GetName() const
 	return str;
 }
 
-#ifdef SSL
+#ifdef PG_SSL
 // we don't define USE_SSL so we don't get ssl.h included
 extern "C"
 {

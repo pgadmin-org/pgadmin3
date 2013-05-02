@@ -29,7 +29,8 @@ enum
     PGCONN_REFUSED,
     PGCONN_DNSERR,
     PGCONN_ABORTED,     // connect user aborted
-    PGCONN_BROKEN       // tcp/pipe broken
+    PGCONN_BROKEN,       // tcp/pipe broken
+    PGCONN_SSHTUNNEL_ERROR
 };
 
 enum

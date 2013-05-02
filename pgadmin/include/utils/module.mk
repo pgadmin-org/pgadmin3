@@ -24,6 +24,11 @@ pgadmin3_SOURCES += \
 	include/utils/utffile.h \
 	include/utils/macros.h
 
+if BUILD_SSH_TUNNEL
+pgadmin3_SOURCES += \
+	include/utils/sshTunnel.h
+endif
+
 EXTRA_DIST += \
         include/utils/module.mk
 

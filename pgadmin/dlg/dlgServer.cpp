@@ -53,7 +53,20 @@
 #define pickerSSLRootCert CTRL_FILEPICKER("pickerSSLRootCert")
 #define pickerSSLCrl      CTRL_FILEPICKER("pickerSSLCrl")
 #define chkSSLCompression CTRL_CHECKBOX("chkSSLCompression")
+#define nbNotebook        CTRL_NOTEBOOK("nbNotebook")
 
+// SSH Tunnel Tab
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+#define chkSSHTunnel		 CTRL_CHECKBOX("chkSSHTunnel")
+#define txtTunnelHost		 CTRL_TEXT("txtTunnelHost")
+#define txtTunnelUsername	 CTRL_TEXT("txtTunnelUsername")
+#define radioBtnPassword	 CTRL_RADIOBUTTON("radioBtnPassword")
+#define radioBtnKeyfile      CTRL_RADIOBUTTON("radioBtnKeyfile")
+#define txtTunnelPassword	 CTRL_TEXT("txtTunnelPassword")
+#define pickerPublicKeyFile	 CTRL_FILEPICKER("pickerPublicKeyFile")
+#define pickerIdentityFile	 CTRL_FILEPICKER("pickerIdentityFile")
+#define stPublicKeyFile		 CTRL_STATIC("stPublicKeyFile")
+#endif
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
 	EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),     dlgServer::OnPageSelect)
@@ -80,6 +93,13 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
 	EVT_COMBOBOX(XRCID("cbGroup"),                     dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkSSLCompression"),           dlgProperty::OnChange)
 	EVT_BUTTON(wxID_OK,                                dlgServer::OnOK)
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	EVT_TEXT(XRCID("txtTunnelHost"),                   dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtTunnelUsername"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkSSHTunnel"),                dlgServer::OnCheckSSHTunnel)
+	EVT_RADIOBUTTON(XRCID("radioBtnPassword"),         dlgServer::OnChangeAuthOption)
+	EVT_RADIOBUTTON(XRCID("radioBtnKeyfile"),          dlgServer::OnChangeAuthOption)
+#endif
 END_EVENT_TABLE();
 
 
@@ -134,6 +154,25 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
 			groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
 		}
 	}
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	EnableSSHTunnelControls(false);
+	radioBtnPassword->SetValue(true);
+	radioBtnKeyfile->SetValue(false);
+	txtTunnelPassword->SetMaxLength(SSH_MAX_PASSWORD_LEN);
+#ifdef HAVE_OPENSSL_CRYPTO
+	stPublicKeyFile->Show(false);
+	pickerPublicKeyFile->Show(false);
+#endif
+#else
+	for(size_t i = 0; i < nbNotebook->GetPageCount(); i++)
+	{
+		if(nbNotebook->GetPageText(i).compare(wxT("SSH Tunnel")) == 0)
+		{
+			nbNotebook->RemovePage(i);
+		}
+	}
+#endif
 }
 
 
@@ -197,6 +236,15 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		server->SetSSLRootCert(pickerSSLRootCert->GetPath());
 		server->SetSSLCrl(pickerSSLCrl->GetPath());
 		server->iSetSSLCompression(chkSSLCompression->GetValue());
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+		server->iSetSSHTunnel(chkSSHTunnel->GetValue());
+		server->SetTunnelHost(txtTunnelHost->GetValue());
+		server->SetTunnelUserName(txtTunnelUsername->GetValue());
+		server->iSetAuthModePwd(radioBtnPassword->GetValue());
+		server->SetTunnelPassword(txtTunnelPassword->GetValue());
+		server->SetPublicKeyFile(pickerPublicKeyFile->GetPath());
+		server->SetIdentityFile(pickerIdentityFile->GetPath());
+#endif
 		wxColour colour = colourPicker->GetColour();
 		wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
 		server->iSetColour(sColour);
@@ -225,7 +273,18 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 			    server->GetRestore(),
 			    server->GetSSL(),
 			    server->GetColour(),
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+			    server->GetGroup(),
+			    server->GetSSHTunnel(),
+			    server->GetTunnelHost(),
+			    server->GetTunnelUserName(),
+			    server->GetAuthModePwd(),
+			    server->GetTunnelPassword(),
+			    server->GetPublicKeyFile(),
+			    server->GetIdentityFile());
+#else
 			    server->GetGroup());
+#endif
 			newserver->iSetDbRestriction(server->GetDbRestriction().Trim());
 			newserver->iSetServiceID(server->GetServiceID().Trim());
 			newserver->iSetDiscoveryID(server->GetDiscoveryID().Trim());
@@ -366,7 +425,7 @@ int dlgServer::Go(bool modal)
 	cbSSL->Clear();
 	cbSSL->Append(wxT(" "));
 
-#ifdef SSL
+#ifdef PG_SSL
 	cbSSL->Append(_("require"));
 	cbSSL->Append(_("prefer"));
 
@@ -414,6 +473,29 @@ int dlgServer::Go(bool modal)
 
 		chkSSLCompression->SetValue(server->GetSSLCompression());
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+		chkSSHTunnel->SetValue(server->GetSSHTunnel());
+		if(server->GetSSHTunnel())
+		{
+			chkStorePwd->SetValue(false);
+			chkStorePwd->Enable(false);
+		}
+		txtTunnelHost->SetValue(server->GetTunnelHost());
+		txtTunnelUsername->SetValue(server->GetTunnelUserName());
+		if (server->GetAuthModePwd())
+		{
+			radioBtnPassword->SetValue(true);
+			radioBtnKeyfile->SetValue(false);
+		}
+		else
+		{
+			radioBtnPassword->SetValue(false);
+			radioBtnKeyfile->SetValue(true);
+		}
+		txtTunnelPassword->SetValue(server->GetTunnelPassword());
+		pickerPublicKeyFile->SetPath(server->GetPublicKeyFile());
+		pickerIdentityFile->SetPath(server->GetIdentityFile());
+#endif
 		stPassword->Disable();
 		txtPassword->Disable();
 		if (connection)
@@ -439,6 +521,19 @@ int dlgServer::Go(bool modal)
 			pickerSSLCrl->Disable();
 			chkSSLCompression->Disable();
 			EnableOK(false);
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+			chkSSHTunnel->Enable(false);
+			EnableSSHTunnelControls(false);
+		}
+		else
+		{
+			if (server->GetSSHTunnel())
+			{
+				chkSSHTunnel->Enable(true);
+				EnableSSHTunnelControls(true);
+				EnableAuthenticationOptions();
+			}
+#endif
 		}
 	}
 	else
@@ -468,13 +563,32 @@ wxString dlgServer::GetPassword()
 pgObject *dlgServer::CreateObject(pgCollection *collection)
 {
 	wxString name = GetName();
+	pgServer *obj = NULL;
 
-	pgServer *obj = new pgServer(GetName(), txtHostAddr->GetValue(), txtDescription->GetValue(),
-	                             txtService->GetValue(), cbDatabase->GetValue(),
-	                             txtUsername->GetValue(), StrToLong(txtPort->GetValue()),
-	                             chkTryConnect->GetValue() && chkStorePwd->GetValue(),
-	                             txtRolename->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
-	                             colourPicker->GetColourString(), cbGroup->GetValue());
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	if (chkSSHTunnel->GetValue())
+	{
+		obj = new pgServer(GetName(), txtHostAddr->GetValue(), txtDescription->GetValue(),
+		                   txtService->GetValue(), cbDatabase->GetValue(),
+		                   txtUsername->GetValue(), StrToLong(txtPort->GetValue()),
+		                   chkTryConnect->GetValue() && chkStorePwd->GetValue(),
+		                   txtRolename->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
+		                   colourPicker->GetColourString(), cbGroup->GetValue(),
+		                   chkSSHTunnel->GetValue(), txtTunnelHost->GetValue(), txtTunnelUsername->GetValue(),
+		                   radioBtnPassword->GetValue(),
+		                   txtTunnelPassword->GetValue(), pickerPublicKeyFile->GetPath(),
+		                   pickerIdentityFile->GetPath());
+	}
+	else
+#endif
+	{
+		obj = new pgServer(GetName(), txtHostAddr->GetValue(), txtDescription->GetValue(),
+		                   txtService->GetValue(), cbDatabase->GetValue(),
+		                   txtUsername->GetValue(), StrToLong(txtPort->GetValue()),
+		                   chkTryConnect->GetValue() && chkStorePwd->GetValue(),
+		                   txtRolename->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
+		                   colourPicker->GetColourString(), cbGroup->GetValue());
+	}
 
 	obj->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
 
@@ -543,6 +657,14 @@ void dlgServer::CheckChange()
 	}
 	CheckValid(enable, dbRestrictionOk, _("Restriction not valid."));
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	if(chkSSHTunnel->GetValue())
+	{
+		CheckValid(enable, !txtTunnelHost->GetValue().IsEmpty(), _("Please specify ssh tunnel host."));
+		CheckValid(enable, !txtTunnelUsername->GetValue().IsEmpty(), _("Please specify ssh tunnel user name."));
+	}
+#endif
+
 	EnableOK(enable && !connection);
 }
 
@@ -551,3 +673,58 @@ wxString dlgServer::GetSql()
 {
 	return wxEmptyString;
 }
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+
+void dlgServer::OnCheckSSHTunnel(wxCommandEvent &ev)
+{
+	if (chkSSHTunnel->IsChecked())
+	{
+		if(chkStorePwd->GetValue())
+		{
+			wxMessageBox(_("Database passwords cannot be stored when using SSH tunnelling. The 'Store password' option has been turned off."), _("Stored Password"), wxICON_EXCLAMATION | wxOK, this);
+		}
+		chkStorePwd->SetValue(false);
+		chkStorePwd->Enable(false);
+		EnableSSHTunnelControls(true);
+		EnableAuthenticationOptions();
+	}
+	else
+	{
+		chkStorePwd->Enable();
+		EnableSSHTunnelControls(false);
+	}
+
+	CheckChange();
+}
+
+void dlgServer::OnChangeAuthOption(wxCommandEvent &ev)
+{
+	EnableAuthenticationOptions();
+}
+
+void dlgServer::EnableSSHTunnelControls(const bool &bEnable)
+{
+	txtTunnelHost->Enable(bEnable);
+	txtTunnelUsername->Enable(bEnable);
+	pickerPublicKeyFile->Enable(bEnable);
+	pickerIdentityFile->Enable(bEnable);
+	radioBtnPassword->Enable(bEnable);
+	radioBtnKeyfile->Enable(bEnable);
+	txtTunnelPassword->Enable(bEnable);
+}
+
+void dlgServer::EnableAuthenticationOptions()
+{
+	if (radioBtnPassword->GetValue())
+	{
+		pickerIdentityFile->Enable(false);
+		pickerPublicKeyFile->Enable(false);
+	}
+	else
+	{
+		pickerIdentityFile->Enable(true);
+		pickerPublicKeyFile->Enable(true);
+	}
+}
+#endif

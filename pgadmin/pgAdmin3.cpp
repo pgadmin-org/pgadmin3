@@ -84,6 +84,11 @@
 frmMain *winMain = 0;
 wxThread *updateThread = 0;
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+#include "utils/sshTunnel.h"
+CSSHTunnelThread *pgadminTunnelThread = 0;
+#endif
+
 sysSettings *settings;
 wxArrayInt existingLangs;
 wxArrayString existingLangNames;
@@ -364,7 +369,7 @@ bool pgAdmin3::OnInit()
 	wxLogInfo(wxT("%s"), msg.c_str());
 	wxLogInfo(wxT("##############################################################"));
 
-#ifdef SSL
+#ifdef PG_SSL
 	wxLogInfo(wxT("Compiled with dynamically linked SSL support"));
 #endif
 

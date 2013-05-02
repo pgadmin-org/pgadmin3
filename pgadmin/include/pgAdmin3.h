@@ -19,6 +19,10 @@
 #include <wx/listctrl.h>
 #include <wx/xrc/xmlres.h>
 
+#ifdef WIN32
+#include <winsock2.h>
+#endif
+
 #include "utils/misc.h"
 #include <ctl/ctlTree.h>
 #include "ctl/ctlSQLBox.h"
@@ -90,6 +94,11 @@ extern frmMain *winMain;                // The main app window
 extern wxLocale *locale;                // Application locale
 extern wxArrayInt existingLangs;        // Language IDs
 extern wxArrayString existingLangNames; // Language Names
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+class CSSHTunnelThread;
+extern CSSHTunnelThread *pgadminTunnelThread; // SSH Tunneling Thread Object
+#endif
 
 // Helper app paths - PG
 extern wxString pgBackupExecutable;

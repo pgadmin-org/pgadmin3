@@ -26,6 +26,7 @@ class wxHelpControllerBase;
 #define __(str) wxT(str)
 
 typedef unsigned long OID;
+#define SSH_MAX_PASSWORD_LEN 256
 
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__

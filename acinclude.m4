@@ -666,7 +666,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 		if test "$PG_SSL" = "yes"
 		then
-			CPPFLAGS="$CPPFLAGS -DSSL"
+			CPPFLAGS="$CPPFLAGS -DPG_SSL"
 		fi
 		if test "$HAVE_CONNINFO_PARSE" = "yes"
 		then
@@ -846,6 +846,13 @@ AC_DEFUN([SETUP_LIBXSLT],
 AC_SUBST(XSLT_CONFIG)
 AC_SUBST(pgadmin3_LDADD)
 
+#################
+# Setup libssh2 #
+#################
+
+sinclude(acinclude-ssh2.m4)
+
+
 #########################
 # Configuration summary #
 #########################
@@ -887,6 +894,25 @@ AC_DEFUN([SUMMARY],
 		echo "Building Database Designer:		Yes"
 	else
 		echo "Building Database Designer:		No"
+	fi
+	echo
+	if test "$BUILD_SSH_TUNNEL" = yes
+	then
+		echo "Building SSH Tunnel:			Yes"
+		if test "$ac_cv_libssl" = yes
+		then
+			echo "Crypto library:				OpenSSL"
+		else test "$ac_cv_libgcrypt" = yes
+			echo "Crypto library:				libgcrypt"
+		fi
+		if test "$ac_cv_libz" = yes
+		then
+			echo "libz compression:			yes"
+		else
+			echo "libz compression:			no"
+		fi
+	else
+		echo "Building SSH Tunnel:			No"
 	fi
 	echo
 	if test "$BUILD_DEBUG" = yes

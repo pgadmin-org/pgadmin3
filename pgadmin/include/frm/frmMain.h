@@ -82,6 +82,12 @@ enum
     REFRESH_OBJECT_AND_CHILDREN
 };
 
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+BEGIN_DECLARE_EVENT_TYPES()
+extern const wxEventType SSH_TUNNEL_ERROR_EVENT;
+END_DECLARE_EVENT_TYPES()
+#endif
+
 // Class declarations
 class frmMain : public pgFrame
 {
@@ -165,6 +171,10 @@ public:
 	{
 		m_refreshing = refresh;
 	}
+
+#if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
+	void OnSSHTunnelEvent(wxCommandEvent &event);
+#endif
 
 private:
 	wxAuiManager manager;

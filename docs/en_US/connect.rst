@@ -53,7 +53,30 @@ The second tab has all the SSL specific options: what kind of SSL connection
 you want, your root certificate file, your server CRL, your client
 certificate file, and finally your client key file.
 
-The third tab contains some advanced options that are seldomly used.
+You can use the "SSH Tunneling" tab to connect pgAdmin (through an intermediary 
+proxy host) to a server that resides on a network to which the client may 
+not be able to connect directly.
+
+*  Check the box next to "Use SSH tunneling?" to specify thatpgAdmin should use 
+   an SSH tunnel when connecting to the specified server.
+*  Specify the name or IP address of the SSH host (through which client 
+   connections will be forwarded) in the *Tunnel host* field.
+*  Specify the name of a user with connection privileges for the SSH host 
+   in the *Username* field.
+*  Specify the type of authentication that will be used when connecting to the 
+   SSH host in the *Authentication* field.
+
+   *  Select the radio button next to *Password* to specify that pgAdmin will 
+      use a password for authentication by the SSH host.  This is the default.
+   *  Select the radio button next to *Identity file* to specify that pgAdmin
+      will use a private key file when connecting.
+* If the SSH host is expecting a private key file for authentication, use the 
+  *Identity file* field to specify the location of the key file.
+* If the SSH host is expecting a password, use the *Password/Passphrase* field
+  to specify a the password, or if an identity file is being used, specify the
+  passphrase.
+
+The fourth tab contains some advanced options that are seldomly used.
 
 The "Connect now?" field makes pgAdmin attempt a connection as soon as
 you hit the OK button.
