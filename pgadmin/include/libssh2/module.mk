@@ -30,5 +30,6 @@ pgadmin3_SOURCES += \
         include/libssh2/userauth.h
 
 EXTRA_DIST += \
-	include/libssh2/module.mk
+	include/libssh2/module.mk \
+	include/libssh2/Win32/libssh2_config.h
 endif
