@@ -42,6 +42,10 @@ AC_DEFUN([CHECK_SUN_COMPILER],
 
 ])
 
+m4_include([lib-prefix.m4])
+m4_include([lib-ld.m4])
+m4_include([lib-link.m4])
+
 #############################
 # Override wxWidgets version #
 #############################
