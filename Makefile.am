@@ -21,6 +21,7 @@ EXTRA_DIST = \
 	$(top_srcdir)/TODO \
 	$(top_srcdir)/bootstrap \
 	$(top_srcdir)/configure.ac.in \
+	$(top_srcdir)/config.rpath.in \
 	$(top_srcdir)/languages.hwx \
 	$(top_srcdir)/languages.po \
 	$(top_srcdir)/pgadmin3.pot \
