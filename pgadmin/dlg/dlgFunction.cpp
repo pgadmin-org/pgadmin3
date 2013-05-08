@@ -892,7 +892,7 @@ wxString dlgFunction::GetSql()
 				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier()
 				                 + wxT("(") + function->GetArgSigList() + wxT(")"));
 			else
-				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier());
+				AppendNameChange(sql, wxT("PROCEDURE ") + function->GetQuotedFullIdentifier());
 		}
 		if (didChange)
 			sql += wxT("CREATE OR REPLACE ") + objType;
@@ -985,7 +985,7 @@ wxString dlgFunction::GetSql()
 	}
 
 
-	if (function)
+	if (function && !isProcedure)
 	{
 		name = schema->GetQuotedPrefix() + qtIdent(name)
 		       + wxT("(") + GetArgs(false, true) + wxT(")");
@@ -993,6 +993,13 @@ wxString dlgFunction::GetSql()
 		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
 		AppendSchemaChange(sql, wxT("FUNCTION ") + name);
 	}
+	else if(isProcedure)
+	{
+		name = schema->GetQuotedPrefix() + qtIdent(name);
+		AppendOwnerChange(sql, wxT("PROCEDURE ") + name);
+		AppendSchemaChange(sql, wxT("PROCEDURE ") + name);
+	}
+
 	else
 	{
 		name = name + wxT("(") + GetArgs(false, true) + wxT(")");
