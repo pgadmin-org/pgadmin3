@@ -11,5 +11,5 @@ SUBDIRS = lib bin test
 
 EXTRA_DIST =
 
-include $(srcdir)/doc/module.mk
-include $(srcdir)/file/module.mk
+include doc/module.mk
+include file/module.mk

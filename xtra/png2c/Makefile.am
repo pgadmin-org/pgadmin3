@@ -15,5 +15,3 @@ png2c_SOURCES = \
 EXTRA_DIST = \
 	png2c.vcxproj \
 	png2c.vcxproj.filters
-
-distclean:

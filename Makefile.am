@@ -9,7 +9,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = xtra/png2c branding i18n plugins.d pgadmin xtra pkg
+SUBDIRS = branding i18n plugins.d xtra pgadmin pkg
 
 EXTRA_DIST = \
 	$(top_srcdir)/BUGS \
@@ -101,4 +101,4 @@ endif
 all: doc
 
 clean-local:
-	rm -rf docs/en_US/_build
+	rm -rf $(top_srcdir)/docs/en_US/_build

@@ -10,3 +10,7 @@
 DIST_SUBDIRS = png2c pgscript wx-build
 SUBDIRS = wx-build
 
+clean:
+	for dir in $(DIST_SUBDIRS); do \
+		$(MAKE) -C $$dir $(AM_MAKEFLAGS) clean || exit 1; \
+	done;

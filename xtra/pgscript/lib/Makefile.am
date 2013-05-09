@@ -7,9 +7,11 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
+AUTOMAKE_OPTIONS = foreign subdir-objects no-dependencies
+OBJEXT=pgso
 noinst_LIBRARIES = libpgs.a
 
-nodist_libpgs_a_SOURCES = ../../../pgadmin/utils/sysLogger.cpp \
+libpgs_a_SOURCES = ../../../pgadmin/utils/sysLogger.cpp \
 	../../../pgadmin/utils/misc.cpp \
 	../../../pgadmin/db/keywords.c \
 	../../../pgadmin/pgscript/utilities/pgsUtilities.cpp \
@@ -141,5 +143,11 @@ else
   __CXXFLAGS=-Wall -Wno-non-virtual-dtor -fno-strict-aliasing
 endif
 
-AM_CXXFLAGS = $(__CXXFLAGS) -I../../../pgadmin/include -DPGSCLI -DPGADMIN3_H
-AM_CFLAGS = $(__CFLAGS) -I../../../pgadmin/include -DPGSCLI -DPGADMIN3_H
+AM_CXXFLAGS = $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include -DPGSCLI -DPGADMIN3_H
+AM_CFLAGS = $(__CFLAGS) -I$(top_srcdir)/pgadmin/include -DPGSCLI -DPGADMIN3_H
+
+%.pgso : %.c
+	$(CXXCOMPILE) -c -o $@ $<
+
+%.pgso : %.cpp
+	$(CXXCOMPILE) -c -o $@ $<

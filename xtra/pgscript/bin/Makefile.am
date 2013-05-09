@@ -13,7 +13,7 @@ pgScript_SOURCES = \
 	pgsMain.cpp
 
 pgScript_LDADD += \
-	$(srcdir)/../lib/libpgs.a
+	$(builddir)/../lib/libpgs.a
 
 if SUN_CXX
   __CXXFLAGS=""
@@ -21,7 +21,7 @@ else
   __CXXFLAGS=-Wall -Wno-non-virtual-dtor -fno-strict-aliasing
 endif
 
-AM_CXXFLAGS = $(__CXXFLAGS) -I$(srcdir)/../../../pgadmin/include -DPGSCLI -DPGADMIN3_H
-AM_CFLAGS = $(__CFLAGS) -I$(srcdir)/../../../pgadmin/include -DPGSCLI -DPGADMIN3_H
+AM_CXXFLAGS = $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include -DPGSCLI -DPGADMIN3_H
+AM_CFLAGS = $(__CFLAGS) -I$(top_srcdir)/pgadmin/include -DPGSCLI -DPGADMIN3_H
 
 # dist_man_MANS = pgScript.1
