@@ -104,12 +104,12 @@ AM_CONDITIONAL([BUILD_SSH_TUNNEL], [test x$BUILD_SSH_TUNNEL = xyes])
 
 if test "$ac_cv_libssl" = "yes"; then
 	CPPFLAGS="$CPPFLAGS -DHAVE_OPENSSL_CRYPTO"
-	LDFLAGS="$LDFLAGS -lssl -lcrypto"
+	LIBS="$LIBS $LIBSSL"
 fi
 
 if test "$ac_cv_libgcrypt" = "yes"; then
 	CPPFLAGS="$CPPFLAGS -DHAVE_GCRYPT"
-	LDFLAGS="$LDFLAGS -lgcrypt"
+	LIBS="$LIBS $LIBGCRYPT"
 	AC_DEFINE(LIBSSH2_LIBGCRYPT, 1, [Use libgcrypt])
 fi
 AM_CONDITIONAL(LIBGCRYPT, test "$ac_cv_libgcrypt" = "yes")
@@ -129,7 +129,7 @@ if test "$use_libz" != "no"; then
 		AC_MSG_NOTICE([Cannot find libz, disabling compression])
 		AC_MSG_NOTICE([Try --with-libz-prefix=PATH if you know you have it])
 	else
-		LDFLAGS="$LDFLAGS -lz"
+		LIBS="$LIBS $LIBZ"
 		AC_DEFINE(LIBSSH2_HAVE_ZLIB, 1, [Compile in zlib support])
 	fi
 fi
