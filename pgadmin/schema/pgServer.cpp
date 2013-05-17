@@ -679,7 +679,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 		}
 		if (askPassword)
 		{
-			if (sshTunnel || !passwordValid || !GetPasswordIsStored() || !GetStorePwd())
+			if ((sshTunnel || !passwordValid || !GetPasswordIsStored() || !GetStorePwd()) && GetSSLCert() == wxEmptyString)
 			{
 				wxString txt;
 				txt.Printf(_("Please enter password for user %s\non server %s (%s)"), username.c_str(), description.c_str(), GetName().c_str());
