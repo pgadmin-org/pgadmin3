@@ -98,11 +98,25 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	settings->Read(wxT("frmBackup/LastFile"), &val, wxEmptyString);
 	txtFilename->SetValue(val);
 
-	if (!object->GetDatabase()->GetServer()->GetPasswordIsStored())
+	pgServer *server = object->GetServer();
+
+	if (!server->GetPasswordIsStored())
 		environment.Add(wxT("PGPASSWORD=") + object->GetServer()->GetPassword());
 
 	// Pass the SSL mode via the environment
-	environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
+	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
+
+        if (server->GetSSLRootCert() != wxEmptyString)
+                environment.Add(wxT("PGSSLROOTCERT=") + server->GetSSLRootCert());
+
+        if (server->GetSSLCert() != wxEmptyString)
+                environment.Add(wxT("PGSSLCERT=") + server->GetSSLCert());
+
+        if (server->GetSSLKey() != wxEmptyString)
+                environment.Add(wxT("PGSSLKEY=") + server->GetSSLKey());
+
+        if (server->GetSSLCrl() != wxEmptyString)
+                environment.Add(wxT("PGSSLCRL=") + server->GetSSLCrl());
 
 	// Icon
 	SetIcon(*backup_png_ico);
