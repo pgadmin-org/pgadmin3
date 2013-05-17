@@ -477,6 +477,12 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
 	                             colourPicker->GetColourString(), cbGroup->GetValue());
 
 	obj->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
+	obj->iSetServiceID(txtServiceID->GetValue());
+	obj->SetSSLCert(pickerSSLCert->GetTextCtrlValue());
+	obj->SetSSLKey(pickerSSLKey->GetTextCtrlValue());
+	obj->SetSSLRootCert(pickerSSLRootCert->GetTextCtrlValue());
+	obj->SetSSLCrl(pickerSSLCrl->GetTextCtrlValue());
+	obj->iSetSSLCompression(chkSSLCompression->GetValue());
 
 	return obj;
 }
