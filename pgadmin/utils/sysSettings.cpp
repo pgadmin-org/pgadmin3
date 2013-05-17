@@ -657,7 +657,11 @@ wxFont sysSettings::GetSQLFont()
 #ifdef __WXMSW__
 		return wxFont(9, wxTELETYPE, wxNORMAL, wxNORMAL);
 #else
+#ifdef __WXGTK__
+		return wxFont(10, wxTELETYPE, wxNORMAL, wxNORMAL);
+#else
 		return wxFont(12, wxTELETYPE, wxNORMAL, wxNORMAL);
+#endif
 #endif
 	}
 	else
