@@ -125,9 +125,6 @@ protected:
 	{
 		return true;
 	};
-	void OnClose(wxCloseEvent &ev);
-	void OnCancel(wxCommandEvent &ev);
-
 	void ShowObject();
 
 	void FillSQLTextfield();
@@ -154,7 +151,6 @@ public:
 
 	void OnPageSelect(wxNotebookEvent &event);
 	void OnOK(wxCommandEvent &ev);
-	void OnApply(wxCommandEvent &ev);
 	void OnChange(wxCommandEvent &ev);
 	void OnChangeOwner(wxCommandEvent &ev);
 	void OnChangeStc(wxStyledTextEvent &event);

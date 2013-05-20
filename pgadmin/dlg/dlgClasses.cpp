@@ -94,12 +94,6 @@ void pgDialog::PostCreation()
 		right -= size.GetWidth() + ConvertDialogToPixels(wxSize(3, 0)).x;
 		btnOK->Move(right, pos.y);
 	}
-	if (btnApply)
-	{
-		size = btnApply->GetSize();
-		right -= size.GetWidth() - ConvertDialogToPixels(wxSize(3, 0)).x;
-		btnApply->Move(right, pos.y);
-	}
 
 // On OS X, reverse the buttons for UI consistency
 #ifdef __WXMAC__
@@ -110,12 +104,6 @@ void pgDialog::PostCreation()
 	{
 		pos2 = btnOK->GetPosition();
 		btnOK->Move(pos.x, pos.y);
-	}
-
-	if (btnApply)
-	{
-		pos2 = btnApply->GetPosition();
-		btnApply->Move(pos.x, pos.y);
 	}
 
 	btnCancel->Move(pos2.x, pos2.y);
@@ -471,9 +459,6 @@ void ExecutionDialog::OnCancel(wxCommandEvent &ev)
 		Abort();
 		btnCancel->Enable();
 		btnOK->Enable();
-		wxButton *btn = btnApply;
-		if (btn)
-			btn->Enable();
 	}
 	else
 	{
@@ -577,9 +562,6 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			txtMessages->AppendText(_("\nCancelled.\n"));
 
 		btnOK->Enable();
-		wxButton *btn = btnApply;
-		if (btn)
-			btn->Enable();
 	}
 	else
 	{

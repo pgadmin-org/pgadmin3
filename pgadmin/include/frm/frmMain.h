@@ -109,7 +109,7 @@ public:
 	bool CheckAlive();
 
 	void execSelChange(wxTreeItemId item, bool currentNode);
-	pgObject *Refresh(pgObject *data);
+	void Refresh(pgObject *data);
 	void ExecDrop(bool cascaded);
 	void ShowObjStatistics(pgObject *data, wxWindow *ctrl = NULL);
 
