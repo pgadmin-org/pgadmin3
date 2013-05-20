@@ -473,7 +473,11 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 						currentObject = newData;
 					}
 					else
+					{
+						// OK, we failed to refresh, so select the parent and delete the child.
+						browser->SelectItem(browser->GetItemParent(currentItem));
 						browser->Delete(currentItem);
+					}
 				}
 			}
 			else
