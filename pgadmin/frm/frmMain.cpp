@@ -515,7 +515,7 @@ void frmMain::CreateMenus()
 }
 
 
-pgObject *frmMain::Refresh(pgObject *data)
+void frmMain::Refresh(pgObject *data)
 {
 	bool done = false;
 	pgObject *obj = NULL;
@@ -577,7 +577,7 @@ pgObject *frmMain::Refresh(pgObject *data)
 				{
 					CheckAlive();
 					browser->Thaw();
-					return data;
+					return;
 				}
 
 				wxTreeItemId delItem = currentItem;
@@ -589,19 +589,16 @@ pgObject *frmMain::Refresh(pgObject *data)
 
 		if (currentItem)
 		{
+                        // Select the current node
+                        execSelChange(currentItem, currentItem == browser->GetSelection());
 
 			// Attempt to expand any child nodes that were previously expanded
 			ExpandChildNodes(currentItem, expandedNodes);
-
-			// Select the current node
-			execSelChange(currentItem, currentItem == browser->GetSelection());
 		}
 	}
 
 	browser->Thaw();
 	EndMsg(done);
-
-	return currentObject;
 }
 
 void frmMain::OnCopy(wxCommandEvent &ev)
@@ -689,7 +686,6 @@ wxString frmMain::GetNodePath(wxTreeItemId node)
 	wxTreeItemId parent = browser->GetItemParent(node);
 	while (parent.IsOk())
 	{
-		browser->GetItemData(parent);
 		path = browser->GetItemText(parent).BeforeFirst('(').Trim() + wxT("/") + path;
 		parent = browser->GetItemParent(parent);
 	}

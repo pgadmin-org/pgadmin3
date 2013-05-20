@@ -34,7 +34,6 @@ dlgProperty *edbPackageFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
 BEGIN_EVENT_TABLE(dlgPackage, dlgSecurityProperty)
 	EVT_STC_MODIFIED(XRCID("txtHeader"),            dlgProperty::OnChangeStc)
 	EVT_STC_MODIFIED(XRCID("txtBody"),              dlgProperty::OnChangeStc)
-	EVT_BUTTON(wxID_APPLY,                          dlgPackage::OnApply)
 END_EVENT_TABLE();
 
 
@@ -142,18 +141,6 @@ bool dlgPackage::IsUpToDate()
 		return false;
 	else
 		return true;
-}
-
-void dlgPackage::OnApply(wxCommandEvent &ev)
-{
-	dlgProperty::OnApply(ev);
-
-	wxString sql;
-	if(connection->EdbMinimumVersion(8, 2))
-		sql = wxT("SELECT xmin FROM pg_namespace WHERE oid = ") + package->GetOidStr();
-	else
-		sql = wxT("SELECT xmin FROM edb_package WHERE oid = ") + package->GetOidStr();
-	package->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
 }
 
 

@@ -42,7 +42,6 @@ private:
 	pgSchema *schema;
 
 	virtual bool IsUpToDate();
-	void OnApply(wxCommandEvent &ev);
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);
 #endif

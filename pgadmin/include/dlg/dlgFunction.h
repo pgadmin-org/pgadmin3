@@ -32,8 +32,6 @@ public:
 	void SetObject(pgObject *obj)
 	{
 		function = (pgFunction *)obj;
-		if(seclabelPage)
-			seclabelPage->SetObject(obj);
 	}
 
 	wxString GetHelpPage(bool forCreate) const
@@ -76,7 +74,6 @@ private:
 	void ReplaceSizer(wxWindow *w, bool isC, int border);
 
 	virtual bool IsUpToDate();
-	void OnApply(wxCommandEvent &ev);
 
 	wxArrayString typOids;
 	wxArrayString types;

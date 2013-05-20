@@ -17,7 +17,6 @@
 WX_DECLARE_LIST(wxWindow, windowList);
 
 #define btnOK                   CTRL_BUTTON("wxID_OK")
-#define btnApply                CTRL_BUTTON("wxID_APPLY")
 #define btnCancel               CTRL_BUTTON("wxID_CANCEL")
 
 

@@ -34,14 +34,11 @@ public:
 	void SetObject(pgObject *obj)
 	{
 		view = (pgView *)obj;
-		if(seclabelPage)
-			seclabelPage->SetObject(obj);
 	}
 
 private:
 
 	virtual bool IsUpToDate();
-	void OnApply(wxCommandEvent &ev);
 
 	pgSchema *schema;
 	pgView *view;

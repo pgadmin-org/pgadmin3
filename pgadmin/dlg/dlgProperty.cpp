@@ -97,9 +97,6 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
 
 	EVT_BUTTON(wxID_HELP,                           dlgProperty::OnHelp)
 	EVT_BUTTON(wxID_OK,                             dlgProperty::OnOK)
-	EVT_BUTTON(wxID_APPLY,                          dlgProperty::OnApply)
-	EVT_BUTTON(wxID_CANCEL,                         dlgProperty::OnCancel)
-	EVT_CLOSE (                                     dlgProperty::OnClose)
 END_EVENT_TABLE();
 
 
@@ -223,36 +220,12 @@ void dlgProperty::SetDatatypeCache(dataTypeCache cache)
 
 void dlgProperty::EnableOK(bool enable)
 {
-	wxButton *btn = btnApply;
-	if (btn)
-		btn->Enable(enable);
-
 	btnOK->Enable(enable);
 	if (enable)
 	{
 		if (statusBar)
 			statusBar->SetStatusText(wxEmptyString);
 	}
-}
-
-void dlgProperty::OnClose(wxCloseEvent &ev)
-{
-	// Sets the window pointer to NULL when the dialog gets closed
-	if (GetObject())
-	{
-		GetObject()->SetWindowPtr(NULL);
-	}
-	pgDialog::OnClose(ev);
-}
-
-void dlgProperty::OnCancel(wxCommandEvent &ev)
-{
-	// Sets the window pointer to NULL when the dialog gets closed
-	if (GetObject())
-	{
-		GetObject()->SetWindowPtr(NULL);
-	}
-	pgDialog::OnCancel(ev);
 }
 
 
@@ -363,9 +336,6 @@ int dlgProperty::Go(bool modal)
 	}
 	else
 	{
-		wxButton *btn = btnApply;
-		if (btn)
-			btn->Hide();
 		if (factory)
 			SetTitle(wxGetTranslation(factory->GetNewString()));
 		if (cbSchema)
@@ -848,54 +818,15 @@ void dlgProperty::ShowObject()
 				ownDialog = data->GetWindowPtr();
 				data->SetWindowPtr(NULL);
 			}
-
-			// The Refresh call creates a new data object so we will use the newly
-			// created object and set it's window pointer to NULL.
-			// In addition, we set the dialog's object to the newly created object.
-			pgObject *newData = mainForm->Refresh(tblobj);
-			if (newData)
+			mainForm->Refresh(tblobj);
+			if (data)
 			{
-				newData->SetWindowPtr(NULL);
-				if (ownDialog)
-					ownDialog->SetObject(newData);
-
-				// Note that the object's window pointer will be reset by dlgProperty::Apply.
+				data->SetWindowPtr(ownDialog);
 			}
 		}
 
 		// Restore the previous selection...
 		mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
-
-		// If we couldn't restore the previous selection, it means that
-		// the object doesn't exist any more. Either it was dropped, or
-		// moved to another schema.
-		// If it is the latter, we need to refresh the Schemas node.
-		if (currentPath != mainForm->GetCurrentNodePath())
-		{
-			if (objectnode.IsOk())
-			{
-				// first parent is the objects' node
-				wxTreeItemId objectsnode = mainForm->GetBrowser()->GetItemParent(objectnode);
-				if (objectsnode.IsOk())
-				{
-					// second parent is the schema's node
-					wxTreeItemId schemanode = mainForm->GetBrowser()->GetItemParent(objectsnode);
-					pgObject *obj = mainForm->GetBrowser()->GetObject(schemanode);
-					if (schemanode.IsOk() && obj != NULL && obj->GetMetaType() == PGM_SCHEMA)
-					{
-						// third parent is the schemas' node
-						wxTreeItemId schemasnode = mainForm->GetBrowser()->GetItemParent(schemanode);
-						if (schemasnode.IsOk())
-						{
-							// we finally have the schemas' node, so we refresh it
-							pgObject *schemasnodeobj = mainForm->GetBrowser()->GetObject(schemasnode);
-							if (schemasnodeobj)
-								mainForm->Refresh(schemasnodeobj);
-						}
-					}
-				}
-			}
-		}
 	}
 	else if (data)
 	{
@@ -1004,13 +935,6 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 
 	ShowObject();
 
-	// Reset the window pointer of the object to the current window as this may
-	// have been set to NULL during the refresh operation.
-	if (GetObject())
-	{
-		GetObject()->SetWindowPtr(this);
-	}
-
 	return true;
 }
 
@@ -1095,27 +1019,6 @@ wxArrayString dlgProperty::SplitQueries(const wxString &sql)
 }
 
 
-void dlgProperty::OnApply(wxCommandEvent &ev)
-{
-	if (!IsUpToDate())
-	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
-			return;
-	}
-
-	wxString sql = GetSql();
-	wxString sql2 = GetSql2();
-
-	if (!apply(sql, sql2))
-		return;
-
-	EnableOK(false);
-
-	if (statusBar)
-		statusBar->SetStatusText(_("Changes applied."));
-}
-
-
 void dlgProperty::OnOK(wxCommandEvent &ev)
 {
 #ifdef __WXGTK__
@@ -1160,12 +1063,6 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 	{
 		EnableOK(true);
 		return;
-	}
-
-	// Sets the window pointer to NULL when the dialog gets closed
-	if (GetObject())
-	{
-		GetObject()->SetWindowPtr(NULL);
 	}
 
 	Destroy();

@@ -38,7 +38,6 @@ public:
 private:
 
 	virtual bool IsUpToDate();
-	void OnApply(wxCommandEvent &ev);
 
 	pgSchema *schema;
 	gpExtTable *extTable;
