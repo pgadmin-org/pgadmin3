@@ -732,15 +732,22 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
 				if (sqlGrid->GetTable()->IsColText(sqlGrid->GetGridCursorCol()))
 				{
 					wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-					if (text)
+					if (text && !text->GetSelectedText().IsEmpty())
+					{
 						wxTheClipboard->SetData(new wxTextDataObject(text->GetSelectedText()));
+						SetStatusText(_("Data from one cell copied to clipboard."));
+					}
 				}
 				else
 				{
 					wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-					if (text)
+					if (text && !text->GetStringSelection().IsEmpty())
+					{
 						wxTheClipboard->SetData(new wxTextDataObject(text->GetStringSelection()));
+						SetStatusText(_("Data from one cell copied to clipboard."));
+					}
 				}
+
 				wxTheClipboard->Close();
 			}
 		}

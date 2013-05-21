@@ -25,7 +25,6 @@
 #define EXTRAEXTENT_WIDTH  6
 
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
-	EVT_MENU(MNU_COPY, ctlSQLGrid::OnCopy)
 	EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
 END_EVENT_TABLE()
 
@@ -50,11 +49,6 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
 	SetDefaultRowSize(fntCells.GetPointSize() * 2);
 	SetColLabelSize(fntLabel.GetPointSize() * 4);
 	SetDefaultCellOverflow(false);
-
-	wxAcceleratorEntry entries[1];
-	entries[0].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
-	wxAcceleratorTable accel(1, entries);
-	SetAcceleratorTable(accel);
 
 	Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
 }
