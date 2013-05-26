@@ -165,22 +165,26 @@ void frmGrantWizard::Go()
 {
 	chkList->SetFocus();
 
-	wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,TRUNCATE,RULE,REFERENCES,TRIGGER");
-	const char *privChar = "arwdDRxt";
+	wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER");
+	const char *privChar = "arwdDxt";
 
 	switch (object->GetMetaType())
 	{
 		case PGM_DATABASE:
 		case PGM_SCHEMA:
-			privList.Append(wxT(",EXECUTE"));
-			privChar = "arwdDRxtX";
+			privList.Append(wxT(",EXECUTE,USAGE"));
+			privChar = "arwdDxtXU";
 			break;
 		case PGM_FUNCTION:
 			privList = wxT("EXECUTE");
 			privChar = "X";
 			break;
+		case PGM_SEQUENCE:
+			privList = wxT("SELECT,UPDATE,USAGE");
+			privChar = "rwU";
+			break;
 		case GP_EXTTABLE:
-			privList = wxT("SELECT,RULE");
+			privList = wxT("SELECT");
 			privChar = "r";
 		default:
 			break;
@@ -272,8 +276,10 @@ wxString frmGrantWizard::GetSql()
 					break;
 				}
 				case PGM_VIEW:
+					tmp = securityPage->GetGrant(wxT("arwdxt"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
+					break;
 				case PGM_SEQUENCE:
-					tmp = securityPage->GetGrant(wxT("arwdRxt"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
+					tmp = securityPage->GetGrant(wxT("rwU"), wxT("SEQUENCE ") + obj->GetQuotedFullIdentifier());
 					break;
 				case GP_EXTTABLE:
 					tmp = securityPage->GetGrant(wxT("r"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
@@ -283,7 +289,7 @@ wxString frmGrantWizard::GetSql()
 						tmp = securityPage->GetGrant(wxT("r"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
 					}
 					else
-						tmp = securityPage->GetGrant(wxT("arwdDRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
+						tmp = securityPage->GetGrant(wxT("arwdDxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
 					break;
 			}
 
