@@ -102,10 +102,10 @@ wxString pgCast::GetSql(ctlTree *browser)
 	if (sql.IsNull())
 	{
 		sql = wxT("-- Cast: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-		      wxT("-- DROP CAST (") + GetQuotedSchemaPrefix(GetSourceNamespace()) + GetSourceType() +
-		      wxT(" AS ") + GetQuotedSchemaPrefix(GetTargetNamespace()) + GetTargetType() + wxT(")")
-		      wxT("\n\nCREATE CAST (") + GetQuotedSchemaPrefix(GetSourceNamespace()) + GetSourceType() +
-		      wxT(" AS ") + GetQuotedSchemaPrefix(GetTargetNamespace()) + GetTargetType();
+		      wxT("-- DROP CAST (") + GetSourceType() +
+		      wxT(" AS ") + GetTargetType() + wxT(");")
+		      wxT("\n\nCREATE CAST (") + GetSourceType() +
+		      wxT(" AS ") + GetTargetType();
 		if (GetCastFunction().IsNull())
 			sql += wxT(")\n  WITHOUT FUNCTION");
 		else
@@ -126,8 +126,8 @@ void pgCast::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
-		properties->AppendItem(_("Source type"), GetSchemaPrefix(GetSourceNamespace()) + GetSourceType());
-		properties->AppendItem(_("Target type"), GetSchemaPrefix(GetTargetNamespace()) + GetTargetType());
+		properties->AppendItem(_("Source type"), GetSourceType());
+		properties->AppendItem(_("Target type"), GetTargetType());
 		if (GetCastFunction().IsNull())
 			properties->AppendItem(_("Function"), _("(binary compatible)"));
 		else
