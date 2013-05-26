@@ -272,6 +272,8 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	cbFormat->Append(_("Custom"));
 	cbFormat->Append(_("Tar"));
 	cbFormat->Append(_("Plain"));
+	cbFormat->SetSelection(0);
+
 	if (pgAppMinimumVersion(backupExecutable, 9, 1))
 		cbFormat->Append(_("Directory"));
 
