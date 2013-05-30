@@ -153,7 +153,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 	cbLimit->Append(_("1000 rows"));
 	cbLimit->Append(_("500 rows"));
 	cbLimit->Append(_("100 rows"));
-	cbLimit->SetValue(_("No limit"));
+	cbLimit->SetValue(_("1000 rows"));
 
 	// Finally, the scratchpad
 	scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
