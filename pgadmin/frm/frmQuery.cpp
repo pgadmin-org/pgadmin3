@@ -1452,7 +1452,7 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 
 	if (allowUpdateModelSize)
 	{
-		canSaveGQB = controller->getView()->canSaveAsImage();
+		canSaveGQB = controller->getView() != NULL && controller->getView()->canSaveAsImage();
 	}
 
 	toolBar->EnableTool(MNU_UNDO, canUndo);
