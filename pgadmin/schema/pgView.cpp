@@ -118,7 +118,11 @@ wxMenu *pgView::GetNewMenu()
 
 bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP VIEW ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+	if (IsMaterializedView(browser))
+		sql = wxT("DROP MATERIALIZED VIEW ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+	else
+		sql = wxT("DROP VIEW ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+
 	if (cascaded)
 		sql += wxT(" CASCADE");
 	return GetDatabase()->ExecuteVoid(sql);
@@ -129,23 +133,194 @@ wxString pgView::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
 	{
-		sql = wxT("-- View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-		      + wxT("-- DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
-		      + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier();
-		if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
-			sql += wxT(" WITH (security_barrier=") + GetSecurityBarrier() + wxT(")");
-		sql += wxT(" AS \n")
-		       + GetFormattedDefinition()
-		       + wxT("\n\n")
-		       + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+		bool IsMatViewFlag = false;
+		if (!IsMaterializedView(browser))
+		{
+			sql = wxT("-- View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+			      + wxT("-- DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
+			      + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier();
+
+			if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
+				sql += wxT(" WITH (security_barrier=") + GetSecurityBarrier() + wxT(")");
+		}
+		else
+		{
+			sql = wxT("-- Materialized View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+			      + wxT("-- DROP MATERIALIZED VIEW ") + GetQuotedFullIdentifier() + wxT(";")
+			      + wxT("\n\nCREATE MATERIALIZED VIEW ") + GetQuotedFullIdentifier();
+
+			IsMatViewFlag = true;
+
+			if (GetConnection()->BackendMinimumVersion(9, 3))
+			{
+				if (GetFillFactor().Length() > 0 || GetAutoVacuumEnabled() == 1 || GetToastAutoVacuumEnabled() == 1)
+				{
+					bool tmpFlagTable = false;
+					bool tmpFlagToastTable = false;
+
+					sql += wxT("\nWITH (");
+					if (GetFillFactor().Length() > 0)
+						sql += wxT("\n  FILLFACTOR=") + GetFillFactor();
+					else
+						tmpFlagTable = true;
+
+					if (GetCustomAutoVacuumEnabled())
+					{
+						if (GetAutoVacuumEnabled() == 1)
+						{
+							if (tmpFlagTable)
+								sql += wxT("\n  autovacuum_enabled=true");
+							else
+								sql += wxT(",\n  autovacuum_enabled=true");
+							tmpFlagToastTable = true;
+						}
+						else if (GetCustomAutoVacuumEnabled() == 0)
+						{
+							sql += wxT(",\n  autovacuum_enabled=false");
+						}
+						if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_vacuum_threshold=") + GetAutoVacuumVacuumThreshold();
+						}
+						if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_vacuum_scale_factor=") + GetAutoVacuumVacuumScaleFactor();
+						}
+						if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_analyze_threshold=") + GetAutoVacuumAnalyzeThreshold();
+						}
+						if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_analyze_scale_factor=") + GetAutoVacuumAnalyzeScaleFactor();
+						}
+						if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_vacuum_cost_delay=") + GetAutoVacuumVacuumCostDelay();
+						}
+						if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_vacuum_cost_limit=") + GetAutoVacuumVacuumCostLimit();
+						}
+						if (!GetAutoVacuumFreezeMinAge().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_freeze_min_age=") + GetAutoVacuumFreezeMinAge();
+						}
+						if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_freeze_max_age=") + GetAutoVacuumFreezeMaxAge();
+						}
+						if (!GetAutoVacuumFreezeTableAge().IsEmpty())
+						{
+							sql += wxT(",\n  autovacuum_freeze_table_age=") + GetAutoVacuumFreezeTableAge();
+						}
+					}
+					if (GetHasToastTable() && GetToastCustomAutoVacuumEnabled())
+					{
+						if (GetToastAutoVacuumEnabled() == 1)
+						{
+							if (tmpFlagTable && !tmpFlagToastTable)
+								sql += wxT("\n  toast.autovacuum_enabled=true");
+							else
+								sql += wxT(",\n  toast.autovacuum_enabled=true");
+						}
+						else if (GetToastAutoVacuumEnabled() == 0)
+							sql += wxT(",\n  toast.autovacuum_enabled=false");
+						if (!GetToastAutoVacuumVacuumThreshold().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_vacuum_threshold=") + GetToastAutoVacuumVacuumThreshold();
+						}
+						if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_vacuum_scale_factor=") + GetToastAutoVacuumVacuumScaleFactor();
+						}
+						if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_vacuum_cost_delay=") + GetToastAutoVacuumVacuumCostDelay();
+						}
+						if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_vacuum_cost_limit=") + GetToastAutoVacuumVacuumCostLimit();
+						}
+						if (!GetToastAutoVacuumFreezeMinAge().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_freeze_min_age=") + GetToastAutoVacuumFreezeMinAge();
+						}
+						if (!GetToastAutoVacuumFreezeMaxAge().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_freeze_max_age=") + GetToastAutoVacuumFreezeMaxAge();
+						}
+						if (!GetToastAutoVacuumFreezeTableAge().IsEmpty())
+						{
+							sql += wxT(",\n  toast.autovacuum_freeze_table_age=") + GetToastAutoVacuumFreezeTableAge();
+						}
+					}
+					sql += wxT("\n)");
+				}
+
+				if (tablespace != GetDatabase()->GetDefaultTablespace())
+					sql += wxT("\nTABLESPACE ") + qtIdent(tablespace);
+
+				wxString isPopulated;
+				if (GetIsPopulated().Cmp(wxT("t")) == 0)
+					isPopulated = wxT("WITH DATA;");
+				else
+					isPopulated = wxT("WITH NO DATA;");
+
+				wxString sqlDefinition;
+				bool tmpLoopFlag = true;
+				sqlDefinition = GetFormattedDefinition();
+
+				// Remove semicolon from the end of the string
+				while(tmpLoopFlag)
+				{
+					int length = sqlDefinition.Len();
+					int position = sqlDefinition.Find(';',true);
+					if ((position != wxNOT_FOUND) && (position = (length - 1)))
+						sqlDefinition.Remove(position,1);
+					else
+						tmpLoopFlag = false;
+				}
+
+				sql += wxT(" AS \n")
+					+ sqlDefinition
+					+ wxT("\n")
+					+ isPopulated
+					+ wxT("\n\n")
+					+ GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+			}
+		}
+
+		if (!IsMatViewFlag)
+		{
+			sql += wxT(" AS \n")
+				+ GetFormattedDefinition()
+				+ wxT("\n\n")
+				+ GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+		}
 
 		if (GetConnection()->BackendMinimumVersion(8, 2))
 			sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
 		else
 			sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
 
-		sql += GetCommentSql()
-		       + wxT("\n");
+		// "MATERIALIZED" isn't part of the object type name, it's a property, so 
+                // we need to generate the comment SQL manually here, instead of using
+                // wxString pgObject::GetCommentSql()
+        
+		if (!GetComment().IsNull())
+      		{
+			if (IsMatViewFlag)
+			{
+                		sql += wxT("COMMENT ON MATERIALIZED VIEW ") + GetQuotedFullIdentifier()
+                      			+ wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
+			}
+			else
+                        {
+                                sql += wxT("COMMENT ON VIEW ") + GetQuotedFullIdentifier()
+                                        + wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
+                        }
+		}
 
 		pgCollection *columns = browser->FindCollection(columnFactory, GetId());
 		if (columns)
@@ -305,9 +480,73 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Definition"), def);
 		properties->AppendYesNoItem(_("System view?"), GetSystemObject());
-		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 		if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
 			properties->AppendItem(_("Security barrier?"), GetSecurityBarrier());
+
+		if (GetConnection()->BackendMinimumVersion(9, 3))
+			properties->AppendYesNoItem(_("Materialized view?"), IsMaterializedView(browser));
+
+		/* Custom AutoVacuum Settings */
+		if (GetConnection()->BackendMinimumVersion(9, 3) && IsMaterializedView(browser))
+		{
+			if (!GetFillFactor().IsEmpty())
+				properties->AppendItem(_("Fill factor"), GetFillFactor());
+
+			if (GetCustomAutoVacuumEnabled())
+			{
+				if (GetAutoVacuumEnabled() != 2)
+				{
+					properties->AppendItem(_("Table auto-vacuum enabled?"), GetAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
+				}
+				if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum VACUUM base threshold"), GetAutoVacuumVacuumThreshold());
+				if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum VACUUM scale factor"), GetAutoVacuumVacuumScaleFactor());
+				if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum ANALYZE base threshold"), GetAutoVacuumAnalyzeThreshold());
+				if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum ANALYZE scale factor"), GetAutoVacuumAnalyzeScaleFactor());
+				if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum VACUUM cost delay"), GetAutoVacuumVacuumCostDelay());
+				if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum VACUUM cost limit"), GetAutoVacuumVacuumCostLimit());
+				if (!GetAutoVacuumFreezeMinAge().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum FREEZE minimum age"), GetAutoVacuumFreezeMinAge());
+				if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum FREEZE maximum age"), GetAutoVacuumFreezeMaxAge());
+				if (!GetAutoVacuumFreezeTableAge().IsEmpty())
+					properties->AppendItem(_("Table auto-vacuum FREEZE table age"), GetAutoVacuumFreezeTableAge());
+			}
+
+			if (GetHasToastTable() && GetToastCustomAutoVacuumEnabled())
+			{
+				if (GetToastAutoVacuumEnabled() != 2)
+				{
+					properties->AppendItem(_("Toast auto-vacuum enabled?"), GetToastAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
+				}
+				if (!GetToastAutoVacuumVacuumThreshold().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum VACUUM base threshold"), GetToastAutoVacuumVacuumThreshold());
+				if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum VACUUM scale factor"), GetToastAutoVacuumVacuumScaleFactor());
+				if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum VACUUM cost delay"), GetToastAutoVacuumVacuumCostDelay());
+				if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum VACUUM cost limit"), GetToastAutoVacuumVacuumCostLimit());
+				if (!GetToastAutoVacuumFreezeMinAge().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum FREEZE minimum age"), GetToastAutoVacuumFreezeMinAge());
+				if (!GetToastAutoVacuumFreezeMaxAge().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum FREEZE maximum age"), GetToastAutoVacuumFreezeMaxAge());
+				if (!GetToastAutoVacuumFreezeTableAge().IsEmpty())
+					properties->AppendItem(_("Toast auto-vacuum FREEZE table age"), GetToastAutoVacuumFreezeTableAge());
+			}
+
+			properties->AppendItem(_("Tablespace"), tablespace);
+
+			if (GetIsPopulated().Cmp(wxT("t")) == 0)
+				properties->AppendItem(_("With data"), _("Yes"));
+			else
+				properties->AppendItem(_("With data"), _("No"));
+		}
 
 		if (!GetLabels().IsEmpty())
 		{
@@ -320,6 +559,8 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				}
 			}
 		}
+
+		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
 
@@ -375,6 +616,35 @@ void pgView::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 		sql += tmp;
 }
 
+bool pgView::IsMaterializedView(ctlTree *browser)
+{
+	if (this->GetConnection()->BackendMinimumVersion(9, 3))
+	{
+		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(this->GetQuotedFullIdentifier()) + wxT(" AND schemaname = ") + qtDbString(this->GetSchema()->GetQuotedIdentifier());
+
+		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
+				return false;
+		else
+				return true;
+	}
+	else
+		return false;
+}
+
+bool pgView::IsMaterializedView(wxString schemaName, wxString viewName)
+{
+	if (this->GetConnection()->BackendMinimumVersion(9, 3))
+	{
+		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(viewName) + wxT(" AND schemaname = ") + qtDbString(schemaName);
+
+		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
+				return false;
+		else
+				return true;
+	}
+	else
+		return false;
+}
 
 ///////////////////////////////////////////////////
 
@@ -415,8 +685,19 @@ wxString pgViewCollection::GetTranslatedMessage(int kindOfMessage) const
 pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
 	pgView *view = 0;
-	wxString sql = wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-	               wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+	wxString sql;
+
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 3))
+	{
+		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid,c.relispopulated AS ispopulated,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+			           wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+	}
+	else
+	{
+		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+			           wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+	}
+
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 	{
 		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=c.oid AND sl1.objsubid=0) AS labels");
@@ -426,13 +707,50 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	{
 		sql += wxT(",\nsubstring(array_to_string(c.reloptions, ',') FROM 'security_barrier=([a-z|0-9]*)') AS security_barrier");
 	}
+
+	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
+			sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor \n");
+
+	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
+	{
+			sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
+			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS toast_autovacuum_enabled \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age \n")
+			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age \n")
+			         wxT(", c.reloptions AS reloptions, tst.reloptions AS toast_reloptions \n")
+			         wxT(", (CASE WHEN c.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
+	}
+
+
 	sql += wxT("\n  FROM pg_class c\n")
-	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0 AND des.classoid='pg_class'::regclass)\n")
-	       wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
+		   wxT("  LEFT OUTER JOIN pg_tablespace spc on spc.oid=c.reltablespace\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0 AND des.classoid='pg_class'::regclass)\n");
+
+	// Add the toast table for vacuum parameters.
+	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
+		sql += wxT("  LEFT OUTER JOIN pg_class tst ON tst.oid = c.reltoastrelid\n");
+
+	sql += wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
 	       wxT("           SELECT r.rulename FROM pg_rewrite r\n")
 	       wxT("            WHERE ((r.ev_class = c.oid)\n")
 	       wxT("              AND (bpchar(r.ev_type) = '1'::bpchar)) ))) OR (c.relkind = 'v'::char))\n")
-	       wxT("   AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+	       wxT("   AND c.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
 	       + restriction
 	       + wxT(" ORDER BY relname");
 
@@ -460,6 +778,70 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			{
 				view->iSetSecurityBarrier(views->GetVal(wxT("security_barrier")));
 			}
+
+			if (collection->GetConnection()->BackendMinimumVersion(9, 3))
+			{
+				view->iSetFillFactor(views->GetVal(wxT("fillfactor")));
+
+				if (views->GetOid(wxT("spcoid")) == 0)
+					view->iSetTablespaceOid(collection->GetDatabase()->GetTablespaceOid());
+				else
+					view->iSetTablespaceOid(views->GetOid(wxT("spcoid")));
+
+				view->iSetRelOptions(views->GetVal(wxT("reloptions")));
+
+				view->iSetIsPopulated(views->GetVal(wxT("ispopulated")));
+
+				if (view->GetCustomAutoVacuumEnabled())
+				{
+					if (views->GetVal(wxT("autovacuum_enabled")).IsEmpty())
+						view->iSetAutoVacuumEnabled(2);
+					else if (views->GetBool(wxT("autovacuum_enabled")))
+						view->iSetAutoVacuumEnabled(1);
+					else
+						view->iSetAutoVacuumEnabled(0);
+					view->iSetAutoVacuumVacuumThreshold(views->GetVal(wxT("autovacuum_vacuum_threshold")));
+					view->iSetAutoVacuumVacuumScaleFactor(views->GetVal(wxT("autovacuum_vacuum_scale_factor")));
+					view->iSetAutoVacuumAnalyzeThreshold(views->GetVal(wxT("autovacuum_analyze_threshold")));
+					view->iSetAutoVacuumAnalyzeScaleFactor(views->GetVal(wxT("autovacuum_analyze_scale_factor")));
+					view->iSetAutoVacuumVacuumCostDelay(views->GetVal(wxT("autovacuum_vacuum_cost_delay")));
+					view->iSetAutoVacuumVacuumCostLimit(views->GetVal(wxT("autovacuum_vacuum_cost_limit")));
+					view->iSetAutoVacuumFreezeMinAge(views->GetVal(wxT("autovacuum_freeze_min_age")));
+					view->iSetAutoVacuumFreezeMaxAge(views->GetVal(wxT("autovacuum_freeze_max_age")));
+					view->iSetAutoVacuumFreezeTableAge(views->GetVal(wxT("autovacuum_freeze_table_age")));
+				}
+
+				view->iSetHasToastTable(views->GetBool(wxT("hastoasttable")));
+
+				if (view->GetHasToastTable())
+				{
+					view->iSetToastRelOptions(views->GetVal(wxT("toast_reloptions")));
+
+					if (view->GetToastCustomAutoVacuumEnabled())
+					{
+						if (views->GetVal(wxT("toast_autovacuum_enabled")).IsEmpty())
+							view->iSetToastAutoVacuumEnabled(2);
+						else if (views->GetBool(wxT("toast_autovacuum_enabled")))
+							view->iSetToastAutoVacuumEnabled(1);
+						else
+							view->iSetToastAutoVacuumEnabled(0);
+
+						view->iSetToastAutoVacuumVacuumThreshold(views->GetVal(wxT("toast_autovacuum_vacuum_threshold")));
+						view->iSetToastAutoVacuumVacuumScaleFactor(views->GetVal(wxT("toast_autovacuum_vacuum_scale_factor")));
+						view->iSetToastAutoVacuumVacuumCostDelay(views->GetVal(wxT("toast_autovacuum_vacuum_cost_delay")));
+						view->iSetToastAutoVacuumVacuumCostLimit(views->GetVal(wxT("toast_autovacuum_vacuum_cost_limit")));
+						view->iSetToastAutoVacuumFreezeMinAge(views->GetVal(wxT("toast_autovacuum_freeze_min_age")));
+						view->iSetToastAutoVacuumFreezeMaxAge(views->GetVal(wxT("toast_autovacuum_freeze_max_age")));
+						view->iSetToastAutoVacuumFreezeTableAge(views->GetVal(wxT("toast_autovacuum_freeze_table_age")));
+					}
+				}
+
+				if (views->GetVal(wxT("spcname")) == wxEmptyString)
+					view->iSetTablespace(collection->GetDatabase()->GetTablespace());
+				else
+					view->iSetTablespace(views->GetVal(wxT("spcname")));
+			}
+
 			if (browser)
 			{
 				collection->AppendBrowserItem(browser, view);

@@ -39,13 +39,40 @@ public:
 private:
 
 	virtual bool IsUpToDate();
+	void OnChangeVacuum(wxCommandEvent &ev);
+	void OnCheckMaterializedView(wxCommandEvent &ev);
+	void FillAutoVacuumParameters(wxString &setStr, wxString &resetStr,const wxString &parameter, const wxString &val);
+	wxString AppendNum(bool &changed, wxTextCtrl *ctl, wxString val);
+	void DisableMaterializedView();
+	void DisableStorageParameters();
 
 	pgSchema *schema;
 	pgView *view;
 	ctlSeclabelPanel *seclabelPage;
 	wxString oldDefinition;
+	wxTextValidator mviewNumericValidator;
 
 	void OnChange(wxCommandEvent &event);
+
+	bool tableVacEnabled, hasVacuum, settingAutoVacuum;
+	wxString settingVacBaseThr, settingAnlBaseThr, settingCostDelay,
+	         settingCostLimit, settingFreezeMinAge, settingFreezeMaxAge,
+	         settingFreezeTableAge;
+	wxString tableVacBaseThr, tableAnlBaseThr, tableCostDelay,
+	         tableCostLimit, tableFreezeMinAge, tableFreezeMaxAge,
+	         tableFreezeTableAge;
+	wxString settingVacFactor, settingAnlFactor;
+	wxString tableVacFactor, tableAnlFactor;
+
+	/* Toast Table */
+	bool toastTableVacEnabled, toastTableHasVacuum;
+	wxString toastTableVacBaseThr,
+	         toastTableCostDelay, toastTableCostLimit,
+	         toastTableFreezeMinAge, toastTableFreezeMaxAge,
+	         toastTableFreezeTableAge;
+	wxString toastTableVacFactor;
+
+	bool forceSecurityBarrierChanged;
 
 	DECLARE_EVENT_TABLE()
 };

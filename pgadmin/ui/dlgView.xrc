@@ -63,8 +63,8 @@
                   <border>4</border>
                 </object>
                 <object class="sizeritem">
-                 <object class="wxStaticText" name="stSchema">
-                  <label>Schema</label>
+                  <object class="wxStaticText" name="stSchema">
+                    <label>Schema</label>
                   </object>
                   <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
                   <border>4</border>
@@ -147,6 +147,517 @@
                   <option>1</option>
                   <flag>wxGROW</flag>
                 </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Materialization</label>
+            <object class="wxPanel" name="pnlMaterializedView">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <cols>2</cols>
+                    <rows>1</rows>
+                    <object class="sizeritem">
+                      <object class="wxStaticText" name="stMaterializedView">
+                        <label>Materialized View</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkMaterializedView">
+                        <label></label>
+                        <checked>0</checked>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <vgap>2</vgap>
+                    <hgap>1</hgap>
+                    <growablecols>1</growablecols>
+                    <growablerows>1</growablerows>
+                  </object>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxNotebook" name="nbVacuum">
+                    <selected>0</selected>
+                    <object class="notebookpage">
+                      <label>Options</label>
+                      <object class="wxPanel">
+                        <object class="wxFlexGridSizer">
+                          <cols>2</cols>
+                          <rows>3</rows>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stTableSpace">
+                              <label>Tablespace</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxComboBox" name="cboTablespace">
+                              <content/>
+                              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <vgap>4</vgap>
+                          <hgap>4</hgap>
+                          <growablecols>1</growablecols>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFillFactor">
+                              <label>Fill Factor</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFillFactor"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stMatViewWithData">
+                              <label>With Data</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkMatViewWithData">
+                              <label></label>
+                              <checked>1</checked>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <growablerows>3</growablerows>
+                        </object>
+                      </object>
+                    </object>
+                    <object class="notebookpage">
+                      <label>Table</label>
+                      <object class="wxPanel">
+                        <object class="wxFlexGridSizer">
+                          <cols>3</cols>
+                          <vgap>4</vgap>
+                          <hgap>4</hgap>
+                          <growablecols>1</growablecols>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkCustomVac">
+                              <label>Custom auto-vacuum</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stVacEnabled">
+                              <label>Enabled</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkVacEnabled">
+                              <label></label>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText">
+                              <label>Current value</label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseVac">
+                              <label>VACUUM base threshold</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtBaseVac"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseVacCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseAn">
+                              <label>ANALYZE base threshold</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtBaseAn"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseAnCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorVac">
+                              <label>VACUUM scale factor</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFactorVac"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorVacCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorAn">
+                              <label>ANALYZE scale factor</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFactorAn"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorAnCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stVacDelay">
+                              <label>VACUUM cost delay</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtVacDelay"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stVacDelayCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stVacLimit">
+                              <label>VACUUM cost limit</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtVacLimit"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stVacLimitCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeMinAge">
+                              <label>FREEZE minimum age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFreezeMinAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeMinAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeMaxAge">
+                              <label>FREEZE maximum age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFreezeMaxAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeMaxAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeTableAge">
+                              <label>FREEZE table age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFreezeTableAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFreezeTableAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                        </object>
+                      </object>
+                    </object>
+                    <object class="notebookpage" name="nbpToastVacuum">
+                      <label>Toast table</label>
+                      <object class="wxPanel">
+                        <object class="wxFlexGridSizer">
+                          <cols>3</cols>
+                          <vgap>4</vgap>
+                          <hgap>4</hgap>
+                          <growablecols>1</growablecols>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkCustomToastVac">
+                              <label>Custom auto-vacuum</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="spacer">
+                            <size>3,3d</size>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastVacEnabled">
+                              <label>Enabled</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkToastVacEnabled">
+                              <label></label>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText">
+                              <label>Current value</label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseToastVac">
+                              <label>VACUUM base threshold</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtBaseToastVac"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stBaseToastVacCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorToastVac">
+                              <label>VACUUM scale factor</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtFactorToastVac"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stFactorToastVacCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastVacDelay">
+                              <label>VACUUM cost delay</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtToastVacDelay"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastVacDelayCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastVacLimit">
+                              <label>VACUUM cost limit</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtToastVacLimit"/>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastVacLimitCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeMinAge">
+                              <label>FREEZE minimum age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtToastFreezeMinAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeMinAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeMaxAge">
+                              <label>FREEZE maximum age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtToastFreezeMaxAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeMaxAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeTableAge">
+                              <label>FREEZE table age</label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtToastFreezeTableAge"/>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stToastFreezeTableAgeCurr">
+                              <label></label>
+                            </object>
+                            <flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+                            <border>4</border>
+                          </object>
+                        </object>
+                      </object>
+                    </object>
+                  </object>
+                  <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                  <border>4</border>
+                </object>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>0</growablecols>
+                <growablerows>1</growablerows>
               </object>
             </object>
           </object>
