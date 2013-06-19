@@ -95,17 +95,17 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 	// Pass the SSL mode via the environment
 	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
 
-        if (server->GetSSLRootCert() != wxEmptyString)
-                environment.Add(wxT("PGSSLROOTCERT=") + server->GetSSLRootCert());
+	if (server->GetSSLRootCert() != wxEmptyString)
+		environment.Add(wxT("PGSSLROOTCERT=") + server->GetSSLRootCert());
 
 	if (server->GetSSLCert() != wxEmptyString)
 		environment.Add(wxT("PGSSLCERT=") + server->GetSSLCert());
 
-        if (server->GetSSLKey() != wxEmptyString)
-                environment.Add(wxT("PGSSLKEY=") + server->GetSSLKey());
+	if (server->GetSSLKey() != wxEmptyString)
+		environment.Add(wxT("PGSSLKEY=") + server->GetSSLKey());
 
-        if (server->GetSSLCrl() != wxEmptyString)
-                environment.Add(wxT("PGSSLCRL=") + server->GetSSLCrl());
+	if (server->GetSSLCrl() != wxEmptyString)
+		environment.Add(wxT("PGSSLCRL=") + server->GetSSLCrl());
 
 	// Icon
 	SetIcon(*backup_png_ico);
@@ -201,7 +201,7 @@ wxString frmBackupGlobals::getCmdPart1()
 
 	cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
 	        +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()))
-		+  wxT(" --database ") + commandLineCleanOption(qtIdent(server->GetDatabaseName()));
+	        +  wxT(" --database ") + commandLineCleanOption(qtIdent(server->GetDatabaseName()));
 
 	if (!cbRolename->GetValue().IsEmpty())
 		cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));

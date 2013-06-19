@@ -170,7 +170,7 @@ int dlgView::Go(bool modal)
 		if ((connection->BackendMinimumVersion(9, 3) && view))
 		{
 			// While editing the view, if it is materialized view then only change
-			if (view->IsMaterializedView(view->GetSchema()->GetName(),view->GetName()))
+			if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
 			{
 				// It is materialied view while editing the view so check the box accordingly
 				chkMaterializedView->SetValue(true);
@@ -193,7 +193,7 @@ int dlgView::Go(bool modal)
 				settingAutoVacuum = false;
 
 				pgSetIterator avSet(connection,
-									wxT("SELECT name, setting FROM pg_settings WHERE name like '%vacuum%' ORDER BY name"));
+				                    wxT("SELECT name, setting FROM pg_settings WHERE name like '%vacuum%' ORDER BY name"));
 				while (avSet.RowsLeft())
 				{
 					wxString name = avSet.GetVal(wxT("name"));
@@ -450,7 +450,7 @@ wxString dlgView::GetSql()
 			{
 				if (connection->BackendMinimumVersion(9, 3))
 				{
-					if (view->IsMaterializedView(view->GetSchema()->GetName(),view->GetName()))
+					if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
 					{
 						AppendNameChange(sql, wxT("MATERIALIZED VIEW ") + view->GetQuotedFullIdentifier());
 						editQuery = true;
@@ -469,7 +469,7 @@ wxString dlgView::GetSql()
 		{
 			if (connection->BackendMinimumVersion(9, 3))
 			{
-				if (view->IsMaterializedView(view->GetSchema()->GetName(),view->GetName()))
+				if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
 				{
 					AppendSchemaChange(sql, wxT("MATERIALIZED VIEW " + qtIdent(view->GetSchema()->GetName()) + wxT(".") + qtIdent(name)));
 					editQuery = true;
@@ -508,7 +508,7 @@ wxString dlgView::GetSql()
 		{
 			if (txtFillFactor->GetValue().Trim().Length() > 0 || chkVacEnabled->GetValue() == true || chkToastVacEnabled->GetValue() == true)
 			{
-				bool fillFactorFlag,toastTableFlag;
+				bool fillFactorFlag, toastTableFlag;
 				fillFactorFlag = false;
 				toastTableFlag = false;
 
@@ -530,9 +530,9 @@ wxString dlgView::GetSql()
 
 					if (!fillFactorFlag)
 					{
-						int position = sql.Find(',',true);
+						int position = sql.Find(',', true);
 						if (position != wxNOT_FOUND)
-							sql.Remove(position,1);
+							sql.Remove(position, 1);
 						toastTableFlag = true;
 					}
 
@@ -609,9 +609,9 @@ wxString dlgView::GetSql()
 
 					if (!fillFactorFlag && !toastTableFlag)
 					{
-						int position = sql.Find(',',true);
+						int position = sql.Find(',', true);
 						if (position != wxNOT_FOUND)
-							sql.Remove(position,1);
+							sql.Remove(position, 1);
 					}
 
 					newVal =  AppendNum(valChanged, txtBaseToastVac, toastTableVacBaseThr);
@@ -678,15 +678,15 @@ wxString dlgView::GetSql()
 			while(tmpLoopFlag)
 			{
 				int length = sqlDefinition.Len();
-				int position = sqlDefinition.Find(';',true);
+				int position = sqlDefinition.Find(';', true);
 				if ((position != wxNOT_FOUND) && (position = (length - 1)))
-					sqlDefinition.Remove(position,1);
+					sqlDefinition.Remove(position, 1);
 				else
 					tmpLoopFlag = false;
 			}
 
 			sql += wxT(" AS\n")
-		        + sqlDefinition;
+			       + sqlDefinition;
 
 			if (chkMatViewWithData->GetValue())
 				sql += wxT("\n WITH DATA;\n");
@@ -696,8 +696,8 @@ wxString dlgView::GetSql()
 		else
 		{
 			sql += wxT(" AS\n")
-				+ txtSqlBox->GetText().Trim(true).Trim(false)
-				+ wxT(";\n");
+			       + txtSqlBox->GetText().Trim(true).Trim(false)
+			       + wxT(";\n");
 		}
 	}
 	else if (view)
@@ -718,16 +718,16 @@ wxString dlgView::GetSql()
 				if (txtFillFactor->GetValue().Trim().Length() > 0)
 				{
 					sql += wxT("ALTER MATERIALIZED VIEW ") + name
-						   +  wxT("\n  SET (FILLFACTOR=")
-						   +  txtFillFactor->GetValue() + wxT(");\n");
+					       +  wxT("\n  SET (FILLFACTOR=")
+					       +  txtFillFactor->GetValue() + wxT(");\n");
 				}
 				else
 				{
 					// If fill factor value get changed and value is not blank then do the reset
 					sql += wxT("ALTER MATERIALIZED VIEW ") + name
-						    +  wxT(" RESET(\n")
-						    wxT("  FILLFACTOR\n")
-						    wxT(");\n");
+					       +  wxT(" RESET(\n")
+					       wxT("  FILLFACTOR\n")
+					       wxT(");\n");
 				}
 			}
 
@@ -742,12 +742,12 @@ wxString dlgView::GetSql()
 				if (isPopulatedFlag)
 				{
 					sql += wxT("REFRESH MATERIALIZED VIEW ") + name
-						+  wxT(" WITH NO DATA;\n");
+					       +  wxT(" WITH NO DATA;\n");
 				}
 				else
 				{
 					sql += wxT("REFRESH MATERIALIZED VIEW ") + name
-						+  wxT(" WITH DATA;\n");
+					       +  wxT(" WITH DATA;\n");
 				}
 			}
 		}
@@ -760,18 +760,18 @@ wxString dlgView::GetSql()
 				if (hasVacuum)
 				{
 					sql += wxT("ALTER MATERIALIZED VIEW ") + name
-						    +  wxT(" RESET(\n")
-						    wxT("  autovacuum_enabled,\n")
-						    wxT("  autovacuum_vacuum_threshold,\n")
-						    wxT("  autovacuum_analyze_threshold,\n")
-						    wxT("  autovacuum_vacuum_scale_factor,\n")
-						    wxT("  autovacuum_analyze_scale_factor,\n")
-						    wxT("  autovacuum_vacuum_cost_delay,\n")
-						    wxT("  autovacuum_vacuum_cost_limit,\n")
-						    wxT("  autovacuum_freeze_min_age,\n")
-						    wxT("  autovacuum_freeze_max_age,\n")
-						    wxT("  autovacuum_freeze_table_age\n")
-						    wxT(");\n");
+					       +  wxT(" RESET(\n")
+					       wxT("  autovacuum_enabled,\n")
+					       wxT("  autovacuum_vacuum_threshold,\n")
+					       wxT("  autovacuum_analyze_threshold,\n")
+					       wxT("  autovacuum_vacuum_scale_factor,\n")
+					       wxT("  autovacuum_analyze_scale_factor,\n")
+					       wxT("  autovacuum_vacuum_cost_delay,\n")
+					       wxT("  autovacuum_vacuum_cost_limit,\n")
+					       wxT("  autovacuum_freeze_min_age,\n")
+					       wxT("  autovacuum_freeze_max_age,\n")
+					       wxT("  autovacuum_freeze_table_age\n")
+					       wxT(");\n");
 				}
 			}
 			else
@@ -873,18 +873,18 @@ wxString dlgView::GetSql()
 				if (toastTableHasVacuum)
 				{
 					sql += wxT("ALTER MATERIALIZED VIEW ") + name
-							+  wxT(" RESET(\n")
-							wxT("  toast.autovacuum_enabled,\n")
-							wxT("  toast.autovacuum_vacuum_threshold,\n")
-							wxT("  toast.autovacuum_analyze_threshold,\n")
-							wxT("  toast.autovacuum_vacuum_scale_factor,\n")
-							wxT("  toast.autovacuum_analyze_scale_factor,\n")
-							wxT("  toast.autovacuum_vacuum_cost_delay,\n")
-							wxT("  toast.autovacuum_vacuum_cost_limit,\n")
-							wxT("  toast.autovacuum_freeze_min_age,\n")
-							wxT("  toast.autovacuum_freeze_max_age,\n")
-							wxT("  toast.autovacuum_freeze_table_age\n")
-							wxT(");\n");
+					       +  wxT(" RESET(\n")
+					       wxT("  toast.autovacuum_enabled,\n")
+					       wxT("  toast.autovacuum_vacuum_threshold,\n")
+					       wxT("  toast.autovacuum_analyze_threshold,\n")
+					       wxT("  toast.autovacuum_vacuum_scale_factor,\n")
+					       wxT("  toast.autovacuum_analyze_scale_factor,\n")
+					       wxT("  toast.autovacuum_vacuum_cost_delay,\n")
+					       wxT("  toast.autovacuum_vacuum_cost_limit,\n")
+					       wxT("  toast.autovacuum_freeze_min_age,\n")
+					       wxT("  toast.autovacuum_freeze_max_age,\n")
+					       wxT("  toast.autovacuum_freeze_table_age\n")
+					       wxT(");\n");
 				}
 			}
 			else
@@ -965,8 +965,8 @@ wxString dlgView::GetSql()
 			if (cboTablespace->GetOIDKey() != view->GetTablespaceOid())
 			{
 				sql += wxT("ALTER MATERIALIZED VIEW ") + name
-						+  wxT("\n  SET TABLESPACE ") + qtIdent(cboTablespace->GetValue())
-						+ wxT(";\n");
+				       +  wxT("\n  SET TABLESPACE ") + qtIdent(cboTablespace->GetValue())
+				       + wxT(";\n");
 			}
 		}
 	}
@@ -1041,7 +1041,7 @@ void dlgView::OnCheckMaterializedView(wxCommandEvent &ev)
 }
 
 void dlgView::FillAutoVacuumParameters(wxString &setStr, wxString &resetStr,
-                                        const wxString &parameter, const wxString &val)
+                                       const wxString &parameter, const wxString &val)
 {
 	if (val == wxT("-1"))
 	{

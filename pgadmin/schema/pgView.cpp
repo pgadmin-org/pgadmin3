@@ -275,28 +275,28 @@ wxString pgView::GetSql(ctlTree *browser)
 				while(tmpLoopFlag)
 				{
 					int length = sqlDefinition.Len();
-					int position = sqlDefinition.Find(';',true);
+					int position = sqlDefinition.Find(';', true);
 					if ((position != wxNOT_FOUND) && (position = (length - 1)))
-						sqlDefinition.Remove(position,1);
+						sqlDefinition.Remove(position, 1);
 					else
 						tmpLoopFlag = false;
 				}
 
 				sql += wxT(" AS \n")
-					+ sqlDefinition
-					+ wxT("\n")
-					+ isPopulated
-					+ wxT("\n\n")
-					+ GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+				       + sqlDefinition
+				       + wxT("\n")
+				       + isPopulated
+				       + wxT("\n\n")
+				       + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
 			}
 		}
 
 		if (!IsMatViewFlag)
 		{
 			sql += wxT(" AS \n")
-				+ GetFormattedDefinition()
-				+ wxT("\n\n")
-				+ GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+			       + GetFormattedDefinition()
+			       + wxT("\n\n")
+			       + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
 		}
 
 		if (GetConnection()->BackendMinimumVersion(8, 2))
@@ -304,22 +304,22 @@ wxString pgView::GetSql(ctlTree *browser)
 		else
 			sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
 
-		// "MATERIALIZED" isn't part of the object type name, it's a property, so 
-                // we need to generate the comment SQL manually here, instead of using
-                // wxString pgObject::GetCommentSql()
-        
+		// "MATERIALIZED" isn't part of the object type name, it's a property, so
+		// we need to generate the comment SQL manually here, instead of using
+		// wxString pgObject::GetCommentSql()
+
 		if (!GetComment().IsNull())
-      		{
+		{
 			if (IsMatViewFlag)
 			{
-                		sql += wxT("COMMENT ON MATERIALIZED VIEW ") + GetQuotedFullIdentifier()
-                      			+ wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
+				sql += wxT("COMMENT ON MATERIALIZED VIEW ") + GetQuotedFullIdentifier()
+				       + wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
 			}
 			else
-                        {
-                                sql += wxT("COMMENT ON VIEW ") + GetQuotedFullIdentifier()
-                                        + wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
-                        }
+			{
+				sql += wxT("COMMENT ON VIEW ") + GetQuotedFullIdentifier()
+				       + wxT("\n  IS ") + qtDbString(GetComment()) + wxT(";\n");
+			}
 		}
 
 		pgCollection *columns = browser->FindCollection(columnFactory, GetId());
@@ -623,9 +623,9 @@ bool pgView::IsMaterializedView(ctlTree *browser)
 		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(this->GetQuotedIdentifier()) + wxT(" AND schemaname = ") + qtDbString(this->GetSchema()->GetQuotedIdentifier());
 
 		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
-				return false;
+			return false;
 		else
-				return true;
+			return true;
 	}
 	else
 		return false;
@@ -638,9 +638,9 @@ bool pgView::IsMaterializedView(wxString schemaName, wxString viewName)
 		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(viewName) + wxT(" AND schemaname = ") + qtDbString(schemaName);
 
 		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
-				return false;
+			return false;
 		else
-				return true;
+			return true;
 	}
 	else
 		return false;
@@ -690,12 +690,12 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 3))
 	{
 		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid,c.relispopulated AS ispopulated,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-			           wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+		      wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
 	}
 	else
 	{
 		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-			           wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
+		      wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
 	}
 
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
@@ -709,37 +709,37 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	}
 
 	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
-			sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor \n");
+		sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor \n");
 
 	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
 	{
-			sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
-			         wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS toast_autovacuum_enabled \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age \n")
-			         wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age \n")
-			         wxT(", c.reloptions AS reloptions, tst.reloptions AS toast_reloptions \n")
-			         wxT(", (CASE WHEN c.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
+		sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
+		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS toast_autovacuum_enabled \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age \n")
+		       wxT(", substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age \n")
+		       wxT(", c.reloptions AS reloptions, tst.reloptions AS toast_reloptions \n")
+		       wxT(", (CASE WHEN c.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
 	}
 
 
 	sql += wxT("\n  FROM pg_class c\n")
-		   wxT("  LEFT OUTER JOIN pg_tablespace spc on spc.oid=c.reltablespace\n")
+	       wxT("  LEFT OUTER JOIN pg_tablespace spc on spc.oid=c.reltablespace\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0 AND des.classoid='pg_class'::regclass)\n");
 
 	// Add the toast table for vacuum parameters.

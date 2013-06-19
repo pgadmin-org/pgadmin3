@@ -340,7 +340,7 @@ private:
 	         toast_autovacuum_vacuum_cost_limit, toast_autovacuum_freeze_min_age,
 	         toast_autovacuum_freeze_max_age, toast_autovacuum_freeze_table_age;
 
-	wxString tablespace,isPopulated;
+	wxString tablespace, isPopulated;
 	bool hasToastTable;
 	OID tablespaceOid;
 

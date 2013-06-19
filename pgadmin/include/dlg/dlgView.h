@@ -41,7 +41,7 @@ private:
 	virtual bool IsUpToDate();
 	void OnChangeVacuum(wxCommandEvent &ev);
 	void OnCheckMaterializedView(wxCommandEvent &ev);
-	void FillAutoVacuumParameters(wxString &setStr, wxString &resetStr,const wxString &parameter, const wxString &val);
+	void FillAutoVacuumParameters(wxString &setStr, wxString &resetStr, const wxString &parameter, const wxString &val);
 	wxString AppendNum(bool &changed, wxTextCtrl *ctl, wxString val);
 	void DisableMaterializedView();
 	void DisableStorageParameters();

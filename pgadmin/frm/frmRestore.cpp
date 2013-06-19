@@ -146,17 +146,17 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 	// Pass the SSL mode via the environment
 	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
 
-        if (server->GetSSLRootCert() != wxEmptyString)
-                environment.Add(wxT("PGSSLROOTCERT=") + server->GetSSLRootCert());
+	if (server->GetSSLRootCert() != wxEmptyString)
+		environment.Add(wxT("PGSSLROOTCERT=") + server->GetSSLRootCert());
 
-        if (server->GetSSLCert() != wxEmptyString)
-                environment.Add(wxT("PGSSLCERT=") + server->GetSSLCert());
+	if (server->GetSSLCert() != wxEmptyString)
+		environment.Add(wxT("PGSSLCERT=") + server->GetSSLCert());
 
-        if (server->GetSSLKey() != wxEmptyString)
-                environment.Add(wxT("PGSSLKEY=") + server->GetSSLKey());
+	if (server->GetSSLKey() != wxEmptyString)
+		environment.Add(wxT("PGSSLKEY=") + server->GetSSLKey());
 
-        if (server->GetSSLCrl() != wxEmptyString)
-                environment.Add(wxT("PGSSLCRL=") + server->GetSSLCrl());
+	if (server->GetSSLCrl() != wxEmptyString)
+		environment.Add(wxT("PGSSLCRL=") + server->GetSSLCrl());
 
 	if (!pgAppMinimumVersion(restoreExecutable, 8, 4))
 	{
