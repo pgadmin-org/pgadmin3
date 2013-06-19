@@ -1413,6 +1413,7 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 	bool canClear = false;
 	bool canFind = false;
 	bool canAddFavourite = false;
+	bool canManageFavourite = false;
 	bool canSaveExplain = false;
 	bool canSaveGQB = false;
 
@@ -1438,7 +1439,8 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 				canRedo = sqlQuery->CanRedo();
 				canPaste = sqlQuery->CanPaste();
 				canFind = true;
-				canAddFavourite = (sqlQuery->GetLength() > 0);
+				canAddFavourite = (sqlQuery->GetLength() > 0) && (settings->GetFavouritesFile().Length() > 0);
+				canManageFavourite = (settings->GetFavouritesFile().Length() > 0);
 			}
 			else if (relatesToWindow(wnd, scratchPad))
 				canPaste = true;
@@ -1477,6 +1479,7 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 	editMenu->Enable(MNU_FIND, canFind);
 
 	favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
+	favouritesMenu->Enable(MNU_FAVOURITES_MANAGE, canManageFavourite);
 }
 
 
