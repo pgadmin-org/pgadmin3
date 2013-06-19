@@ -620,7 +620,7 @@ bool pgView::IsMaterializedView(ctlTree *browser)
 {
 	if (this->GetConnection()->BackendMinimumVersion(9, 3))
 	{
-		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(this->GetQuotedFullIdentifier()) + wxT(" AND schemaname = ") + qtDbString(this->GetSchema()->GetQuotedIdentifier());
+		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(this->GetQuotedIdentifier()) + wxT(" AND schemaname = ") + qtDbString(this->GetSchema()->GetQuotedIdentifier());
 
 		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
 				return false;
