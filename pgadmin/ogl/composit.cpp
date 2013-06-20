@@ -581,7 +581,7 @@ void wxCompositeShape::WriteAttributes(wxExpr *clause)
 	while (node)
 	{
 		wxOGLConstraint *constraint = (wxOGLConstraint *)node->GetData();
-		wxSprintf(m_constraintNameBuf, _T("constraint%d"), constraintNo);
+		wxSprintf(m_constraintNameBuf, wxT("constraint%d"), constraintNo);
 
 		// Each constraint is stored in the form
 		// (type name id xspacing yspacing m_constrainingObjectId constrainedObjectIdList)
@@ -618,7 +618,7 @@ void wxCompositeShape::WriteAttributes(wxExpr *clause)
 		childrenExpr->Append(new wxExpr(child->GetId()));
 		node = node->GetNext();
 	}
-	clause->AddAttributeValue(_T("children"), childrenExpr);
+	clause->AddAttributeValue(wxT("children"), childrenExpr);
 
 	// Write the ids of all the division images
 	if (m_divisions.GetCount() > 0)
@@ -631,7 +631,7 @@ void wxCompositeShape::WriteAttributes(wxExpr *clause)
 			divisionsExpr->Append(new wxExpr(child->GetId()));
 			node = node->GetNext();
 		}
-		clause->AddAttributeValue(_T("divisions"), divisionsExpr);
+		clause->AddAttributeValue(wxT("divisions"), divisionsExpr);
 	}
 }
 
@@ -655,7 +655,7 @@ void wxCompositeShape::ReadConstraints(wxExpr *clause, wxExprDatabase *database)
 
 	while (haveConstraints)
 	{
-		wxSprintf(m_constraintNameBuf, _T("constraint%d"), constraintNo);
+		wxSprintf(m_constraintNameBuf, wxT("constraint%d"), constraintNo);
 		wxExpr *constraintExpr = NULL;
 		clause->GetAttributeValue(m_constraintNameBuf, &constraintExpr);
 		if (!constraintExpr)
@@ -684,7 +684,7 @@ void wxCompositeShape::ReadConstraints(wxExpr *clause, wxExprDatabase *database)
 		cName = nameExpr->StringValue();
 		long cId = idExpr->IntegerValue();
 
-		wxExpr *objExpr1 = database->HashFind(_T("node_image"), constrainingExpr->IntegerValue());
+		wxExpr *objExpr1 = database->HashFind(wxT("node_image"), constrainingExpr->IntegerValue());
 		if (objExpr1 && objExpr1->GetClientData())
 			m_constrainingObject = (wxShape *)objExpr1->GetClientData();
 		else
@@ -695,7 +695,7 @@ void wxCompositeShape::ReadConstraints(wxExpr *clause, wxExprDatabase *database)
 		while (currentIdExpr)
 		{
 			long currentId = currentIdExpr->IntegerValue();
-			wxExpr *objExpr2 = database->HashFind(_T("node_image"), currentId);
+			wxExpr *objExpr2 = database->HashFind(wxT("node_image"), currentId);
 			if (objExpr2 && objExpr2->GetClientData())
 			{
 				m_constrainedObjects.Append((wxShape *)objExpr2->GetClientData());
@@ -956,30 +956,30 @@ void wxDivisionShape::WriteAttributes(wxExpr *clause)
 	wxCompositeShape::WriteAttributes(clause);
 
 	if (m_leftSide)
-		clause->AddAttributeValue(_T("left_side"), (long)m_leftSide->GetId());
+		clause->AddAttributeValue(wxT("left_side"), (long)m_leftSide->GetId());
 	if (m_topSide)
-		clause->AddAttributeValue(_T("top_side"), (long)m_topSide->GetId());
+		clause->AddAttributeValue(wxT("top_side"), (long)m_topSide->GetId());
 	if (m_rightSide)
-		clause->AddAttributeValue(_T("right_side"), (long)m_rightSide->GetId());
+		clause->AddAttributeValue(wxT("right_side"), (long)m_rightSide->GetId());
 	if (m_bottomSide)
-		clause->AddAttributeValue(_T("bottom_side"), (long)m_bottomSide->GetId());
+		clause->AddAttributeValue(wxT("bottom_side"), (long)m_bottomSide->GetId());
 
-	clause->AddAttributeValue(_T("handle_side"), (long)m_handleSide);
-	clause->AddAttributeValueString(_T("left_colour"), m_leftSideColour);
-	clause->AddAttributeValueString(_T("top_colour"), m_topSideColour);
-	clause->AddAttributeValueString(_T("left_style"), m_leftSideStyle);
-	clause->AddAttributeValueString(_T("top_style"), m_topSideStyle);
+	clause->AddAttributeValue(wxT("handle_side"), (long)m_handleSide);
+	clause->AddAttributeValueString(wxT("left_colour"), m_leftSideColour);
+	clause->AddAttributeValueString(wxT("top_colour"), m_topSideColour);
+	clause->AddAttributeValueString(wxT("left_style"), m_leftSideStyle);
+	clause->AddAttributeValueString(wxT("top_style"), m_topSideStyle);
 }
 
 void wxDivisionShape::ReadAttributes(wxExpr *clause)
 {
 	wxCompositeShape::ReadAttributes(clause);
 
-	clause->GetAttributeValue(_T("handle_side"), m_handleSide);
-	clause->GetAttributeValue(_T("left_colour"), m_leftSideColour);
-	clause->GetAttributeValue(_T("top_colour"), m_topSideColour);
-	clause->GetAttributeValue(_T("left_style"), m_leftSideStyle);
-	clause->GetAttributeValue(_T("top_style"), m_topSideStyle);
+	clause->GetAttributeValue(wxT("handle_side"), m_handleSide);
+	clause->GetAttributeValue(wxT("left_colour"), m_leftSideColour);
+	clause->GetAttributeValue(wxT("top_colour"), m_topSideColour);
+	clause->GetAttributeValue(wxT("left_style"), m_leftSideStyle);
+	clause->GetAttributeValue(wxT("top_style"), m_topSideStyle);
 }
 #endif
 
