@@ -52,7 +52,7 @@ BEGIN_EVENT_TABLE(ReportGridPage, wxWizardPage)
 END_EVENT_TABLE()
 
 ddGenerationWizard::ddGenerationWizard(wxFrame *frame, ddDatabaseDesign *design, pgConn *connection, bool useSizer)
-	: wxWizard(frame, wxID_ANY, _T("Generate DDL from model"),
+	: wxWizard(frame, wxID_ANY, wxT("Generate DDL from model"),
 	           wxBitmap(*continue_png_bmp), wxDefaultPosition,
 	           wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
@@ -63,16 +63,16 @@ ddGenerationWizard::ddGenerationWizard(wxFrame *frame, ddDatabaseDesign *design,
 	initialPage = new wxWizardPageSimple(this);
 
 	frontText = new wxStaticText(initialPage, wxID_ANY,
-	                             _T("Build DDL from model tables.\n")
-	                             _T("\n")
-	                             _T("The next pages will allow the built of DDL of the current database designer model.")
-	                             _T("\n\n")
-	                             _T("Restrictions apply when using experimental function ALTER TABLE instead of DROP/CREATE:\n\n")
-	                             _T("1. Database connection is required to check differences with existing tables.\n\n")
-	                             _T("2. Only changes done in the design will be applied to the db, not otherwise.\n\n")
-	                             _T("3. Rename of columns or tables is not (yet) supported.\n\n")
-	                             _T("4. Rename of constraints generate a drop and create, except for primary key constraints.\n\n")
-	                             _T("5. All constraints should have a defined name.\n\n")
+	                             wxT("Build DDL from model tables.\n")
+	                             wxT("\n")
+	                             wxT("The next pages will allow the built of DDL of the current database designer model.")
+	                             wxT("\n\n")
+	                             wxT("Restrictions apply when using experimental function ALTER TABLE instead of DROP/CREATE:\n\n")
+	                             wxT("1. Database connection is required to check differences with existing tables.\n\n")
+	                             wxT("2. Only changes done in the design will be applied to the db, not otherwise.\n\n")
+	                             wxT("3. Rename of columns or tables is not (yet) supported.\n\n")
+	                             wxT("4. Rename of constraints generate a drop and create, except for primary key constraints.\n\n")
+	                             wxT("5. All constraints should have a defined name.\n\n")
 	                             , wxPoint(5, 5)
 	                            );
 

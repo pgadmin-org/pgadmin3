@@ -356,7 +356,7 @@ bool pgAdmin3::OnInit()
 
 	if (cmdParser.Found(wxT("v")))
 	{
-		wxPrintf(_T("%s %s\n"), appearanceFactory->GetLongAppName().c_str(), VERSION_STR);
+		wxPrintf(wxT("%s %s\n"), appearanceFactory->GetLongAppName().c_str(), VERSION_STR);
 		return false;
 	}
 

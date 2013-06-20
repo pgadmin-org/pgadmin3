@@ -1535,7 +1535,7 @@ bool ddStubColumn::isUniqueKey()
 //
 
 ddDBReverseEngineering::ddDBReverseEngineering(wxFrame *frame, ddDatabaseDesign *design, pgConn *connection, bool useSizer)
-	: wxWizard(frame, wxID_ANY, _T("Import tables from schema wizard"),
+	: wxWizard(frame, wxID_ANY, wxT("Import tables from schema wizard"),
 	           wxBitmap(*namespaces_png_bmp), wxDefaultPosition,
 	           wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
@@ -1547,17 +1547,17 @@ ddDBReverseEngineering::ddDBReverseEngineering(wxFrame *frame, ddDatabaseDesign 
 	initialPage = new wxWizardPageSimple(this);
 
 	frontText = new wxStaticText(initialPage, wxID_ANY,
-	                             _T("Import database tables to model tables wizard.\n")
-	                             _T("\n")
-	                             _T("The next pages will allow you to import database tables inside a database model.")
-	                             _T("\n\n")
-	                             _T("\nSome restrictions apply:\n\n")
-	                             _T("1. Columns that belong to more than one unique constraint aren't supported.\n\n")
-	                             _T("2. Relationships are imported only if both tables (source and destination) are imported.\n\n")
-	                             _T("3. User defined datatypes aren't supported.\n\n")
-	                             _T("4. No indexes, views, sequences and others objects different from tables/relationships can be imported.\n\n")
-	                             _T("5. Tables with same name cannot be imported.\n\n")
-	                             _T("6. Inherited tables cannot be imported.\n\n")
+	                             wxT("Import database tables to model tables wizard.\n")
+	                             wxT("\n")
+	                             wxT("The next pages will allow you to import database tables inside a database model.")
+	                             wxT("\n\n")
+	                             wxT("\nSome restrictions apply:\n\n")
+	                             wxT("1. Columns that belong to more than one unique constraint aren't supported.\n\n")
+	                             wxT("2. Relationships are imported only if both tables (source and destination) are imported.\n\n")
+	                             wxT("3. User defined datatypes aren't supported.\n\n")
+	                             wxT("4. No indexes, views, sequences and others objects different from tables/relationships can be imported.\n\n")
+	                             wxT("5. Tables with same name cannot be imported.\n\n")
+	                             wxT("6. Inherited tables cannot be imported.\n\n")
 	                             , wxPoint(5, 5)
 	                            );
 
