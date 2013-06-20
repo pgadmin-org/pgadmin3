@@ -42,6 +42,16 @@ ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const
 ctlSQLResult::~ctlSQLResult()
 {
 	Abort();
+
+	if (thread)
+	{
+		thread->CancelExecution();
+		thread->Wait();
+
+		delete thread;
+
+		thread = NULL;
+	}
 }
 
 
@@ -120,6 +130,16 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve, wxWindow 
 	colTypes.Empty();
 	colTypClasses.Empty();
 
+	if (thread)
+	{
+		thread->CancelExecution();
+		thread->Wait();
+
+		delete thread;
+		thread = NULL;
+	}
+
+
 	thread = new pgQueryThread(conn, query, resultToRetrieve, caller, eventId, data);
 
 	if (thread->Create() != wxTHREAD_NO_ERROR)
@@ -143,10 +163,7 @@ int ctlSQLResult::Abort()
 
 		thread->CancelExecution();
 		thread->Wait();
-
-		delete thread;
 	}
-	thread = 0;
 	return 0;
 }
 

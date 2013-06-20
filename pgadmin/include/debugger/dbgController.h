@@ -138,6 +138,7 @@ private:
 	const static wxString ms_cmdGetTargetInfo;
 	const static wxString ms_cmdCreateListener;
 	const static wxString ms_cmdWaitForTarget;
+	const static wxString ms_cmdIsBackendRunning;
 
 private:
 	// Debugger Version for the current server
@@ -165,6 +166,9 @@ private:
 
 	// Debugger Data Model
 	dbgModel            *m_model;
+
+	// In-direct Debugging on which target-pid
+	wxString             m_currTargetPid;
 
 	DECLARE_EVENT_TABLE()
 

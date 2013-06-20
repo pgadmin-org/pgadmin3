@@ -2485,6 +2485,10 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 		{
 			showMessage(_("Empty query, no results."));
 		}
+		else if (ev.GetInt() == pgQueryResultEvent::PGQ_EXECUTION_CANCELLED)
+		{
+			showMessage(_("Execution Cancelled!"));
+		}
 		else
 		{
 			wxString errMsg, errMsg2;

@@ -201,6 +201,9 @@ const wxString dbgController::ms_cmdCreateListener(
 const wxString dbgController::ms_cmdWaitForTarget(
     wxT("SELECT * FROM pldbg_wait_for_target(%s)"));
 
+const wxString dbgController::ms_cmdIsBackendRunning(
+	wxT("SELECT COUNT(*) FROM (SELECT pg_catalog.pg_stat_get_backend_idset() AS bid) AS s WHERE pg_catalog.pg_stat_get_backend_pid(s.bid) = '%d'::integer;"));
+
 dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebugging)
 	: m_ver(DEBUGGER_UNKNOWN_API), m_sessionType(DBG_SESSION_TYPE_UNKNOWN),
 	  m_terminated(false), m_frm(NULL), m_dbgConn(NULL), m_dbgThread(NULL),
@@ -405,6 +408,7 @@ bool dbgController::Start()
 	LOCKMUTEX(m_dbgThreadLock);
 	m_dbgThread = new pgQueryThread(
 	    m_dbgConn, this, &(dbgController::NoticeHandler), this);
+	m_dbgThread->SetEventOnCancellation(false);
 
 	if (m_dbgThread->Create() != wxTHREAD_NO_ERROR)
 	{
@@ -446,6 +450,7 @@ bool dbgController::Start()
 				// Declare that execution has been cancelled
 				m_terminated = true;
 				m_frm->EnableToolsAndMenus(false);
+				m_frm->CloseProgressBar();
 
 				return false;
 			}
@@ -453,6 +458,7 @@ bool dbgController::Start()
 
 		m_execConnThread = new pgQueryThread(
 		    conn, this, &(dbgController::NoticeHandler), this);
+		m_execConnThread->SetEventOnCancellation(false);
 
 		if (m_execConnThread->Create() != wxTHREAD_NO_ERROR)
 		{

@@ -326,6 +326,7 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 		return false;
 
 	LOCKMUTEX(m_dbgThreadLock);
+
 	// It is possible that we found one error, while running the previous query
 	// and, called Stop function from it, because of an error found.
 	// That may have released the debugger thread
@@ -372,7 +373,6 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 	}
 
 	m_frm->EnableToolsAndMenus(false);
-	m_frm->SetStatusText(_("Debugging aborting..."));
 	wxTheApp->Yield(true);
 
 	if (!m_dbgConn->IsAlive())
@@ -391,9 +391,43 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 		UNLOCKMUTEX(m_dbgThreadLock);
 
 		if (_qry->ReturnCode() == PGRES_FATAL_ERROR)
-			wxMessageBox(_("The calling connection was closed or lost."), _("Connection Lost"), wxICON_ERROR | wxOK);
+		{
+			// We will start start listening for new in-context session, if the
+			// current session is closed. On which, the query/target was
+			// running.
+			//
+			// This allows us to have the same behaviour as the old one.
+			//
+			if (m_sessionType == DBG_SESSION_TYPE_INCONTEXT && m_currTargetPid != wxT(""))
+			{
+				// Let's check if the target pid has stopped or exited after
+				// successful debugging, let's move on and wait for the next
+				// target to hit.
+				wxString isTargetRunning = m_dbgConn->ExecuteScalar(wxString::Format(ms_cmdIsBackendRunning, m_currTargetPid.c_str()));
+
+				if (isTargetRunning == wxT("0"))
+				{
+					// Reset the current backend-pid of the target
+					m_currTargetPid = wxT("");
+					m_dbgThread->AddQuery(
+							wxString::Format(
+								ms_cmdWaitForTarget, m_model->GetSession().c_str()),
+							NULL, RESULT_ID_TARGET_READY);
+
+					m_frm->LaunchWaitingDialog();
+
+					return false;
+				}
+			}
+			else
+			{
+				wxMessageBox(_("The calling connection was closed or lost."), _("Connection Lost"), wxICON_ERROR | wxOK);
+			}
+		}
 		else
+		{
 			wxMessageBox(strErr, _("Execution Error"), wxICON_ERROR | wxOK);
+		}
 
 		wxLogQuietError(strErr);
 	}
@@ -910,6 +944,13 @@ void dbgController::ResultTargetReady(pgQueryResultEvent &_ev)
 	{
 		bool goAhead = false;
 		goAhead = (qry->ReturnCode() == PGRES_TUPLES_OK);
+		pgSet *set = qry->ResultSet();
+
+		// Save the current running target pid
+		m_currTargetPid = set->GetVal(0);
+
+		// Next line release the actual result-set
+		set = NULL;
 
 		// Release the result-set
 		qry->Release();

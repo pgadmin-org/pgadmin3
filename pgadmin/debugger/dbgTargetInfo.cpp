@@ -220,8 +220,8 @@ dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
 	m_pkgOid        = set->GetLong(wxT("pkg"));
 	m_pkgInitOid    = set->GetLong(wxT("pkgconsoid"));
 	m_schemaOid     = set->GetLong(wxT("schema"));
-	m_fqName        = m_schema + wxT(".") +
-	                  (m_pkgOid == 0 ? wxT("") : (m_package + wxT("."))) + m_name;
+	m_fqName        = qtIdent(m_schema) + wxT(".") +
+	                  (m_pkgOid == 0 ? wxT("") : (qtIdent(m_package) + wxT("."))) + qtIdent(m_name);
 
 	wxArrayString argModes, argNames, argTypes, argTypeOids, argDefVals,
 	              argBaseTypes;

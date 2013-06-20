@@ -47,7 +47,8 @@ pgQueryThread::pgQueryThread(pgConn *_conn, wxEvtHandler *_caller,
                              PQnoticeProcessor _processor, void *_noticeHandler) :
 	wxThread(wxTHREAD_JOINABLE), m_currIndex(-1), m_conn(_conn),
 	m_cancelled(false), m_multiQueries(true), m_useCallable(false),
-	m_caller(_caller), m_processor(pgNoticeProcessor), m_noticeHandler(NULL)
+	m_caller(_caller), m_processor(pgNoticeProcessor), m_noticeHandler(NULL),
+	m_eventOnCancellation(true)
 {
 	// check if we can really use the enterprisedb callable statement and
 	// required
@@ -96,7 +97,8 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &_qry,
                              int _resultToRetrieve, wxWindow *_caller, long _eventId, void *_data)
 	: wxThread(wxTHREAD_JOINABLE), m_currIndex(-1), m_conn(_conn),
 	  m_cancelled(false), m_multiQueries(false), m_useCallable(false),
-	  m_caller(NULL), m_processor(pgNoticeProcessor), m_noticeHandler(NULL)
+	  m_caller(NULL), m_processor(pgNoticeProcessor), m_noticeHandler(NULL),
+	  m_eventOnCancellation(true)
 {
 	if (m_conn && m_conn->conn)
 	{
@@ -115,6 +117,10 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &_qry,
 	}
 }
 
+void pgQueryThread::SetEventOnCancellation(bool eventOnCancelled)
+{
+	  m_eventOnCancellation = eventOnCancelled;
+}
 
 void pgQueryThread::AddQuery(const wxString &_qry, pgParamsArray *_params,
                              long _eventId, void *_data, bool _useCallable, int _resultToRetrieve)
@@ -146,7 +152,7 @@ wxString pgQueryThread::GetMessagesAndClear(int idx)
 	{
 		wxCriticalSectionLocker lock(m_criticalSection);
 		msg = m_queries[idx]->m_message;
-		m_queries[idx]->m_message.empty();
+		m_queries[idx]->m_message = wxT("");
 	}
 
 	return msg;
@@ -332,6 +338,7 @@ return_with_error:
 continue_without_error:
 	int resultsRetrieved = 0;
 	PGresult *lastResult = 0;
+	bool connExecutionCancelled = false;
 
 	while (true)
 	{
@@ -340,16 +347,22 @@ continue_without_error:
 		// Hence - it does not make sense to use the function 'testdestroy' here.
 		// We introduced the 'CancelExecution' function for the same purpose.
 		//
-		// Also, do not raise event when the query execution is cancelled to
-		// avoid the bugs introduced to handle events by the event handler,
-		// which is missing or being deleted.
+		// We will have to call the CancelExecution function of pgConn to
+		// inform the backend that the user has cancelled the execution.
 		//
-		// It will be responsibility of the compononent, using the object of
-		// pgQueryThread, to take the required actions to take care of the
-		// issue.
-		if (m_cancelled)
+		// We will need to consume all the results before quiting from the thread.
+		// Otherwise - the connection object will become unusable, and throw
+		// error - because libpq connections expects application to consume all
+		// the result, before executing another query
+		//
+		if (m_cancelled && rc != pgQueryResultEvent::PGQ_EXECUTION_CANCELLED)
 		{
-			m_conn->CancelExecution();
+			// We shouldn't be calling cancellation multiple time
+			if (!connExecutionCancelled)
+			{
+				m_conn->CancelExecution();
+				connExecutionCancelled = true;
+			}
 			rc = pgQueryResultEvent::PGQ_EXECUTION_CANCELLED;
 
 			err.msg_primary = _("Execution Cancelled");
@@ -359,14 +372,31 @@ continue_without_error:
 				PQclear(lastResult);
 				lastResult = NULL;
 			}
-			AppendMessage(_("Query-thread execution cancelled...\nthe query is:"));
-			AppendMessage(query);
-
-			return rc;
 		}
 
 		if ((rc = PQconsumeInput(m_conn->conn)) != 1)
 		{
+			if (m_cancelled)
+			{
+				rc = pgQueryResultEvent::PGQ_EXECUTION_CANCELLED;
+				err.msg_primary = _("Execution Cancelled");
+
+				if (lastResult)
+				{
+					PQclear(lastResult);
+					lastResult = NULL;
+				}
+				// There is nothing more to consume.
+				// We can quit the thread now.
+				//
+				// Raise the event - if the component asked for it on
+				// execution cancellation.
+				if (m_eventOnCancellation)
+					RaiseEvent(rc);
+
+				return rc;
+			}
+
 			if (rc == 0)
 			{
 				err.msg_primary = wxString(PQerrorMessage(m_conn->conn), conv);
@@ -423,6 +453,11 @@ continue_without_error:
 						if (result)
 							PQclear(result);
 
+						result = NULL;
+
+						if (m_eventOnCancellation)
+							RaiseEvent(rc);
+
 						return rc;
 					}
 					goto out_of_consume_input_loop;
@@ -432,6 +467,7 @@ continue_without_error:
 				{
 					goto out_of_consume_input_loop;
 				}
+
 				// Release the temporary results
 				PQclear(res);
 				res = NULL;
@@ -475,6 +511,18 @@ continue_without_error:
 
 			while((copyRc = PQgetCopyData(m_conn->conn, &buf, 1)) >= 0)
 			{
+				// Ignore processing the query result, when it has already been
+				// cancelled by the user
+				if (m_cancelled)
+				{
+					if (!connExecutionCancelled)
+					{
+						m_conn->CancelExecution();
+						connExecutionCancelled = true;
+					}
+					continue;
+				}
+
 				if (buf != NULL)
 				{
 					if (copyRows < 100)
@@ -492,13 +540,6 @@ continue_without_error:
 				if (copyRc > 0)
 					copyRows++;
 
-				if (m_cancelled)
-				{
-					m_conn->CancelExecution();
-					rc = pgQueryResultEvent::PGQ_EXECUTION_CANCELLED;
-
-					return -1;
-				}
 				if (lastCopyRc == 0 && copyRc == 0)
 				{
 					Yield();
@@ -508,6 +549,24 @@ continue_without_error:
 				{
 					if (!PQconsumeInput(m_conn->conn))
 					{
+						// It might be the case - it is a result of the
+						// execution cancellation.
+						if (m_cancelled)
+						{
+							rc = pgQueryResultEvent::PGQ_EXECUTION_CANCELLED;
+
+							// Release the result as the query execution has been cancelled by the
+							// user
+							if (result)
+								PQclear(result);
+
+							result = NULL;
+
+							if (m_eventOnCancellation)
+								RaiseEvent(rc);
+
+							return rc;
+						}
 						if (PQstatus(m_conn->conn) == CONNECTION_BAD)
 						{
 							err.msg_primary = _("Connection to the database server lost");
@@ -532,7 +591,10 @@ continue_without_error:
 		}
 
 		resultsRetrieved++;
-		if (resultsRetrieved == resultToRetrieve)
+
+		// Save the current result, as asked by the component
+		// But - only if the execution is not cancelled
+		if (!m_cancelled && resultsRetrieved == resultToRetrieve)
 		{
 			result = res;
 			insertedOid = PQoidValue(res);
@@ -546,14 +608,31 @@ continue_without_error:
 
 		if (lastResult)
 		{
-			if (PQntuples(lastResult))
+			if (!m_cancelled && PQntuples(lastResult))
 				AppendMessage(wxString::Format(wxPLURAL("query result with %d row discarded.\n", "query result with %d rows discarded.\n",
 				                                        PQntuples(lastResult)), PQntuples(lastResult)));
 			PQclear(lastResult);
 		}
 		lastResult = res;
 	}
+
 out_of_consume_input_loop:
+	if (m_cancelled)
+	{
+		rc = pgQueryResultEvent::PGQ_EXECUTION_CANCELLED;
+
+		// Release the result as the query execution has been cancelled by the
+		// user
+		if (result)
+			PQclear(result);
+
+		result = NULL;
+
+		if (m_eventOnCancellation)
+			RaiseEvent(rc);
+
+		return rc;
+	}
 
 	if (!result)
 		result = lastResult;
@@ -651,7 +730,7 @@ void *pgQueryThread::Entry()
 		if (!m_multiQueries || m_cancelled)
 			break;
 
-		wxThread::Sleep(20);
+		wxThread::Sleep(10);
 	}
 	while (true);
 

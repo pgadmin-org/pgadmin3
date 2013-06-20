@@ -182,6 +182,8 @@ public:
 		return m_useCallable;
 	}
 
+	void SetEventOnCancellation(bool eventOnCancelled);
+
 	void AddQuery(
 	    const wxString &_qry, pgParamsArray *_params = NULL,
 	    long _eventId = 0, void *_data = NULL, bool _useCallable = false,
@@ -262,6 +264,8 @@ private:
 	pgConn            *m_conn;
 	// Execution cancelled?
 	bool               m_cancelled;
+	// Raise events even when cancelled the execution
+	bool               m_eventOnCancellation;
 	// Does this thread support multiple queries
 	bool               m_multiQueries;
 	// Use EDB callable statement (if available and require)
