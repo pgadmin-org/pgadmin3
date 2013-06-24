@@ -119,7 +119,7 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &_qry,
 
 void pgQueryThread::SetEventOnCancellation(bool eventOnCancelled)
 {
-	  m_eventOnCancellation = eventOnCancelled;
+	m_eventOnCancellation = eventOnCancelled;
 }
 
 void pgQueryThread::AddQuery(const wxString &_qry, pgParamsArray *_params,

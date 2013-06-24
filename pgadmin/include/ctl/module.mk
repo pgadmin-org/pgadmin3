@@ -23,6 +23,7 @@ pgadmin3_SOURCES += \
 	include/ctl/ctlSQLBox.h \
 	include/ctl/ctlSQLGrid.h \
 	include/ctl/ctlSQLResult.h \
+	include/ctl/ctlProgressStatusBar.h \
 	include/ctl/ctlTree.h \
 	include/ctl/explainCanvas.h \
 	include/ctl/timespin.h \

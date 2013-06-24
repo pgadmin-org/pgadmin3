@@ -202,7 +202,7 @@ const wxString dbgController::ms_cmdWaitForTarget(
     wxT("SELECT * FROM pldbg_wait_for_target(%s)"));
 
 const wxString dbgController::ms_cmdIsBackendRunning(
-	wxT("SELECT COUNT(*) FROM (SELECT pg_catalog.pg_stat_get_backend_idset() AS bid) AS s WHERE pg_catalog.pg_stat_get_backend_pid(s.bid) = '%d'::integer;"));
+    wxT("SELECT COUNT(*) FROM (SELECT pg_catalog.pg_stat_get_backend_idset() AS bid) AS s WHERE pg_catalog.pg_stat_get_backend_pid(s.bid) = '%d'::integer;"));
 
 dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebugging)
 	: m_ver(DEBUGGER_UNKNOWN_API), m_sessionType(DBG_SESSION_TYPE_UNKNOWN),

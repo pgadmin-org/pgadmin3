@@ -21,6 +21,7 @@
 #include "ctl/ctlMenuToolbar.h"
 #include "ctl/ctlSQLBox.h"
 #include "ctl/ctlAuiNotebook.h"
+#include "ctl/ctlProgressStatusBar.h"
 #include "debugger/dbgController.h"
 #include "debugger/ctlTabWindow.h"
 #include "debugger/frmDebugger.h"
@@ -58,7 +59,6 @@ BEGIN_EVENT_TABLE(frmDebugger, pgFrame)
 
 	EVT_MENU(MNU_CONTENTS,               frmDebugger::OnContents)
 	EVT_MENU(MNU_HELP,                   frmDebugger::OnHelp)
-	EVT_TIMER(ID_TIMER,                  frmDebugger::OnTimer)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ frmDebugger::frmDebugger(frmMain *_parent, dbgController *_controller,
                          const wxString &_title) : pgFrame(_parent, _title), m_menuBar(NULL),
 	m_toolBar(NULL), m_viewMenu(NULL), m_debugMenu(NULL), m_statusBar(NULL),
 	m_parent(_parent), m_controller(_controller), m_stackWindow(NULL),
-	m_tabWindow(NULL), m_codeViewer(NULL), m_progressBar(NULL), m_timer(this, ID_TIMER)
+	m_tabWindow(NULL), m_codeViewer(NULL)
 {
 	dlgName = wxT("frmDebugger");
 	RestorePosition(100, 100, 600, 500, 450, 300);
@@ -281,10 +281,6 @@ void frmDebugger::EnableToolsAndMenus(bool enable)
 		m_debugMenu->Enable(MENU_ID_TOGGLE_BREAK,    enable);
 		m_debugMenu->Enable(MENU_ID_CLEAR_ALL_BREAK, enable);
 		m_debugMenu->Enable(MENU_ID_STOP,            enable);
-	}
-	if ((!m_controller || m_controller->IsTerminated()))
-	{
-		m_timer.Stop();
 	}
 }
 
@@ -590,7 +586,7 @@ void frmDebugger::OnPositionStc(wxStyledTextEvent &event)
 		strPos.Printf(_("Ln %d Col %d Ch %d"), m_codeViewer->LineFromPosition(pos) + 1,
 		              m_codeViewer->GetColumn(pos) + 1, pos + 1);
 
-		GetStatusBar()->SetStatusText(strPos, 2);
+		GetStatusBar()->SetStatusText(strPos, 3);
 	}
 }
 
@@ -696,12 +692,14 @@ ctlMenuToolbar *frmDebugger::SetupToolBar(void)
 //    This function initializes the status bar (we don't have one at the moment
 //  so this function simply returns)
 //
-wxStatusBar *frmDebugger::SetupStatusBar(void)
+ctlProgressStatusBar *frmDebugger::SetupStatusBar(void)
 {
-	wxStatusBar *bar = CreateStatusBar(3, wxST_SIZEGRIP);
-	int          widths[] = { 0, -1, 130 };
+	ctlProgressStatusBar *bar = new ctlProgressStatusBar(this, false);
+	int          widths[] = { ctlProgressStatusBar::ms_progressbar_width, -1, ctlProgressStatusBar::ms_progressstatus_width, 190};
 
-	bar->SetStatusWidths(3, widths);
+	bar->SetFieldsCount(4);
+	bar->SetStatusWidths(4, widths);
+	this->SetStatusBar(bar);
 
 	return(bar);
 }
@@ -791,9 +789,6 @@ wxMenuBar *frmDebugger::SetupMenuBar(void)
 
 void frmDebugger::OnClose(wxCloseEvent &_ev)
 {
-	bool wasTimerRunning = m_timer.IsRunning();
-	m_timer.Stop();
-
 	if (!m_controller->CanRestart() && _ev.CanVeto())
 	{
 		if (wxMessageBox(
@@ -801,16 +796,10 @@ void frmDebugger::OnClose(wxCloseEvent &_ev)
 		            _("Close debugger"), wxICON_QUESTION | wxYES_NO) != wxYES)
 		{
 			_ev.Veto();
-			if (wasTimerRunning)
-			{
-				m_timer.Start(500);
-			}
 
 			return;
 		}
 	}
-
-	m_timer.Stop();
 
 	m_controller->CloseDebugger();
 
@@ -1015,20 +1004,7 @@ void frmDebugger::LaunchWaitingDialog(const wxString &msg)
 	m_statusTxt = strStatus;
 
 	m_statusBar->SetStatusText(strStatus, 1);
-
-	// NOTE: the waiting-dialog takes forever to appear running a remote X session so you can disable it by defining the following env. variable
-	if(getenv("SUPPRESS_WAIT_DIALOG"))
-	{
-		m_progressBar = NULL;
-	}
-	else
-	{
-		m_progressBar =
-		    new wxProgressDialog(_("Waiting for target"), strStatus, 100, this,
-		                         wxPD_SMOOTH | wxPD_CAN_ABORT | wxPD_ELAPSED_TIME );
-
-		m_timer.Start(500);    // 2 clock ticks per second
-	}
+	m_statusBar->ShowProgress();
 }
 
 
@@ -1039,22 +1015,5 @@ void frmDebugger::CloseProgressBar()
 		m_statusBar->SetStatusText(m_statusTxt + wxT(" Done"), 1);
 		m_statusTxt = wxT("");
 	}
-	if (m_progressBar)
-	{
-		m_progressBar->Close();
-		delete m_progressBar;
-		m_progressBar = NULL;
-	}
-}
-
-
-void frmDebugger::OnTimer(wxTimerEvent &_ev)
-{
-	if (m_progressBar)
-	{
-		if (m_progressBar->Pulse() == false)
-		{
-			Close();
-		}
-	}
+	m_statusBar->StopProgress();
 }

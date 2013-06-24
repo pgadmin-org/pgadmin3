@@ -26,6 +26,8 @@
 #include <wx/aui/aui.h>
 #include <wx/progdlg.h>
 
+#include "ctl/ctlProgressStatusBar.h"
+
 //
 // This number MUST be incremented if changing any of the default perspectives
 //
@@ -111,7 +113,7 @@ private:
 
 	wxMenuBar      *SetupMenuBar( void );
 	ctlMenuToolbar *SetupToolBar( void );
-	wxStatusBar    *SetupStatusBar( void );
+	ctlProgressStatusBar *SetupStatusBar( void );
 
 	enum
 	{
@@ -132,7 +134,7 @@ private:
 
 	wxAuiManager      m_manager;
 	// Frame's status bar
-	wxStatusBar      *m_statusBar;
+	ctlProgressStatusBar *m_statusBar;
 	// Main Frame
 	frmMain          *m_parent;
 	// Debugger Controller
@@ -144,18 +146,11 @@ private:
 	ctlTabWindow     *m_tabWindow;
 	// Function Code Viewer
 	ctlSQLBox        *m_codeViewer;
-	// Timer
-	wxTimer           m_timer;
-	// "Waiting for target" dialog
-	wxProgressDialog *m_progressBar;
 
 	// Operation Status
 	wxString          m_statusTxt;
 
 	DECLARE_EVENT_TABLE()
-
-	// Idle processor
-	void OnTimer(wxTimerEvent &_ev);
 
 	void OnExecute(wxCommandEvent &_ev);
 	void OnDebugCommand(wxCommandEvent &_ev);

@@ -410,9 +410,9 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 					// Reset the current backend-pid of the target
 					m_currTargetPid = wxT("");
 					m_dbgThread->AddQuery(
-							wxString::Format(
-								ms_cmdWaitForTarget, m_model->GetSession().c_str()),
-							NULL, RESULT_ID_TARGET_READY);
+					    wxString::Format(
+					        ms_cmdWaitForTarget, m_model->GetSession().c_str()),
+					    NULL, RESULT_ID_TARGET_READY);
 
 					m_frm->LaunchWaitingDialog();
 

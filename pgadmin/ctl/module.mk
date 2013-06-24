@@ -24,6 +24,7 @@ pgadmin3_SOURCES += \
         ctl/ctlSeclabelPanel.cpp \
         ctl/ctlSecurityPanel.cpp \
         ctl/ctlTree.cpp \
+		ctl/ctlProgressStatusBar.cpp \
         ctl/explainCanvas.cpp \
         ctl/explainShape.cpp \
         ctl/timespin.cpp \
