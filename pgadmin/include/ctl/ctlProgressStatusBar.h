@@ -26,6 +26,8 @@ public:
 	void ShowProgress(bool restart = true);
 	void StopProgress();
 	void SetProgress(int val);
+	virtual void SetFieldsCount(int number = 1, const int *widths = NULL);
+	virtual void SetStatusWidths(int n, const int widths_field[]);
 
 	static const unsigned short ms_increment,
 	       ms_progressbar_width,
@@ -47,8 +49,8 @@ protected:
 
 	enum
 	{
-	    ProgressBar_field,
 	    Status_field,
+	    ProgressBar_field,
 	    ProgressStatus_field,
 	    Max_Field
 	};

@@ -695,7 +695,7 @@ ctlMenuToolbar *frmDebugger::SetupToolBar(void)
 ctlProgressStatusBar *frmDebugger::SetupStatusBar(void)
 {
 	ctlProgressStatusBar *bar = new ctlProgressStatusBar(this, false);
-	int          widths[] = { ctlProgressStatusBar::ms_progressbar_width, -1, ctlProgressStatusBar::ms_progressstatus_width, 190};
+	int          widths[] = { -1, ctlProgressStatusBar::ms_progressbar_width, ctlProgressStatusBar::ms_progressstatus_width, 190};
 
 	bar->SetFieldsCount(4);
 	bar->SetStatusWidths(4, widths);
@@ -970,7 +970,7 @@ void frmDebugger::DisplaySource(dbgCachedStack &_cached)
 
 void frmDebugger::SetStatusText(const wxString &_status)
 {
-	m_statusBar->SetStatusText(_status, 1);
+	m_statusBar->SetStatusText(_status, 0);
 }
 
 
@@ -1003,7 +1003,7 @@ void frmDebugger::LaunchWaitingDialog(const wxString &msg)
 	}
 	m_statusTxt = strStatus;
 
-	m_statusBar->SetStatusText(strStatus, 1);
+	SetStatusText(strStatus);
 	m_statusBar->ShowProgress();
 }
 
@@ -1012,7 +1012,7 @@ void frmDebugger::CloseProgressBar()
 {
 	if (!m_statusTxt.IsEmpty())
 	{
-		m_statusBar->SetStatusText(m_statusTxt + wxT(" Done"), 1);
+		SetStatusText(m_statusTxt + wxT(" Done"));
 		m_statusTxt = wxT("");
 	}
 	m_statusBar->StopProgress();

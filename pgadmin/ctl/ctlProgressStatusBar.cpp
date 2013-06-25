@@ -33,7 +33,7 @@ ctlProgressStatusBar::ctlProgressStatusBar(wxWindow *parent, bool showProgressIn
 	  m_autoProgressive(autoProgressive), m_autoValIncrementing(true),
 	  m_hr(0), m_min(0), m_sec(0), m_mil(0), m_val(0)
 {
-	static int widths[] = {ms_progressbar_width, -1, ms_progressstatus_width};
+	static int widths[] = {-1, ms_progressbar_width, ms_progressstatus_width};
 	int fields = 0;
 
 	if (max <= 0)
@@ -67,6 +67,9 @@ ctlProgressStatusBar::ctlProgressStatusBar(wxWindow *parent, bool showProgressIn
 			m_mil = 0;
 		}
 	}
+	// Dummy event to place the progressbar at right place
+	wxSizeEvent ev;
+	this->OnSize(ev);
 }
 
 ctlProgressStatusBar::~ctlProgressStatusBar()
@@ -80,6 +83,10 @@ ctlProgressStatusBar::~ctlProgressStatusBar()
 
 void ctlProgressStatusBar::OnSize(wxSizeEvent &ev)
 {
+	// We should have hide the progress bar
+	if (GetFieldsCount() <= ProgressBar_field)
+		return;
+
 	wxRect r;
 	GetFieldRect(ProgressBar_field, r);
 
@@ -174,4 +181,21 @@ void ctlProgressStatusBar::StopProgress()
 	m_progressStopped = true;
 }
 
+void ctlProgressStatusBar::SetFieldsCount(int number, const int *widths)
+{
+	m_progress->Show(number > ProgressBar_field);
+	wxStatusBar::SetFieldsCount( number, widths);
 
+	// Dummy Size event (to reposition the progress bar)
+	wxSizeEvent ev;
+	this->OnSize(ev);
+}
+
+void ctlProgressStatusBar::SetStatusWidths(int n, const int widths_field[])
+{
+	wxStatusBar::SetStatusWidths( n, widths_field);
+
+	// Dummy Size event (to reposition the progress bar)
+	wxSizeEvent ev;
+	this->OnSize(ev);
+}
