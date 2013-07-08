@@ -19,6 +19,10 @@
 
 IMPLEMENT_CLASS(ctlMessageWindow, wxTextCtrl)
 
+BEGIN_EVENT_TABLE(ctlMessageWindow, wxTextCtrl)
+	EVT_TIMER(wxID_ANY,       ctlMessageWindow::OnTimer)
+END_EVENT_TABLE()
+
 ////////////////////////////////////////////////////////////////////////////////
 // ctlMessageWindow constructor
 //
@@ -30,6 +34,7 @@ ctlMessageWindow::ctlMessageWindow(wxWindow *parent, wxWindowID id)
 	             wxTE_MULTILINE | wxTE_READONLY)
 {
 	SetFont(settings->GetSQLFont());
+	m_timer.SetOwner(this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +45,20 @@ ctlMessageWindow::ctlMessageWindow(wxWindow *parent, wxWindowID id)
 
 void ctlMessageWindow::AddMessage(wxString message)
 {
-	AppendText(message + wxT("\n"));
+	m_mutex.Lock();
+	m_currMsg += message + wxT("\n");
+	m_mutex.Unlock();
+
+	if (!m_timer.IsRunning())
+		m_timer.Start(100, true);
+}
+
+void ctlMessageWindow::OnTimer(wxTimerEvent &ev)
+{
+	m_mutex.Lock();
+	AppendText(m_currMsg);
+	m_currMsg = wxEmptyString;
+	m_mutex.Unlock();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

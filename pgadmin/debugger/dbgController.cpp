@@ -565,7 +565,7 @@ void dbgController::NoticeHandler(void *_arg, const char *_msg)
 
 	wxMBConv *conv = controller->m_dbgConn->GetConv();
 
-	wxString strMsg = wxString(_msg, *conv);
+	wxString strMsg(_msg, *conv);
 
 	if (strMsg.EndsWith(wxT("\n")))
 	{

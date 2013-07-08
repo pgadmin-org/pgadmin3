@@ -24,6 +24,7 @@
 class ctlMessageWindow : public wxTextCtrl
 {
 	DECLARE_CLASS(ctlMessageWindow)
+	DECLARE_EVENT_TABLE()
 
 public:
 	ctlMessageWindow(wxWindow *parent, wxWindowID id);
@@ -31,6 +32,13 @@ public:
 	void     AddMessage(wxString message);	// Add a message to the window
 	void     DelMessage(const char *name = NULL);								     // Remove a message from the window
 	wxString GetMessage(int row);
+
+protected:
+	wxString m_currMsg;
+	wxTimer  m_timer;
+	wxMutex  m_mutex;
+
+	void OnTimer(wxTimerEvent &);
 };
 
 #endif

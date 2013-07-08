@@ -84,7 +84,7 @@ END_EVENT_TABLE()
 // Event functions
 void dbgController::OnNoticeReceived(wxCommandEvent &_ev)
 {
-	m_frm->GetMessageWindow()->AppendText(_ev.GetString());
+	m_frm->GetMessageWindow()->AddMessage(_ev.GetString());
 	m_frm->GetTabWindow()->SelectTab(ID_MSG_PAGE);
 }
 
@@ -159,7 +159,7 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 				        _("Debugger(%ld): Function/Procedure terminated with an error.\n%s"),
 				        m_execConnThread->GetId(), strErr.c_str()));
 
-				m_frm->GetMessageWindow()->AppendText(qry->GetMessage());
+				m_frm->GetMessageWindow()->AddMessage(qry->GetMessage());
 				m_frm->GetMessageWindow()->SetFocus();
 			}
 
@@ -175,7 +175,7 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 				        _("Debugger(%ld): Function/Procedure terminated with an error.\n%s"),
 				        m_execConnThread->GetId(), strErr.c_str()));
 
-				m_frm->GetMessageWindow()->AppendText(qry->GetMessage());
+				m_frm->GetMessageWindow()->AddMessage(qry->GetMessage());
 				m_frm->GetMessageWindow()->SetFocus();
 			}
 
@@ -184,7 +184,7 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 			{
 				m_frm->SetStatusText(_("Execution completed."));
 				pgSet *set = qry->ResultSet();
-				m_frm->GetMessageWindow()->AppendText(set->GetCommandStatus());
+				m_frm->GetMessageWindow()->AddMessage(set->GetCommandStatus());
 
 				m_frm->GetResultWindow()->FillResult(set);
 			}
@@ -197,7 +197,7 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 				        _("Debugger(%ld): Execution of the debugging function/procedure completed\n"),
 				        m_execConnThread->GetId()));
 
-				m_frm->GetMessageWindow()->AppendText(qry->GetMessage());
+				m_frm->GetMessageWindow()->AddMessage(qry->GetMessage());
 				m_frm->GetMessageWindow()->SetFocus();
 
 				break;
