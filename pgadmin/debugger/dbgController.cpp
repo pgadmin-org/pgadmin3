@@ -78,7 +78,7 @@ const wxString dbgController::ms_cmdWaitForBreakpointV1(
     wxT("	(SELECT\n")
     wxT("		s.args\n")
     wxT("	 FROM pldbg_get_stack($1::INTEGER) s\n")
-    wxT("	 WHERE s.func = p.func AS s.pkg = p.pkg) AS args\n")
+    wxT("	 WHERE s.func = p.func AND s.pkg = p.pkg) AS args\n")
     wxT("FROM pldbg_wait_for_breakpoint($1::INTEGER) p"));
 const wxString dbgController::ms_cmdWaitForBreakpointV2(
     wxT("SELECT\n")
@@ -108,7 +108,7 @@ const wxString dbgController::ms_cmdStepOverV1(
     wxT("	(SELECT\n")
     wxT("		s.args\n")
     wxT("	 FROM pldbg_get_stack($1::INTEGER) s\n")
-    wxT("	 WHERE s.func = p.func AS s.pkg = p.pkg) AS args\n")
+    wxT("	 WHERE s.func = p.func AND s.pkg = p.pkg) AS args\n")
     wxT("FROM pldbg_step_over($1::INTEGER) p"));
 const wxString dbgController::ms_cmdStepOverV2(
     wxT("SELECT\n")
@@ -126,7 +126,7 @@ const wxString dbgController::ms_cmdStepIntoV1(
     wxT("	(SELECT\n")
     wxT("		s.args\n")
     wxT("	 FROM pldbg_get_stack($1::INTEGER) s\n")
-    wxT("	 WHERE s.func = p.func AS s.pkg = p.pkg) AS args\n")
+    wxT("	 WHERE s.func = p.func AND s.pkg = p.pkg) AS args\n")
     wxT("FROM pldbg_step_into($1::INTEGER) p"));
 const wxString dbgController::ms_cmdStepIntoV2(
     wxT("SELECT\n")
@@ -144,7 +144,7 @@ const wxString dbgController::ms_cmdContinueV1(
     wxT("	(SELECT\n")
     wxT("		s.args\n")
     wxT("	 FROM pldbg_get_stack($1::INTEGER) s\n")
-    wxT("	 WHERE s.func = p.func AS s.pkg = p.pkg) AS args\n")
+    wxT("	 WHERE s.func = p.func AND s.pkg = p.pkg) AS args\n")
     wxT("FROM pldbg_continue($1::INTEGER) p"));
 const wxString dbgController::ms_cmdContinueV2(
     wxT("SELECT\n")
@@ -174,7 +174,7 @@ const wxString dbgController::ms_cmdSelectFrameV1(
     wxT("	(SELECT\n")
     wxT("		s.args\n")
     wxT("	 FROM pldbg_get_stack($1::INTEGER) s\n")
-    wxT("	 WHERE s.func = p.func AS s.pkg = p.pkg) AS args\n")
+    wxT("	 WHERE s.func = p.func AND s.pkg = p.pkg) AS args\n")
     wxT("FROM pldbg_select_frame($1::INTEGER, $2::INTEGER) p"));
 const wxString dbgController::ms_cmdSelectFrameV2(
     wxT("SELECT\n")
@@ -506,16 +506,16 @@ bool dbgController::ExecuteTarget()
 		if (target->GetLanguage() == wxT("edbspl"))
 		{
 			strDebugCmdPkgInitializer = wxString::Format(
-			                                ms_cmdDebugSPLV1, target->GetPkgInitOid(), target->GetPkgOid());
+			                                ms_cmdDebugSPLV1, target->GetPkgOid(), target->GetPkgInitOid());
 			strDebugCmdTarget = wxString::Format(
-			                        ms_cmdDebugSPLV1, target->GetOid(), target->GetPkgOid());
+			                        ms_cmdDebugSPLV1, target->GetPkgOid(), target->GetOid());
 		}
 		else
 		{
 			strDebugCmdPkgInitializer = wxString::Format(
-			                                ms_cmdDebugPLPGSQLV1, target->GetPkgInitOid(), target->GetPkgOid());
+			                                ms_cmdDebugPLPGSQLV1, target->GetPkgOid(), target->GetPkgInitOid());
 			strDebugCmdTarget = wxString::Format(
-			                        ms_cmdDebugPLPGSQLV1, target->GetOid(), target->GetPkgOid());
+			                        ms_cmdDebugPLPGSQLV1, target->GetPkgOid(), target->GetOid());
 		}
 	}
 	else

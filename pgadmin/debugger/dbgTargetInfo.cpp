@@ -562,7 +562,7 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 			if (conn->BackendMinimumVersion(8, 4))
 			{
 				strQuery = wxT("DECLARE\n") +
-				           strDeclare + wxT("BEGIN\n") + strStatement + wxT("END;");
+				           strDeclare + wxT("BEGIN\n") + strStatement + wxT(";\nEND;");
 			}
 			else
 			{

@@ -300,8 +300,8 @@ void dbgController::ResultPortAttach(pgQueryResultEvent &_ev)
 				m_dbgThread->AddQuery(
 				    wxString::Format(
 				        ms_cmdSetBreakpointV1, m_model->GetSession().c_str(),
-				        breakpoint->GetFunctionOid().c_str(),
 				        breakpoint->GetPackageOid().c_str(),
+				        breakpoint->GetFunctionOid().c_str(),
 				        breakpoint->GetLineNo()),
 				    NULL, RESULT_ID_NEW_BREAKPOINT);
 			}
@@ -892,8 +892,8 @@ void dbgController::ResultListenerCreated(pgQueryResultEvent &_ev)
 					m_dbgThread->AddQuery(
 					    wxString::Format(
 					        ms_cmdAddBreakpointEDB, m_model->GetSession().c_str(),
-					        breakpoint->GetFunctionOid().c_str(),
 					        breakpoint->GetPackageOid().c_str(),
+					        breakpoint->GetFunctionOid().c_str(),
 					        m_model->GetTargetPid().c_str()),
 					    NULL, resultId);
 				}

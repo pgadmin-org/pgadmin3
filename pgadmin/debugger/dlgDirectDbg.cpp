@@ -86,18 +86,21 @@ dlgDirectDbg::dlgDirectDbg(frmDebugger *_parent, dbgController *_controller,
 
 	LoadSettings();
 
-	for(int i = 0; i < 7; i++)
+	for(int i = 0; i < grdParams->GetNumberCols(); i++)
 		grdParams->AutoSizeColumn(i, true);
 
-	// Extend grid to it's parent width
-	grdParams->GetClientSize(&width, &height);
-	for (int i = 0; i < 6; i++)
+	if (grdParams->GetNumberCols() > 1)
 	{
-		totalWidth += grdParams->GetColumnWidth(i);
+		// Extend grid to it's parent width
+		grdParams->GetClientSize(&width, &height);
+		for (int i = 0; i < grdParams->GetNumberCols(); i++)
+		{
+			totalWidth += grdParams->GetColumnWidth(i);
+		}
+		// Total client width - total six column widths - the first (an empty) column
+		// width
+		grdParams->SetColumnWidth(COL_DEF_VAL, width - totalWidth - 100);
 	}
-	// Total client width - total six column widths - the first (an empty) column
-	// width
-	grdParams->SetColumnWidth(COL_DEF_VAL, width - totalWidth - 100);
 }
 
 
@@ -123,8 +126,10 @@ void dlgDirectDbg::PopulateParamGrid()
 
 	if (!args)
 	{
+		grdParams->CreateGrid(0, 1);
 		grdParams->SetColLabelValue(COL_NAME, _("No arguments required"));
 		grdParams->SetColSize(0, 350);
+
 		return;
 	}
 
