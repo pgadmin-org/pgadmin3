@@ -38,27 +38,25 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 	// that will be handled by a cache lookup failure error in the database
 	// We also make sure the function name doesn't contain a : as that will
 	// sent the debugger API nuts.
-	pgSet *res = obj->GetConnection()->ExecuteSet(wxT("SELECT count(*) AS count, proname FROM pg_proc WHERE oid = ") + NumToStr((long)obj->GetOid()) + wxT(" GROUP BY proname"));
-	if (res->GetVal(wxT("proname")).Contains(wxT(":")))
-	{
-		wxLogError(_("Functions with a colon in the name cannot be debugged."));
-		return (wxWindow *)NULL;
-	}
+	pgSet *res = obj->GetConnection()->ExecuteSet(wxT("SELECT proname FROM pg_proc WHERE oid = ") + NumToStr((long)obj->GetOid()));
 
-	if (res->GetLong(wxT("count")) != 1)
+	if (res->NumRows() != 1)
 	{
 		wxLogError(_("The selected function could not be found."));
 		ctlTree *browser = form->GetBrowser();
 		wxTreeItemId item = browser->GetSelection();
 		if (obj == browser->GetObject(item))
 		{
-			pgCollection *coll = browser->GetParentCollection(obj->GetId());
-			browser->DeleteChildren(coll->GetId());
-			coll->ShowTreeDetail(browser);
+			form->Refresh(obj);
 		}
 		return (wxWindow *)NULL;
 	}
 
+	if (res->GetVal(wxT("proname")).Contains(wxT(":")))
+	{
+		wxLogError(_("Functions with a colon in the name cannot be debugged."));
+		return (wxWindow *)NULL;
+	}
 	try
 	{
 		new dbgController(form, obj, true);
