@@ -189,6 +189,8 @@ pgadmin3_SOURCES += \
 	include/images/language.png \
 	include/images/languages.png \
 	include/images/loginroles.png \
+	include/images/mview.png \
+	include/images/mview-sm.png \
 	include/images/namespace-sm.png \
 	include/images/namespace.png \
 	include/images/namespaces.png \

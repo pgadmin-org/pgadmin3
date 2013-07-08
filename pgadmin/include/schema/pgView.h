@@ -23,6 +23,14 @@ public:
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 	virtual pgCollection *CreateCollection(pgObject *obj);
+	int GetMaterializedIconId()
+	{
+		return WantSmallIcon() ? smallMaterializedId : materializedId;
+	}
+
+protected:
+	int materializedId, smallMaterializedId;
+
 };
 extern pgViewFactory viewFactory;
 
@@ -32,6 +40,8 @@ class pgView : public pgRuleObject
 public:
 	pgView(pgSchema *newSchema, const wxString &newName = wxT(""));
 	~pgView();
+
+	int GetIconId();
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);

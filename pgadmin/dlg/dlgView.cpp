@@ -169,15 +169,16 @@ int dlgView::Go(bool modal)
 
 		if ((connection->BackendMinimumVersion(9, 3) && view))
 		{
-			// While editing the view, if it is materialized view then only change
+			// If it is materialized view than edit it
 			if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
 			{
-				// It is materialied view while editing the view so check the box accordingly
+				// Checked the view as user is in edit materialized view mode
 				chkMaterializedView->SetValue(true);
 
 				// Disable the security barrie as user is editing the materailized view
 				chkSecurityBarrier->Disable();
-				// It is materialized view not allow user to go to normal view
+
+				// Disable the materialized view as user is editing it and not allowed to switch to other view
 				chkMaterializedView->Disable();
 
 				if (view->GetTablespaceOid() != 0)

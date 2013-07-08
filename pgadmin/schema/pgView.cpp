@@ -543,9 +543,9 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			properties->AppendItem(_("Tablespace"), tablespace);
 
 			if (GetIsPopulated().Cmp(wxT("t")) == 0)
-				properties->AppendItem(_("With data"), _("Yes"));
+				properties->AppendItem(_("With data?"), _("Yes"));
 			else
-				properties->AppendItem(_("With data"), _("No"));
+				properties->AppendItem(_("With data?"), _("No"));
 		}
 
 		if (!GetLabels().IsEmpty())
@@ -646,6 +646,14 @@ bool pgView::IsMaterializedView(wxString schemaName, wxString viewName)
 		return false;
 }
 
+int pgView::GetIconId()
+{
+	if (IsMaterializedView(this->GetSchema()->GetName(),this->GetName()))
+		return viewFactory.GetMaterializedIconId();
+	else
+		return viewFactory.GetIconId();
+}
+
 ///////////////////////////////////////////////////
 
 
@@ -689,7 +697,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 3))
 	{
-		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid,c.relispopulated AS ispopulated,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+		sql = wxT("SELECT c.oid, c.xmin, c.relname,c.reltablespace AS spcoid, c.relkind, c.relispopulated AS ispopulated,spc.spcname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
 		      wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition");
 	}
 	else
@@ -709,10 +717,9 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 	}
 
 	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
+	{
 		sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor \n");
 
-	if (collection->GetConnection()->BackendMinimumVersion(9, 3))
-	{
 		sql += wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
 		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
 		       wxT(", substring(array_to_string(c.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
@@ -845,6 +852,9 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			if (browser)
 			{
 				collection->AppendBrowserItem(browser, view);
+				// If it is materialized view then display the materialized view icon
+				if (collection->GetConnection()->BackendMinimumVersion(9, 3) && views->GetVal(wxT("relkind")).Cmp(wxT("m")) == 0)
+					browser->SetItemImage(view->GetId(),viewFactory.GetMaterializedIconId());
 				views->MoveNext();
 			}
 			else
@@ -860,11 +870,15 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 #include "images/view.pngc"
 #include "images/view-sm.pngc"
 #include "images/views.pngc"
+#include "images/mview.pngc"
+#include "images/mview-sm.pngc"
 
 pgViewFactory::pgViewFactory()
 	: pgSchemaObjFactory(__("View"), __("New View..."), __("Create a new View."), view_png_img, view_sm_png_img)
 {
 	metaType = PGM_VIEW;
+	materializedId = addIcon(mview_png_img);
+	smallMaterializedId = addIcon(mview_sm_png_img);
 }
 
 
