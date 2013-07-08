@@ -984,7 +984,7 @@ wxString dlgFunction::GetSql()
 		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
 		AppendSchemaChange(sql, wxT("FUNCTION ") + name);
 	}
-	else if(isProcedure)
+	else if (function && isProcedure)
 	{
 		name = schema->GetQuotedPrefix() + qtIdent(name);
 		AppendOwnerChange(sql, wxT("PROCEDURE ") + name);
