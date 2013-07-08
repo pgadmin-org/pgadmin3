@@ -518,9 +518,11 @@ void dlgDirectDbg::OnCancel(wxCommandEvent &_ev)
 {
 	if (m_thread)
 	{
-		m_thread->CancelEval();
-
-		m_thread->Wait();
+		if (m_thread->IsRunning())
+		{
+			m_thread->CancelEval();
+			m_thread->Wait();
+		}
 
 		delete m_thread;
 		m_thread = NULL;
@@ -756,8 +758,11 @@ void dlgDirectDbg::ResultArgsUpdated(wxCommandEvent &_ev)
 
 	if (m_thread)
 	{
-		m_thread->CancelEval();
-		m_thread->Wait();
+		if (m_thread->IsRunning())
+		{
+			m_thread->CancelEval();
+			m_thread->Wait();
+		}
 
 		delete m_thread;
 		m_thread = NULL;
@@ -780,9 +785,11 @@ void dlgDirectDbg::ResultArgsUpdateError(wxCommandEvent &_ev)
 		{
 			if (m_thread)
 			{
-				m_thread->CancelEval();
-
-				m_thread->Wait();
+				if (m_thread->IsRunning())
+				{
+					m_thread->CancelEval();
+					m_thread->Wait();
+				}
 
 				delete m_thread;
 				m_thread = NULL;
@@ -798,8 +805,11 @@ void dlgDirectDbg::ResultArgsUpdateError(wxCommandEvent &_ev)
 
 	if (m_thread)
 	{
-		m_thread->CancelEval();
-		m_thread->Wait();
+		if (m_thread->IsRunning())
+		{
+			m_thread->CancelEval();
+			m_thread->Wait();
+		}
 
 		delete m_thread;
 		m_thread = NULL;

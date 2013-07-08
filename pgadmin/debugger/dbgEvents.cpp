@@ -206,8 +206,8 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 		if (m_execConnThread->IsRunning())
 		{
 			m_execConnThread->CancelExecution();
+			m_execConnThread->Wait();
 		}
-		m_execConnThread->Wait();
 
 		pgConn *execConn = m_execConnThread->GetConn();
 		delete m_execConnThread;

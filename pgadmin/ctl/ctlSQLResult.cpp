@@ -27,7 +27,7 @@ ctlSQLResult::ctlSQLResult(wxWindow *parent, pgConn *_conn, wxWindowID id, const
 	: ctlSQLGrid(parent, id, pos, size)
 {
 	conn = _conn;
-	thread = 0;
+	thread = NULL;
 
 	SetTable(new sqlResultTable(), true);
 
@@ -45,11 +45,13 @@ ctlSQLResult::~ctlSQLResult()
 
 	if (thread)
 	{
-		thread->CancelExecution();
-		thread->Wait();
+		if (thread->IsRunning())
+		{
+			thread->CancelExecution();
+			thread->Wait();
+		}
 
 		delete thread;
-
 		thread = NULL;
 	}
 }
@@ -130,16 +132,6 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve, wxWindow 
 	colTypes.Empty();
 	colTypClasses.Empty();
 
-	if (thread)
-	{
-		thread->CancelExecution();
-		thread->Wait();
-
-		delete thread;
-		thread = NULL;
-	}
-
-
 	thread = new pgQueryThread(conn, query, resultToRetrieve, caller, eventId, data);
 
 	if (thread->Create() != wxTHREAD_NO_ERROR)
@@ -161,8 +153,14 @@ int ctlSQLResult::Abort()
 	{
 		((sqlResultTable *)GetTable())->SetThread(0);
 
-		thread->CancelExecution();
-		thread->Wait();
+		if (thread->IsRunning())
+		{
+			thread->CancelExecution();
+			thread->Wait();
+		}
+
+		delete thread;
+		thread = NULL;
 	}
 	return 0;
 }
@@ -269,7 +267,12 @@ wxString ctlSQLResult::GetErrorMessage()
 
 pgError ctlSQLResult::GetResultError()
 {
-	return thread->GetResultError();
+	if (thread)
+		return thread->GetResultError();
+
+	pgError dummy;
+	memset(&dummy, 0, sizeof(dummy));
+	return dummy;
 }
 
 long ctlSQLResult::NumRows() const
@@ -392,7 +395,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 
 sqlResultTable::sqlResultTable()
 {
-	thread = 0;
+	thread = NULL;
 }
 
 int sqlResultTable::GetNumberRows()
