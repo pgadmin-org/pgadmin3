@@ -207,7 +207,7 @@ const wxString dbgController::ms_cmdIsBackendRunning(
 dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebugging)
 	: m_ver(DEBUGGER_UNKNOWN_API), m_sessionType(DBG_SESSION_TYPE_UNKNOWN),
 	  m_terminated(false), m_frm(NULL), m_dbgConn(NULL), m_dbgThread(NULL),
-	  m_execConnThread(NULL), m_model(NULL)
+	  m_execConnThread(NULL), m_model(NULL), m_isStopping(false)
 {
 	// Create the connection for listening the debugger port and doing the
 	// debugging operations.
@@ -425,6 +425,7 @@ bool dbgController::Start()
 	wxTheApp->Yield(true);
 
 	m_terminated = false;
+	m_isStopping = false;
 
 	if (m_sessionType == DBG_SESSION_TYPE_DIRECT)
 	{
@@ -598,7 +599,7 @@ void dbgController::NoticeHandler(void *_arg, const char *_msg)
 // Debugging actions (called from the frmDebugger)
 void dbgController::ClearBreakpoint(int _lineNo)
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	if (m_ver <= DEBUGGER_V2_API)
@@ -627,7 +628,7 @@ void dbgController::ClearBreakpoint(int _lineNo)
 
 void dbgController::SetBreakpoint(int _lineNo)
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	if (m_ver <= DEBUGGER_V2_API)
@@ -656,7 +657,7 @@ void dbgController::SetBreakpoint(int _lineNo)
 
 void dbgController::Countinue()
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	pgParamsArray *params = new pgParamsArray;
@@ -678,7 +679,7 @@ void dbgController::Countinue()
 
 void dbgController::StepOver()
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	pgParamsArray *params = new pgParamsArray;
@@ -704,7 +705,7 @@ void dbgController::StepOver()
 
 void dbgController::StepInto()
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	pgParamsArray *params = new pgParamsArray;
@@ -733,9 +734,14 @@ bool dbgController::Stop()
 	if (m_terminated)
 		return true;
 
+	if (m_isStopping)
+		return false;
+
 	LOCKMUTEX(m_dbgThreadLock);
 
 	m_frm->EnableToolsAndMenus(false);
+	m_frm->LaunchWaitingDialog(_("Waiting for target stop execution..."));
+	m_isStopping = true;
 
 	switch(m_sessionType)
 	{
@@ -750,7 +756,7 @@ bool dbgController::Stop()
 					// Ask the direct debugging executor to not to handle any of the error or
 					// result any more.
 					m_execConnThread->CancelExecution();
-					if (m_dbgConn->GetStatus() != CONNECTION_BAD)
+					if (m_dbgConn->GetStatus() != CONNECTION_BAD && m_model->GetSession() != wxEmptyString)
 					{
 						// And then, we will ask the backend to abort the target, so that the
 						// target backend will wait for any commands from debugging proxy.
@@ -761,16 +767,15 @@ bool dbgController::Stop()
 						if (set)
 							delete set;
 
-						wxTheApp->Yield(true);
 					}
-					else
+					while (m_execConnThread && m_execConnThread->IsRunning())
 					{
 						wxTheApp->Yield(true);
+						wxMilliSleep(3);
 					}
 					if (m_execConnThread)
 						m_execConnThread->Wait();
 				}
-
 				if (m_execConnThread)
 				{
 					// We also need to deallocate the momory for the connection
@@ -802,7 +807,9 @@ bool dbgController::Stop()
 
 	// Disconnect the debugger connection
 	m_dbgConn->Close();
+	m_frm->CloseProgressBar();
 	m_terminated = true;
+	m_isStopping = false;
 
 	UNLOCKMUTEX(m_dbgThreadLock);
 
@@ -812,7 +819,7 @@ bool dbgController::Stop()
 
 void dbgController::DepositValue(const wxString &_name, const wxString &_val)
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	LOCKMUTEX(m_dbgThreadLock);
@@ -829,7 +836,7 @@ void dbgController::DepositValue(const wxString &_name, const wxString &_val)
 bool dbgController::SelectFrame(int _frameNo)
 {
 	LOCKMUTEX(m_dbgThreadLock);
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 	{
 		UNLOCKMUTEX(m_dbgThreadLock);
 		return true;
@@ -868,7 +875,7 @@ bool dbgController::SelectFrame(int _frameNo)
 
 void dbgController::UpdateBreakpoints()
 {
-	if (m_terminated)
+	if (m_terminated || m_isStopping)
 		return;
 
 	LOCKMUTEX(m_dbgThreadLock);
@@ -880,7 +887,7 @@ void dbgController::UpdateBreakpoints()
 
 
 // Closing Debugger
-void dbgController::CloseDebugger()
+bool dbgController::CloseDebugger()
 {
 	if (Stop())
 	{
@@ -890,7 +897,10 @@ void dbgController::CloseDebugger()
 
 			m_dbgConn = NULL;
 		}
+
+		return true;
 	}
+	return false;
 }
 
 dbgTargetInfo *dbgController::GetTargetInfo()

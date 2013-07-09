@@ -81,7 +81,7 @@ public:
 	bool HandleQuery(pgBatchQuery *_qry, const wxString &_err);
 
 	// Closing Debugger
-	void CloseDebugger();
+	bool CloseDebugger();
 	bool ExecuteTarget();
 	bool IsTerminated()
 	{
@@ -149,6 +149,7 @@ private:
 
 	// Debugging Terminated
 	bool                m_terminated;
+	bool                m_isStopping;
 
 	// Main Window for the debugger
 	frmDebugger        *m_frm;

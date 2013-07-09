@@ -109,12 +109,11 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 	pgBatchQuery *qry = _ev.GetQuery();
 
 	m_frm->EnableToolsAndMenus(false);
+	m_terminated = true;
 	m_frm->SetStatusText(_("Debugging Completed"));
 	m_frm->CloseProgressBar();
 
 	wxTheApp->Yield(true);
-
-	m_terminated = true;
 
 	if (m_execConnThread)
 	{

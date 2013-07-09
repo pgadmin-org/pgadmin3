@@ -486,6 +486,7 @@ void frmDebugger::OnDebugCommand(wxCommandEvent &_event)
 
 		case MENU_ID_STOP:
 			EnableToolsAndMenus(false);
+			LaunchWaitingDialog(_("Waiting for target to stop execution..."));
 			m_controller->Stop();
 			UnhilightCurrentLine();
 
@@ -801,7 +802,12 @@ void frmDebugger::OnClose(wxCloseEvent &_ev)
 		}
 	}
 
-	m_controller->CloseDebugger();
+	if (!m_controller->CloseDebugger() && _ev.CanVeto())
+	{
+		_ev.Veto();
+
+		return;
+	}
 
 	_ev.Skip();
 }
