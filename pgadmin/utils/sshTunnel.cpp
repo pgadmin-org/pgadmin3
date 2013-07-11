@@ -141,6 +141,18 @@ bool CSSHTunnelThread::Initialize()
 		* user, that's your call
 		*/
 		fingerprint = libssh2_hostkey_hash(m_session, LIBSSH2_HOSTKEY_HASH_SHA1);
+		wxString newHostKey = wxEmptyString;
+		for(int i = 0; i < 20; i++) {
+			newHostKey += wxString::Format(wxT("%02X "), (unsigned char)fingerprint[i]);
+		}
+
+		// Check if the SSH Host Key is verified
+		if(!IsHostKeyVerified(newHostKey))
+		{
+			Cleanup();
+			return false;
+		}
+
 
 		/* check what authentication methods are available */
 		userauthlist = libssh2_userauth_list(m_session, m_username.mb_str(), strlen(m_username.mb_str()));
@@ -200,7 +212,7 @@ bool CSSHTunnelThread::Initialize()
 			return false;
 		}
 
-		//Get the IP Address of local machine
+		// Get the IP Address of local machine
 		wxArrayString arrLocalIP;
 		if(resolveDNS("localhost", arrLocalIP))
 		{
@@ -277,6 +289,7 @@ void *CSSHTunnelThread::Entry()
 			}
 			break;
 		}
+
 		// Create thread for read/write.
 		CSubThread *subThread = new CSubThread(m_sin, m_remote_desthost, m_remote_destport, m_session, forwardsock);
 		if ( subThread->Create() != wxTHREAD_NO_ERROR )
@@ -405,6 +418,46 @@ void CSSHTunnelThread::keyboard_interactive(const char *name, int name_len, cons
 		res[0].text = strdup(m_keyboard_interactive_pwd);
 		res[0].length = strlen(m_keyboard_interactive_pwd);
 	}
+}
+
+bool CSSHTunnelThread::IsHostKeyVerified(const wxString& newHostKey)
+{
+	bool bIsVerified = false;
+	wxString cachedHostKey = settings->Read(wxT("HostKeys/") + m_tunnelhost, wxEmptyString);
+
+	// If cached host key is empty then ask user to accept or reject
+	if (cachedHostKey == wxEmptyString)
+	{
+		// Prompt User to accept or reject
+		wxString msg = wxString::Format(wxT("Host key received for the SSH server \"%s\" is \n\n%s\n\nWould you like to accept it and continue with the connection?"), m_tunnelhost.c_str(), newHostKey.c_str());
+		int answer = wxMessageBox(msg, wxT("Host key verification"), wxYES_NO | wxNO_DEFAULT);
+		if (answer == wxYES)
+		{
+			// Write the host key with respect to tunnel host
+			settings->Write(wxT("HostKeys/") + m_tunnelhost, newHostKey);
+			bIsVerified = true;
+		}
+	}
+	else
+	{
+		// Compare the cached host key with the new key
+		if (cachedHostKey.compare(newHostKey) == 0)
+			bIsVerified = true;
+		else
+		{
+			// Prompt user to accept or reject the new host key received for the tunnel host
+			wxString msg = wxString::Format(wxT("The host key received from the server \"%s\" is\n\n%s\n\nbut the stored key is\n\n%s\n\nThis may indicate that this is not the same server that was previously used.\n\nDo you wish to accept and store the new key, and continue with the connection?"), m_tunnelhost.c_str(), newHostKey.c_str(), cachedHostKey.c_str());
+			int answer = wxMessageBox(msg, wxT("Host key verification - WARNING"), wxYES_NO | wxNO_DEFAULT);
+			if (answer == wxYES)
+			{
+				// Write the host key with respect to tunnel host
+				settings->Write(wxT("HostKeys/") + m_tunnelhost, newHostKey);
+				bIsVerified = true;
+			}
+		}
+	}
+
+	return bIsVerified;
 }
 
 CSubThread::CSubThread(const struct sockaddr_in sin, const wxString remote_desthost, const unsigned int remote_destport,
