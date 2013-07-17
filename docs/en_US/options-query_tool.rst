@@ -53,6 +53,11 @@ Use the fields on the *Results Grid* dialog to specify display preferences for t
 
 * **Show NULL values as <NULL>** - Check the box next to *Show NULL values as <NULL>* to cause NULL values to be shown as <NULL> in the Query Tool's results grid. Note that this option does not affect data that is exported from the grid, only what is displayed.
 
+* **Thousands separator** - Use the *Thousands separator* field to specify a delimiter character that will be used to break a value into groups of three digits, counting left from the decimal mark.
+
+* **Decimal mark** - Use the *Decimal mark* field to specify a delimiter character that will be used to break a number into an integer portion and a fractional portion.
+
+* **Copy column names** - Check the box next to *Copy column names* to specify that when copying from the result grid, the column name should be included as the first row.
 
 .. image:: images/options-query_file.png
 
