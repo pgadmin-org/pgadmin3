@@ -1,40 +1,60 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Rady odborníka</title>
 </head>
 
 <body>
 
-<h3>Vybavení serveru nástroji</h3>
+<h3>Nástroje serveru</h3>
 <p>
 Server postrádá vybavení nástroji.
 </p>
 <p>
-pgAdmin III využívá některé podpůrné funkce, které nejsou standardně dostupné ve všech 
-verzích PostgreSQL. Tyto funkce dovolují provádět některé věci, které usnadní práci se soubory 
-s evideníc a soubory nastavení.
+pgAdmin III využívá některé podpůrné funkce, které nejsou standardně dostupné 
+ve všech verzích PostgreSQL. Tyto funkce dovolují provádět některé věci, které 
+usnadní práci se soubory evidencí a se soubory nastavení.
 </p>
 <p>
-Pokud instalujete PostgreSQL 8.0 a novější pomocí Windows instalátoru, stačí zvolit „admin“ 
-nebo „adminpack“ modul.
+Pokud instalujete PostgreSQL pro Windows pomocí oficiálního instalátoru, 
+adminpack se nainstaluje a aktivuje automaticky, protože od verze PostgreSQL 
+8.2 je součástí jako modul třetí strany. Jestli ale máte jakoukoliv jinou 
+variantu, budete si jej muset sami ručně doinstalovat. Postupujte tak, že 
+nakopírujete zdrojový kód adminpack do složky /contrib vašeho připraveného 
+stromu se zdrojovými kódy PostgreSQL. Stáhnout si je můžete na této 
+<a href="http://www.pgadmin.org/download/adminpacks.php">adrese</a>.
 </p>
 <p>
-Pokud překládáte ze zdrojových kódů, potřebné soubory naleznete ve složce „xtra“ stromu zdrojového kódu 
-pgAdmin. U PostgreSQL 8.0 nakopírujte složku „admin“ do složky „contrib“ stromu zdrojového kódu postgresql 
-a spusťte tam „make“ a „make install“. U PostgreSQL postupujte stejně, ale použijte složku „admin81“.
+Spusťte následující příkazy (ve kterých v případě potřeby zaměňte 
+<i>admin</i> za <i>admin81</i>):
+</p>
+<pre>
+    # cd $PGSRC/contrib/admin
+    # make all
+    # make install
+</pre>
 <p>
-PostgreSQL 8.2 a novější již obsahuje nástrojové vybavení v rozšiřujícím modulu „adminpack“.
+Tím se modul sestaví a nainstaluje do stávající instalace PostgreSQL. Aby jej 
+bylo možné používat, musí se ještě nainstalovat do databáze, kterou používáte 
+jako <i>údržbovou databázi</i> pro pgAdmin (normálně to je <i>postgres</i>, ale 
+můžete si přát používat nějakou jinou). K tomuto účelu vyhledejte soubor 
+<i>admin.sql</i> nebo <i>admin81.sql</i>, který se nainstaloval v předchozím 
+kroku (obvykle do /usr/local/pgsql/share/contrib/) a spusťte jej oproti vaší 
+databázi. Musíte to udělat jako superuživatel PostgreSQL:
 </p>
-</p>
-Po nainstalování modulu musíte vytvořit funkce nástrojů v servisní databázi pomocí skriptu „admin.sql“ 
-(„admin81.sql“ v PostgreSQL 8.1), který se obvykle nachází ve sdílené složce postgresql (např. 
-/usr/local/pgsql/share).
+<pre>
+    $ psql postgres < /usr/local/pgsql/share/contrib/admin.sql
+</pre>
+<p>
+Při vašem příštím připojení k serveru pomocí pgAdmin se zjistí přítomnost 
+nástrojů adminpack a bude k dispozici plná funkcionalita.
 </p>
 <p>
 Rozšíření serveru o vybavení nástroji není podporované v PostgreSQL 7.3 a 7.4.
 </p>
+
 </body>
+
 </html>
