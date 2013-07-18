@@ -709,7 +709,7 @@ wxString sysSettings::GetCanonicalLanguageName()
 {
 	const wxLanguageInfo *langInfo;
 
-	langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
+	langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT));
 
 	if (langInfo)
 		return langInfo->CanonicalName;

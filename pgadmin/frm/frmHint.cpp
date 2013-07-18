@@ -216,7 +216,7 @@ wxString frmHint::GetPage(const wxChar *hintPage)
 		filename = docPath + wxT("/en_US/hints/") + hintPage + wxT(".html");
 	if (wxFile::Exists(filename))
 	{
-		wxUtfFile file(filename);
+		wxUtfFile file(filename, wxFile::read, wxFONTENCODING_UTF8);
 		file.Read(page);
 	}
 
