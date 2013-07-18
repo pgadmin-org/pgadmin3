@@ -457,6 +457,10 @@ int dlgIndex::Go(bool modal)
 		cbTablespace->SetSelection(0);
 	}
 
+	// Reset the labels as the XRC defined values will have been localised :-(
+	rdbNullsFirst->SetLabel(wxT("FIRST"));
+	rdbNullsLast->SetLabel(wxT("LAST"));
+
 	int returnCode = dlgIndexBase::Go(modal);
 
 	if (index && connection->BackendMinimumVersion(8, 0))

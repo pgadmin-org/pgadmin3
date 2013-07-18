@@ -98,6 +98,12 @@ int dlgRule::Go(bool modal)
 		// create mode
 	}
 
+	// Reset the labels as they XRC values will have been localised :-(
+	rbxEvent->SetString(0, wxT("SELECT"));
+	rbxEvent->SetString(1, wxT("INSERT"));
+	rbxEvent->SetString(2, wxT("UPDATE"));
+	rbxEvent->SetString(3, wxT("DELETE"));
+
 	return dlgProperty::Go(modal);
 }
 

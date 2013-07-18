@@ -452,6 +452,20 @@ int dlgForeignKey::Go(bool modal)
 
 	processing = false;
 
+	// Reset the labels as the XRC defined values will have been localised :-(
+
+	rbOnUpdate->SetString(0, wxT("NO ACTION"));
+	rbOnUpdate->SetString(1, wxT("RESTRICT"));
+	rbOnUpdate->SetString(2, wxT("CASCADE"));
+	rbOnUpdate->SetString(3, wxT("SET NULL"));
+	rbOnUpdate->SetString(4, wxT("SET DEFAULT"));
+
+	rbOnDelete->SetString(0, wxT("NO ACTION"));
+	rbOnDelete->SetString(1, wxT("RESTRICT"));
+	rbOnDelete->SetString(2, wxT("CASCADE"));
+	rbOnDelete->SetString(3, wxT("SET NULL"));
+	rbOnDelete->SetString(4, wxT("SET DEFAULT"));
+
 	wxCommandEvent nullEvent;
 	OnSelChangeRef(nullEvent);
 

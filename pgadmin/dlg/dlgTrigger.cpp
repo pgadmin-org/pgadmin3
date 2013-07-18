@@ -226,6 +226,16 @@ int dlgTrigger::Go(bool modal)
 	btnAddCol->Disable();
 	btnRemoveCol->Disable();
 
+	// Reset the radio box rbxEvent item values with the keywords to resolve the locale issues.
+	rdbFires->SetString(0, wxT("BEFORE"));
+	rdbFires->SetString(1, wxT("AFTER"));
+	rdbFires->SetString(2, wxT("INSTEAD OF"));
+
+	chkTruncate->SetLabel(wxT("TRUNCATE"));
+	chkDelete->SetLabel(wxT("DELETE"));
+	chkInsert->SetLabel(wxT("INSERT"));
+	chkUpdate->SetLabel(wxT("UPDATE"));
+
 	return dlgCollistProperty::Go(modal);
 }
 
