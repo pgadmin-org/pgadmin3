@@ -341,7 +341,7 @@ void gqbView::onMotion(wxMouseEvent &event)
 		}
 		else
 		{
-			anySelected = false;
+			anySelected = NULL;
 			mode = pt_normal;
 		}
 
