@@ -77,7 +77,7 @@ private:
 	bool resolveDNS(const char *host, wxArrayString &arrIPAddress);
 	static void keyboard_interactive(const char *name, int name_len, const char *instr, int instr_len,
 	                                 int num_prompts, const struct _LIBSSH2_USERAUTH_KBDINT_PROMPT *prompts, struct _LIBSSH2_USERAUTH_KBDINT_RESPONSE *res, void **abstract);
-	bool IsHostKeyVerified(const wxString& newHostKey);
+	bool IsHostKeyVerified(const wxString &newHostKey);
 
 	int m_listensock, m_sock;
 	struct sockaddr_in m_sin;

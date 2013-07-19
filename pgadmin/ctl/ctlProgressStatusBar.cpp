@@ -33,7 +33,7 @@ ctlProgressStatusBar::ctlProgressStatusBar(wxWindow *parent, bool showProgressIn
 	  m_autoProgressive(autoProgressive), m_autoValIncrementing(true),
 	  m_hr(0), m_min(0), m_sec(0), m_mil(0), m_val(0)
 {
-	static int widths[] = {-1, ms_progressbar_width, ms_progressstatus_width};
+	static int widths[] = { -1, ms_progressbar_width, ms_progressstatus_width};
 	int fields = 0;
 
 	if (max <= 0)

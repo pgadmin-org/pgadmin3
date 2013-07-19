@@ -118,7 +118,7 @@ wxMenu *pgView::GetNewMenu()
 
 bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	if (IsMaterializedView(browser))
+	if (GetMaterializedView())
 		sql = wxT("DROP MATERIALIZED VIEW ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
 	else
 		sql = wxT("DROP VIEW ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
@@ -134,7 +134,7 @@ wxString pgView::GetSql(ctlTree *browser)
 	if (sql.IsNull())
 	{
 		bool IsMatViewFlag = false;
-		if (!IsMaterializedView(browser))
+		if (!GetMaterializedView())
 		{
 			sql = wxT("-- View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 			      + wxT("-- DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
@@ -484,10 +484,10 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			properties->AppendItem(_("Security barrier?"), GetSecurityBarrier());
 
 		if (GetConnection()->BackendMinimumVersion(9, 3))
-			properties->AppendYesNoItem(_("Materialized view?"), IsMaterializedView(browser));
+			properties->AppendYesNoItem(_("Materialized view?"), GetMaterializedView());
 
 		/* Custom AutoVacuum Settings */
-		if (GetConnection()->BackendMinimumVersion(9, 3) && IsMaterializedView(browser))
+		if (GetConnection()->BackendMinimumVersion(9, 3) && GetMaterializedView())
 		{
 			if (!GetFillFactor().IsEmpty())
 				properties->AppendItem(_("Fill factor"), GetFillFactor());
@@ -616,39 +616,9 @@ void pgView::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 		sql += tmp;
 }
 
-bool pgView::IsMaterializedView(ctlTree *browser)
-{
-	if (this->GetConnection()->BackendMinimumVersion(9, 3))
-	{
-		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(this->GetQuotedIdentifier()) + wxT(" AND schemaname = ") + qtDbString(this->GetSchema()->GetQuotedIdentifier());
-
-		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
-			return false;
-		else
-			return true;
-	}
-	else
-		return false;
-}
-
-bool pgView::IsMaterializedView(wxString schemaName, wxString viewName)
-{
-	if (this->GetConnection()->BackendMinimumVersion(9, 3))
-	{
-		wxString sql = wxT("SELECT count(*) FROM pg_matviews WHERE matviewname = ") + qtDbString(viewName) + wxT(" AND schemaname = ") + qtDbString(schemaName);
-
-		if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) == wxT("0"))
-			return false;
-		else
-			return true;
-	}
-	else
-		return false;
-}
-
 int pgView::GetIconId()
 {
-	if (IsMaterializedView(this->GetSchema()->GetName(),this->GetName()))
+	if (GetMaterializedView())
 		return viewFactory.GetMaterializedIconId();
 	else
 		return viewFactory.GetIconId();
@@ -775,6 +745,7 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			view->iSetComment(views->GetVal(wxT("description")));
 			view->iSetAcl(views->GetVal(wxT("relacl")));
 			view->iSetDefinition(views->GetVal(wxT("definition")));
+			view->iSetMaterializedView(false);
 
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
@@ -847,6 +818,9 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 					view->iSetTablespace(collection->GetDatabase()->GetTablespace());
 				else
 					view->iSetTablespace(views->GetVal(wxT("spcname")));
+
+				if (views->GetVal(wxT("relkind")).Cmp(wxT("m")) == 0)
+					view->iSetMaterializedView(true);
 			}
 
 			if (browser)
@@ -854,7 +828,8 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 				collection->AppendBrowserItem(browser, view);
 				// If it is materialized view then display the materialized view icon
 				if (collection->GetConnection()->BackendMinimumVersion(9, 3) && views->GetVal(wxT("relkind")).Cmp(wxT("m")) == 0)
-					browser->SetItemImage(view->GetId(),viewFactory.GetMaterializedIconId());
+					browser->SetItemImage(view->GetId(), viewFactory.GetMaterializedIconId());
+
 				views->MoveNext();
 			}
 			else

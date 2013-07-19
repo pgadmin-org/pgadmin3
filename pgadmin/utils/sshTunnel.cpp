@@ -142,7 +142,8 @@ bool CSSHTunnelThread::Initialize()
 		*/
 		fingerprint = libssh2_hostkey_hash(m_session, LIBSSH2_HOSTKEY_HASH_SHA1);
 		wxString newHostKey = wxEmptyString;
-		for(int i = 0; i < 20; i++) {
+		for(int i = 0; i < 20; i++)
+		{
 			newHostKey += wxString::Format(wxT("%02X "), (unsigned char)fingerprint[i]);
 		}
 
@@ -420,7 +421,7 @@ void CSSHTunnelThread::keyboard_interactive(const char *name, int name_len, cons
 	}
 }
 
-bool CSSHTunnelThread::IsHostKeyVerified(const wxString& newHostKey)
+bool CSSHTunnelThread::IsHostKeyVerified(const wxString &newHostKey)
 {
 	bool bIsVerified = false;
 	wxString cachedHostKey = settings->Read(wxT("HostKeys/") + m_tunnelhost, wxEmptyString);

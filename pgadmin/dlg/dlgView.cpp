@@ -170,7 +170,7 @@ int dlgView::Go(bool modal)
 		if ((connection->BackendMinimumVersion(9, 3) && view))
 		{
 			// If it is materialized view than edit it
-			if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
+			if (view->GetMaterializedView())
 			{
 				// Checked the view as user is in edit materialized view mode
 				chkMaterializedView->SetValue(true);
@@ -451,7 +451,7 @@ wxString dlgView::GetSql()
 			{
 				if (connection->BackendMinimumVersion(9, 3))
 				{
-					if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
+					if (view->GetMaterializedView())
 					{
 						AppendNameChange(sql, wxT("MATERIALIZED VIEW ") + view->GetQuotedFullIdentifier());
 						editQuery = true;
@@ -470,7 +470,7 @@ wxString dlgView::GetSql()
 		{
 			if (connection->BackendMinimumVersion(9, 3))
 			{
-				if (view->IsMaterializedView(view->GetSchema()->GetName(), view->GetName()))
+				if (view->GetMaterializedView())
 				{
 					AppendSchemaChange(sql, wxT("MATERIALIZED VIEW " + qtIdent(view->GetSchema()->GetName()) + wxT(".") + qtIdent(name)));
 					editQuery = true;

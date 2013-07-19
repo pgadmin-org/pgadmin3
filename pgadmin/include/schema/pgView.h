@@ -327,13 +327,21 @@ public:
 		toast_autovacuum_freeze_table_age = s;
 	}
 
-	bool IsMaterializedView(wxString schemaName, wxString viewName);
+	void iSetMaterializedView(const bool matView)
+	{
+		materializedView = matView;
+	}
+
+	bool GetMaterializedView() const
+	{
+		return materializedView;
+	}
 
 private:
 	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
 	void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
 	bool IsMaterializedView(ctlTree *browser);
-	bool hasInsertRule, hasUpdateRule, hasDeleteRule;
+	bool hasInsertRule, hasUpdateRule, hasDeleteRule, materializedView;
 	wxString security_barrier;
 
 	int autovacuum_enabled, toast_autovacuum_enabled;
