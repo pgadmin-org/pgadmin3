@@ -451,7 +451,11 @@ wxString sysSettings::GetLogFile()
 	{
 
 #ifdef __WXMSW__
+#if wxCHECK_VERSION(2, 9, 5)
+		wxStandardPaths &paths = wxStandardPaths::Get();
+#else
 		wxStandardPaths paths;
+#endif
 		deflog = paths.GetDocumentsDir();
 		deflog += wxT("\\pgadmin.log");
 #else
@@ -744,7 +748,11 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
 	if (cfgname == PGPASS)
 	{
+#if wxCHECK_VERSION(2, 9, 5)
+		wxStandardPaths &stdp = wxStandardPaths::Get();
+#else
 		wxStandardPaths stdp;
+#endif
 		wxString fname = stdp.GetUserConfigDir();
 #ifdef WIN32
 		fname += wxT("\\postgresql");
@@ -774,7 +782,11 @@ wxString sysSettings::GetFavouritesFile()
 {
 	wxString s, tmp;
 
+#if wxCHECK_VERSION(2, 9, 5)
+	wxStandardPaths &stdp = wxStandardPaths::Get();
+#else
 	wxStandardPaths stdp;
+#endif
 	tmp = stdp.GetUserConfigDir();
 #ifdef WIN32
 	tmp += wxT("\\postgresql");
@@ -795,7 +807,11 @@ wxString sysSettings::GetMacrosFile()
 {
 	wxString s, tmp;
 
+#if wxCHECK_VERSION(2, 9, 5)
+	wxStandardPaths &stdp = wxStandardPaths::Get();
+#else
 	wxStandardPaths stdp;
+#endif
 	tmp = stdp.GetUserConfigDir();
 #ifdef WIN32
 	tmp += wxT("\\postgresql");
@@ -816,7 +832,11 @@ wxString sysSettings::GetHistoryFile()
 {
 	wxString s, tmp;
 
+#if wxCHECK_VERSION(2, 9, 5)
+	wxStandardPaths &stdp = wxStandardPaths::Get();
+#else
 	wxStandardPaths stdp;
+#endif
 	tmp = stdp.GetUserConfigDir();
 #ifdef WIN32
 	tmp += wxT("\\postgresql");

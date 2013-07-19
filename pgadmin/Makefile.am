@@ -28,7 +28,7 @@ EXTRA_DIST = \
 
 # Make sure we always have these dependencies, even if dependency tracking
 # is turend off.  The leading dash keeps automake from trying to process this.
--include Makefile.deps
+-include $(top_srcdir)/pgadmin/Makefile.deps
 
 TMP_ui =
 

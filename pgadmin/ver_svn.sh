@@ -1,5 +1,8 @@
 #!/bin/bash
 
+TARGET_DIR=`dirname $0`
+
+cd $TARGET_DIR
 OV=unknown
 if [ -d .svn -o -d ../.git ]; then
    if [ -f include/svnversion.h ]; then

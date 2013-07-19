@@ -523,7 +523,7 @@ void dbgController::ResultVarList(pgQueryResultEvent &_ev)
 
 			while (!set->Eof())
 			{
-				switch(set->GetVal(wxT("varclass"))[0])
+				switch((char)(set->GetVal(wxT("varclass"))[0]))
 				{
 					case 'A':
 					{

@@ -302,7 +302,7 @@ dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
 		if (idx < argModes.Count())
 		{
 			wxString tmp = argModes[idx];
-			switch ((tmp.c_str())[0])
+			switch ((char)(tmp.c_str())[0])
 			{
 				case 'i':
 					argMode = pgParam::PG_PARAM_IN;

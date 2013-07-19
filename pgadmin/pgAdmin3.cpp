@@ -1287,12 +1287,15 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
 #else
 
 #ifdef __WXMAC__
-
+#if wxCHECK_VERSION(2, 9, 5)
+	wxStandardPaths &stdPaths = wxStandardPaths::Get();
+#else
 	// When using wxStandardPaths on OSX, wx default to the unix,
 	// not to the mac variants. Therefore, we request wxStandardPathsCF
 	// directly.
-	wxStandardPathsCF stdPaths ;
-	dataDir = stdPaths.GetDataDir() ;
+	wxStandardPathsCF stdPaths;
+	dataDir = stdPaths.GetDataDir();
+#endif
 
 #else // other *ixes
 
@@ -1835,7 +1838,11 @@ pgAppearanceFactory::pgAppearanceFactory()
 	if(!pRegKey->Exists())
 		pRegKey->Create();
 
+#if wxCHECK_VERSION(2, 9, 5)
+	wxStandardPaths &stdPaths = wxStandardPaths::Get();
+#else
 	wxStandardPaths paths;
+#endif
 	//wxString tmp;
 	//tmp.Printf(wxT("%s"), long_appname);
 	pRegKey->SetValue(paths.GetExecutablePath(), GetLongAppName());
