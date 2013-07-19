@@ -688,7 +688,9 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			case "${host}" in
 				*-apple-darwin*)
 					;;
- 
+				*solaris*)
+					LDFLAGS="$LDFLAGS"
+					;;
 				*)
 					LDFLAGS="$LDFLAGS -Wl,-as-needed"
 					;;
