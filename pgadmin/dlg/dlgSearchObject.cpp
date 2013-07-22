@@ -147,7 +147,7 @@ dlgSearchObject::~dlgSearchObject()
 
 void dlgSearchObject::OnHelp(wxCommandEvent &ev)
 {
-	DisplayHelp(wxT("searchobject"), HELP_PGADMIN);
+	DisplayHelp(wxT("search_object"), HELP_PGADMIN);
 }
 
 void dlgSearchObject::OnSelSearchResult(wxListEvent &ev)
