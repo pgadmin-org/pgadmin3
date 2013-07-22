@@ -48,6 +48,7 @@
 BEGIN_EVENT_TABLE(frmImport, pgDialog)
 	EVT_COMBOBOX(XRCID("cbFormat"),   frmImport::OnChangeFormat)
 	EVT_BUTTON(wxID_OK,               frmImport::OnOK)
+	EVT_BUTTON (wxID_HELP,            frmImport::OnHelp)
 END_EVENT_TABLE()
 
 
@@ -138,13 +139,10 @@ frmImport::~frmImport()
 }
 
 
-wxString frmImport::GetHelpPage() const
+void frmImport::OnHelp(wxCommandEvent &ev)
 {
-	wxString page;
-	page = wxT("pg/sql-copy");
-	return page;
+	DisplayHelp(wxT("sql-copy"), HELP_POSTGRESQL);
 }
-
 
 void frmImport::OnChangeFormat(wxCommandEvent &ev)
 {
@@ -198,6 +196,13 @@ void frmImport::OnOK(wxCommandEvent &ev)
 				columnsToIgnoreForNulls.Append(qtIdent(lstIgnoreForColumns->GetString(x)));
 				someColumnsToIgnoreForNulls = true;
 			}
+		}
+
+		// Check at least one column is selected else raise a warning
+		if (!allColumnsToImport && columnsToImport.Length() <= 0)
+		{
+			wxMessageBox(_("Please select at least one column to import."), _("Import"), wxICON_WARNING | wxOK, this);
+			return;
 		}
 
 		// Build COPY query
@@ -264,7 +269,7 @@ void frmImport::OnOK(wxCommandEvent &ev)
 		if (!wxFileName::FileExists(pickerImportfile->GetPath()))
 		{
 			wxString msg;
-			msg.Printf(_("The file %s doesn't exist.\nPlease select a file."), fn.GetFullPath().c_str());
+			msg.Printf(_("The file %s doesn't exist.\nPlease select a valid file."), pickerImportfile->GetPath().c_str());
 			wxLogError(msg);
 			return;
 		}

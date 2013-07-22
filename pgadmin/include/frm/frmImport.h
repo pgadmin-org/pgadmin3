@@ -25,7 +25,7 @@ public:
 	~frmImport();
 
 private:
-	wxString GetHelpPage() const;
+	void OnHelp(wxCommandEvent &ev);
 	void OnSelectFilename(wxCommandEvent &ev);
 	void OnChangeFormat(wxCommandEvent &ev);
 	void OnOK(wxCommandEvent &ev);
