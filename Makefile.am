@@ -69,15 +69,12 @@ nobase_dist_data_DATA = $(TMP_docs)
 help_dir = $(DESTDIR)/$(datadir)
 endif
 
-# We need to ensure the help cache is world writeable
 install-data-hook:
-	touch $(help_dir)/docs/en_US/pgadmin3.hhp.cached
-	chmod 0666 $(help_dir)/docs/en_US/pgadmin3.hhp.cached
 if SPHINX_BUILD
 	if [ -d $(top_srcdir)/docs/en_US/_build/htmlhelp ]; then cp -R $(top_srcdir)/docs/en_US/_build/htmlhelp/* $(help_dir)/docs/en_US/; fi
 
 # Fix up the charset so wxWidgets doesn't bleat
-	for f in `ls $(help_dir)/docs/en_US/*.html`; do sed "s/iso8859_1/iso8859\-1/g" $$f > temp; mv temp $$f; done
+	for f in `ls $(help_dir)/docs/en_US/*.html`; do LANG=C sed "s/iso8859_1/iso8859\-1/g" $$f > temp; mv temp $$f; done
 endif
 
 # Perform astyle cleanup per rules:

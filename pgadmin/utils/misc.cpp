@@ -782,7 +782,6 @@ void DisplayPgAdminHelp(const wxString &helpTopic)
 #endif
 			{
 				helpCtl = new wxHtmlHelpController();
-				((wxHtmlHelpController *)helpCtl)->SetTempDir(helpdir);
 				helpCtl->Initialize(helpdir + wxT("/pgadmin3"));
 			}
 	}
@@ -867,7 +866,6 @@ void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxH
 #endif
 			{
 				helpCtl = new wxHtmlHelpController();
-				((wxHtmlHelpController *)helpCtl)->SetTempDir(wxFileName(docPath).GetPath());
 				helpCtl->Initialize(docPath);
 			}
 	}
