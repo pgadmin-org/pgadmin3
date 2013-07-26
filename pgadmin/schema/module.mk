@@ -27,6 +27,7 @@ pgadmin3_SOURCES += \
         schema/pgDatabase.cpp \
         schema/pgDatatype.cpp \
         schema/pgDomain.cpp \
+        schema/pgEventTrigger.cpp \
         schema/pgExtension.cpp \
         schema/pgForeignDataWrapper.cpp \
         schema/pgForeignKey.cpp \

@@ -23,6 +23,7 @@
 #include "schema/pgForeignDataWrapper.h"
 #include "schema/pgLanguage.h"
 #include "schema/pgSchema.h"
+#include "schema/pgEventTrigger.h"
 #include "slony/slCluster.h"
 #include "frm/frmHint.h"
 #include "frm/frmReport.h"
@@ -628,6 +629,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 					browser->AppendCollection(this, synonymFactory);
 			if (settings->GetDisplayOption(_("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
+			if (connection()->BackendMinimumVersion(9, 3) && settings->GetDisplayOption(_("Event Triggers")))
+				browser->AppendCollection(this, eventTriggerFactory);
 			if (settings->GetDisplayOption(_("Slony-I Clusters")))
 				browser->AppendCollection(this, slClusterFactory);
 

@@ -173,6 +173,8 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
 		engtype = wxT("Views");
 	else if (objtype == _("External Tables"))
 		engtype = wxT("External Tables");
+	else if (objtype == _("Event Triggers"))
+		engtype = wxT("Event Triggers");
 
 	// If we just want the default, return it.
 	if (GetDefault)
@@ -200,6 +202,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	else if (objtype == _("User Mappings")) engtype = wxT("User mappings");
 	else if (objtype == _("Foreign Tables")) engtype = wxT("Foreign Tables");
 	else if (objtype == _("Languages")) engtype = wxT("Languages");
+	else if (objtype == _("Event Triggers")) engtype = wxT("Event Triggers");
 	else if (objtype == _("Extensions")) engtype = wxT("Extensions");
 	else if (objtype == _("Synonyms")) engtype = wxT("Synonyms");
 	else if (objtype == _("Schemas")) engtype = wxT("Schemas");

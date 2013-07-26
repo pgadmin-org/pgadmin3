@@ -21,6 +21,7 @@ pgadmin3_SOURCES += \
 	dlg/dlgConversion.cpp \
 	dlg/dlgDatabase.cpp \
 	dlg/dlgDomain.cpp \
+	dlg/dlgEventTrigger.cpp \
 	dlg/dlgExtension.cpp \
 	dlg/dlgEditGridOptions.cpp \
 	dlg/dlgFindReplace.cpp \

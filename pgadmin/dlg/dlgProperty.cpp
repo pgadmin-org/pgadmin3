@@ -41,6 +41,7 @@
 #include "dlg/dlgCheck.h"
 #include "dlg/dlgRule.h"
 #include "dlg/dlgTrigger.h"
+#include "dlg/dlgEventTrigger.h"
 #include "agent/dlgJob.h"
 #include "agent/dlgStep.h"
 #include "agent/dlgSchedule.h"
@@ -58,7 +59,7 @@
 #include "schema/pgTrigger.h"
 #include "schema/pgGroup.h"
 #include "schema/pgUser.h"
-
+#include "schema/pgEventTrigger.h"
 
 void dataType::SetOid(OID id)
 {

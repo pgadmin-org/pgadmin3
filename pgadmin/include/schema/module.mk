@@ -27,6 +27,7 @@ pgadmin3_SOURCES += \
 	include/schema/pgDatabase.h \
 	include/schema/pgDatatype.h \
 	include/schema/pgDomain.h \
+	include/schema/pgEventTrigger.h \
 	include/schema/pgExtension.h \
 	include/schema/pgForeignDataWrapper.h \
 	include/schema/pgForeignKey.h \

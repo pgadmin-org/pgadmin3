@@ -697,7 +697,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			// Create the new object
 			if (isProcedure)
 				function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
-			else if (typname == wxT("\"trigger\"") || typname == wxT("trigger"))
+			else if (typname == wxT("\"trigger\"") || typname == wxT("trigger") || typname == wxT("event_trigger") || typname == wxT("\"event_trigger\""))
 				function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
 			else
 				function = new pgFunction(schema, functions->GetVal(wxT("proname")));
@@ -993,7 +993,7 @@ pgObject *pgFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 	// We might be linked to trigger....
 	pgObject *trigger = browser->GetParentObject(item);
-	if (trigger->GetMetaType() == PGM_TRIGGER)
+	if (trigger->GetMetaType() == PGM_TRIGGER || trigger->GetMetaType() == PGM_EVENTTRIGGER)
 		function = functionFactory.AppendFunctions(trigger, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
 
 	return function;
@@ -1033,7 +1033,7 @@ pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
 	wxString funcRestriction = wxT(
 	                               " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid())
-	                           + wxT("::oid\n   AND typname <> 'trigger'\n");
+	                           + wxT("::oid\n   AND typname NOT IN ('trigger', 'event_trigger') \n");
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 1))
 		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND protype = '1')\n");
@@ -1054,8 +1054,15 @@ pgObject *pgTriggerFunctionFactory::CreateObjects(pgCollection *collection, ctlT
 {
 	wxString funcRestriction = wxT(
 	                               " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid())
-	                           + wxT("::oid\n   AND typname = 'trigger'\n")
-	                           + wxT("   AND lanname != 'edbspl'\n");
+	                           + wxT("::oid\n");
+	if(collection->GetConnection()->BackendMinimumVersion(9, 3))
+	{
+		funcRestriction += wxT("AND (typname IN ('trigger', 'event_trigger') \nAND lanname NOT IN ('edbspl', 'sql', 'internal'))");
+	}
+	else
+	{
+		funcRestriction += wxT("AND (typname = 'trigger'\n AND lanname != 'edbspl')");
+	}
 
 	// Get the Functions
 	return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);

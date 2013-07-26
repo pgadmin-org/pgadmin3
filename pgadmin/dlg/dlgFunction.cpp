@@ -115,6 +115,9 @@ dlgProperty *pgFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
 
 	if (parent->GetMetaType() == PGM_TRIGGER)
 		sch = parent->GetSchema();
+	// Event triggers are at database level. So, we do not have a schema for an event trigger.
+	else if(parent->GetMetaType() == PGM_EVENTTRIGGER)
+		sch = 0;
 	else
 		sch = (pgSchema *)parent;
 
@@ -402,7 +405,7 @@ int dlgFunction::Go(bool modal)
 	{
 		wxString restrict;
 		// create mode
-		restrict = wxT("(typtype IN ('b', 'c', 'd', 'e', 'p', 'r') AND typname NOT IN ('any', 'trigger', 'language_handler'))");
+		restrict = wxT("(typtype IN ('b', 'c', 'd', 'e', 'p', 'r') AND typname NOT IN ('any', 'trigger', 'language_handler', 'event_trigger'))");
 		if (!settings->GetShowSystemObjects())
 			restrict += wxT(" AND nspname NOT LIKE E'pg\\\\_toast%' AND nspname NOT LIKE E'pg\\\\_temp%'");
 
@@ -424,11 +427,19 @@ int dlgFunction::Go(bool modal)
 		if (factory == &triggerFunctionFactory)
 		{
 			cbReturntype->Append(wxT("trigger"));
+
+			if (connection->BackendMinimumVersion(9, 3))
+				cbReturntype->Append(wxT("event_trigger"));
+
 			cbReturntype->SetSelection(0);
-			cbReturntype->Disable();
 			lstArguments->Disable();
 			cbDatatype->Disable();
 			txtArgName->Disable();
+			txtArgDefVal->Disable();
+			rdbIn->Disable();
+			rdbOut->Disable();
+			rdbInOut->Disable();
+			rdbVariadic->Disable();
 			sel = cbLanguage->FindString(wxT("c"));
 		}
 		else if (isProcedure)
@@ -904,8 +915,18 @@ wxString dlgFunction::GetSql()
 		}
 		else
 		{
-			sql += schema->GetQuotedPrefix() + qtIdent(GetName())
-			       + wxT("(") + GetArgs() + wxT(")");
+			// While creating trigger functions from the Event trigger, we may get the schema as null.
+			// Since, Event triggers are at database level.
+
+			if (schema)
+				sql += schema->GetQuotedPrefix() + qtIdent(GetName())
+				       + wxT("(") + GetArgs() + wxT(")");
+			else if(!function)
+				sql += qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName())
+				       + wxT("(") + GetArgs() + wxT(")");
+			else
+				sql += function->GetSchema()->GetQuotedPrefix() + qtIdent(GetName())
+				       + wxT("(") + GetArgs() + wxT(")");
 		}
 
 		if (!isProcedure)
@@ -978,8 +999,12 @@ wxString dlgFunction::GetSql()
 
 	if (function && !isProcedure)
 	{
-		name = schema->GetQuotedPrefix() + qtIdent(name)
-		       + wxT("(") + GetArgs(false, true) + wxT(")");
+		if (schema)
+			name = schema->GetQuotedPrefix() + qtIdent(name) + wxT("(") + GetArgs(false, true) + wxT(")");
+		// Event triggers do not have it's schema definition. Hence, getting the schema from the trigger function.
+		else
+			name = function->GetSchema()->GetQuotedPrefix() + qtIdent(name)
+			       + wxT("(") + GetArgs(false, true) + wxT(")");
 
 		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
 		AppendSchemaChange(sql, wxT("FUNCTION ") + name);

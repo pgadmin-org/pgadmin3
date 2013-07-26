@@ -21,6 +21,7 @@ pgadmin3_SOURCES += \
 	include/dlg/dlgConversion.h \
 	include/dlg/dlgDatabase.h \
 	include/dlg/dlgDomain.h \
+	include/dlg/dlgEventTrigger.h \
 	include/dlg/dlgExtension.h \
 	include/dlg/dlgEditGridOptions.h \
 	include/dlg/dlgFindReplace.h \

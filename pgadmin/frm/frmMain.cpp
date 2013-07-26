@@ -84,6 +84,7 @@
 #include "schema/pgForeignKey.h"
 #include "schema/pgCheck.h"
 #include "schema/pgDomain.h"
+#include "schema/pgEventTrigger.h"
 
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 #include "utils/sshTunnel.h"
@@ -309,6 +310,7 @@ void frmMain::CreateMenus()
 	new executePgstatindexFactory(menuFactories, viewMenu, 0);
 	new enabledisableRuleFactory(menuFactories, toolsMenu, 0);
 	new enabledisableTriggerFactory(menuFactories, toolsMenu, 0);
+	new enabledisableEventTriggerFactory(menuFactories, toolsMenu, 0);
 	new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
 	new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
 	new validateForeignKeyFactory(menuFactories, toolsMenu, 0);

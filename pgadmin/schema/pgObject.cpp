@@ -260,7 +260,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 		                       wxT("   AND ") + clsorder + wxT(" IN (\n")
 		                       wxT("   SELECT oid FROM pg_class\n")
 		                       wxT("    WHERE relname IN ('pg_class', 'pg_constraint', 'pg_conversion', 'pg_language', 'pg_proc',\n")
-		                       wxT("                      'pg_rewrite', 'pg_namespace', 'pg_trigger', 'pg_type', 'pg_attrdef'))\n")
+		                       wxT("                      'pg_rewrite', 'pg_namespace', 'pg_trigger', 'pg_type', 'pg_attrdef', 'pg_event_trigger'))\n")
 		                       wxT(" ORDER BY ") + clsorder + wxT(", cl.relkind"));
 
 		if (set)

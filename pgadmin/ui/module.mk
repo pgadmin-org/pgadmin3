@@ -26,6 +26,7 @@ TMP_ui += \
 	ui/dlgDatabase.xrc \
 	ui/dlgDirectDbg.xrc \
 	ui/dlgDomain.xrc \
+	ui/dlgEventTrigger.xrc \
 	ui/dlgExtension.xrc \
 	ui/dlgEditGridOptions.xrc \
 	ui/dlgExtTable.xrc \
