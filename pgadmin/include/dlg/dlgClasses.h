@@ -140,6 +140,10 @@ protected:
 	wxTextCtrl *txtMessages;
 
 private:
+	bool bIsAborted;
+	bool bIsExecutionStarted;
+	bool bIsExecutionCompleted;
+
 	DECLARE_EVENT_TABLE()
 };
 
