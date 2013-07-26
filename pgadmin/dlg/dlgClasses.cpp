@@ -428,6 +428,9 @@ ExecutionDialog::ExecutionDialog(frmMain *frame, pgObject *_object) : DialogWith
 	thread = 0;
 	object = _object;
 	txtMessages = 0;
+	bIsAborted = false;
+	bIsExecutionStarted = false;
+	bIsExecutionCompleted = false;
 
 	pgDatabase *db = object->GetDatabase();
 	wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Execution Tool");
@@ -443,6 +446,11 @@ void ExecutionDialog::EnableOK(const bool enable)
 void ExecutionDialog::OnClose(wxCloseEvent &event)
 {
 	Abort();
+	// If execution is started and not yet complete it means thread is still
+	// running, so we should not delete the connection object and destroy the dialog.
+	if(bIsExecutionStarted && !bIsExecutionCompleted)
+		return;
+
 	delete conn;
 	if (IsModal())
 		EndModal(-1);
@@ -473,8 +481,10 @@ void ExecutionDialog::OnCancel(wxCommandEvent &ev)
 
 void ExecutionDialog::Abort()
 {
-	if (thread)
+	// If bIsAborted is true it means abort is still in progress
+	if (thread && !bIsAborted)
 	{
+		bIsAborted = true;
 		if (thread->IsRunning())
 			thread->Delete();
 		delete thread;
@@ -496,6 +506,10 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			return;
 
 		btnOK->Disable();
+		// Reset the variables
+		bIsAborted = false;
+		bIsExecutionStarted = false;
+		bIsExecutionCompleted = false;
 
 		thread = new pgQueryThread(conn, sql);
 		if (thread->Create() != wxTHREAD_NO_ERROR)
@@ -506,6 +520,8 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 
 		wxLongLong startTime = wxGetLocalTimeMillis();
 		thread->Run();
+		// When execution is started then set the variable
+		bIsExecutionStarted = true;
 		wxNotebook *nb = CTRL_NOTEBOOK("nbNotebook");
 		if (nb)
 			nb->SetSelection(nb->GetPageCount() - 1);
@@ -558,6 +574,7 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			txtMessages->AppendText(_("\nCancelled.\n"));
 
 		btnOK->Enable();
+		bIsExecutionCompleted = true;
 	}
 	else
 	{
