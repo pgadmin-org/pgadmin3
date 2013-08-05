@@ -28,6 +28,7 @@
 #define rbDrop            CTRL_RADIOBUTTON("rbDrop")
 #define cbRoles           CTRL_COMBOBOX("cbRoles")
 #define cbDatabases       CTRL_COMBOBOX("cbDatabases")
+#define btnOK             CTRL_BUTTON("wxID_OK")
 
 BEGIN_EVENT_TABLE(dlgReassignDropOwned, pgDialog)
 	EVT_RADIOBUTTON(XRCID("rbReassignTo"),    dlgReassignDropOwned::OnChange)
@@ -71,6 +72,9 @@ dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
 		cbDatabases->Append(databases.GetVal(wxT("datname")));
 	}
 	cbDatabases->SetSelection(0);
+
+	if(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() <= 0)
+		btnOK->Disable();
 }
 
 dlgReassignDropOwned::~dlgReassignDropOwned()
@@ -93,6 +97,10 @@ void dlgReassignDropOwned::OnCancel(wxCommandEvent &ev)
 void dlgReassignDropOwned::OnChange(wxCommandEvent &ev)
 {
 	cbRoles->Enable(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() > 0);
+	if(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() <= 0)
+		btnOK->Disable();
+	else
+		btnOK->Enable();
 }
 
 wxString dlgReassignDropOwned::GetDatabase()
