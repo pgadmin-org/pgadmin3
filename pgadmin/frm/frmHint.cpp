@@ -110,21 +110,21 @@ hintArray[] =
 		HINT_INSTRUMENTATION,
 		__("Server instrumentation not installed"),
 		0,
-		wxT("instrumentation"),
+		wxEmptyString,
 		HINT_CANSUPPRESS
 	},
 	{
 		HINT_INSTRUMENTATION_91_WITH,
 		__("Server instrumentation not installed"),
 		0,
-		wxT("instrumentation91_with"),
+		wxEmptyString,
 		HINT_CANSUPPRESS | HINT_CANFIX
 	},
 	{
 		HINT_INSTRUMENTATION_91_WITHOUT,
 		__("Server instrumentation not installed"),
 		0,
-		wxT("instrumentation91_without"),
+		wxEmptyString,
 		HINT_CANSUPPRESS
 	},
 	{
@@ -178,14 +178,12 @@ BEGIN_EVENT_TABLE(frmHint, DialogWithHelp)
 END_EVENT_TABLE();
 
 
-
-
 #define chkSuppress     CTRL_CHECKBOX("chkSuppress")
 #define htmlHint        (XRCCTRL(*this, "htmlHint", wxHtmlWindow))
 #define btnFix          CTRL_BUTTON("btnFix")
 #define btnYes          CTRL_BUTTON("wxID_YES")
 #define btnNo           CTRL_BUTTON("wxID_NO")
-
+#define btnHelp         CTRL_BUTTON("wxID_HELP")
 
 frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
 {
@@ -340,6 +338,11 @@ void frmHint::SetHint(const wxString &info)
 		btnYes->Hide();
 		btnNo->Hide();
 	}
+
+	if (hintArray[currentHint].helpItem == wxEmptyString)
+		btnHelp->Disable();
+	else
+		btnHelp->Enable();
 };
 
 
