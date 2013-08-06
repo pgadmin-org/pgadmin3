@@ -440,10 +440,11 @@ bool dlgDatabase::executeDDLSql(const wxString &strSql)
 			if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
 			{
 				tmp = wxT("SELECT ") + qtIdent(data->cluster)
-				      + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
+				      + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", -1);\n")
+				      + strSql + wxT(";\n")
 				      + wxT("SELECT ") + qtIdent(data->cluster)
 				      + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
-				      + qtDbString(strSql) + wxT(", 0);\n");
+				      + qtDbString(strSql) + wxT(", -1);\n");
 			}
 			else
 			{
