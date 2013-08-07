@@ -238,7 +238,7 @@ void pgForeignTable::iSetOptions(const wxString &tmpoptions)
 	wxString option;
 	wxString value;
 	wxString currentChar;
-	bool wrappedInQuotes, antislash;
+	bool wrappedInQuotes = false, antislash = false;
 
 	options = wxEmptyString;
 
