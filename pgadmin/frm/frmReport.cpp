@@ -1143,7 +1143,6 @@ cleanup:
 	//  xmlFreeDoc(ssDoc);
 
 	xsltCleanupGlobals();
-	xmlCleanupParser();
 
 	wxEndBusyCursor();
 
