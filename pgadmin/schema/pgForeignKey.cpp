@@ -334,6 +334,7 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 			    onDel.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
 			foreignKey->iSetMatch(
 			    match.IsSameAs('f') ? wxT("FULL") :
+			    match.IsSameAs('s') ? wxT("SIMPLE") :
 			    match.IsSameAs('u') ? wxT("SIMPLE") : wxT("Unknown"));
 
 			wxString cn = foreignKeys->GetVal(wxT("conkey"));
