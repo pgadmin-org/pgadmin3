@@ -47,6 +47,7 @@ dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
 
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource(win, wxT("dlgReassignDropOwned"));
+	RestorePosition();
 
 	cbRoles->Clear();
 	query = wxT("SELECT rolname FROM pg_roles WHERE rolname<>") + conn->qtDbString(role->GetName()) + wxT(" ORDER BY rolname");
@@ -75,6 +76,8 @@ dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
 
 	if(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() <= 0)
 		btnOK->Disable();
+
+	SetSize(330, 160);
 }
 
 dlgReassignDropOwned::~dlgReassignDropOwned()
