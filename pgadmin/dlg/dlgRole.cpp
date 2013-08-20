@@ -210,7 +210,7 @@ int dlgRole::Go(bool modal)
 		chkUpdateCat->SetValue(role->GetUpdateCatalog());
 		chkCanLogin->SetValue(role->GetCanLogin());
 		chkReplication->SetValue(role->GetReplication());
-		if (role->GetAccountExpires().IsValid())
+		if (role->GetAccountExpires().IsValid() && role->GetAccountExpires().GetValue() != -1)
 		{
 			datValidUntil->SetValue(role->GetAccountExpires().GetDateOnly());
 			timValidUntil->SetTime(role->GetAccountExpires());
