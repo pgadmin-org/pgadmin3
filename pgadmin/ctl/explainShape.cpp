@@ -71,6 +71,7 @@ ExplainShape::ExplainShape(const wxImage &bmp, const wxString &description, long
 	kidCount = 0;
 	totalShapes = 0;
 	usedShapes = 0;
+	m_rootShape = false;
 }
 
 
@@ -117,6 +118,10 @@ void ExplainShape::OnDraw(wxDC &dc)
 {
 	wxBitmap &bmp = GetBitmap();
 	if (!bmp.Ok())
+		return;
+
+	// We do not draw the root shape
+	if (m_rootShape)
 		return;
 
 	int x, y;
@@ -179,6 +184,29 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 		descr = str.Left(actPos);
 	else
 		descr = str;
+
+	// Requested an empty shape, which can be treated as a root shape
+	if (level == 0)
+	{
+		s = new ExplainShape(*ex_unknown_png_img, wxEmptyString);
+		s->SetDraggable(false);
+		s->m_rootShape = true;
+		s->level = level;
+		int w = 50, h = 20;
+
+		wxBitmap &bmp = s->GetBitmap();
+		if (w < bmp.GetWidth())
+			w = bmp.GetWidth();
+
+		s->SetHeight(bmp.GetHeight() + BMP_BORDER + h);
+		s->SetWidth(w);
+
+		s->upperShape = NULL;
+		s->kidNo = 0;
+
+		return s;
+	}
+
 
 	// possible keywords can be found in postgresql/src/backend/commands/explain.c
 

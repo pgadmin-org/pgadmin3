@@ -25,7 +25,7 @@ END_EVENT_TABLE()
 
 
 ExplainCanvas::ExplainCanvas(wxWindow *parent)
-	: wxShapeCanvas(parent)
+	: wxShapeCanvas(parent), rootShape(NULL)
 {
 	SetDiagram(new wxDiagram);
 	GetDiagram()->SetCanvas(this);
@@ -42,6 +42,7 @@ ExplainCanvas::~ExplainCanvas()
 void ExplainCanvas::Clear()
 {
 	GetDiagram()->DeleteAllShapes();
+	rootShape = NULL;
 }
 
 
@@ -49,7 +50,13 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 {
 	Clear();
 
-	ExplainShape *last = 0;
+	// We can have multiple plans in a single explain string
+	// Add a empty root shape, which will never get drawn, but it will help us
+	// to keep track of all these plans
+	rootShape = ExplainShape::Create(0, NULL, wxEmptyString);
+	AddShape(rootShape);
+
+	ExplainShape *last = rootShape;
 	int maxLevel = 0;
 
 	wxStringTokenizer lines(str, wxT("\n"));
@@ -82,11 +89,11 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 		}
 		while (lines.HasMoreTokens());
 
-		long level = (tmp.Length() - line.Length() + 4) / 6;
+		long level = ((tmp.Length() - line.Length() + 4) / 6) + 1;
 
 		if (last)
 		{
-			if (level)
+			if (level != 1)
 			{
 				if (line.Left(4) == wxT("->  "))
 					line = line.Mid(4);
@@ -97,7 +104,7 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 				}
 			}
 
-			while (last && level <= last->GetLevel())
+			while (last != rootShape && level <= last->GetLevel())
 				last = last->GetUpper();
 		}
 
@@ -112,8 +119,6 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 		if (level > maxLevel)
 			maxLevel = level;
 
-		if (!last)
-			rootShape = s;
 		last = s;
 	}
 
@@ -148,9 +153,14 @@ void ExplainCanvas::SetExplainString(const wxString &str)
 			s->SetY(upper->GetY() + upper->usedShapes * yoffs);
 			upper->usedShapes += s->totalShapes;
 
-			wxLineShape *l = new ExplainLine(s, upper);
-			l->Show(true);
-			AddShape(l);
+			// We don't require to draw a line from the root shape to its
+			// childrens
+			if (upper != rootShape)
+			{
+				wxLineShape *l = new ExplainLine(s, upper);
+				l->Show(true);
+				AddShape(l);
+			}
 		}
 		else
 		{

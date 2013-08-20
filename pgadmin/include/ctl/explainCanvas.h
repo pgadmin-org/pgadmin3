@@ -102,6 +102,7 @@ protected:
 	int kidCount, kidNo;
 	int totalShapes; // horizontal space usage by shape and its kids
 	int usedShapes;
+	bool m_rootShape;
 
 	friend class ExplainCanvas;
 	friend class ExplainText;
