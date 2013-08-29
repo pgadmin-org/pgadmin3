@@ -289,7 +289,7 @@ wxString qtDbStringDollar(const wxString &value)
 	wxString qtDefault = wxT("BODY");
 	wxString qt = qtDefault;
 	int counter = 1;
-	if (value.Find('\'') < 0 && value.Find('\n') < 0)
+	if (value.Find('\'') < 0 && value.Find('\n') < 0 && value.Find('\r') < 0)
 	{
 		wxString ret = value;
 		ret.Replace(wxT("\\"), wxT("\\\\"));
