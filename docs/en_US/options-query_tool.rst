@@ -19,7 +19,7 @@ Use the fields on the *Query editor* dialog to specify workspace preferences for
  
 * **Use spaces instead of tabs** - Check the box next to *Use spaces instead of tabs* to instruct pgAdmin to insert a space when you press the tab key in an SQL text box.
 
-* **Copy SQL from main form to SQL dialogue** - Check the box next to *Copy SQL from main window to SQL dialogue* to instruct pgAdmin to copy any object definition displayed on the main object browser for use as a default query in the Query Tool when the Query Tool opens.
+* **Copy SQL from main window to SQL dialogue** - Check the box next to *Copy SQL from main window to SQL dialogue* to instruct pgAdmin to copy any object definition displayed on the main object browser for use as a default query in the Query Tool when the Query Tool opens.
 
 * **Enable Auto ROLLBACK** - Check the box next to *Enable Auto ROLLBACK* to instruct the query tool to execute a ROLLBACK if a query fails.
 
