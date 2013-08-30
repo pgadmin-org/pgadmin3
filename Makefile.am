@@ -44,6 +44,7 @@ EXTRA_DIST = \
 	$(top_srcdir)/docs/en_US/images/*.png 
 
 TMP_docs = \
+	$(top_srcdir)/docs/en_US/*.css \
 	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/cs_CZ/*.css \
 	$(top_srcdir)/docs/cs_CZ/hints/*.html \
