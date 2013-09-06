@@ -551,6 +551,22 @@ void frmMain::Refresh(pgObject *data)
 	}
 	else
 	{
+		if (data->GetMetaType() == PGM_SCHEMA && !data->IsCollection() && data->GetConnection()->BackendMinimumVersion(9, 3))
+		{
+			// Event triggers backend functions are at schema level.
+			// Hence, we can consider that Event Triggers at schema level and partly at database.
+			// So, if any schema is refreshed, we need to the event trigger collection as well.
+			// It's a special case, which effects the schema operations on the event triggers as well.
+			// To solve this, we are navigating to the parent node (database node), and then locating event trigger collections.
+			// Once we've found the event triggers collection, we refresh it.
+			//
+			wxTreeItemId dbItem = browser->GetItemParent(browser->GetItemParent(browser->GetSelection()));
+			pgCollection *eventTrgCol = browser->FindCollection(eventTriggerFactory, dbItem);
+
+			if(eventTrgCol)
+			Refresh(eventTrgCol);
+		}
+
 		// Scan the child nodes and make a list of those that are expanded
 		// This is not an exact science as node names may change etc.
 		wxArrayString expandedNodes;
@@ -562,7 +578,6 @@ void frmMain::Refresh(pgObject *data)
 		data->SetDirty();
 
 		pgObject *newData = data->Refresh(browser, currentItem);
-
 		done = !data->GetConnection() || data->GetConnection()->GetStatus() == PGCONN_OK;
 
 		if (newData != data)

@@ -132,6 +132,7 @@ private:
 	OID functionOid, schemaOid;
 	bool enabled;
 	pgFunction *eventTriggerFunction;
+	pgSchema *eventTriggerFunctionSchema;
 };
 
 class pgEventTriggerCollection : public pgDatabaseObjCollection

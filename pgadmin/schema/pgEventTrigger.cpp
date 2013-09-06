@@ -24,6 +24,7 @@ pgEventTrigger::pgEventTrigger(const wxString &newName)
 	: pgDatabaseObject(eventTriggerFactory, newName)
 {
 	eventTriggerFunction = 0;
+	eventTriggerFunctionSchema = 0;
 }
 
 pgEventTrigger::~pgEventTrigger()
@@ -33,6 +34,8 @@ pgEventTrigger::~pgEventTrigger()
 		// eventTriggerFunction wasn't appended to tree, so we need to delete it manually.
 		delete eventTriggerFunction;
 	}
+
+	delete eventTriggerFunctionSchema;
 }
 
 pgCollection *pgEventTriggerFactory::CreateCollection(pgObject *obj)
@@ -122,14 +125,15 @@ void pgEventTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 			delete eventTriggerFunction;
 
 		wxString restr = wxT(" WHERE nsp.oid= ") + NumToStr(GetSchemaOid()) + wxT("::oid\n");
-		pgObject *evntTrgSchema;
-		evntTrgSchema = schemaFactory.CreateObjects((pgCollection *)browser->GetObject(browser->GetSelection()), 0, restr);
+		eventTriggerFunctionSchema = (pgSchema *)schemaFactory.CreateObjects((pgCollection *)browser->GetObject(browser->GetSelection()), 0, restr);
+
 		// append function here
-		eventTriggerFunction = functionFactory.AppendFunctions(this, (pgSchema *)evntTrgSchema, browser, wxT(" WHERE pr.oid = ") + NumToStr(functionOid) + wxT("::oid\n"));
+		eventTriggerFunction = functionFactory.AppendFunctions(this, eventTriggerFunctionSchema, browser, wxT(" WHERE pr.oid = ") + NumToStr(functionOid) + wxT("::oid\n"));
 		if (eventTriggerFunction)
 		{
 			iSetFunction(eventTriggerFunction->GetQuotedFullIdentifier());
 		}
+
 	}
 
 	if (properties)
