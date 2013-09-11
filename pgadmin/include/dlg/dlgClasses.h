@@ -167,6 +167,7 @@ protected:
 	wxTextCtrl *txtMessages;
 	sysProcess *process;
 	bool done, final;
+	long processID;
 	wxArrayString environment;
 
 #if __GNUC__ >= 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
