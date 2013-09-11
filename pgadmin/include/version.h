@@ -13,7 +13,7 @@
 #define VERSION_H
 
 // Application Versions
-#define VERSION_STR     wxT("1.19.0")
+#define VERSION_STR     wxT("1.19.0-Dev")
 #define VERSION_NUM     1,19,0,1
 #define VERSION_PACKAGE 1.19.0
 
