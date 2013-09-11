@@ -607,6 +607,7 @@ ExternProcessDialog::ExternProcessDialog(frmMain *frame) : DialogWithHelp(frame)
 	txtMessages = 0;
 	process = 0;
 	done = false;
+	processID = 0;
 
 	timer = new wxTimer(this, TIMER_ID);
 }
@@ -645,12 +646,18 @@ bool ExternProcessDialog::Execute(int step, bool finalStep)
 		txtMessages->AppendText(GetDisplayCmd(step) + END_OF_LINE);
 
 	if (process)
+	{
 		delete process;
+		process = NULL;
+		processID = 0;
+	}
 
 	process = new sysProcess(this);
 	process->SetEnvironment(environment);
 
-	if (wxExecute(GetCmd(step), wxEXEC_ASYNC, process))
+	processID = wxExecute(GetCmd(step), wxEXEC_ASYNC, process);
+
+	if (processID)
 	{
 		wxNotebook *nb = CTRL_NOTEBOOK("nbNotebook");
 		if (nb)
@@ -665,6 +672,8 @@ bool ExternProcessDialog::Execute(int step, bool finalStep)
 	else
 	{
 		delete process;
+		process = NULL;
+		processID = 0;
 		return false;
 	}
 }
@@ -733,6 +742,7 @@ void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
 	if (process)
 	{
 		delete process;
+		processID = 0;
 		process = 0;
 	}
 	btnOK->Enable();
@@ -746,9 +756,9 @@ void ExternProcessDialog::Abort()
 	if (process)
 	{
 		done = false;
-		sysProcess *tmpProcess = process;
-		process = 0;
-		tmpProcess->Abort();
-		delete tmpProcess;
+		// Kill the child process started with wxExecute in Execute method
+		wxKill(processID);
+		processID = 0;
 	}
 }
+
