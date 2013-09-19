@@ -97,7 +97,7 @@ wxString pgUserMapping::GetTranslatedMessage(int kindOfMessage) const
 
 bool pgUserMapping::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	wxString sql = wxT("DROP USER MAPPING FOR ") + GetUsr() + wxT(" SERVER ") + GetForeignServer()->GetName();
+	wxString sql = wxT("DROP USER MAPPING FOR ") + GetUsr() + wxT(" SERVER ") + qtIdent(GetForeignServer()->GetName());
 	return GetDatabase()->ExecuteVoid(sql);
 }
 
@@ -107,7 +107,7 @@ wxString pgUserMapping::GetSql(ctlTree *browser)
 	if (sql.IsNull())
 	{
 		sql = wxT("-- Server: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-		      + wxT("-- DROP USER MAPPING FOR ") + GetUsr() + wxT(" SERVER ") + GetForeignServer()->GetName() + wxT(";")
+		      + wxT("-- DROP USER MAPPING FOR ") + GetUsr() + wxT(" SERVER ") + qtIdent(GetForeignServer()->GetName()) + wxT(";")
 		      + wxT("\n\nCREATE USER MAPPING ")
 		      + wxT("\n   FOR ") + qtIdent(GetUsr())
 		      + wxT("\n   SERVER ") + qtIdent(GetForeignServer()->GetName());
