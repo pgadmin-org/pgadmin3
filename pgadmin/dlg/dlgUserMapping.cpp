@@ -285,14 +285,14 @@ wxString dlgUserMapping::GetSql()
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
-			sql += wxT("ALTER USER MAPPING FOR ") + usermapping->GetUsr() + wxT(" SERVER ") + foreignserver->GetName()
+			sql += wxT("ALTER USER MAPPING FOR ") + usermapping->GetUsr() + wxT(" SERVER ") + qtIdent(foreignserver->GetName())
 			       + wxT("\n  OPTIONS (") + sqloptions + wxT(");\n");
 		}
 	}
 	else
 	{
 		// create mode
-		sql = wxT("CREATE USER MAPPING FOR ") + cbUser->GetValue() + wxT(" SERVER ") + foreignserver->GetName();
+		sql = wxT("CREATE USER MAPPING FOR ") + cbUser->GetValue() + wxT(" SERVER ") + qtIdent(foreignserver->GetName());
 
 		// check for options
 		if (lstOptions->GetItemCount() > 0)
