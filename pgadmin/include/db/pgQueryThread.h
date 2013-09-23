@@ -80,6 +80,7 @@ protected:
 	pgParam &operator= (const pgParam &)
 	{
 		wxASSERT(0);
+		return *this;
 	}
 
 	friend class pgConn;
@@ -153,6 +154,7 @@ private:
 	pgBatchQuery &operator= (const pgBatchQuery &)
 	{
 		wxASSERT(0);
+		return *this;
 	}
 
 	friend class pgQueryThread;
