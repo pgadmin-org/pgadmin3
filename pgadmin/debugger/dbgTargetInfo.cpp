@@ -597,6 +597,7 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 		{
 			params = new pgParamsArray();
 			wxMBConv *conv = conn->GetConv();
+			unsigned int noInParams = 0;
 
 			for(int idx = 0; idx < (int)m_args->GetCount(); idx++)
 			{
@@ -606,7 +607,7 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 				{
 					params->Add(arg->GetParam(conv));
 
-					if (idx != 0)
+					if (noInParams != 0)
 						strQuery += wxT(", ");
 
 					if (arg->GetMode() == pgParam::PG_PARAM_VARIADIC)
@@ -614,6 +615,7 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 
 					strQuery += wxString::Format(wxT("$%d::"), idx + 1) +
 					            ((*m_args)[idx])->GetTypeName();
+					noInParams++;
 				}
 			}
 
