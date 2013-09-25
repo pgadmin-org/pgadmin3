@@ -93,6 +93,7 @@ private:
 	dbgArgInfo &operator= (const dbgArgInfo &)
 	{
 		wxASSERT(0);
+		return *this;
 	}
 
 	wxString   m_name;       /* Name of the argument */
