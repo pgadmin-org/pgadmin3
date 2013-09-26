@@ -865,7 +865,11 @@ void frmMain::ExecDrop(bool cascaded)
 	{
 		// If the collection has a table, refresh that as well.
 		if (owneritem)
+		{
+			ObjectBrowserRefreshing(true);
 			Refresh(browser->GetObject(owneritem));
+			ObjectBrowserRefreshing(false);
+		}
 
 		// Now re-focus on the parent of the deleted node
 		if (!parent.IsEmpty())
