@@ -618,6 +618,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, catalogFactory);
 			if (settings->GetDisplayOption(_("Casts")))
 				browser->AppendCollection(this, castFactory);
+			if (connection()->BackendMinimumVersion(9, 3) && settings->GetDisplayOption(_("Event Triggers")))
+				browser->AppendCollection(this, eventTriggerFactory);
 			if (settings->GetDisplayOption(_("Extensions")) && GetConnection()->BackendMinimumVersion(9, 1))
 				browser->AppendCollection(this, extensionFactory);
 			if (settings->GetDisplayOption(_("Foreign Data Wrappers")) && GetConnection()->BackendMinimumVersion(8, 4))
@@ -629,8 +631,6 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 					browser->AppendCollection(this, synonymFactory);
 			if (settings->GetDisplayOption(_("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
-			if (connection()->BackendMinimumVersion(9, 3) && settings->GetDisplayOption(_("Event Triggers")))
-				browser->AppendCollection(this, eventTriggerFactory);
 			if (settings->GetDisplayOption(_("Slony-I Clusters")))
 				browser->AppendCollection(this, slClusterFactory);
 
