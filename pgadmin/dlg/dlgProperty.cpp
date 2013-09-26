@@ -952,12 +952,25 @@ wxString dlgProperty::BuildSql(const wxString &sql)
 		{
 			if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
 			{
-				tmp = wxT("SELECT ") + qtIdent(data->cluster)
-				      + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", -1);\n")
-				      + sql + wxT(";\n")
-				      + wxT("SELECT ") + qtIdent(data->cluster)
-				      + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
-				      + qtDbString(sql) + wxT(", -1);\n");
+				// From slony version 2.2.0 onwards ddlscript_prepare() method is removed and
+				// ddlscript_complete() method arguments got changed so we have to use ddlcapture() method
+				// instead of ddlscript_prepare() and changed the argument of ddlscript_complete() method
+				if ((data->majorVer == 2 && data->minorVer >= 2) || (data->majorVer > 2))
+				{
+					tmp = wxT("SELECT ") + qtIdent(data->cluster)
+					      + wxT(".ddlcapture(") + qtDbString(sql) + wxT(", ") + wxT("NULL::text") + wxT(" );\n")
+					      + wxT("SELECT ") + qtIdent(data->cluster)
+					      + wxT(".ddlscript_complete(") + wxT("NULL::text") + wxT(" );\n");
+				}
+				else
+				{
+					tmp = wxT("SELECT ") + qtIdent(data->cluster)
+					      + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", -1);\n")
+					      + sql + wxT(";\n")
+					      + wxT("SELECT ") + qtIdent(data->cluster)
+					      + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
+					      + qtDbString(sql) + wxT(", -1);\n");
+				}
 			}
 			else
 			{
