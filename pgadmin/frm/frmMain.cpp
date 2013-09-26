@@ -599,6 +599,7 @@ void frmMain::Refresh(pgObject *data)
 					browser->SetItemText(currentItem, newData->GetDisplayName());
 
 				delete data;
+				data = NULL;
 			}
 			else
 			{
