@@ -39,6 +39,10 @@
 #include "schema/edbPrivateSynonym.h"
 #include "dlg/dlgProperty.h"
 
+// Mutex to protect the "currentObject" from race conditions.
+//
+static wxMutex s_currentObjectMutex;
+
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
 	EVT_CHILD_FOCUS(			frmMain::OnChildFocus)
@@ -411,7 +415,12 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
 	// Get the item data, and feed it to the relevant handler,
 	// cast as required.
-	currentObject = browser->GetObject(item);
+	//
+	// Lock the assignment to prevent the race conditions between onSelRightClick and execSelChange.
+	//
+		s_currentObjectMutex.Lock();
+		currentObject = browser->GetObject(item);
+		s_currentObjectMutex.Unlock();
 
 	// If we didn't get an object, then we may have a right click, or
 	// invalid click, so ignore.
@@ -729,11 +738,17 @@ void frmMain::OnSelRightClick(wxTreeEvent &event)
 	if (item != browser->GetSelection())
 	{
 		browser->SelectItem(item);
+
+		// Prevent changes to "currentObject" by "execSelchange" function by another thread.
+		// Will hold the lock until we do popup on the respective object.
+		//
+		s_currentObjectMutex.Lock();
 		currentObject = browser->GetObject(item);
 	}
 
 	if (currentObject)
 		doPopup(browser, event.GetPoint(), currentObject);
+	s_currentObjectMutex.Unlock();
 }
 
 
