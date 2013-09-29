@@ -33,6 +33,7 @@
 #define txtCompressRatio        CTRL_TEXT("txtCompressRatio")
 #define cbEncoding              CTRL_COMBOBOX("cbEncoding")
 #define cbFormat                CTRL_COMBOBOX("cbFormat")
+#define txtNumberOfJobs          CTRL_TEXT("txtNumberOfJobs")
 #define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkBlobs                CTRL_CHECKBOX("chkBlobs")
 #define chkOid                  CTRL_CHECKBOX("chkOid")
@@ -227,6 +228,10 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 		delete objects;
 	}
 
+	if (!pgAppMinimumVersion(backupExecutable, 9, 3))
+	{
+		txtNumberOfJobs->Disable();
+	}
 	if (!pgAppMinimumVersion(backupExecutable, 9, 2))
 	{
 		chkSectionPreData->Disable();
@@ -359,6 +364,10 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
 	chkDisableTrigger->Enable(chkOnlyData->GetValue());
 
 	btnFilename->Enable(!isDirectory);
+
+	txtNumberOfJobs->Enable(isDirectory && pgAppMinimumVersion(backupExecutable, 9, 3));
+	if (!txtNumberOfJobs->IsEnabled())
+		txtNumberOfJobs->SetValue(wxEmptyString);
 
 	wxCommandEvent nullEvent;
 	OnChange(nullEvent);
@@ -493,6 +502,9 @@ wxString frmBackup::getCmdPart2()
 		cmd.Append(wxT(" --no-unlogged-table-data"));
 
 	cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
+
+	if (!txtNumberOfJobs->GetValue().IsEmpty())
+		cmd.Append(wxT(" --jobs ") + txtNumberOfJobs->GetValue());
 
 	// Process selected items
 	wxTreeItemId root, schema, table;
