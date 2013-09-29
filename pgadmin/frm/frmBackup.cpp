@@ -158,7 +158,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	wxString query = wxT("SELECT nspname, relname ")
 	                 wxT("FROM pg_namespace n ")
 	                 wxT("LEFT JOIN pg_class c ON n.oid=c.relnamespace AND relkind='r' ")
-	                 wxT("WHERE nspname NOT LIKE 'pg_%' AND nspname <> 'information_schema' ");
+	                 wxT("WHERE nspname NOT LIKE E'pg\\\\_%' AND nspname <> 'information_schema' ");
 	if (!object->GetDatabase()->GetSchemaRestriction().IsEmpty())
 		query += wxT("AND nspname IN (") + object->GetDatabase()->GetSchemaRestriction() + wxT(")");
 	query += wxT("ORDER BY nspname, relname");
