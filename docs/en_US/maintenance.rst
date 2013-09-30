@@ -20,7 +20,7 @@ use any more. If a row is updated or deleted, the previous content
 isn't replaced, but rather marked invalid. The new data is inserted
 freshly into the database. You need to perform a garbage collection
 regularly, to insure that your database doesn't contain too much
-unused data, wasting disk space and ultimatively degrading
+unused data, wasting disk space and ultimately degrading
 performance.
 
 Please press the Help button to see the PostgreSQL help about the

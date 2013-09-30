@@ -27,6 +27,6 @@ guidelines when selecting passwords. This is not an exhaustive list and **will n
 * Ensure that passwords are of adequate length. 6 characters should be the absolute minimum.
 * Ensure that passwords are not easily guessable by others, or open to dictionary attacks. Use a mixture of
   upper and lower case letters and numerics, and avoid using words or names. Consider using the first letter 
-  from each word in a phrase that you will rememeber easily but others will not guess.
+  from each word in a phrase that you will remember easily but others will not guess.
 * Ensure that your password is change regularly - at least every ninety days.
 
