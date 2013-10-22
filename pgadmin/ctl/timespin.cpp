@@ -24,6 +24,7 @@ BEGIN_EVENT_TABLE(wxTimeSpinCtrl, wxControl)
 	EVT_NAVIGATION_KEY(wxTimeSpinCtrl::OnNavigate)
 	EVT_SPIN_UP(CTRLID_SPN, wxTimeSpinCtrl::OnSpinUp)
 	EVT_SPIN_DOWN(CTRLID_SPN, wxTimeSpinCtrl::OnSpinDown)
+	EVT_SPIN(CTRLID_SPN, wxTimeSpinCtrl::OnSpin)
 	EVT_SET_FOCUS(wxTimeSpinCtrl::OnSetFocus)
 	EVT_SIZE(wxTimeSpinCtrl::OnSize)
 END_EVENT_TABLE()
@@ -234,6 +235,13 @@ void wxTimeSpinCtrl::OnSpinDown(wxSpinEvent &ev)
 	m_txt->SetFocus();
 #endif
 	DoSpin(-1);
+}
+
+
+void wxTimeSpinCtrl::OnSpin(wxSpinEvent &ev)
+{
+	wxCommandEvent parentSpinEvt(ev.GetEventType(), this->GetId());
+	this->GetEventHandler()->AddPendingEvent(parentSpinEvt);
 }
 
 void wxTimeSpinCtrl::DoSpin(int diff)

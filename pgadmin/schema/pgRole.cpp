@@ -643,6 +643,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			role->iSetSuperuser(roles->GetBool(wxT("rolsuper")));
 			role->iSetUpdateCatalog(roles->GetBool(wxT("rolcatupdate")));
 			role->iSetAccountExpires(roles->GetDateTime(wxT("rolvaliduntil")));
+			role->iSetIsValidInfinity(roles->GetVal(wxT("rolvaliduntil"))==wxT("infinity") ? true : false);
 			role->iSetPassword(roles->GetVal(wxT("rolpassword")));
 			role->iSetComment(roles->GetVal(wxT("description")));
 			role->iSetConnectionLimit(roles->GetLong(wxT("rolconnlimit")));

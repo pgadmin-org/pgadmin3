@@ -147,6 +147,10 @@ public:
 	{
 		connectionLimit = newVal;
 	}
+	void iSetIsValidInfinity(const bool b)
+	{
+		isValidInfinity = b;
+	}
 	wxArrayString &GetRolesIn()
 	{
 		return rolesIn;
@@ -179,11 +183,15 @@ public:
 	{
 		return true;
 	}
+	bool GetIsValidInfinity()
+	{
+		return isValidInfinity;
+	}
 private:
 	wxString password;
 	wxString rolqueuename;
 	wxDateTime accountExpires;
-	bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin, replication;
+	bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin, replication, isValidInfinity;
 	long connectionLimit;
 	wxArrayString rolesIn;
 	wxArrayString variables;
