@@ -48,6 +48,7 @@ private:
 
 	void OnSpinUp(wxSpinEvent &ev);
 	void OnSpinDown(wxSpinEvent &ev);
+	void OnSpin(wxSpinEvent &ev);
 	void OnText(wxCommandEvent &ev);
 	void OnSetFocus(wxFocusEvent &ev);
 	void OnKillFocus(wxFocusEvent &ev);

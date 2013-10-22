@@ -65,6 +65,7 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
 	EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"), dlgRole::OnChangeCal)
 	EVT_DATE_CHANGED(XRCID("datValidUntil"),        dlgRole::OnChangeDate)
 	EVT_SPIN(XRCID("timValidUntil"),                dlgRole::OnChangeSpin)
+	EVT_TEXT(XRCID("timValidUntil"),				dlgRole::OnChange)
 
 	EVT_LISTBOX_DCLICK(XRCID("lbRolesNotIn"),       dlgRole::OnRoleAdd)
 	EVT_LISTBOX_DCLICK(XRCID("lbRolesIn"),          dlgRole::OnRoleRemove)
@@ -133,6 +134,17 @@ void dlgRole::OnChangeSize(wxSizeEvent &ev)
 
 int dlgRole::Go(bool modal)
 {
+
+// In wxMac, the text deletion of "calenderBox" is not raising the EVT_CALENDAR_SEL_CHANGED, EVT_DATE_CHANGED events properly.
+// Hence, raising these events with wxEVT_CHILD_FOCUS events.
+//
+#ifdef __WXMAC__
+
+       datValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
+       timValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
+
+#endif
+
 	if (connection->BackendMinimumVersion(9, 0))
 	{
 		cbVarDbname->Append(wxT(""));
@@ -214,6 +226,11 @@ int dlgRole::Go(bool modal)
 		{
 			datValidUntil->SetValue(role->GetAccountExpires().GetDateOnly());
 			timValidUntil->SetTime(role->GetAccountExpires());
+		}
+		else
+		{
+			wxDateTime empty;
+			datValidUntil->SetValue(empty);
 		}
 		txtConnectionLimit->SetValue(NumToStr(role->GetConnectionLimit()));
 		txtComment->SetValue(role->GetComment());
@@ -654,7 +671,7 @@ wxString dlgRole::GetSql()
 		{
 			if (datValidUntil->GetValue().IsValid())
 				options += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue()));
-			else
+			else if (!role->GetIsValidInfinity() && role->GetAccountExpires().GetValue() != -1)
 				options += wxT("\n   VALID UNTIL 'infinity'");
 		}
 
