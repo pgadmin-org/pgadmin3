@@ -971,7 +971,7 @@ void *dbgArgValueEvaluator::Entry()
 			else if (wxGridCellBoolEditor::IsTrueValue(
 			             grd->GetCellValue(row, dlgDirectDbg::COL_EXPR)))
 			{
-				strValExpr += grd->GetCellValue(row, dlgDirectDbg::COL_VALUE);
+				strValExpr += wxT("(") +grd->GetCellValue(row, dlgDirectDbg::COL_VALUE) + wxT(")");
 			}
 			else
 			{

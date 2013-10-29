@@ -147,6 +147,9 @@ private:
 	// Session type
 	DebuggerSessionType m_sessionType;
 
+	// Line actually shown from this offset
+	int m_lineOffset;
+
 	// Debugging Terminated
 	bool                m_terminated;
 	bool                m_isStopping;
