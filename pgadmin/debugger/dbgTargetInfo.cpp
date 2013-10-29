@@ -466,22 +466,47 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 		}
 		strQuery += wxT(")");
 	}
-	else if (m_language == wxT("edbspl") && conn->GetIsEdb() &&
-	         (!conn->BackendMinimumVersion(9, 0) || m_pkgOid != 0))
+	else if (conn->GetIsEdb() && !conn->BackendMinimumVersion(9, 3))
 	{
-		wxString strDeclare, strStatement;
+		wxString strDeclare, strStatement, strResult;
+		bool useAnonymousBlock = false;
 
-		if (!m_isFunction)
+		if (m_language == wxT("edbspl"))
 		{
-			strStatement = wxT("\tEXEC ") + m_fqName;
-		}
-		else if (m_args && m_args->GetCount() > 0 && conn->BackendMinimumVersion(8, 4))
-		{
-			strStatement = wxT("\tPERFORM ") + m_fqName;
+			useAnonymousBlock = true;
+			if (!m_isFunction)
+			{
+				strStatement = wxT("\tEXEC ") + m_fqName;
+			}
+			else if (m_returnType == wxT("void") || m_returnsSet ||
+			         !conn->BackendMinimumVersion(8, 4))
+			{
+				strStatement = wxT("\tPERFORM ") + m_fqName;
+			}
+			else
+			{
+				wxString resultVar = wxT("v_retVal");
+				strStatement = wxT("\t") + resultVar + wxT(" := ") + m_fqName;
+				strDeclare.Append(wxT("\t"))
+				.Append(resultVar)
+				.Append(wxT(" "))
+				.Append(m_returnType)
+				.Append(wxT(";\n"));
+				strResult = wxT("\tDBMS_OUTPUT.PUT_LINE(E'\\n\\nResult:\\n--------\\n' || ") +
+				            resultVar +
+				            wxT("::text || E'\\n\\nNOTE: This is the result generated during the function execution by the debugger.\\n');\n");
+			}
 		}
 		else
 		{
-			strStatement = wxT("\tSELECT ") + m_fqName;
+			if (m_returnType == wxT("record"))
+			{
+				strStatement = wxT("\tSELECT ") + m_fqName;
+			}
+			else
+			{
+				strStatement = wxT("\tSELECT * FROM ") + m_fqName;
+			}
 		}
 
 		if (m_args && m_args->GetCount() > 0)
@@ -502,72 +527,49 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 
 					strStatement.Append(wxT("NULL::")).Append(arg->GetTypeName());
 				}
-				else if (conn->EdbMinimumVersion(8, 4) &&
+				else if (conn->EdbMinimumVersion(8, 4) && useAnonymousBlock &&
 				         (arg->GetMode() == pgParam::PG_PARAM_OUT ||
 				          arg->GetMode() == pgParam::PG_PARAM_INOUT))
 				{
-					if (!m_isFunction || m_language == wxT("edbspl"))
+					wxString strParam = wxString::Format(wxT("p_param%d"), idx);
+
+					strDeclare.Append(wxT("\t"))
+					.Append(strParam)
+					.Append(wxT(" "))
+					.Append(arg->GetTypeName());
+
+					if (arg->GetMode() == pgParam::PG_PARAM_INOUT)
 					{
-						wxString strParam = wxString::Format(wxT("param%d"), idx);
-
-						strDeclare.Append(wxT("\t"))
-						.Append(strParam)
-						.Append(wxT(" "))
-						.Append(arg->GetTypeName());
-
-						if (arg->GetMode() == pgParam::PG_PARAM_INOUT)
-						{
-							strDeclare.Append(wxT(" := "))
-							.Append(arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
-							.Append(wxT("::"))
-							.Append(arg->GetTypeName());
-						}
-						strDeclare.Append(wxT(";\n"));
-
-						if (firstProcessed)
-							strStatement.Append(wxT(", "));
-						firstProcessed = true;
-
-						strStatement.Append(strParam);
-					}
-					else if (arg->GetMode() == pgParam::PG_PARAM_INOUT)
-					{
-						if (firstProcessed)
-							strStatement.Append(wxT(", "));
-						firstProcessed = true;
-
-						strStatement.Append(
-						    arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
+						strDeclare.Append(wxT(" := "))
+						.Append(arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
 						.Append(wxT("::"))
 						.Append(arg->GetTypeName());
 					}
+					strDeclare.Append(wxT(";\n"));
+
+					if (firstProcessed)
+						strStatement.Append(wxT(", "));
+					firstProcessed = true;
+
+					strStatement.Append(strParam);
 				}
-				else
+				else if (arg->GetMode() != pgParam::PG_PARAM_OUT)
 				{
 					if (firstProcessed)
 						strStatement.Append(wxT(", "));
 					firstProcessed = true;
 
 					if (arg->GetMode() == pgParam::PG_PARAM_VARIADIC)
-						strStatement.Append(wxT("VARIADIC "));
+						strStatement += wxT("VARIADIC ");
 
-					strStatement.Append(
-					    arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
+					strStatement
+					.Append(arg->Null() ? wxT("NULL") : conn->qtDbString(arg->Value()))
 					.Append(wxT("::"))
 					.Append(arg->GetTypeName());
 				}
 			}
 			strStatement.Append(wxT(")"));
-
-			if (conn->BackendMinimumVersion(8, 4))
-			{
-				strQuery = wxT("DECLARE\n") +
-				           strDeclare + wxT("BEGIN\n") + strStatement + wxT(";\nEND;");
-			}
-			else
-			{
-				strQuery = strStatement;
-			}
+			strQuery = strStatement;
 		}
 		else if (!m_isFunction && m_language == wxT("edbspl"))
 		{
@@ -576,6 +578,11 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 		else
 		{
 			strQuery = strStatement.Append(wxT("()"));
+		}
+		if (useAnonymousBlock)
+		{
+			strQuery = wxT("DECLARE\n") +
+			           strDeclare + wxT("BEGIN\n") + strStatement + wxT(";\n") + strResult + wxT("END;");
 		}
 	}
 	else
@@ -613,9 +620,9 @@ bool dbgTargetInfo::AddForExecution(pgQueryThread *_thread)
 					if (arg->GetMode() == pgParam::PG_PARAM_VARIADIC)
 						strQuery += wxT("VARIADIC ");
 
-					strQuery += wxString::Format(wxT("$%d::"), idx + 1) +
-					            ((*m_args)[idx])->GetTypeName();
 					noInParams++;
+					strQuery += wxString::Format(wxT("$%d::"), noInParams) +
+					            ((*m_args)[idx])->GetTypeName();
 				}
 			}
 

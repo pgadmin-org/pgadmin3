@@ -476,7 +476,7 @@ void dbgController::ResultBreakpoint(pgQueryResultEvent &_ev)
 			if (lineNo < 0)
 				lineNo = -1;
 			else
-				lineNo -= 1;
+				lineNo -= m_lineOffset;
 			m_model->GetCurrLineNo() = lineNo;
 
 			wxString strSource = set->GetVal(wxT("src"));

@@ -206,8 +206,9 @@ const wxString dbgController::ms_cmdIsBackendRunning(
 
 dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebugging)
 	: m_ver(DEBUGGER_UNKNOWN_API), m_sessionType(DBG_SESSION_TYPE_UNKNOWN),
-	  m_terminated(false), m_frm(NULL), m_dbgConn(NULL), m_dbgThread(NULL),
-	  m_execConnThread(NULL), m_model(NULL), m_isStopping(false)
+	  m_lineOffset(1), m_terminated(false), m_frm(NULL), m_dbgConn(NULL),
+	  m_dbgThread(NULL), m_execConnThread(NULL), m_model(NULL),
+	  m_isStopping(false)
 {
 	// Create the connection for listening the debugger port and doing the
 	// debugging operations.
@@ -227,6 +228,9 @@ dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebuggin
 	}
 
 	m_dbgConn->ExecuteVoid(wxT("SET log_min_messages TO fatal"));
+
+	if (!m_dbgConn->BackendMinimumVersion(9, 1))
+		m_lineOffset = 0;
 
 	OID target;
 	if (_obj->GetMetaType() == PGM_TRIGGER)
