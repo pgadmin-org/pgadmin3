@@ -63,6 +63,7 @@
 #include "dlg/dlgSelectConnection.h"
 #include "db/pgConn.h"
 #include "utils/sysLogger.h"
+#include "utils/registry.h"
 #include "frm/frmHint.h"
 
 #include "ctl/xh_calb.h"
@@ -880,6 +881,34 @@ void pgAdmin3::InitXtraPaths()
 #ifdef __WXMSW__
 	wxString programFiles = wxGetenv(wxT("ProgramFiles"));
 	wxString programFilesX86 = wxGetenv(wxT("ProgramFiles(x86)"));
+
+	// If we install a 32-bit pgAdmin in a 64-bit machine,
+	// We will be getting the both values as "Drive:\Program Files(x86)".
+	// Since, all 32-bit applications return "ProgramFiles" as ProgramFiles(x86).
+	// In that case, we need can get the actual programFiles value,
+	// by reading the key "ProgramFilesDir" in location "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion".
+	//
+	if (::wxIsPlatform64Bit() && programFiles == programFilesX86)
+	{
+		// Don't want to lost the exisisting behaviour.
+		//
+		wxString tmp = programFiles;
+		programFiles = wxEmptyString;
+
+		pgRegKey::PGREGWOWMODE wowMode = pgRegKey::PGREG_WOW64;
+		pgRegKey *pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("SOFTWARE\\Microsoft\\Windows\\CurrentVersion"), pgRegKey::PGREG_READ, wowMode);
+
+		if (!(pgKey && pgKey->QueryValue(wxT("ProgramFilesDir"), programFiles)))
+		{
+				programFiles = tmp;
+		}
+
+		if(pgKey)
+		{
+			delete pgKey;
+			pgKey = NULL;
+		}
+	}
 #endif
 
 	// First, check and invalidate the paths if they're no good.
