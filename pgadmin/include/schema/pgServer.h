@@ -35,6 +35,7 @@ protected:
 	int closedId, smallClosedId;
 };
 extern pgServerFactory serverFactory;
+#define DEFAULT_SSH_PORT  22
 
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 class CSSHTunnelThread;
@@ -48,7 +49,8 @@ public:
 	         bool storePwd = false, const wxString &newRolename = wxT(""), bool restore = true, int sslMode = 0,
 	         const wxString &colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).GetAsString(wxC2S_HTML_SYNTAX), const wxString &group = wxEmptyString,
 	         bool sshTunnel = false, const wxString &newTunnelHost = wxEmptyString, const wxString &newTunnelUserName = wxEmptyString, bool authModePwd = true,
-	         const wxString &newTunnelPassword = wxEmptyString, const wxString &newPublicKey = wxEmptyString, const wxString &newIdentityFile = wxEmptyString);
+	         const wxString &newTunnelPassword = wxEmptyString, const wxString &newPublicKey = wxEmptyString, const wxString &newIdentityFile = wxEmptyString,
+	         const int &sshPort = DEFAULT_SSH_PORT);
 	~pgServer();
 	int GetIconId();
 
@@ -513,6 +515,14 @@ public:
 	{
 		identityFile = s;
 	}
+	int GetTunnelPort() const
+	{
+		return tunnelPort;
+	}
+	void iSetTunnelPort(const int newval)
+	{
+		tunnelPort = newval;
+	}
 #endif
 
 	void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where = wxEmptyString);
@@ -550,6 +560,7 @@ private:
 	CSSHTunnelThread *tunnelObj;
 	bool authModePwd;
 	int local_listenport;
+	int tunnelPort;
 	wxString tunnelHost, tunnelUserName, tunnelPassword, publicKeyFile, identityFile, local_listenhost;
 #endif
 

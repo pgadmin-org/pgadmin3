@@ -50,9 +50,9 @@ char CSSHTunnelThread::m_keyboard_interactive_pwd[SSH_MAX_PASSWORD_LEN];
 
 CSSHTunnelThread::CSSHTunnelThread(const wxString tunnelhost, const wxString remote_desthost, const unsigned int remote_destport,
                                    const wxString username, const wxString password, const wxString publickey, const wxString privatekey,
-                                   const enAuthenticationMethod &enAuthMethod)
+                                   const enAuthenticationMethod &enAuthMethod, const unsigned int tunnelPort)
 	: m_tunnelhost(tunnelhost), m_remote_desthost(remote_desthost), m_remote_destport(remote_destport), m_username(username),
-	  m_password(password), m_publickey(publickey), m_privatekey(privatekey), m_enAuthMethod(enAuthMethod)
+	  m_password(password), m_publickey(publickey), m_privatekey(privatekey), m_enAuthMethod(enAuthMethod), m_tunnelPort(tunnelPort)
 {
 	m_local_listenip = wxEmptyString;
 	m_local_listenport = 0;
@@ -108,7 +108,7 @@ bool CSSHTunnelThread::Initialize()
 			LogSSHTunnelErrors(wxString::Format(_("SSH error: Error in inet address with error code %d"), wxSysErrorCode()), GetId());
 			return false;
 		}
-		m_sin.sin_port = htons(22);
+		m_sin.sin_port = htons(m_tunnelPort);
 		if (connect(m_sock, (struct sockaddr *)(&m_sin),
 		            sizeof(struct sockaddr_in)) != 0)
 		{

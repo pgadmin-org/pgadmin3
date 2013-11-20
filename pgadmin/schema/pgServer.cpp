@@ -47,7 +47,7 @@
 pgServer::pgServer(const wxString &newName, const wxString &newHostAddr, const wxString &newDescription, const wxString &newService,
                    const wxString &newDatabase, const wxString &newUsername, int newPort, bool _storePwd, const wxString &newRolename, bool _restore,
                    int _ssl, const wxString &_colour, const wxString &_group, bool _sshTunnel, const wxString &newTunnelHost, const wxString &newTunnelUserName,
-                   bool _authModePwd, const wxString &newTunnelPassword, const wxString &newPublicKey, const wxString &newIdentity)
+                   bool _authModePwd, const wxString &newTunnelPassword, const wxString &newPublicKey, const wxString &newIdentity, const int &sshPort)
 	: pgObject(serverFactory, newName)
 {
 	description = newDescription;
@@ -83,6 +83,7 @@ pgServer::pgServer(const wxString &newName, const wxString &newHostAddr, const w
 	tunnelPassword = newTunnelPassword;
 	publicKeyFile = newPublicKey;
 	identityFile = newIdentity;
+	tunnelPort = sshPort;
 #endif
 
 #ifdef WIN32
@@ -1249,7 +1250,7 @@ bool pgServer::createSSHTunnel()
 	bool retVal = false;
 
 	tunnelObj = new CSSHTunnelThread(tunnelHost, GetName(), port, tunnelUserName, tunnelPassword, publicKeyFile,
-	                                 identityFile, authModePwd ? AUTH_PASSWORD : AUTH_PUBLICKEY);
+	                                 identityFile, authModePwd ? AUTH_PASSWORD : AUTH_PUBLICKEY, tunnelPort);
 
 	if(tunnelObj)
 	{
@@ -1471,6 +1472,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 	wxString sshTunnel, authModePwd, tunnelHost, tunnelUserName, tunnelPassword, publicKeyFile, identityFile;
+	long tunnelPort;
 #endif
 	pgServer *server = 0;
 
@@ -1517,6 +1519,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		settings->Read(key + wxT("TunnelModePwd"), &authModePwd, wxT("true"));
 		settings->Read(key + wxT("PublicKeyFile"), &publicKeyFile, wxEmptyString);
 		settings->Read(key + wxT("IdentityFile"), &identityFile, wxEmptyString);
+		settings->Read(key + wxT("TunnelPort"), &tunnelPort, DEFAULT_SSH_PORT);
 #endif
 		// Sanitize the colour
 		colour = colour.Trim();
@@ -1553,7 +1556,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		// Add the Server node
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 		server = new pgServer(servername, hostaddr, description, service, database, username, port, StrToBool(storePwd), rolename, StrToBool(restore), ssl,
-		                      colour, group, StrToBool(sshTunnel), tunnelHost, tunnelUserName, StrToBool(authModePwd), tunnelPassword, publicKeyFile, identityFile);
+			colour, group, StrToBool(sshTunnel), tunnelHost, tunnelUserName, StrToBool(authModePwd), tunnelPassword, publicKeyFile, identityFile, tunnelPort);
 #else
 		server = new pgServer(servername, hostaddr, description, service, database, username, port, StrToBool(storePwd), rolename, StrToBool(restore), ssl,
 		                      colour, group);

@@ -1234,6 +1234,7 @@ void frmMain::StoreServers()
 					settings->WriteBool(key + wxT("TunnelModePwd"), server->GetAuthModePwd());
 					settings->Write(key + wxT("PublicKeyFile"), server->GetPublicKeyFile());
 					settings->Write(key + wxT("IdentityFile"), server->GetIdentityFile());
+					settings->WriteInt(key + wxT("TunnelPort"), server->GetTunnelPort());
 #endif
 					pgCollection *coll = browser->FindCollection(databaseFactory, server->GetId());
 					if (coll)
