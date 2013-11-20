@@ -66,6 +66,7 @@
 #define pickerPublicKeyFile	 CTRL_FILEPICKER("pickerPublicKeyFile")
 #define pickerIdentityFile	 CTRL_FILEPICKER("pickerIdentityFile")
 #define stPublicKeyFile		 CTRL_STATIC("stPublicKeyFile")
+#define txtTunnelPort		 CTRL_TEXT("txtTunnelPort")
 #endif
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -99,6 +100,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
 	EVT_CHECKBOX(XRCID("chkSSHTunnel"),                dlgServer::OnCheckSSHTunnel)
 	EVT_RADIOBUTTON(XRCID("radioBtnPassword"),         dlgServer::OnChangeAuthOption)
 	EVT_RADIOBUTTON(XRCID("radioBtnKeyfile"),          dlgServer::OnChangeAuthOption)
+	EVT_TEXT(XRCID("txtTunnelPort"),                   dlgProperty::OnChange)
 #endif
 END_EVENT_TABLE();
 
@@ -160,6 +162,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
 	radioBtnPassword->SetValue(true);
 	radioBtnKeyfile->SetValue(false);
 	txtTunnelPassword->SetMaxLength(SSH_MAX_PASSWORD_LEN);
+	txtTunnelPort->SetValue(NumToStr((long)DEFAULT_SSH_PORT));
 #ifdef HAVE_OPENSSL_CRYPTO
 	stPublicKeyFile->Show(false);
 	pickerPublicKeyFile->Show(false);
@@ -238,6 +241,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		server->iSetSSLCompression(chkSSLCompression->GetValue());
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 		server->iSetSSHTunnel(chkSSHTunnel->GetValue());
+		server->iSetTunnelPort(StrToLong(txtTunnelPort->GetValue()));
 		server->SetTunnelHost(txtTunnelHost->GetValue());
 		server->SetTunnelUserName(txtTunnelUsername->GetValue());
 		server->iSetAuthModePwd(radioBtnPassword->GetValue());
@@ -281,7 +285,8 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 			    server->GetAuthModePwd(),
 			    server->GetTunnelPassword(),
 			    server->GetPublicKeyFile(),
-			    server->GetIdentityFile());
+			    server->GetIdentityFile(),
+			    server->GetTunnelPort());
 #else
 			    server->GetGroup());
 #endif
@@ -480,6 +485,7 @@ int dlgServer::Go(bool modal)
 			chkStorePwd->SetValue(false);
 			chkStorePwd->Enable(false);
 		}
+		txtTunnelPort->SetValue(NumToStr((long)server->GetTunnelPort()));
 		txtTunnelHost->SetValue(server->GetTunnelHost());
 		txtTunnelUsername->SetValue(server->GetTunnelUserName());
 		if (server->GetAuthModePwd())
@@ -577,7 +583,7 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
 		                   chkSSHTunnel->GetValue(), txtTunnelHost->GetValue(), txtTunnelUsername->GetValue(),
 		                   radioBtnPassword->GetValue(),
 		                   txtTunnelPassword->GetValue(), pickerPublicKeyFile->GetPath(),
-		                   pickerIdentityFile->GetPath());
+		                   pickerIdentityFile->GetPath(), StrToLong(txtTunnelPort->GetValue()));
 	}
 	else
 #endif
@@ -667,6 +673,7 @@ void dlgServer::CheckChange()
 	if(chkSSHTunnel->GetValue())
 	{
 		CheckValid(enable, !txtTunnelHost->GetValue().IsEmpty(), _("Please specify ssh tunnel host."));
+		CheckValid(enable, !txtTunnelPort->GetValue().IsEmpty(), _("Please specify ssh tunnel port."));
 		CheckValid(enable, !txtTunnelUsername->GetValue().IsEmpty(), _("Please specify ssh tunnel user name."));
 	}
 #endif
@@ -718,6 +725,7 @@ void dlgServer::EnableSSHTunnelControls(const bool &bEnable)
 	radioBtnPassword->Enable(bEnable);
 	radioBtnKeyfile->Enable(bEnable);
 	txtTunnelPassword->Enable(bEnable);
+	txtTunnelPort->Enable(bEnable);
 }
 
 void dlgServer::EnableAuthenticationOptions()

@@ -57,7 +57,7 @@ class CSSHTunnelThread :
 public:
 	CSSHTunnelThread(const wxString tunnelhost, const wxString remote_desthost, const unsigned int remote_destport,
 	                 const wxString username, const wxString password, const wxString publickey, const wxString privatekey,
-	                 const enAuthenticationMethod &enAuthMethod);
+	                 const enAuthenticationMethod &enAuthMethod, const unsigned int tunnelPort = 22);
 	virtual ~CSSHTunnelThread(void);
 	virtual void *Entry();
 	bool Initialize();
@@ -94,6 +94,7 @@ private:
 	wxString m_remote_desthost;
 	unsigned int m_local_listenport;
 	unsigned int m_remote_destport;
+	unsigned int m_tunnelPort;
 	enAuthenticationMethod m_enAuthMethod;
 };
 
