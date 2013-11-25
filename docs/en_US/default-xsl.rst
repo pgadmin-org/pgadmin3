@@ -116,18 +116,20 @@ give it the pgadmin look and feel.
       </xsl:if>
 
       <xsl:if test="count(../section[@id = current()/@id]/table/columns/column) > 0">
-        <table>
-          <tr>
-            <xsl:apply-templates select="../section[@id = current()/@id]/table/columns/column">
+        <div style=overflow:auto>
+          <table>
+            <tr>
+              <xsl:apply-templates select="../section[@id = current()/@id]/table/columns/column">
+                <xsl:sort select="@number" data-type="number" order="ascending" />
+                <xsl:with-param name="count" select="count(../section[@id = current()/@id]/table/columns/column)" />
+              </xsl:apply-templates>
+            </tr>
+            <xsl:apply-templates select="../section[@id = current()/@id]/table/rows/*" mode="rows">
               <xsl:sort select="@number" data-type="number" order="ascending" />
-              <xsl:with-param name="count" select="count(../section[@id = current()/@id]/table/columns/column)" />
+              <xsl:with-param name="column-meta" select="../section[@id = current()/@id]/table/columns/column" />
             </xsl:apply-templates>
-          </tr>
-          <xsl:apply-templates select="../section[@id = current()/@id]/table/rows/*" mode="rows">
-              <xsl:sort select="@number" data-type="number" order="ascending" />
-            <xsl:with-param name="column-meta" select="../section[@id = current()/@id]/table/columns/column" />
-          </xsl:apply-templates>
-        </table>
+          </table>
+        </div>
         <br />
         <xsl:if test="../section[@id = current()/@id]/table/info != ''">
           <p class="ReportTableInfo"><xsl:value-of select="../section[@id = current()/@id]/table/info" /></p>
