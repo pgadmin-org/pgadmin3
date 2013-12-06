@@ -26,7 +26,7 @@ give it the pgadmin look and feel.
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
           body {  font-family: verdana, helvetica, sans-serif; margin: 0px; padding: 0; }
-          h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #EBA525; }
+          h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #EBA525; overflow: hidden; text-overflow: ellipsis; }
           h2 { font-size: 130%; padding-bottom: 0.5ex; color: #47678E; border-bottom-style: solid; border-bottom-width: 2px; }
           h3 { font-size: 110%; padding-bottom: 0.5ex; color: #000000; }
           th { text-align: left; background-color: #47678E; color: #EBA525; }
