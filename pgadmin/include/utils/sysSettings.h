@@ -733,6 +733,18 @@ public:
 		WriteBool(wxT("ShowNotices"), newval);
 	}
 
+	wxString GetOptionsLastTreeItem() const
+	{
+		wxString s;
+		Read(wxT("OptionsLastTreeItem"), &s, wxEmptyString);
+		return s;
+	}
+	void SetOptionsLastTreeItem(const wxString &newval)
+	{
+		Write(wxT("OptionsLastTreeItem"), newval);
+	}
+
+
 	// Functions for storing settings
 	bool Write(const wxString &key, const wxString &value)
 	{

@@ -453,26 +453,14 @@ frmOptions::frmOptions(frmMain *parent)
 	menus->AppendItem(node, MISC_LOGGING_ITEM);
 
 	menus->ExpandAllChildren(root);
-	menus->SelectItem(menus->GetFirstChild(root, cookie));
 
-	pnlBrowserDisplay->Show(false);
-	pnlBrowserProperties->Show(false);
-	pnlBrowserBinPath->Show(false);
-	pnlBrowserMisc->Show(false);
-	pnlQueryToolEditor->Show(false);
-	pnlQueryToolColours->Show(false);
-	pnlQueryToolResults->Show(false);
-	pnlQueryToolFiles->Show(false);
-	pnlQueryToolFavourites->Show(false);
-	pnlQueryToolMacros->Show(false);
-	pnlQueryToolHistoryFile->Show(false);
-	pnlServerStatus->Show(false);
-	pnlMiscUI->Show(false);
-	pnlMiscHelpPath->Show(false);
-	pnlMiscGuruHints->Show(false);
-	pnlMiscLogging->Show(false);
+	menuSelection = settings->GetOptionsLastTreeItem();
+	wxTreeItemId menuItem = GetTreeItemByLabel(root, menuSelection);
+	if (!menuItem.IsOk())
+		menuItem = menus->GetFirstChild(root, cookie);
 
-	pnlBrowserDisplay->GetParent()->Layout();
+	menus->SelectItem(menuItem);
+	ShowPanel(menuItem);
 }
 
 
@@ -882,6 +870,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 		settings->SetCanonicalLanguage(langId);
 	}
 
+	settings->SetOptionsLastTreeItem(menuSelection);
+
 	// Did any display options change? Display this message last, so it's
 	// in the selected language.
 	if (changed)
@@ -942,85 +932,118 @@ void frmOptions::OnTreeSelChanged(wxTreeEvent &event)
 	wxTreeItemId sel = event.GetItem();
 
 	if (sel)
-	{
-		// Hide everything
-		pnlBrowserDisplay->Show(false);
-		pnlBrowserProperties->Show(false);
-		pnlBrowserBinPath->Show(false);
-		pnlBrowserMisc->Show(false);
-		pnlQueryToolEditor->Show(false);
-		pnlQueryToolColours->Show(false);
-		pnlQueryToolResults->Show(false);
-		pnlQueryToolFiles->Show(false);
-		pnlQueryToolFavourites->Show(false);
-		pnlQueryToolMacros->Show(false);
-		pnlQueryToolHistoryFile->Show(false);
-		pnlDatabaseDesigner->Show(false);
-		pnlServerStatus->Show(false);
-		pnlMiscUI->Show(false);
-		pnlMiscHelpPath->Show(false);
-		pnlMiscGuruHints->Show(false);
-		pnlMiscLogging->Show(false);
-
-		// Find the one to show
-		if (menus->GetItemText(sel) == BROWSER_DISPLAY_ITEM)
-			pnlBrowserDisplay->Show(true);
-		else if (menus->GetItemText(sel) == BROWSER_PROPERTIES_ITEM)
-			pnlBrowserProperties->Show(true);
-		else if (menus->GetItemText(sel) == BROWSER_BINPATH_ITEM)
-			pnlBrowserBinPath->Show(true);
-		else if (menus->GetItemText(sel) == BROWSER_MISC_ITEM)
-			pnlBrowserMisc->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_EDITOR_ITEM)
-			pnlQueryToolEditor->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_COLOURS_ITEM)
-		{
-			pnlQueryToolColours->Show(true);
-			pickerSQLBackgroundColour->UpdateColour();
-			pickerSQLForegroundColour->UpdateColour();
-			pickerSQLMarginBackgroundColour->UpdateColour();
-			pickerSQLColour1->UpdateColour();
-			pickerSQLColour2->UpdateColour();
-			pickerSQLColour3->UpdateColour();
-			pickerSQLColour4->UpdateColour();
-			pickerSQLColour5->UpdateColour();
-			pickerSQLColour6->UpdateColour();
-			pickerSQLColour7->UpdateColour();
-			pickerSQLColour10->UpdateColour();
-			pickerSQLColour11->UpdateColour();
-			pickerSQLCaretColour->UpdateColour();
-		}
-		else if (menus->GetItemText(sel) == QUERYTOOL_RESULTS_ITEM)
-			pnlQueryToolResults->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_FILES_ITEM)
-			pnlQueryToolFiles->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_FAVOURITES_ITEM)
-			pnlQueryToolFavourites->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_MACROS_ITEM)
-			pnlQueryToolMacros->Show(true);
-		else if (menus->GetItemText(sel) == QUERYTOOL_HISTORYFILE_ITEM)
-			pnlQueryToolHistoryFile->Show(true);
-		else if (menus->GetItemText(sel) == DATABASEDESIGNER_ITEM)
-			pnlDatabaseDesigner->Show(true);
-		else if (menus->GetItemText(sel) == SERVERSTATUS_ITEM)
-		{
-			pnlServerStatus->Show(true);
-			pickerIdleProcessColour->UpdateColour();
-			pickerActiveProcessColour->UpdateColour();
-			pickerSlowProcessColour->UpdateColour();
-			pickerBlockedProcessColour->UpdateColour();
-		}
-		else if (menus->GetItemText(sel) == MISC_UI_ITEM)
-			pnlMiscUI->Show(true);
-		else if (menus->GetItemText(sel) == MISC_HELPPATH_ITEM)
-			pnlMiscHelpPath->Show(true);
-		else if (menus->GetItemText(sel) == MISC_GURUHINTS_ITEM)
-			pnlMiscGuruHints->Show(true);
-		else if (menus->GetItemText(sel) == MISC_LOGGING_ITEM)
-			pnlMiscLogging->Show(true);
-
-		pnlBrowserDisplay->GetParent()->Layout();
-		// we don't need to call GetParent()->Layout() for all panels
-		// because they all share the same parent
-	}
+		ShowPanel(sel);
 }
+
+void frmOptions::ShowPanel(const wxTreeItemId& menuItem)
+{
+	// Hide everything
+	pnlBrowserDisplay->Show(false);
+	pnlBrowserProperties->Show(false);
+	pnlBrowserBinPath->Show(false);
+	pnlBrowserMisc->Show(false);
+	pnlQueryToolEditor->Show(false);
+	pnlQueryToolColours->Show(false);
+	pnlQueryToolResults->Show(false);
+	pnlQueryToolFiles->Show(false);
+	pnlQueryToolFavourites->Show(false);
+	pnlQueryToolMacros->Show(false);
+	pnlQueryToolHistoryFile->Show(false);
+	pnlDatabaseDesigner->Show(false);
+	pnlServerStatus->Show(false);
+	pnlMiscUI->Show(false);
+	pnlMiscHelpPath->Show(false);
+	pnlMiscGuruHints->Show(false);
+	pnlMiscLogging->Show(false);
+
+	// Find the one to show
+	menuSelection = menus->GetItemText(menuItem);
+	if (menuSelection == BROWSER_ITEM || menuSelection == BROWSER_DISPLAY_ITEM)
+		pnlBrowserDisplay->Show(true);
+	else if (menuSelection == BROWSER_PROPERTIES_ITEM)
+		pnlBrowserProperties->Show(true);
+	else if (menuSelection == BROWSER_BINPATH_ITEM)
+		pnlBrowserBinPath->Show(true);
+	else if (menuSelection == BROWSER_MISC_ITEM)
+		pnlBrowserMisc->Show(true);
+
+	else if (menuSelection == QUERYTOOL_ITEM || menuSelection == QUERYTOOL_EDITOR_ITEM)
+		pnlQueryToolEditor->Show(true);
+	else if (menuSelection == QUERYTOOL_COLOURS_ITEM)
+	{
+		pnlQueryToolColours->Show(true);
+		pickerSQLBackgroundColour->UpdateColour();
+		pickerSQLForegroundColour->UpdateColour();
+		pickerSQLMarginBackgroundColour->UpdateColour();
+		pickerSQLColour1->UpdateColour();
+		pickerSQLColour2->UpdateColour();
+		pickerSQLColour3->UpdateColour();
+		pickerSQLColour4->UpdateColour();
+		pickerSQLColour5->UpdateColour();
+		pickerSQLColour6->UpdateColour();
+		pickerSQLColour7->UpdateColour();
+		pickerSQLColour10->UpdateColour();
+		pickerSQLColour11->UpdateColour();
+		pickerSQLCaretColour->UpdateColour();
+	}
+	else if (menuSelection == QUERYTOOL_RESULTS_ITEM)
+		pnlQueryToolResults->Show(true);
+	else if (menuSelection == QUERYTOOL_FILES_ITEM)
+		pnlQueryToolFiles->Show(true);
+	else if (menuSelection == QUERYTOOL_FAVOURITES_ITEM)
+		pnlQueryToolFavourites->Show(true);
+	else if (menuSelection == QUERYTOOL_MACROS_ITEM)
+		pnlQueryToolMacros->Show(true);
+	else if (menuSelection == QUERYTOOL_HISTORYFILE_ITEM)
+		pnlQueryToolHistoryFile->Show(true);
+
+	else if (menuSelection == DATABASEDESIGNER_ITEM)
+		pnlDatabaseDesigner->Show(true);
+
+	else if (menuSelection == SERVERSTATUS_ITEM)
+	{
+		pnlServerStatus->Show(true);
+		pickerIdleProcessColour->UpdateColour();
+		pickerActiveProcessColour->UpdateColour();
+		pickerSlowProcessColour->UpdateColour();
+		pickerBlockedProcessColour->UpdateColour();
+	}
+
+	else if (menuSelection == MISC_ITEM || menuSelection == MISC_UI_ITEM)
+		pnlMiscUI->Show(true);
+	else if (menuSelection == MISC_HELPPATH_ITEM)
+		pnlMiscHelpPath->Show(true);
+	else if (menuSelection == MISC_GURUHINTS_ITEM)
+		pnlMiscGuruHints->Show(true);
+	else if (menuSelection == MISC_LOGGING_ITEM)
+		pnlMiscLogging->Show(true);
+
+	pnlBrowserDisplay->GetParent()->Layout();
+	// we don't need to call GetParent()->Layout() for all panels
+	// because they all share the same parent
+}
+
+wxTreeItemId frmOptions::GetTreeItemByLabel(const wxTreeItemId& root, const wxString& label)
+{
+	wxTreeItemIdValue cookie;
+	wxTreeItemId child;
+	wxTreeItemId notfound;
+
+	if (!root.IsOk())
+		return notfound;
+	if (label.CompareTo(menus->GetItemText(root)) == 0)
+		return root;
+	if (!menus->ItemHasChildren(root))
+		return notfound;
+
+	child = menus->GetFirstChild(root, cookie);
+	while (child.IsOk()) 
+	{
+		child = GetTreeItemByLabel(child, label);
+		if (child.IsOk()) 
+			return child;
+		child = menus->GetNextChild(root, cookie);
+	}
+	return child;
+}
+
