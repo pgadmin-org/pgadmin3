@@ -544,7 +544,7 @@ const wxString frmReport::GetDefaultCss()
 	wxString data;
 
 	data = wxT("      body {  font-family: verdana, helvetica, sans-serif; margin: 0px; padding: 0; }\n")
-	       wxT("      h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #eeeeee; }\n")
+	       wxT("      h1 { font-weight: bold; font-size: 150%; border-bottom-style: solid; border-bottom-width: 2px; margin-top: 0px; padding-bottom: 0.5ex; color: #eeeeee; overflow: hidden; text-overflow: ellipsis; }\n")
 	       wxT("      h2 { font-size: 130%; padding-bottom: 0.5ex; color: ") + appearanceFactory->GetReportKeyColour().GetAsString(wxC2S_HTML_SYNTAX) + wxT("; border-bottom-style: solid; border-bottom-width: 2px; }\n")
 	       wxT("      h3 { font-size: 110%; padding-bottom: 0.5ex; color: #000000; }\n")
 	       wxT("      th { text-align: left; background-color: ") + appearanceFactory->GetReportKeyColour().GetAsString(wxC2S_HTML_SYNTAX) + wxT("; color: #eeeeee; }\n")
