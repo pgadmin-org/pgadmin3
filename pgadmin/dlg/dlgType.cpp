@@ -688,6 +688,7 @@ void dlgType::OnNameChange(wxCommandEvent &ev)
 			cbCanonical->SetSelection(0);
 		}
 	}
+	CheckChange();
 }
 
 
@@ -798,7 +799,7 @@ void dlgType::CheckChange()
 
 	if (type)
 	{
-		enable = enable && (txtName->GetValue() != type->GetName()
+		enable = enable && (GetName() != type->GetName()
 		                    || txtComment->GetValue() != type->GetComment()
 		                    || cbSchema->GetValue() != type->GetSchema()->GetName()
 		                    || cbOwner->GetValue() != type->GetOwner()
