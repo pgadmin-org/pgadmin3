@@ -1380,13 +1380,6 @@ void frmEditGrid::Go()
 	toolsMenu->Enable(MNU_DESCSORT, false);
 	toolsMenu->Enable(MNU_REMOVESORT, false);
 
-	// Stash the column sizes so we can reset them
-	wxArrayInt colWidths;
-	for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
-	{
-		colWidths.Add(sqlGrid->GetColumnWidth(col));
-	}
-
 	wxString qry = wxT("SELECT ");
 	if (hasOids)
 		qry += wxT("oid, ");
@@ -1470,16 +1463,12 @@ void frmEditGrid::Go()
 	// to force the grid to create scrollbars, we make sure the size  so small that scrollbars are needed
 	// later, we will resize the grid's parent to force the correct size (now including scrollbars, even if
 	// they are suppressed initially. Win32 won't need this.
-	sqlGrid->SetSize(10, 10);
+	// !!! This hack breaks columns auto-sizing ( GetClientSize().GetWidth() is used in ctlSQLGrid::AutoSizeColumns() )
+	// !!! Is it still required?
+	//sqlGrid->SetSize(10, 10); 
 
 	sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
-
-	// Reset the column widths
-	for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
-	{
-		if ((col + 1) <= (int)colWidths.Count())
-			sqlGrid->SetColumnWidth(col, colWidths[col]);
-	}
+	sqlGrid->AutoSizeColumns(false);
 
 	sqlGrid->EndBatch();
 

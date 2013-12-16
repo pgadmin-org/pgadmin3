@@ -72,9 +72,6 @@ public:
 	wxArrayString colTypes;
 	wxArrayLong colTypClasses;
 
-	wxArrayInt  colSizes;
-	wxArrayString colHeaders;
-
 private:
 	pgQueryThread *thread;
 	pgConn *conn;

@@ -109,14 +109,6 @@ bool ctlSQLResult::IsColText(int col)
 
 int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve, wxWindow *caller, long eventId, void *data)
 {
-	colSizes.Empty();
-	colHeaders.Empty();
-	for (int col = 0 ; col < GetNumberCols() ; col++)
-	{
-		colSizes.Add(GetColSize(col));
-		colHeaders.Add(this->GetColLabelValue(col));
-	}
-
 	wxGridTableMessage *msg;
 	sqlResultTable *table = (sqlResultTable *)GetTable();
 	msg = new wxGridTableMessage(table, wxGRIDTABLE_NOTIFY_ROWS_DELETED, 0, GetNumberRows());
@@ -200,42 +192,24 @@ void ctlSQLResult::DisplayData(bool single)
 
 	if (single)
 	{
-		int w, h;
-		if (colSizes.GetCount() == 1)
-			w = colSizes.Item(0);
-		else
-			GetSize(&w, &h);
-
 		colNames.Add(thread->DataSet()->ColName(0));
 		colTypes.Add(wxT(""));
 		colTypClasses.Add(0L);
 
-		SetColSize(0, w);
+		AutoSizeColumn(0, false, false);
 	}
 	else
 	{
-		wxString colName, colType;
-		int w;
-
-		size_t hdrIndex = 0;
 		long col, nCols = thread->DataSet()->NumCols();
+
+		AutoSizeColumns(false);
 
 		for (col = 0 ; col < nCols ; col++)
 		{
-			colName = thread->DataSet()->ColName(col);
-			colType = thread->DataSet()->ColFullType(col);
-			colNames.Add(colName);
-			colTypes.Add(colType);
+			colNames.Add(thread->DataSet()->ColName(col));
+			colTypes.Add(thread->DataSet()->ColFullType(col));
 			colTypClasses.Add(thread->DataSet()->ColTypClass(col));
 
-			wxString colHeader = colName + wxT("\n") + colType;
-
-			if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader)
-				w = colSizes.Item(hdrIndex++);
-			else
-				w = -1;
-
-			SetColSize(col, w);
 			if (thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC)
 			{
 				/*

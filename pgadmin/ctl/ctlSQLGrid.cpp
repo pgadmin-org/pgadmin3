@@ -26,6 +26,7 @@
 
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
 	EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
+	EVT_GRID_COL_SIZE(ctlSQLGrid::OnGridColSize)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLGrid, wxGrid)
@@ -53,6 +54,13 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
 	Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
 }
 
+void ctlSQLGrid::OnGridColSize(wxGridSizeEvent &event)
+{
+	// Save key="index:label", value=size
+	int col = event.GetRowOrCol();
+	colSizes[GetColKeyValue(col)] = GetColSize(col);
+}
+
 void ctlSQLGrid::OnCopy(wxCommandEvent &ev)
 {
 	Copy();
@@ -60,7 +68,7 @@ void ctlSQLGrid::OnCopy(wxCommandEvent &ev)
 
 void ctlSQLGrid::OnMouseWheel(wxMouseEvent &event)
 {
-	if (event.ControlDown())
+	if (event.ControlDown() || event.CmdDown())
 	{
 		wxFont fontlabel = GetLabelFont();
 		wxFont fontcells = GetDefaultCellFont();
@@ -324,42 +332,183 @@ void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent &event)
 	}
 	else if (col >= 0)
 	{
-		for (row = 0 ; row < GetNumberRows() ; row++)
+		// Holding Ctrl or Meta switches back to automatic column's sizing
+		if (event.ControlDown() || event.CmdDown()) 
 		{
-			if (CheckRowPresent(row))
-			{
-				extent = GetBestSize(row, col).GetWidth();
-				if (extent > extentWant)
-					extentWant = extent;
-			}
-		}
-
-		extentWant += EXTRAEXTENT_WIDTH;
-		extentWant = wxMax(extentWant, GetColMinimalAcceptableWidth());
-		extentWant = wxMin(extentWant, maxWidth * 3 / 4);
-		int currentWidth = GetColumnWidth(col);
-
-		if (currentWidth >= maxWidth * 3 / 4 || currentWidth == extentWant)
-			extentWant = GetColMinimalAcceptableWidth();
-		else if (currentWidth < maxWidth / 4)
-			extentWant = wxMin(maxWidth / 4, extentWant);
-		else if (currentWidth < maxWidth / 2)
-			extentWant = wxMin(maxWidth / 2, extentWant);
-		else if (currentWidth < maxWidth * 3 / 4)
-			extentWant = wxMin(maxWidth * 3 / 4, extentWant);
-
-		if (extentWant != currentWidth)
-		{
+			colSizes.erase(GetColKeyValue(col));
 			BeginBatch();
 			if(IsCellEditControlShown())
 			{
 				HideCellEditControl();
 				SaveEditControlValue();
 			}
-			SetColumnWidth(col, extentWant);
+			AutoSizeColumn(col, false);
 			EndBatch();
 		}
+		else // toggle between some predefined sizes
+		{
+
+			if (col < colMaxSizes.GetCount() && colMaxSizes[col] >= 0)
+				extentWant = colMaxSizes[col];
+			else
+			{
+				for (row = 0 ; row < GetNumberRows() ; row++)
+				{
+					if (CheckRowPresent(row))
+					{
+						extent = GetBestSize(row, col).GetWidth();
+						if (extent > extentWant)
+							extentWant = extent;
+					}
+				}
+			}
+
+			extentWant += EXTRAEXTENT_WIDTH;
+			extentWant = wxMax(extentWant, GetColMinimalAcceptableWidth());
+			extentWant = wxMin(extentWant, maxWidth * 3 / 4);
+			int currentWidth = GetColumnWidth(col);
+
+			if (currentWidth >= maxWidth * 3 / 4 || currentWidth == extentWant)
+				extentWant = GetColMinimalAcceptableWidth();
+			else if (currentWidth < maxWidth / 4)
+				extentWant = wxMin(maxWidth / 4, extentWant);
+			else if (currentWidth < maxWidth / 2)
+				extentWant = wxMin(maxWidth / 2, extentWant);
+			else if (currentWidth < maxWidth * 3 / 4)
+				extentWant = wxMin(maxWidth * 3 / 4, extentWant);
+
+			if (extentWant != currentWidth)
+			{
+				BeginBatch();
+				if(IsCellEditControlShown())
+				{
+					HideCellEditControl();
+					SaveEditControlValue();
+				}
+				SetColumnWidth(col, extentWant);
+				EndBatch();
+				colSizes[GetColKeyValue(col)] = extentWant;
+			}
+		}
 	}
+}
+
+void ctlSQLGrid::AutoSizeColumn(int col, bool setAsMin, bool doLimit)
+{
+	if (col < colMaxSizes.GetCount() && colMaxSizes[col] >= 0)
+		SetColSize(col, colMaxSizes[col]);
+	else
+		wxGrid::AutoSizeColumn(col, setAsMin);
+
+	if (doLimit)
+	{
+		int newSize, oldSize;
+		int maxSize, totalSize = 0, availSize;
+
+		oldSize = GetColSize(col);
+		availSize = GetClientSize().GetWidth() - GetRowLabelSize();
+		maxSize = availSize / 2;
+		for (int i = 0 ; i < GetNumberCols() ; i++)
+			totalSize += GetColSize(i);
+
+		if (oldSize > maxSize && totalSize > availSize)
+		{
+			totalSize -= oldSize;
+			/* Shrink wide column to maxSize.
+			 * If the rest of the columns are short, make sure to use all the remaining space,
+			 *   but no more than oldSize (which is enough according to AutoSizeColumns())
+			 */
+			newSize = wxMin(oldSize, wxMax(maxSize, availSize - totalSize));
+			SetColSize(col, newSize);
+		}
+	}
+}
+
+void ctlSQLGrid::AutoSizeColumns(bool setAsMin)
+{
+	wxCoord newSize, oldSize;
+	wxCoord maxSize, totalSize = 0, availSize;
+	int col, nCols = GetNumberCols();
+	int row, nRows = GetNumberRows();
+	colMaxSizes.Empty();
+
+	/* We need to check each cell's width to choose best. wxGrid::AutoSizeColumns()
+	 * is good, but looping through long result sets gives a noticeable slowdown.
+	 * Thus we'll check every first 500 cells for each column.
+	 */
+
+	// First pass: auto-size columns
+	for (col = 0 ; col < nCols; col++)
+	{
+		ColKeySizeHashMap::iterator it = colSizes.find(GetColKeyValue(col));
+		if (it != colSizes.end()) // Restore user-specified size
+		{
+			newSize = it->second;
+			colMaxSizes.Add(-1);
+		}
+		else
+		{
+			wxClientDC dc(GetGridWindow());
+			newSize = 0;
+			// get cells's width
+			for (row = 0 ; row < wxMin(nRows, 500) ; row++)
+			{
+				wxSize size = GetBestSize(row, col);
+				if ( size.x > newSize )
+					newSize = size.x;
+			}
+			// get column's label width
+			wxCoord w, h;
+			dc.SetFont( GetLabelFont() );
+			dc.GetMultiLineTextExtent( GetColLabelValue(col), &w, &h );
+			if ( GetColLabelTextOrientation() == wxVERTICAL )
+				w = h;
+
+			if ( w > newSize )
+				newSize = w;
+
+			if (!newSize)
+				newSize = GetRowLabelSize();
+			else
+				// leave some space around text
+				newSize += 6;
+
+			colMaxSizes.Add(newSize);
+		}
+		SetColSize(col, newSize);
+		totalSize += newSize;
+	}
+
+	availSize = GetClientSize().GetWidth() - GetRowLabelSize();
+
+	// Second pass: shrink wide columns if exceeded available width
+	if (totalSize > availSize)
+	{
+		// A wide column shouldn't take up more than 50% of the visible space
+		maxSize = availSize / 2;
+		for (col = 0 ; col < nCols ; col++)
+		{
+			oldSize = GetColSize(col);
+			// Is too wide and no user-specified size
+			if (oldSize > maxSize && !(col < colMaxSizes.GetCount() && colMaxSizes[col] == -1))
+			{
+				totalSize -= oldSize;
+				/* Shrink wide column to maxSize.
+				 * If the rest of the columns are short, make sure to use all the remaining space,
+				 *   but no more than oldSize (which is enough according to first pass)
+				 */
+				newSize = wxMin(oldSize, wxMax(maxSize, availSize - totalSize));
+				SetColSize(col, newSize);
+				totalSize += newSize;
+			}
+		}
+	}
+}
+
+wxString ctlSQLGrid::GetColKeyValue(int col)
+{
+	wxString colKey = wxString::Format(wxT("%d:"), col) + GetColLabelValue(col);
+	return colKey;
 }
 
 wxSize ctlSQLGrid::GetBestSize(int row, int col)

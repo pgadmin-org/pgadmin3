@@ -38,16 +38,27 @@ public:
 	wxSize GetBestSize(int row, int col);
 	void OnLabelDoubleClick(wxGridEvent &event);
 
+	void AutoSizeColumn(int col, bool setAsMin = false, bool doLimit = true);
+	void AutoSizeColumns(bool setAsMin);
+
+	WX_DECLARE_STRING_HASH_MAP( int, ColKeySizeHashMap );
+
 	DECLARE_DYNAMIC_CLASS(ctlSQLGrid)
 	DECLARE_EVENT_TABLE()
 
 private:
 	void OnCopy(wxCommandEvent &event);
 	void OnMouseWheel(wxMouseEvent &event);
+	void OnGridColSize(wxGridSizeEvent &event);
 	wxString GetColumnName(int colNum);
+	wxString GetColKeyValue(int col);
 	void AppendColumnHeader(wxString &str, int start, int end);
 	void AppendColumnHeader(wxString &str, wxArrayInt columns);
 
+	// Stores sizes of colums explicitly resized by user
+	ColKeySizeHashMap colSizes;
+	// Max size for each column
+	wxArrayInt colMaxSizes;
 };
 
 #endif
