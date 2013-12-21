@@ -654,7 +654,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 								nextColNumber = sourceFkCols[countSrcFkCols];
 								nextUkIdxSourceCol = sourceStubTable->getColumnByNumber(nextColNumber)->uniqueKeyIndex;
 								countSrcFkCols--;
-								if(baseUkIdxSourceCol != baseUkIdxSourceCol)
+								if(baseUkIdxSourceCol != nextUkIdxSourceCol)
 								{
 									error = true;
 									wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
@@ -1133,7 +1133,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 					nextColNumber = sourceFkCols[countSrcFkCols];
 					nextUkIdxSourceCol = sourceStubTable->getColumnByNumber(nextColNumber)->uniqueKeyIndex;
 					countSrcFkCols--;
-					if(baseUkIdxSourceCol != baseUkIdxSourceCol)
+					if(baseUkIdxSourceCol != nextUkIdxSourceCol)
 					{
 						error = true;
 						wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
