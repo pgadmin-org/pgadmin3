@@ -240,7 +240,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	SetMinSize(wxSize(450, 300));
 
 	SetIcon(*sql_32_png_ico);
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	menuBar = new wxMenuBar();
 
 	fileMenu = new wxMenu();

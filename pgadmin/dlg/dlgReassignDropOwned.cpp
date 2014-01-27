@@ -45,7 +45,7 @@ dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
 	connection = conn;
 	parent = win;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(win, wxT("dlgReassignDropOwned"));
 	RestorePosition();
 

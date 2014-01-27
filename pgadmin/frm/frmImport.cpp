@@ -60,7 +60,7 @@ frmImport::frmImport(frmMain *form, pgObject *_object, pgConn *_conn)
 	done = false;
 
 	// Set-up window
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(form, wxT("frmImport"));
 	RestorePosition();
 	SetTitle(wxT("Import data from file into ") + object->GetName());

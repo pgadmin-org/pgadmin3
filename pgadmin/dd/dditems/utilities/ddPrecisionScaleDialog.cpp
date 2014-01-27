@@ -32,7 +32,7 @@ ddPrecisionScaleDialog::ddPrecisionScaleDialog(	wxWindow *parent,
         const wxString &defaultValue2
                                               )
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("ddPrecisionScaleDialog"));
 	RestorePosition();
 	Init();

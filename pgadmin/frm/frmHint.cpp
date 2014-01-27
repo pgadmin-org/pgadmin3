@@ -188,7 +188,7 @@ END_EVENT_TABLE();
 frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
 {
 	force = _force;
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(fr, wxT("frmHint"));
 	RestorePosition();
 

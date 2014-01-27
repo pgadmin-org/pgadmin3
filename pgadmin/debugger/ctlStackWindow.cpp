@@ -31,7 +31,7 @@ IMPLEMENT_CLASS(ctlStackWindow, wxListBox)
 ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 	: wxListBox(parent , id, pos, size, 0, NULL, style | wxLB_HSCROLL | wxLB_NEEDED_SB )
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -98,7 +98,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
 	menuFactories = new menuFactoryList();
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));

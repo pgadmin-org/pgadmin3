@@ -69,7 +69,7 @@ dlgDirectDbg::dlgDirectDbg(frmDebugger *_parent, dbgController *_controller,
 {
 	int width, height, totalWidth = 0;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(_parent, wxT("dlgDirectDbg"));
 
 	// Icon

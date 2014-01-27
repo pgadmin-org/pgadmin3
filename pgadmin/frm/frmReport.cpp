@@ -82,7 +82,7 @@ frmReport::frmReport(wxWindow *p)
 	parent = p;
 	header = wxT("");
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(p, wxT("frmReport"));
 
 	// Icon

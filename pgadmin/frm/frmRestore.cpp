@@ -91,7 +91,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
 	form = _form;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(_form, wxT("frmRestore"));
 	RestorePosition();
 

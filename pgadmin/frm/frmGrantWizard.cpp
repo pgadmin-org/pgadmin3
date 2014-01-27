@@ -47,7 +47,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
 {
 	nbNotebook = 0;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(form, wxT("frmGrantWizard"));
 	RestorePosition();
 

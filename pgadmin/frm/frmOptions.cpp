@@ -258,7 +258,7 @@ frmOptions::frmOptions(frmMain *parent)
 	wxTreeItemIdValue cookie;
 
 	mainForm = parent;
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("frmOptions"));
 
 	// Icon

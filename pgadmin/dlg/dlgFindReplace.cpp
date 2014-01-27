@@ -48,7 +48,7 @@ dlgFindReplace::dlgFindReplace(ctlSQLBox *parent) :
 {
 	sqlbox = parent;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("dlgFindReplace"));
 	RestorePosition();
 

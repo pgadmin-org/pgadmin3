@@ -115,7 +115,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 	item = (void *)NULL;
 	owneritem = (void *)NULL;
 	chkReadOnly = (wxCheckBox *)NULL;
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(frame, resName);
 
 #ifdef __WXMSW__

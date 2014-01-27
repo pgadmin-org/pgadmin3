@@ -45,7 +45,7 @@ END_EVENT_TABLE()
 
 frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(form, wxT("frmMaintenance"));
 	RestorePosition();
 

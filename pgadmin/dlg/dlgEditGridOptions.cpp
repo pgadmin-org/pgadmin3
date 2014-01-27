@@ -63,7 +63,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	connection = conn;
 	relation = rel;
 	parent = win;
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(win, wxT("dlgEditGridOptions"));
 	conv = conn->GetConv();
 

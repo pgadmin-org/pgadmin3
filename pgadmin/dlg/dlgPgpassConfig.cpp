@@ -49,7 +49,7 @@ END_EVENT_TABLE()
 dlgPgpassConfig::dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *_line) :
 	DialogWithHelp((frmMain *)parent)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource((wxWindow *)parent, wxT("dlgPgpassConfig"));
 
 	userAdding = databaseAdding = false;

@@ -39,7 +39,7 @@ END_EVENT_TABLE()
 dlgConnect::dlgConnect(frmMain *form, const wxString &description, bool storePwd) :
 	DialogWithHelp(form)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource((wxWindow *)form, wxT("dlgConnect"));
 
 	SetIcon(*connect_png_ico);
