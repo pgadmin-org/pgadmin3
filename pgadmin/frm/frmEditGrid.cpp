@@ -1344,7 +1344,6 @@ void frmEditGrid::ShowForm(bool filter)
 
 void frmEditGrid::Go()
 {
-	int col;
 	long templong;
 
 	if (cbLimit->GetValue() != wxT("") &&
