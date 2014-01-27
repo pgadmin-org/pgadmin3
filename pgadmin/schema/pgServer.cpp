@@ -691,6 +691,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 				else
 					dlg = new dlgConnect(form, txt, GetStorePwd());
 
+				dlg->SetWindowStyleFlag( dlg->GetWindowStyleFlag() | wxSTAY_ON_TOP);
+
 				switch (dlg->Go())
 				{
 					case wxID_OK:

@@ -1868,7 +1868,7 @@ pgAppearanceFactory::pgAppearanceFactory()
 		pRegKey->Create();
 
 #if wxCHECK_VERSION(2, 9, 5)
-	wxStandardPaths &stdPaths = wxStandardPaths::Get();
+	wxStandardPaths &paths = wxStandardPaths::Get();
 #else
 	wxStandardPaths paths;
 #endif
