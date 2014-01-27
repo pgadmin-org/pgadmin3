@@ -110,7 +110,7 @@ frmMain::frmMain(const wxString &title)
 	SetMinSize(wxSize(600, 450));
 	RestorePosition(50, 50, 750, 550, 600, 450);
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	{
 		wxLogInfo(wxT("Using fontmetrics %d/%d, %d Point"), GetCharWidth(), GetCharHeight(), GetFont().GetPointSize());

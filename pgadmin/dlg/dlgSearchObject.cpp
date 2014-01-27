@@ -40,7 +40,7 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db)
 	header = wxT("");
 	currentdb = db;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(p, wxT("dlgSearchObject"));
 
 	// Icon

@@ -32,7 +32,7 @@ hdRemoveDeleteDialog::hdRemoveDeleteDialog(	const wxString &message,
                                           )
 {
 	allowRemoveButton = allowRemove;
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	Init();
 	Create(parent, wxID_ANY, message, caption);
 	cancelButton->SetFocus();
@@ -73,7 +73,7 @@ bool hdRemoveDeleteDialog::Create(	wxWindow *parent,
                                     const wxString &message
                                  )
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	if (!wxDialog::Create( parent, id, message, wxDefaultPosition, wxDefaultSize, wxCAPTION))
 		return false;

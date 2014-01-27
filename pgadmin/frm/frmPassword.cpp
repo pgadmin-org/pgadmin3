@@ -35,7 +35,7 @@ END_EVENT_TABLE()
 
 frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("frmPassword"));
 	RestorePosition();
 

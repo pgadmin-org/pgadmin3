@@ -55,7 +55,7 @@ END_EVENT_TABLE()
 dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *_conn) :
 	DialogWithHelp((frmMain *)parent)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource((wxWindow *)parent, wxT("dlgHbaConfig"));
 
 	conn = _conn;

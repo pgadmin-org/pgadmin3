@@ -76,7 +76,7 @@ frmDebugger::frmDebugger(frmMain *_parent, dbgController *_controller,
 	dlgName = wxT("frmDebugger");
 	RestorePosition(100, 100, 600, 500, 450, 300);
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	m_manager.SetManagedWindow(this);
 	m_manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
@@ -163,7 +163,7 @@ void frmDebugger::OnHelp(wxCommandEvent &event)
 //
 void frmDebugger::SetupDebugger()
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	// Initializing Stack Frame Window
 	if (m_stackWindow == NULL)

@@ -50,7 +50,7 @@ frmExport::frmExport(wxWindow *p)
 {
 	parent = p;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(p, wxT("frmExport"));
 	RestorePosition();
 

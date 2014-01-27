@@ -33,7 +33,7 @@ ddTableNameDialog::ddTableNameDialog(	wxWindow *parent,
                                     ) :
 	pgDialog()
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("ddTableNameDialog"));
 	RestorePosition();
 	Init();

@@ -39,7 +39,7 @@ ctlTabWindow::ctlTabWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos,
 	  m_paramWindow(NULL),
 	  m_messageWindow(NULL)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	m_tabMap   = new wsTabHash();
 }
 

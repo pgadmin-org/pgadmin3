@@ -75,7 +75,7 @@ static const wxChar *sourceStrings[] =
 dlgMainConfig::dlgMainConfig(pgFrame *parent, pgSettingItem *_item) :
 	DialogWithHelp((frmMain *)parent)
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource((wxWindow *)parent, wxT("dlgMainConfig"));
 
 	// Icon

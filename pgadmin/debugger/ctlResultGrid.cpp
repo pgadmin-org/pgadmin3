@@ -28,7 +28,7 @@ IMPLEMENT_CLASS( ctlResultGrid, wxGrid )
 ctlResultGrid::ctlResultGrid( wxWindow *parent, wxWindowID id )
 	: wxGrid( parent, id )
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	CreateGrid( 0, 0 );
 }

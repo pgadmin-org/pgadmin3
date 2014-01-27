@@ -47,7 +47,7 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 {
 	object = obj;
 
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	LoadResource(form, wxT("frmBackupServer"));
 	RestorePosition();
 

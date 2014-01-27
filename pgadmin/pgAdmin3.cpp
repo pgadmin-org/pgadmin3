@@ -194,7 +194,7 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 	if (!dlgName.IsEmpty())
 	{
 		pgDialog *dlg = new pgDialog;
-		dlg->wxWindowBase::SetFont(settings->GetSystemFont());
+		dlg->SetFont(settings->GetSystemFont());
 		dlg->LoadResource(this, dlgName);
 		dlg->SetTitle(dlgName);
 		dlg->Show();

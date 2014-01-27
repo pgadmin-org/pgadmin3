@@ -217,7 +217,7 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	appearanceFactory->SetIcons(this);
 	RestorePosition(-1, -1, 700, 500, 700, 500);
 	SetMinSize(wxSize(700, 500));
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	// Build menu bar
 	menuBar = new wxMenuBar();

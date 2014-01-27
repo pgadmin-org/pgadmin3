@@ -92,7 +92,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 	closing = false;
 
 	SetIcon(*viewdata_png_ico);
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 	dlgName = wxT("frmEditGrid");
 	RestorePosition(-1, -1, 600, 500, 300, 350);
 	connection = _conn;

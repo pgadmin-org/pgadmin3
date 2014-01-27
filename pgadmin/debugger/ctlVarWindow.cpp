@@ -30,7 +30,7 @@ ctlVarWindow::ctlVarWindow(wxWindow *parent, wxWindowID id)
 	  m_cells(NULL),
 	  m_nameFont(GetDefaultCellFont())
 {
-	wxWindowBase::SetFont(settings->GetSystemFont());
+	SetFont(settings->GetSystemFont());
 
 	// Create the grid control
 	CreateGrid(0, 0);
