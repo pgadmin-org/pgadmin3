@@ -54,6 +54,8 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 	InitForm();
 	Init();
 
+	serverVersionNumber = server->GetVersionNumber();
+
 	if (conn)
 	{
 		if (serverFileName.IsEmpty())
@@ -469,6 +471,9 @@ void frmMainConfig::DisplayFile(const wxString &str)
 
 	cfgList->DeleteAllItems();
 
+	double versionNum;
+	bool versionRetVal = serverVersionNumber.ToDouble(&versionNum);
+
 	// we want to show options ordered by category/name
 	// category might be localized, and we want a distinct category ordering
 
@@ -476,7 +481,8 @@ void frmMainConfig::DisplayFile(const wxString &str)
 	FillList(wxT("authentication_timeout"));    // Connections and Authentication / Security and Authentication
 	FillList(wxT("check_function_bodies"));     // Client Connection Defaults / Statement Behaviour
 	FillList(wxT("lc_messages"));               // Client Connection Defaults / Locale and Formatting
-	FillList(wxT("explain_pretty_print"));      // Client Connection Defaults / Other Defaults
+	if (versionRetVal && versionNum < 8.4)
+	    FillList(wxT("explain_pretty_print"));      // Client Connection Defaults / Other Defaults
 	FillList(wxT("enable_hashjoin"));           // Query Tuning / Planner Method Configuration
 	FillList(wxT("cpu_operator_cost"));         // Query Tuning / Planner Cost Constants
 	if (!conn || !conn->GetIsGreenplum())       // Greenplum doesn't have the Genetic Query Optimizer
@@ -484,7 +490,8 @@ void frmMainConfig::DisplayFile(const wxString &str)
 	FillList(wxT("default_statistics_target")); // Query Tuning / Other Planner Options
 	FillList(wxT("deadlock_timeout"));          // Lock Management
 	FillList(wxT("shared_buffers"));            // Resource Usage / Memory
-	FillList(wxT("max_fsm_pages"));             // Resource Usage / Free Space Map
+	if (versionRetVal && versionNum < 8.4)
+	    FillList(wxT("max_fsm_pages"));             // Resource Usage / Free Space Map
 	FillList(wxT("bgwriter_delay"));            // Resource Usage
 	FillList(wxT("max_files_per_process"));     // Resource Usage / Kernel Resources
 	FillList(wxT("log_connections"));           // Reporting and Logging / What to Log
@@ -494,7 +501,8 @@ void frmMainConfig::DisplayFile(const wxString &str)
 	FillList(wxT("log_executor_stats"));        // Statistics / Monitoring
 	FillList(wxT("fsync"));                     // Write-Ahead Log / Settings
 	FillList(wxT("checkpoint_segments"));       // Write-Ahead Log / Checkpoints
-	FillList(wxT("add_missing_from"));          // Version and Platform Compatibility / Previous PostgreSQL Version
+	if (versionRetVal && versionNum <= 8.4)
+	    FillList(wxT("add_missing_from"));          // Version and Platform Compatibility / Previous PostgreSQL Version
 	FillList(wxT("transform_null_equals"));     // Version and Platform Compatibility / Other Platforms and Clients
 	if (!conn || !conn->GetIsGreenplum())       // Greenplum doesn't have trace_notify visible
 		FillList(wxT("trace_notify"));          // Developer Options

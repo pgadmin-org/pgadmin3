@@ -59,6 +59,7 @@ private:
 	pgSettingItemHashmap options;
 	pgCategoryHashmap categories;
 	pgConfigOrgLineArray lines;
+	wxString serverVersionNumber;
 
 	DECLARE_EVENT_TABLE()
 };
