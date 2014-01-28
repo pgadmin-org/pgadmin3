@@ -1254,6 +1254,7 @@ void frmMain::StoreServers()
 
 	// Write the server count
 	settings->WriteInt(wxT("Servers/Count"), numServers);
+	settings->FlushChanges();
 	wxLogInfo(wxT("Stored %d servers."), numServers);
 }
 

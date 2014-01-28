@@ -29,6 +29,11 @@ public:
 	bool GetDisplayOption(const wxString &objtype, bool GetDefault = false);
 	void SetDisplayOption(const wxString &objtype, bool display);
 
+	void FlushChanges()
+	{
+		wxConfig::Flush();
+	}
+
 	// Log
 	wxString GetLogFile();
 	void SetLogFile(const wxString &newval)
