@@ -1381,7 +1381,7 @@ void frmEditGrid::Go()
 
 	// Stash the column sizes so we can reset them
 	wxArrayInt colWidths;
-	for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+	for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
 	{
 		colWidths.Add(sqlGrid->GetColumnWidth(col));
 	}
