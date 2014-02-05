@@ -1345,6 +1345,7 @@ void frmEditGrid::ShowForm(bool filter)
 void frmEditGrid::Go()
 {
 	long templong;
+	int  col;
 
 	if (cbLimit->GetValue() != wxT("") &&
 	        cbLimit->GetValue() != _("No limit") &&
@@ -1381,7 +1382,7 @@ void frmEditGrid::Go()
 
 	// Stash the column sizes so we can reset them
 	wxArrayInt colWidths;
-	for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+	for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
 	{
 		colWidths.Add(sqlGrid->GetColumnWidth(col));
 	}
