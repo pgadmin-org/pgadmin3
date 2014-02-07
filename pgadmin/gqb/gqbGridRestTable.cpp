@@ -142,7 +142,7 @@ void gqbGridRestTable::AppendItem(gqbQueryRestriction *item)
 
 bool gqbGridRestTable::DeleteRows(size_t pos = 0, size_t numRows = 1)
 {
-	if(pos >= 0 && numRows == 1)
+	if((pos < (size_t)GetNumberRows()) && numRows == 1)
 	{
 		gqbQueryRestriction *r = restrictions->getRestrictionAt(pos);
 		restrictions->removeRestriction(r);

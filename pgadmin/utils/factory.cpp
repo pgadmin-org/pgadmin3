@@ -230,7 +230,7 @@ menuFactoryList::~menuFactoryList()
 {
 	while (GetCount())
 	{
-		delete (actionFactory *)Item(0);
+		delete (menuFactory *)Item(0);
 		RemoveAt(0);
 	}
 }

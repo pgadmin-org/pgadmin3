@@ -795,6 +795,8 @@ bool dbgController::Stop()
 			}
 		}
 		break;
+		default:
+		   break;
 	}
 
 	if (m_dbgThread)

@@ -104,6 +104,8 @@ void ddColumnKindIcon::toggleColumnKind(ddColumnType type, hdDrawingView *view, 
 				uniqueConstraintManager(false, view, interaction);
 			}
 			break;
+		default:
+			break;
 	}
 	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
@@ -206,7 +208,7 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, hdDrawingView *view, 
 			else  //>0
 			{
 				getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(wxString(wxT("Add new Unique Constraint...")));
-				unsigned int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"), wxT("Select Unique Key to add Column:"), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(), view);
+				int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"), wxT("Select Unique Key to add Column:"), getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(), view);
 				getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count() - 1);
 				if(i >= 0)
 				{

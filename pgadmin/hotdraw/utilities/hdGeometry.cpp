@@ -172,7 +172,7 @@ bool hdGeometry::intersection(hdPoint p1, hdPoint p2, hdPoint p3, hdPoint p4)
 
 	float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	// If d is zero, there is no intersection
-	if (d == 0) return NULL;
+	if (d == 0) return false;
 
 	// Get the x and y
 	float pre = (x1 * y2 - y1 * x2), post = (x3 * y4 - y3 * x4);

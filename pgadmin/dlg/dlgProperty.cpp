@@ -340,10 +340,12 @@ int dlgProperty::Go(bool modal)
 		if (factory)
 			SetTitle(wxGetTranslation(factory->GetNewString()));
 		if (cbSchema)
+		{
 			if (obj->GetMetaType() == PGM_SCHEMA)
 				cbSchema->SetValue(obj->GetName());
 			else
 				cbSchema->SetValue(obj->GetSchema()->GetName());
+		}
 	}
 	if (statusBar)
 		statusBar->SetStatusText(wxEmptyString);

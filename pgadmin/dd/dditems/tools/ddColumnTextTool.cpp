@@ -59,7 +59,7 @@ bool ddColumnTextTool::callDialog(hdDrawingView *view)
 		int answer =	nameAliasDialog->ShowModal();
 		bool change = false;
 
-		if(answer = wxOK)
+		if(answer == wxOK)
 		{
 			//check if names changed
 			change =  ! (colShortName.IsSameAs(nameAliasDialog->GetValue1()) && colShortName.IsSameAs(nameAliasDialog->GetValue2()));

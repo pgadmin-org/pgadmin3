@@ -990,11 +990,7 @@ void wxLineShape::OnMoveLink(bool moveControlPoints)
 	FindLineEndPoints(&end_x, &end_y, &other_end_x, &other_end_y);
 
 	wxNode *first = m_lineControlPoints->GetFirst();
-	/* wxRealPoint *first_point = */
-	(wxRealPoint *)first->GetData();
 	wxNode *last = m_lineControlPoints->GetLast();
-	/* wxRealPoint *last_point = */
-	(wxRealPoint *)last->GetData();
 
 	/* This is redundant, surely? Done by SetEnds.
 	    first_point->x = end_x; first_point->y = end_y;
@@ -1049,11 +1045,7 @@ void wxLineShape::FindLineEndPoints(double *fromX, double *fromY, double *toX, d
 	double other_end_x, other_end_y;
 
 	wxNode *first = m_lineControlPoints->GetFirst();
-	/* wxRealPoint *first_point = */
-	(wxRealPoint *)first->GetData();
 	wxNode *last = m_lineControlPoints->GetLast();
-	/* wxRealPoint *last_point = */
-	(wxRealPoint *)last->GetData();
 
 	wxNode *second = first->GetNext();
 	wxRealPoint *second_point = (wxRealPoint *)second->GetData();

@@ -362,7 +362,7 @@ dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
 		argCnt = m_args->GetCount();
 
 		// Set the default as the value for the argument
-		for (idx = argCnt - 1; idx >= 0; idx--)
+		for (idx = argCnt - 1;; idx--)
 		{
 			dbgArgInfo *arg = (dbgArgInfo *)((*m_args)[idx]);
 
@@ -381,6 +381,8 @@ dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
 					break;
 				}
 			}
+			if (idx == 0)
+				break;
 		}
 	}
 }
@@ -404,7 +406,7 @@ dbgArgInfo *dbgTargetInfo::operator[](int index)
 dbgArgInfo::dbgArgInfo(const wxString &_name, const wxString &_type, Oid _typeOid,
                        short _mode)
 	: m_name(_name), m_type(_type), m_typeOid(_typeOid), m_mode(_mode),
-	  m_hasDefault(false), m_useDefault(false), m_null(NULL)
+	  m_hasDefault(false), m_useDefault(false), m_null(false)
 {
 	if (!_type.EndsWith(wxT("[]"), &m_baseType))
 	{
