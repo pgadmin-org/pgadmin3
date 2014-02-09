@@ -344,23 +344,16 @@ void frmBackup::OnChange(wxCommandEvent &ev)
 
 void frmBackup::OnChangePlain(wxCommandEvent &ev)
 {
-	bool isPlain = (cbFormat->GetSelection() == 2);
 	bool isDirectory = (cbFormat->GetSelection() == 3);
 	bool isSection = chkSectionPreData->GetValue() || chkSectionData->GetValue() || chkSectionPostData->GetValue();
 
-	chkBlobs->Enable(canBlob && !isPlain);
-	chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue() && !isSection);
-	if (isPlain)
-		isPlain = !chkOnlyData->GetValue();
-
-	chkOnlySchema->Enable(isPlain && !isSection);
+	chkOnlyData->Enable(!chkOnlySchema->GetValue() && !isSection);
+	chkOnlySchema->Enable(!chkOnlyData->GetValue() && !isSection);
 
 	chkSectionPreData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
 	chkSectionData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
 	chkSectionPostData->Enable(!chkOnlyData->GetValue() && !chkOnlySchema->GetValue());
-	chkNoOwner->Enable(isPlain);
-	chkDropDb->Enable(isPlain);
-	chkCreateDb->Enable(isPlain);
+
 	chkDisableTrigger->Enable(chkOnlyData->GetValue());
 
 	btnFilename->Enable(!isDirectory);
