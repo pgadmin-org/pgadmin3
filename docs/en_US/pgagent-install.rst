@@ -23,10 +23,19 @@ must have the pl/pgsql procedural language installed - PostgreSQL's
 'createlang' program can do this if required.
 
 Connect to the "postgres" database (once created if needed), and open the SQL tool.
-Select the File -> Open option from the menu and find the 'pgagent.sql' 
-script installed with pgAdmin. The installation location for this file 
-varies from operating system to operating system, however it will normally 
-be found under 'C:\Program files\pgAdmin III' on Windows systems (or 
+If the server is 9.1 or later, and pgAgent 3.4.0 or later, simply paste in this 
+query and click the 'Run' button:
+
+    CREATE EXTENSION pgagent;
+
+This command will create a number of tables and other objects in a schema called
+'pgagent'.
+
+For earlier versions of PostgreSQL or pgAgent, select the File -> Open option from the
+menu and find the 'pgagent.sql' script installed with pgAdmin. The
+installation location for this file varies from operating system to operating
+system, however it will normally be found under 'C:\Program files\pgAdmin III'
+on Windows systems (or
 'C:\Program files\PostgreSQL\8.x\pgAdmin III' if installed with the PostgreSQL server installer),
 or '/usr/local/pgadmin3/share/pgadmin3' or '/usr/share/pgadmin3' on Unix 
 systems. Once the file is loaded, click the 'Run' button to execute the script.
