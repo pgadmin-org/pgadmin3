@@ -611,7 +611,8 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 		}
 		while (!columns->Eof())
 		{
-			currentcol++;
+			if (columns->GetLong(wxT("attnum")) > 0) // ignore system columns before inherited columns
+				currentcol++;
 
 			column = new pgColumn(collection->GetTable(), columns->GetVal(wxT("attname")));
 
@@ -710,6 +711,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 				break;
 		}
 
+		delete inhtables;
 		delete columns;
 	}
 	return column;
