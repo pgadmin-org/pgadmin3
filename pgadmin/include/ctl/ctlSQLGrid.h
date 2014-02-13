@@ -37,6 +37,7 @@ public:
 	}
 	wxSize GetBestSize(int row, int col);
 	void OnLabelDoubleClick(wxGridEvent &event);
+	void OnLabelClick(wxGridEvent &event);
 
 	void AutoSizeColumn(int col, bool setAsMin = false, bool doLimit = true);
 	void AutoSizeColumns(bool setAsMin);

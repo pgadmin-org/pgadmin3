@@ -27,6 +27,7 @@
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
 	EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
 	EVT_GRID_COL_SIZE(ctlSQLGrid::OnGridColSize)
+	EVT_GRID_LABEL_LEFT_CLICK(ctlSQLGrid::OnLabelClick)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLGrid, wxGrid)
@@ -391,6 +392,30 @@ void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent &event)
 			}
 		}
 	}
+}
+
+void ctlSQLGrid::OnLabelClick(wxGridEvent &event)
+{
+	int row = event.GetRow();
+	int col = event.GetCol();
+
+	// add support for (de)selecting multiple rows and cols with Control pressed
+	if ( row >= 0 && (event.ControlDown() || event.CmdDown()) )
+	{
+		if (GetSelectedRows().Index(row) == wxNOT_FOUND)
+			SelectRow(row, true);
+		else
+			DeselectRow(row);
+	}
+	else if ( col >= 0 && (event.ControlDown() || event.CmdDown()) )
+	{
+		if (GetSelectedCols().Index(col) == wxNOT_FOUND)
+			SelectCol(col, true);
+		else
+			DeselectCol(col);
+	}
+	else
+		event.Skip();
 }
 
 void ctlSQLGrid::AutoSizeColumn(int col, bool setAsMin, bool doLimit)
