@@ -217,9 +217,9 @@ dbgTargetInfo::dbgTargetInfo(Oid _target, pgConn *_conn)
 	m_funcSignature = set->GetVal(wxT("signature"));
 	m_isFunction    = set->GetBool(wxT("isfunc"));
 	m_returnsSet    = set->GetBool(wxT("proretset"));
-	m_pkgOid        = set->GetLong(wxT("pkg"));
-	m_pkgInitOid    = set->GetLong(wxT("pkgconsoid"));
-	m_schemaOid     = set->GetLong(wxT("schema"));
+	m_pkgOid        = set->GetOid(wxT("pkg"));
+	m_pkgInitOid    = set->GetOid(wxT("pkgconsoid"));
+	m_schemaOid     = set->GetOid(wxT("schema"));
 	m_fqName        = qtIdent(m_schema) + wxT(".") +
 	                  (m_pkgOid == 0 ? wxT("") : (qtIdent(m_package) + wxT("."))) + qtIdent(m_name);
 
