@@ -635,7 +635,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			else
 				role = new pgGroupRole(roles->GetVal(wxT("rolname")));
 			role->iSetServer(collection->GetServer());
-			role->iSetOid(roles->GetLong(wxT("oid")));
+			role->iSetOid(roles->GetOid(wxT("oid")));
 			role->iSetCanLogin(roles->GetBool(wxT("rolcanlogin")));
 			role->iSetInherits(roles->GetBool(wxT("rolinherit")));
 			role->iSetCreateRole(roles->GetBool(wxT("rolcreaterole")));

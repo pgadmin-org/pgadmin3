@@ -60,14 +60,14 @@
 #endif
 
 const wxString  dbgController::ms_cmdDebugSPLV1(
-    wxT("SELECT edb_oid_debug(%ld, %ld)"));
+    wxT("SELECT edb_oid_debug(%lu, %lu)"));
 const wxString  dbgController::ms_cmdDebugSPLV2(
-    wxT("SELECT edb_oid_debug(%ld)"));
+    wxT("SELECT edb_oid_debug(%lu)"));
 
 const wxString  dbgController::ms_cmdDebugPLPGSQLV1(
-    wxT("SELECT plpgsql_oid_debug(%ld, %ld)"));
+    wxT("SELECT plpgsql_oid_debug(%lu, %lu)"));
 const wxString  dbgController::ms_cmdDebugPLPGSQLV2(
-    wxT("SELECT plpgsql_oid_debug(%ld)"));
+    wxT("SELECT plpgsql_oid_debug(%lu)"));
 
 const wxString dbgController::ms_cmdAttachToPort(
     wxT("SELECT * FROM pldbg_attach_to_port(%s)"));
@@ -489,8 +489,8 @@ bool dbgController::Start()
 
 		dbgTargetInfo *target = m_model->GetTarget();
 		breakpoints.Append(new dbgBreakPoint(
-		                       wxString::Format(wxT("%ld"), target->GetOid()),
-		                       wxString::Format(wxT("%ld"), target->GetPkgOid())));
+		                       wxString::Format(wxT("%lu"), target->GetOid()),
+		                       wxString::Format(wxT("%lu"), target->GetPkgOid())));
 
 		LOCKMUTEX(m_dbgThreadLock);
 		m_dbgThread->AddQuery(ms_cmdCreateListener, NULL, (long)RESULT_ID_LISTENER_CREATED);

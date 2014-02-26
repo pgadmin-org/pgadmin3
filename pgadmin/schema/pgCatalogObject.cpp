@@ -140,7 +140,7 @@ pgObject *pgCatalogObjectFactory::CreateObjects(pgCollection *collection, ctlTre
 			}
 
 			catalog = new pgCatalogObject(collection->GetSchema(), catalogs->GetVal(wxT("relname")));
-			catalog->iSetOid(catalogs->GetLong(wxT("oid")));
+			catalog->iSetOid(catalogs->GetOid(wxT("oid")));
 			catalog->iSetOwner(catalogs->GetVal(wxT("owner")));
 			catalog->iSetComment(catalogs->GetVal(wxT("description")));
 
