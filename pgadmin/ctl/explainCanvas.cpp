@@ -259,8 +259,9 @@ protected:
 
 private:
 	ExplainPopup *popup;
-	ExplainShape *shape;
 	void OnPaint(wxPaintEvent &ev);
+
+	wxString m_desc, m_detail, m_condition, m_cost, m_actual;
 
 	DECLARE_EVENT_TABLE()
 };
@@ -277,32 +278,37 @@ ExplainText::ExplainText(ExplainPopup *parent, ExplainShape *s) : wxWindow(paren
 {
 	SetBackgroundColour(wxColour(255, 255, 224));
 
-	shape = s;
 	popup = parent;
 
 	wxWindowDC dc(this);
 	dc.SetFont(settings->GetSystemFont());
 
-	int w1, w2, h;
-	dc.GetTextExtent(shape->description, &w1, &h);
+	m_desc = s->description;
+	m_detail = s->detail;
+	m_condition = s->condition;
+	m_cost = s->cost;
+	m_actual = s->actual;
 
-	dc.GetTextExtent(shape->detail, &w2, &h);
+	int w1, w2, h;
+	dc.GetTextExtent(m_desc, &w1, &h);
+
+	dc.GetTextExtent(m_detail, &w2, &h);
 	if (w1 < w2)    w1 = w2;
-	dc.GetTextExtent(shape->condition, &w2, &h);
+	dc.GetTextExtent(m_condition, &w2, &h);
 	if (w1 < w2)    w1 = w2;
-	dc.GetTextExtent(shape->cost, &w2, &h);
+	dc.GetTextExtent(m_cost, &w2, &h);
 	if (w1 < w2)    w1 = w2;
-	dc.GetTextExtent(shape->actual, &w2, &h);
+	dc.GetTextExtent(m_actual, &w2, &h);
 	if (w1 < w2)    w1 = w2;
 
 	int n = 2;
-	if (!shape->detail.IsEmpty())
+	if (!m_detail.IsEmpty())
 		n++;
-	if (!shape->condition.IsEmpty())
+	if (!m_condition.IsEmpty())
 		n++;
-	if (!shape->cost.IsEmpty())
+	if (!m_cost.IsEmpty())
 		n++;
-	if (!shape->actual.IsEmpty())
+	if (!m_actual.IsEmpty())
 		n++;
 
 	if (!h)
@@ -346,32 +352,32 @@ void ExplainText::OnPaint(wxPaintEvent &ev)
 	dc.GetTextExtent(wxT("Dummy"), &w, &yoffs);
 
 	dc.SetFont(boldFont);
-	dc.DrawText(shape->description, x, y);
+	dc.DrawText(m_desc, x, y);
 
 	dc.SetFont(stdFont);
 
-	if (!shape->detail.IsEmpty())
+	if (!m_detail.IsEmpty())
 	{
 		y += yoffs;
-		dc.DrawText(shape->detail, x, y);
+		dc.DrawText(m_detail, x, y);
 
 	}
 	y += yoffs / 3;
 
-	if (!shape->condition.IsEmpty())
+	if (!m_condition.IsEmpty())
 	{
 		y += yoffs;
-		dc.DrawText(shape->condition, x, y);
+		dc.DrawText(m_condition, x, y);
 	}
-	if (!shape->cost.IsEmpty())
+	if (!m_cost.IsEmpty())
 	{
 		y += yoffs;
-		dc.DrawText(shape->cost, x, y);
+		dc.DrawText(m_cost, x, y);
 	}
-	if (!shape->actual.IsEmpty())
+	if (!m_actual.IsEmpty())
 	{
 		y += yoffs;
-		dc.DrawText(shape->actual, x, y);
+		dc.DrawText(m_actual, x, y);
 	}
 
 #if wxUSE_POPUPWIN
