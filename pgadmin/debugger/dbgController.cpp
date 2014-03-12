@@ -227,7 +227,7 @@ dbgController::dbgController(frmMain *main, pgObject *_obj, bool _directDebuggin
 		throw (std::runtime_error("Couldn't create a connection for the debugger"));
 	}
 
-	m_dbgConn->ExecuteVoid(wxT("SET log_min_messages TO fatal"));
+	m_dbgConn->ExecuteVoid(wxT("SET client_min_messages TO error"));
 
 	if (!m_dbgConn->BackendMinimumVersion(9, 1))
 		m_lineOffset = 0;
@@ -435,8 +435,6 @@ bool dbgController::Start()
 	{
 		pgConn *conn = m_dbgConn->Duplicate(
 		                   wxT("pgAdmin Debugger - Target Invoker"));
-
-		conn->ExecuteVoid(wxT("SET log_min_messages TO fatal"));
 
 		if (m_model->GetTarget()->RequireUserInput())
 		{
