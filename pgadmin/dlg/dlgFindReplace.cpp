@@ -56,9 +56,10 @@ dlgFindReplace::dlgFindReplace(ctlSQLBox *parent) :
 	appearanceFactory->SetIcons(this);
 
 	// Accelerator table
-	wxAcceleratorEntry entries[1];
+	wxAcceleratorEntry entries[2];
 	entries[0].Set(wxACCEL_NORMAL, WXK_F3, wxID_FIND);
-	wxAcceleratorTable accel(1, entries);
+	entries[1].Set(wxACCEL_SHIFT, WXK_F3, wxID_FIND);
+	wxAcceleratorTable accel(2, entries);
 	SetAcceleratorTable(accel);
 
 
@@ -198,6 +199,9 @@ void dlgFindReplace::OnFind(wxCommandEvent &ev)
 
 	if (rdDirectionBackward->GetValue() == true)
 		reverse = true;
+
+	if (wxGetKeyState(WXK_SHIFT))
+		reverse = !reverse;
 
 	if (chkOptionsWholeWord->GetValue() == true)
 		wholeWord = true;
