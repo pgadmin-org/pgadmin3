@@ -82,6 +82,7 @@ AC_ARG_WITH(libz,
 
 # Look for OpenSSL (default)
 if test "$use_openssl" != "no" && test "$use_libgcrypt" != "yes"; then
+	AC_CHECK_HEADER(openssl/ssl.h, , [AC_MSG_ERROR([Couldn't find openssl/ssl.h...install the OpenSSL devel package] )])
 	AC_LIB_HAVE_LINKFLAGS([ssl], [crypto], [#include <openssl/ssl.h>])
 	LIBSREQUIRED=libssl,libcrypto
 fi
