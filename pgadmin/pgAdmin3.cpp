@@ -1167,10 +1167,16 @@ void pgAdmin3::InitXtraPaths()
 		// Ugly... Greenplum client releases have no predictable numbers, because the path is the server version
 		if (!programFiles.IsEmpty())
 		{
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.3\\bin"));
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.2\\bin"));
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.1\\bin"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
 
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.3\\lib"));
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.2\\lib"));
+			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.1\\lib"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
 			path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
@@ -1178,10 +1184,16 @@ void pgAdmin3::InitXtraPaths()
 
 		if (!programFilesX86.IsEmpty())
 		{
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.3\\bin"));
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.2\\bin"));
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.1\\bin"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
 
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.3\\lib"));
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.2\\lib"));
+			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.1\\lib"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
 			path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
@@ -1194,6 +1206,12 @@ void pgAdmin3::InitXtraPaths()
 
 		// Generic Unix paths
 
+		path.Add(wxT("/usr/local/greenplum-clients-4.3/bin"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.3/bin"));
+		path.Add(wxT("/usr/local/greenplum-clients-4.2/bin"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.2/bin"));
+		path.Add(wxT("/usr/local/greenplum-clients-4.1/bin"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.1/bin"));
 		path.Add(wxT("/usr/local/greenplum-clients-4.0/bin"));
 		path.Add(wxT("/opt/local/greenplum-clients-4.0/bin"));
 		path.Add(wxT("/usr/local/greenplum-clients-3.3/bin"));
@@ -1201,6 +1219,12 @@ void pgAdmin3::InitXtraPaths()
 		path.Add(wxT("/usr/local/greenplum-clients-3.2/bin"));
 		path.Add(wxT("/opt/local/greenplum-clients-3.2/bin"));
 
+		path.Add(wxT("/usr/local/greenplum-clients-4.3/lib"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.3/lib"));
+		path.Add(wxT("/usr/local/greenplum-clients-4.2/lib"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.2/lib"));
+		path.Add(wxT("/usr/local/greenplum-clients-4.1/lib"));
+		path.Add(wxT("/opt/local/greenplum-clients-4.1/lib"));
 		path.Add(wxT("/usr/local/greenplum-clients-4.0/lib"));
 		path.Add(wxT("/opt/local/greenplum-clients-4.0/lib"));
 		path.Add(wxT("/usr/local/greenplum-clients-3.3/lib"));
@@ -1486,18 +1510,42 @@ void pgAdmin3::InitHelp()
 	edbPaths.Add(wxT("/opt/local/edb/doc"));
 	edbPaths.Add(wxT("/opt/local/edb/doc/html"));
 
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3/html"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3/docs"));
-	pgPaths.Add(wxT("/opt/local/greenplum-clients-3.3/docs"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2/html"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2/docs"));
-	pgPaths.Add(wxT("/opt/local/greenplum-clients-3.2/docs"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/html"));
-	pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/docs"));
-	pgPaths.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/docs"));
+	wxArrayString gpFoundDirs;
+	wxString pgDirname1 = wxString(wxT("/usr/local"));
+	wxDir gpDir1(pgDirname1);
+	if ( gpDir1.IsOpened() )
+	{
+		wxString gpfilename;
+		bool pgcont = gpDir1.GetFirst(&gpfilename, wxT("greenplum-clients*"), wxDIR_DIRS);
+		while ( pgcont )
+		{
+			gpFoundDirs.Add(wxString(pgDirname1 + wxT("/") + gpfilename));
+			pgcont = gpDir1.GetNext(&gpfilename);
+		}
+	}
+
+	wxString pgDirname2 = wxString(wxT("/opt/local"));
+	wxDir gpDir2(pgDirname2);
+	if ( gpDir2.IsOpened() )
+	{
+		wxString gpfilename;
+		bool pgcont = gpDir2.GetFirst(&gpfilename, wxT("greenplum-clients*"), wxDIR_DIRS);
+		while ( pgcont )
+		{
+			gpFoundDirs.Add(wxString(pgDirname2 + wxT("/") + gpfilename));
+			pgcont = gpDir2.GetNext(&gpfilename);
+		}
+	}
+
+	// make sure that the highest version number comes first
+	gpFoundDirs.Sort(true);
+	for (wxArrayString::iterator iter = gpFoundDirs.begin(); iter != gpFoundDirs.end(); ++iter)
+	{
+		wxLogMessage(*iter);
+		pgPaths.Add(wxString(*iter));
+		pgPaths.Add(wxString(*iter) + wxT("/html"));
+		pgPaths.Add(wxString(*iter) + wxT("/docs"));
+	}
 
 #endif
 
@@ -1616,7 +1664,7 @@ void pgAdmin3::InitHelp()
 	if (edbHelpPath.IsEmpty())
 		edbHelpPath = wxT("http://www.enterprisedb.com/docs/en/current/server/");
 	if (gpHelpPath.IsEmpty())
-		gpHelpPath = wxT("http://www.greenplum.com/docs/3300/");
+		gpHelpPath = wxT("http://docs.gopivotal.com/gpdb/index.html");
 	if (slonyHelpPath.IsEmpty())
 		slonyHelpPath = wxT("http://www.slony.info/documentation/");
 
