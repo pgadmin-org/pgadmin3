@@ -128,9 +128,8 @@ void dlgFindReplace::FocusSearch()
 	txtFind->SetSelection(-1, -1);
 }
 
-void dlgFindReplace::OnClose(wxCloseEvent &ev)
+void dlgFindReplace::SaveSettings()
 {
-	// Save settings
 	settings->Write(wxT("FindReplace/Find"), txtFind->GetValue());
 	settings->Write(wxT("FindReplace/Replace"), txtReplace->GetValue());
 
@@ -147,7 +146,11 @@ void dlgFindReplace::OnClose(wxCloseEvent &ev)
 	settings->WriteBool(wxT("FindReplace/WholeWord"), chkOptionsWholeWord->GetValue());
 	settings->WriteBool(wxT("FindReplace/MatchCase"), chkOptionsMatchCase->GetValue());
 	settings->WriteBool(wxT("FindReplace/UseRegexps"), chkOptionsUseRegexps->GetValue());
+}
 
+void dlgFindReplace::OnClose(wxCloseEvent &ev)
+{
+	SaveSettings();
 	this->Hide();
 	if (ev.CanVeto())
 		ev.Veto();
@@ -155,6 +158,7 @@ void dlgFindReplace::OnClose(wxCloseEvent &ev)
 
 void dlgFindReplace::OnCancel(wxCommandEvent &ev)
 {
+	SaveSettings();
 	this->Hide();
 }
 
