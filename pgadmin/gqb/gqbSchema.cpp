@@ -41,7 +41,7 @@ void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,
 	// Get the child objects.
 	query = wxT("SELECT oid, relname, relkind\n")
 	        wxT("  FROM pg_class\n")
-	        wxT(" WHERE relkind IN ('r','v','x') AND relnamespace = ") + NumToStr(oidVal) + wxT(";");
+	        wxT(" WHERE relkind IN ('r','v','x','m') AND relnamespace = ") + NumToStr(oidVal) + wxT(";");
 
 	pgSet *tables = conn->ExecuteSet(query);
 	wxTreeItemId parent;
@@ -59,7 +59,7 @@ void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,
 				table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
 				parent = tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
 			}
-			else if (relkind == wxT("v"))
+			else if (relkind == wxT("v") || relkind == wxT("m"))
 			{
 				table = new gqbTable(this, tmpname, conn, GQB_VIEW, tables->GetOid(wxT("oid")));
 				parent = tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , viewImage, viewImage, table);
