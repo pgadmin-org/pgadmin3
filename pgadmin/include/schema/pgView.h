@@ -149,6 +149,15 @@ public:
 		isPopulated = s;
 	}
 
+	wxString GetCheckOption()
+	{
+		return check_option;
+	}
+	void iSetCheckOption(const wxString &s)
+	{
+		check_option = s;
+	}
+
 	bool GetCustomAutoVacuumEnabled()
 	{
 		return !reloptions.IsEmpty();
@@ -359,7 +368,7 @@ private:
 	         toast_autovacuum_vacuum_cost_limit, toast_autovacuum_freeze_min_age,
 	         toast_autovacuum_freeze_max_age, toast_autovacuum_freeze_table_age;
 
-	wxString tablespace, isPopulated;
+	wxString tablespace, isPopulated, check_option;
 	bool hasToastTable;
 	OID tablespaceOid;
 

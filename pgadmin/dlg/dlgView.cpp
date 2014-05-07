@@ -79,18 +79,21 @@
 #define txtFillFactor             CTRL_TEXT("txtFillFactor")
 #define stMatViewWithData         CTRL_STATIC("stMatViewWithData")
 #define chkMatViewWithData        CTRL_CHECKBOX("chkMatViewWithData")
+#define stCheckOption             CTRL_STATIC("stCheckOption")
+#define cbCheckOption             CTRL_COMBOBOX("cbCheckOption")
 
 BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
 	EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 	EVT_CHECKBOX(XRCID("chkSecurityBarrier"),       dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbCheckOption"),            dlgProperty::OnChange)
 
 	/* Materialized view setting */
-	EVT_CHECKBOX(XRCID("chkMaterializedView"),         dlgView::OnCheckMaterializedView)
-	EVT_TEXT(XRCID("txtFillFactor"),                   dlgView::OnChangeVacuum)
+	EVT_CHECKBOX(XRCID("chkMaterializedView"),      dlgView::OnCheckMaterializedView)
+	EVT_TEXT(XRCID("txtFillFactor"),                dlgView::OnChangeVacuum)
 
-	EVT_COMBOBOX(XRCID("cboTablespace"),               dlgView::OnChangeVacuum)
+	EVT_COMBOBOX(XRCID("cboTablespace"),            dlgView::OnChangeVacuum)
 
-	EVT_CHECKBOX(XRCID("chkMatViewWithData"),         dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkMatViewWithData"),       dlgProperty::OnChange)
 
 	/* AutoVacuum Settings */
 	EVT_CHECKBOX(XRCID("chkCustomVac"),             dlgView::OnChangeVacuum)
@@ -153,6 +156,7 @@ int dlgView::Go(bool modal)
 		seclabelPage->Disable();
 
 	chkSecurityBarrier->Enable(connection->BackendMinimumVersion(9, 2));
+	cbCheckOption->Enable(connection->BackendMinimumVersion(9, 4));
 
 	if (connection->BackendMinimumVersion(9, 3))
 	{
@@ -350,6 +354,13 @@ int dlgView::Go(bool modal)
 				// It is not materialized view so disabling all the controls
 				DisableMaterializedView();
 			}
+
+			if (view->GetCheckOption().Cmp(wxT("cascaded")) == 0)
+				cbCheckOption->SetSelection(2);
+			else if (view->GetCheckOption().Cmp(wxT("local")) == 0)
+				cbCheckOption->SetSelection(1);
+			else
+				cbCheckOption->SetSelection(0);
 		}
 	}
 	else
@@ -357,6 +368,7 @@ int dlgView::Go(bool modal)
 		// create mode
 		cboTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
 		cboTablespace->SetSelection(0);
+		cbCheckOption->SetSelection(0);
 		wxCommandEvent ev;
 		OnChangeVacuum(ev);
 	}
@@ -428,6 +440,11 @@ void dlgView::CheckChange()
 				enable = enable || (chkSecurityBarrier->GetValue());
 			}
 		}
+
+		if (connection->BackendMinimumVersion(9, 4) && view)
+		{
+			enable = enable || cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0;
+		}
 	}
 
 	EnableOK(enable);
@@ -438,6 +455,7 @@ wxString dlgView::GetSql()
 {
 	wxString sql;
 	wxString name;
+	wxString withoptions = wxEmptyString;
 	bool editQuery = false;
 
 	if (view)
@@ -502,7 +520,16 @@ wxString dlgView::GetSql()
 			sql += wxT("CREATE MATERIALIZED VIEW ") + name;
 
 		if (connection->BackendMinimumVersion(9, 2) && chkSecurityBarrier->GetValue())
-			sql += wxT(" WITH (security_barrier=true)");
+			withoptions += wxT("security_barrier=true");
+		if (connection->BackendMinimumVersion(9, 4))
+		{
+			if (withoptions.Length() > 0)
+				withoptions += wxT(", ");
+			withoptions += wxT("check_option=") + cbCheckOption->GetValue().Lower();
+		}
+
+		if (withoptions.Length() > 0)
+			sql += wxT(" WITH (") + withoptions + wxT(")");
 
 		// Add the parameter of tablespace and storage parameter to create the materilized view
 		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
@@ -710,6 +737,19 @@ wxString dlgView::GetSql()
 			else if (!chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() == wxT("true"))
 				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=false);\n");
 		}
+
+		if (connection->BackendMinimumVersion(9, 4)
+			&& cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
+		{
+			if (cbCheckOption->GetValue().Cmp(wxT("No")) == 0)
+				sql += wxT("ALTER VIEW ") + name + wxT(" RESET (check_option);\n");
+			else
+				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=") + cbCheckOption->GetValue().Lower() + wxT(");\n");
+		}
+
+		if (withoptions.Length() > 0)
+			sql += wxT(" WITH (") + withoptions + wxT(")");
+
 
 		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
 		{

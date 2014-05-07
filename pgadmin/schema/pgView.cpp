@@ -132,6 +132,8 @@ bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 wxString pgView::GetSql(ctlTree *browser)
 {
+    wxString withoptions;
+
 	if (sql.IsNull())
 	{
 		bool IsMatViewFlag = false;
@@ -142,7 +144,14 @@ wxString pgView::GetSql(ctlTree *browser)
 			      + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier();
 
 			if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
-				sql += wxT(" WITH (security_barrier=") + GetSecurityBarrier() + wxT(")");
+				withoptions = wxT("security_barrier=") + GetSecurityBarrier();
+			if (GetConnection()->BackendMinimumVersion(9, 4) && GetCheckOption().Length() > 0)
+            {
+                if (withoptions.Length() > 0)
+                    withoptions += wxT(", ");
+				withoptions = wxT("check_option=") + GetCheckOption();
+            }
+			sql += wxT(" WITH (") + withoptions + wxT(")");
 		}
 		else
 		{
@@ -560,6 +569,9 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				properties->AppendItem(_("With data?"), _("No"));
 		}
 
+		if (GetConnection()->BackendMinimumVersion(9, 4))
+			properties->AppendItem(_("Check Option"), GetCheckOption());
+
 		if (!GetLabels().IsEmpty())
 		{
 			wxArrayString seclabels = GetProviderLabelArray();
@@ -725,6 +737,11 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 		       wxT(", c.reloptions AS reloptions, tst.reloptions AS toast_reloptions \n")
 		       wxT(", (CASE WHEN c.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
 	}
+	if (collection->GetConnection()->BackendMinimumVersion(9, 4))
+	{
+		sql += wxT(",\nsubstring(array_to_string(c.reloptions, ',') FROM 'check_option=([a-z]*)') AS check_option");
+	}
+
 
 
 	sql += wxT("\n  FROM pg_class c\n")
@@ -758,6 +775,10 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			view->iSetAcl(views->GetVal(wxT("relacl")));
 			view->iSetDefinition(views->GetVal(wxT("definition")));
 			view->iSetMaterializedView(false);
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 4))
+            {
+			    view->iSetCheckOption(views->GetVal(wxT("check_option")));
+            }
 
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{
