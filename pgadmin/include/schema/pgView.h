@@ -108,6 +108,7 @@ public:
 	wxString GetInsertSql(ctlTree *browser);
 	wxString GetUpdateSql(ctlTree *browser);
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	void RefreshMatView(bool concurrently);
 
 	bool HasStats()
 	{
@@ -370,5 +371,22 @@ public:
 	pgViewCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
+
+class refreshMatViewFactory : public contextActionFactory
+{
+public:
+	refreshMatViewFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
+};
+
+class refreshConcurrentlyMatViewFactory : public contextActionFactory
+{
+public:
+	refreshConcurrentlyMatViewFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
+};
+
 
 #endif

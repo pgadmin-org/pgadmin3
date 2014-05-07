@@ -17,6 +17,7 @@
 #include "utils/misc.h"
 #include "schema/pgColumn.h"
 #include "schema/pgView.h"
+#include "frm/frmMain.h"
 #include "frm/frmHint.h"
 #include "schema/pgTrigger.h"
 
@@ -439,6 +440,17 @@ wxString pgView::GetUpdateSql(ctlTree *browser)
 	    wxT(" WHERE <condition>;\n");
 	return sql;
 }
+
+
+void pgView::RefreshMatView(bool concurrently)
+{
+	wxString sql = wxT("REFRESH MATERIALIZED VIEW ");
+	if (concurrently)
+		sql += wxT("CONCURRENTLY ");
+	sql += GetQuotedFullIdentifier();
+	GetDatabase()->ExecuteVoid(sql);
+}
+
 
 void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
@@ -864,3 +876,58 @@ pgCollection *pgViewFactory::CreateCollection(pgObject *obj)
 
 pgViewFactory viewFactory;
 static pgaCollectionFactory cf(&viewFactory, __("Views"), views_png_img);
+
+refreshMatViewFactory::refreshMatViewFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("&Refresh data"), _("Refresh data for the selected object."));
+}
+
+
+wxWindow *refreshMatViewFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	form->StartMsg(_("Refreshing data"));
+
+	((pgView *)obj)->RefreshMatView(false);
+	wxTreeItemId item = form->GetBrowser()->GetSelection();
+	if (obj == form->GetBrowser()->GetObject(item))
+		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+	form->EndMsg();
+
+	return 0;
+}
+
+
+bool refreshMatViewFactory::CheckEnable(pgObject *obj)
+{
+	return obj && obj->IsCreatedBy(viewFactory) && ((pgView *)obj)->GetMaterializedView();
+}
+
+
+refreshConcurrentlyMatViewFactory::refreshConcurrentlyMatViewFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("&Refresh data concurrently"), _("Refresh data concurrently for the selected object."));
+}
+
+
+wxWindow *refreshConcurrentlyMatViewFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	form->StartMsg(_("Refreshing data concurrently"));
+
+	((pgView *)obj)->RefreshMatView(true);
+	wxTreeItemId item = form->GetBrowser()->GetSelection();
+	if (obj == form->GetBrowser()->GetObject(item))
+		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+	form->EndMsg();
+
+	return 0;
+}
+
+
+bool refreshConcurrentlyMatViewFactory::CheckEnable(pgObject *obj)
+{
+	return obj && obj->IsCreatedBy(viewFactory)
+	       && ((pgView *)obj)->GetMaterializedView()
+	       && ((pgView *)obj)->GetConnection()->BackendMinimumVersion(9, 4);;
+}
