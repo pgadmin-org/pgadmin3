@@ -45,6 +45,7 @@ TMP_ui += \
 	ui/dlgMainConfig.xrc \
 	ui/dlgManageFavourites.xrc \
 	ui/dlgManageMacros.xrc \
+	ui/dlgMoveTablespace.xrc \
 	ui/dlgOperator.xrc \
 	ui/dlgPackage.xrc \
 	ui/dlgPgpassConfig.xrc \

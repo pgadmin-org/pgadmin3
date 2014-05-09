@@ -37,6 +37,7 @@ pgadmin3_SOURCES += \
 	dlg/dlgLanguage.cpp \
 	dlg/dlgMainConfig.cpp \
 	dlg/dlgManageFavourites.cpp \
+	dlg/dlgMoveTablespace.cpp \
 	dlg/dlgOperator.cpp \
 	dlg/dlgPackage.cpp \
 	dlg/dlgPgpassConfig.cpp \

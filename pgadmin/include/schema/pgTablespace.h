@@ -57,6 +57,7 @@ public:
 	pgConn *connection();
 
 	wxString GetSql(ctlTree *browser);
+    void MoveTablespace(frmMain *form);
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 	bool HasStats()
@@ -84,6 +85,14 @@ public:
 	pgTablespaceCollection(pgaFactory *factory, pgServer *sv);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
+};
+
+class moveTablespaceFactory : public contextActionFactory
+{
+public:
+	moveTablespaceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 

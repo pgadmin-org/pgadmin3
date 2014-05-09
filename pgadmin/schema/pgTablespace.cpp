@@ -20,6 +20,7 @@
 #include "schema/pgTablespace.h"
 #include "schema/pgDatabase.h"
 #include "frm/frmMain.h"
+#include "dlg/dlgMoveTablespace.h"
 
 
 pgTablespace::pgTablespace(const wxString &newName)
@@ -245,6 +246,27 @@ void pgTablespace::ShowStatistics(frmMain *form, ctlListView *statistics)
 }
 
 
+void pgTablespace::MoveTablespace(frmMain *form)
+{
+	wxString query;
+
+	dlgMoveTablespace rdo(form, GetConnection(), this);
+	if (rdo.ShowModal() != wxID_CANCEL)
+	{
+		if (wxMessageBox(_("Are you sure you wish to move objects from ") + GetQuotedFullIdentifier() + _(" to ") + rdo.GetTablespace() + _("?"), _("Move tablespace?"), wxYES_NO) != wxYES)
+			return;
+
+		query = wxT("ALTER TABLESPACE ") + GetQuotedFullIdentifier();
+        query += wxT(" MOVE ") + rdo.GetKind().Upper();
+        if (rdo.GetOwner().Length() > 0)
+            query += wxT(" OWNED BY ") + qtIdent(rdo.GetOwner());
+        query += wxT(" TO ") + qtIdent(rdo.GetTablespace());
+
+		GetConnection()->ExecuteVoid(query);
+	}
+}
+
+
 pgObject *pgTablespace::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
 	pgObject *tablespace = 0;
@@ -408,3 +430,21 @@ pgCollection *pgTablespaceFactory::CreateCollection(pgObject *obj)
 
 pgTablespaceFactory tablespaceFactory;
 static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"), tablespaces_png_img);
+
+moveTablespaceFactory::moveTablespaceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Move objects to..."), _("Move objects of the selected tablespace to another one."));
+}
+
+
+wxWindow *moveTablespaceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	((pgTablespace *)obj)->MoveTablespace(form);
+
+	return 0;
+}
+
+bool moveTablespaceFactory::CheckEnable(pgObject *obj)
+{
+	return obj && obj->IsCreatedBy(tablespaceFactory) && ((pgTablespace *)obj)->GetConnection()->BackendMinimumVersion(9, 4);
+}

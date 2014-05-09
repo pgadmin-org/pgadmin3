@@ -80,6 +80,7 @@
 #include "schema/pgRole.h"
 #include "schema/pgRule.h"
 #include "schema/pgServer.h"
+#include "schema/pgTablespace.h"
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
 #include "schema/pgForeignKey.h"
@@ -385,6 +386,7 @@ void frmMain::CreateMenus()
 	new resetTableStatsFactory(menuFactories, editMenu, 0);
 	new resetFunctionStatsFactory(menuFactories, editMenu, 0);
 	new reassignDropOwnedFactory(menuFactories, editMenu, 0);
+	new moveTablespaceFactory(menuFactories, editMenu, 0);
 	new searchObjectFactory(menuFactories, editMenu, 0);
 	editMenu->AppendSeparator();
 

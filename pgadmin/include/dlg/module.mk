@@ -37,6 +37,7 @@ pgadmin3_SOURCES += \
 	include/dlg/dlgLanguage.h \
 	include/dlg/dlgMainConfig.h \
 	include/dlg/dlgManageFavourites.h \
+	include/dlg/dlgMoveTablespace.h \
 	include/dlg/dlgOperator.h \
 	include/dlg/dlgPackage.h \
 	include/dlg/dlgPgpassConfig.h \
