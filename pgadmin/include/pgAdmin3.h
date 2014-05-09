@@ -59,7 +59,7 @@
 const short SERVER_MIN_VERSION_N = 0x0804;
 const wxString SERVER_MIN_VERSION_T = wxT("8.4");
 const short SERVER_MAX_VERSION_N = 0x0903;
-const wxString SERVER_MAX_VERSION_T = wxT("9.3");
+const wxString SERVER_MAX_VERSION_T = wxT("9.4");
 
 // The registry file
 #ifndef __WXMSW__
