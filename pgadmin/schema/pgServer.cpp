@@ -639,6 +639,13 @@ void pgServer::StorePassword()
 			          + username + wxT(":") ;
 		}
 
+		// Escape ":" and "\" from the password field
+		if (!passwd.IsEmpty())
+		{
+			passwd.Replace(wxT("\\"), wxT("\\\\"));
+			passwd.Replace(wxT(":") , wxT("\\:"));
+		}
+
 		file.Read(before);
 		wxStringTokenizer lines(before, wxT("\n\r"));
 

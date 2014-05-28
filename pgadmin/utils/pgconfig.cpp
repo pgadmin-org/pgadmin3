@@ -570,17 +570,47 @@ void pgPassConfigLine::Init(const wxString &line)
 
 	isComment = line.StartsWith(wxT("#"));
 
-	wxStringTokenizer tok(isComment ? line.Mid(1) : line, wxT(":"));
-	if (tok.HasMoreTokens())
-		hostname = tok.GetNextToken();
-	if (tok.HasMoreTokens())
-		port = tok.GetNextToken();
-	if (tok.HasMoreTokens())
-		database = tok.GetNextToken();
-	if (tok.HasMoreTokens())
-		username = tok.GetNextToken();
-	if (tok.HasMoreTokens())
-		password = tok.GetNextToken();
+	wxString tmpLine =  line;
+	// De-escape backslash "\"
+	tmpLine.Replace(wxT("\\\\"), wxT("\\"));
+
+	int iVarCount = 0;
+	wxStringTokenizer tok(isComment ? tmpLine.Mid(1) : tmpLine, wxT(":"));
+	while(tok.HasMoreTokens())
+	{
+		wxString val = tok.GetNextToken();
+		if (!val.IsEmpty())
+		{
+			/* if last charecter of the token is backslash "\" then it means
+			   that it is used to escape ":" so we need to add the next token.
+			*/
+			while(val.Last() == wxT('\\'))
+			{
+				val.RemoveLast();
+				val = val +  wxT(":") + tok.GetNextToken();
+			}
+
+			iVarCount++;
+			switch(iVarCount)
+			{
+			case 1: // hostname
+				hostname = val;
+				break;
+			case 2: // port
+				port = val;
+				break;
+			case 3: // database
+				database = val;
+				break;
+			case 4: //username
+				username = val;
+				break;
+			case 5: // password
+				password = val;
+				break;
+			}
+		}
+	}
 }
 
 wxString pgPassConfigLine::GetText()
