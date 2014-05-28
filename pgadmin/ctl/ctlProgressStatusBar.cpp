@@ -44,10 +44,11 @@ ctlProgressStatusBar::ctlProgressStatusBar(wxWindow *parent, bool showProgressIn
 	else
 		fields = 2;
 
+	m_progress = new wxGauge(this, -1, max);
+
 	wxStatusBar::SetFieldsCount(fields);
 	wxStatusBar::SetStatusWidths(fields, widths);
 
-	m_progress = new wxGauge(this, -1, max);
 	m_timer.SetOwner(this->GetEventHandler());
 
 	if (!showProgressInitially)
