@@ -49,12 +49,15 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 {
 	wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Configuration Editor");
 	if (server)
+	{
 		conn = server->CreateConn(wxEmptyString, 0, applicationname);
+		serverVersionNumber = server->GetVersionNumber();
+	}
+	else
+		serverVersionNumber = wxEmptyString;
 
 	InitForm();
 	Init();
-
-	serverVersionNumber = server->GetVersionNumber();
 
 	if (conn)
 	{
