@@ -1347,8 +1347,8 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
 	// not to the mac variants. Therefore, we request wxStandardPathsCF
 	// directly.
 	wxStandardPathsCF stdPaths;
-	dataDir = stdPaths.GetDataDir();
 #endif
+	dataDir = stdPaths.GetDataDir();
 
 #else // other *ixes
 
