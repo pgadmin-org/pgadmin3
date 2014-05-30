@@ -196,6 +196,7 @@ public:
 				m_fquery->ColouriseQuery(0, str.Length());
 				wxSafeYield();                            // needed to process sqlQuery modify event
 				m_fquery->SetChanged(false);
+				m_fquery->SetOrigin(ORIGIN_FILE);
 				m_fquery->setExtendedTitle();
 				m_fquery->SetLineEndingStyle();
 				m_fquery->UpdateRecentFiles(true);
@@ -226,6 +227,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	loading = true;
 	closing = false;
+	origin = ORIGIN_MANUAL;
 
 	dlgName = wxT("frmQuery");
 	recentKey = wxT("RecentFiles");
@@ -608,15 +610,18 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 		lastDir = fn.GetPath();
 		lastPath = fn.GetFullPath();
 		OpenLastFile();
+		sqlQuery->Colourise(0, query.Length());
 	}
-	else
+	else if (!query.IsNull())
+	{
 		sqlQuery->SetText(query);
-
-	sqlQuery->Colourise(0, query.Length());
-
-	changed = !query.IsNull() && settings->GetStickySql();
-	if (changed)
+		sqlQuery->Colourise(0, query.Length());
+		wxSafeYield();                            // needed to process sqlQuery modify event
+		changed = false;
+		origin = ORIGIN_INITIAL;
 		setExtendedTitle();
+	}
+
 	updateMenu();
 	queryMenu->Enable(MNU_SAVEHISTORY, false);
 	queryMenu->Enable(MNU_CLEARHISTORY, false);
@@ -1386,9 +1391,10 @@ void frmQuery::setExtendedTitle()
 	{
 		SetTitle(title + wxT(" - [") + lastPath + wxT("]") + chgStr);
 	}
-
-	toolBar->EnableTool(MNU_SAVE, changed);
-	fileMenu->Enable(MNU_SAVE, changed);
+	// Allow to save initial queries though they are not changed
+	bool enableSave = changed || (origin == ORIGIN_INITIAL);
+	toolBar->EnableTool(MNU_SAVE, enableSave);
+	fileMenu->Enable(MNU_SAVE, enableSave);
 }
 
 bool frmQuery::relatesToWindow(wxWindow *which, wxWindow *related)
@@ -1680,10 +1686,20 @@ void frmQuery::OnChangeStc(wxStyledTextEvent &event)
 {
 	// The STC seems to fire this event even if it loses focus. Fortunately,
 	// that seems to be m_modificationType == 512.
-	if (!changed && event.m_modificationType != 512)
+	if (event.m_modificationType != 512 &&
+	        // Sometimes there come events 20 and 520 AFTER the initial query was set by constructor.
+	        // Their occurence is related to query's size and possibly international characters in it (??)
+	        // Filter them out to keep "initial" origin of query text.
+	        (origin != ORIGIN_INITIAL || (event.m_modificationType != 20 && event.m_modificationType != 520)))
 	{
-		changed = true;
-		setExtendedTitle();
+		// This is the default change origin.
+		// In other cases the changer function will reset it after this event.
+		origin = ORIGIN_MANUAL;
+		if (!changed)
+		{
+			changed = true;
+			setExtendedTitle();
+		}
 	}
 	// do not allow update of model size of GQB on input (key press) of each
 	// character of the query in Query Tool
@@ -1724,6 +1740,7 @@ void frmQuery::OpenLastFile()
 		sqlQuery->Colourise(0, str.Length());
 		wxSafeYield();                            // needed to process sqlQuery modify event
 		changed = false;
+		origin = ORIGIN_FILE;
 		setExtendedTitle();
 		SetLineEndingStyle();
 		UpdateRecentFiles(true);
@@ -1966,6 +1983,12 @@ void frmQuery::OnSaveAs(wxCommandEvent &event)
 				wxMessageBox(_("Query text incomplete.\nQuery contained characters that could not be converted to the local charset.\nPlease correct the data or try using UTF8 instead."));
 			file.Close();
 			changed = false;
+
+			// Forget about Initial origin thus making "Save" button behave as usual
+			// (be enabled/disabled according to dirty flag only).
+			if (origin == ORIGIN_INITIAL)
+				origin = ORIGIN_FILE;
+
 			setExtendedTitle();
 			UpdateRecentFiles();
 			fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
@@ -2135,8 +2158,10 @@ bool frmQuery::updateFromGqb(bool executing)
 		return false;
 	}
 
-	// Only prompt the user if the dirty flag is set, and the textbox is not empty, and the query has changed.
-	if(changed && !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n"))
+	// Only prompt the user if the dirty flag is set, and last modification wasn't from GQB,
+	// and the textbox is not empty, and the new query is different.
+	if(changed && origin != ORIGIN_GQB &&
+	        !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n"))
 	{
 		wxString fn;
 		if (executing)
@@ -2161,11 +2186,13 @@ bool frmQuery::updateFromGqb(bool executing)
 
 	if(canGenerate)
 	{
-		sqlQuery->ClearAll();
-		sqlQuery->AddText(newQuery + wxT("\n"));
+		sqlQuery->SetText(newQuery + wxT("\n"));
 		sqlQuery->Colourise(0, sqlQuery->GetText().Length());
+		wxSafeYield();                            // needed to process sqlQuery modify event
 		sqlNotebook->SetSelection(0);
 		changed = true;
+		origin = ORIGIN_GQB;
+		setExtendedTitle();
 
 		gqbUpdateRunning = false;
 		return true;
@@ -3083,7 +3110,8 @@ void frmQuery::OnChangeQuery(wxCommandEvent &event)
 		sqlQuery->SetText(query);
 		sqlQuery->Colourise(0, query.Length());
 		wxSafeYield();                            // needed to process sqlQuery modify event
-		changed = false;
+		changed = true;
+		origin = ORIGIN_HISTORY;
 		setExtendedTitle();
 		SetLineEndingStyle();
 		btnDeleteCurrent->Enable(true);

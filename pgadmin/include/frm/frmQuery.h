@@ -72,6 +72,15 @@ public:
 	bool verbose;
 };
 
+enum
+{
+    ORIGIN_MANUAL,
+    ORIGIN_FILE,
+    ORIGIN_INITIAL,
+    ORIGIN_HISTORY,
+    ORIGIN_GQB
+};
+
 class frmQuery : public pgFrame
 {
 public:
@@ -94,6 +103,10 @@ public:
 	void SetChanged(bool p_changed)
 	{
 		changed = p_changed;
+	}
+	void SetOrigin(int p_origin)
+	{
+		origin = p_origin;
 	}
 	void SetLastPath(wxString p_lastpath)
 	{
@@ -260,6 +273,9 @@ private:
 	bool aborted;
 	bool lastFileFormat;
 	bool m_loadingfile;
+
+	// Complements dirty flag, showing last origin of query's modification (see enum ORIGIN_..)
+	int origin;
 
 	// A simple mutex-like flag to prevent concurrent script execution.
 	// Required because the pgScript parser isn't currently thread-safe :-(
