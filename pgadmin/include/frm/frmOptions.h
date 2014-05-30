@@ -45,8 +45,8 @@ private:
 	void OnTreeSelChanged(wxTreeEvent &event);
 	wxString CheckColour(wxString colour);
 	void UpdateColourControls();
-	wxTreeItemId GetTreeItemByLabel(const wxTreeItemId& root, const wxString& label);
-	void ShowPanel(const wxTreeItemId& menuItem);
+	wxTreeItemId GetTreeItemByLabel(const wxTreeItemId &root, const wxString &label);
+	void ShowPanel(const wxTreeItemId &menuItem);
 	DECLARE_EVENT_TABLE()
 };
 

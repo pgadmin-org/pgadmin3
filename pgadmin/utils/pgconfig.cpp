@@ -593,21 +593,21 @@ void pgPassConfigLine::Init(const wxString &line)
 			iVarCount++;
 			switch(iVarCount)
 			{
-			case 1: // hostname
-				hostname = val;
-				break;
-			case 2: // port
-				port = val;
-				break;
-			case 3: // database
-				database = val;
-				break;
-			case 4: //username
-				username = val;
-				break;
-			case 5: // password
-				password = val;
-				break;
+				case 1: // hostname
+					hostname = val;
+					break;
+				case 2: // port
+					port = val;
+					break;
+				case 3: // database
+					database = val;
+					break;
+				case 4: //username
+					username = val;
+					break;
+				case 5: // password
+					password = val;
+					break;
 			}
 		}
 	}

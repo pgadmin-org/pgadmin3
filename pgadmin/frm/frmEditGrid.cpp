@@ -1464,7 +1464,7 @@ void frmEditGrid::Go()
 	// they are suppressed initially. Win32 won't need this.
 	// !!! This hack breaks columns auto-sizing ( GetClientSize().GetWidth() is used in ctlSQLGrid::AutoSizeColumns() )
 	// !!! Is it still required?
-	//sqlGrid->SetSize(10, 10); 
+	//sqlGrid->SetSize(10, 10);
 
 	sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
 	sqlGrid->AutoSizeColumns(false);

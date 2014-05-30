@@ -140,8 +140,8 @@ int dlgRole::Go(bool modal)
 //
 #ifdef __WXMAC__
 
-       datValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
-       timValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
+	datValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
+	timValidUntil->Connect(wxEVT_CHILD_FOCUS, wxCommandEventHandler(dlgRole::OnChange), NULL, this);
 
 #endif
 

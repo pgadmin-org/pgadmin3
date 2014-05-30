@@ -418,9 +418,9 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 	//
 	// Lock the assignment to prevent the race conditions between onSelRightClick and execSelChange.
 	//
-		s_currentObjectMutex.Lock();
-		currentObject = browser->GetObject(item);
-		s_currentObjectMutex.Unlock();
+	s_currentObjectMutex.Lock();
+	currentObject = browser->GetObject(item);
+	s_currentObjectMutex.Unlock();
 
 	// If we didn't get an object, then we may have a right click, or
 	// invalid click, so ignore.

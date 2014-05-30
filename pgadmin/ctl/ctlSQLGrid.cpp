@@ -334,7 +334,7 @@ void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent &event)
 	else if (col >= 0)
 	{
 		// Holding Ctrl or Meta switches back to automatic column's sizing
-		if (event.ControlDown() || event.CmdDown()) 
+		if (event.ControlDown() || event.CmdDown())
 		{
 			colSizes.erase(GetColKeyValue(col));
 			BeginBatch();

@@ -564,7 +564,7 @@ void frmMain::Refresh(pgObject *data)
 			pgCollection *eventTrgCol = browser->FindCollection(eventTriggerFactory, dbItem);
 
 			if(eventTrgCol)
-			Refresh(eventTrgCol);
+				Refresh(eventTrgCol);
 		}
 
 		// Scan the child nodes and make a list of those that are expanded

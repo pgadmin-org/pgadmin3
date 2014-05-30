@@ -1565,7 +1565,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		// Add the Server node
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 		server = new pgServer(servername, hostaddr, description, service, database, username, port, StrToBool(storePwd), rolename, StrToBool(restore), ssl,
-			colour, group, StrToBool(sshTunnel), tunnelHost, tunnelUserName, StrToBool(authModePwd), tunnelPassword, publicKeyFile, identityFile, tunnelPort);
+		                      colour, group, StrToBool(sshTunnel), tunnelHost, tunnelUserName, StrToBool(authModePwd), tunnelPassword, publicKeyFile, identityFile, tunnelPort);
 #else
 		server = new pgServer(servername, hostaddr, description, service, database, username, port, StrToBool(storePwd), rolename, StrToBool(restore), ssl,
 		                      colour, group);

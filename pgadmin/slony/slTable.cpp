@@ -128,9 +128,9 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		if (GetConnection()->BackendMinimumVersion(9, 0))
 		{
 			set = GetConnection()->ExecuteSet(
-                                  wxT("SELECT tgname AS trig_tgname FROM pg_trigger t, pg_proc p, pg_namespace n ")
-                                  wxT("WHERE t.tgfoid = p.oid AND p.pronamespace = n.oid ")
-                                  wxT("AND n.nspname = ") + qtDbString(wxT("_") + GetCluster()->GetName()));
+			          wxT("SELECT tgname AS trig_tgname FROM pg_trigger t, pg_proc p, pg_namespace n ")
+			          wxT("WHERE t.tgfoid = p.oid AND p.pronamespace = n.oid ")
+			          wxT("AND n.nspname = ") + qtDbString(wxT("_") + GetCluster()->GetName()));
 		}
 		else
 		{

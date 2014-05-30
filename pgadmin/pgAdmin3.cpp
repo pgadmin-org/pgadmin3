@@ -900,7 +900,7 @@ void pgAdmin3::InitXtraPaths()
 
 		if (!(pgKey && pgKey->QueryValue(wxT("ProgramFilesDir"), programFiles)))
 		{
-				programFiles = tmp;
+			programFiles = tmp;
 		}
 
 		if(pgKey)

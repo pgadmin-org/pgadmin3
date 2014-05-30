@@ -187,7 +187,7 @@ void frmPgpassConfig::WriteFile(pgConn *conn)
 		line.password.Replace(wxT(":") , wxT("\\:"));
 
 		wxString strLine = line.hostname + wxT(":") + line.port + wxT(":") +
-			line.database + wxT(":") + line.username + wxT(":") + line.password + wxT("\n");
+		                   line.database + wxT(":") + line.username + wxT(":") + line.password + wxT("\n");
 
 		str.Append(strLine);
 	}

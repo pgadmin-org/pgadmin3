@@ -731,21 +731,21 @@ void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
 			break;
 
 		case HELP_GREENPLUM:
-			{
-				// the old help path (stored in the settings) is no longer working
-				static wxString gpHelpPath = settings->GetGpHelpPath();
+		{
+			// the old help path (stored in the settings) is no longer working
+			static wxString gpHelpPath = settings->GetGpHelpPath();
 
-				if (gpHelpPath.CmpNoCase(wxT("http://www.greenplum.com/docs/3300/")) == 0)
-				{
-					gpHelpPath = wxT("http://docs.gopivotal.com/gpdb/");
-					// this is the old link, update the link to the new documentation link
-					// problem: this saves the link into the configuration file
-					settings->SetGpHelpPath(gpHelpPath);
-				}
-				DisplayExternalHelp(helpTopic, settings->GetGpHelpPath(), greenplumHelpCtl, (gpInitPath != settings->GetGpHelpPath() ? true : false));
-				gpInitPath = settings->GetGpHelpPath();
+			if (gpHelpPath.CmpNoCase(wxT("http://www.greenplum.com/docs/3300/")) == 0)
+			{
+				gpHelpPath = wxT("http://docs.gopivotal.com/gpdb/");
+				// this is the old link, update the link to the new documentation link
+				// problem: this saves the link into the configuration file
+				settings->SetGpHelpPath(gpHelpPath);
 			}
-			break;
+			DisplayExternalHelp(helpTopic, settings->GetGpHelpPath(), greenplumHelpCtl, (gpInitPath != settings->GetGpHelpPath() ? true : false));
+			gpInitPath = settings->GetGpHelpPath();
+		}
+		break;
 
 		case HELP_SLONY:
 			DisplayExternalHelp(helpTopic, settings->GetSlonyHelpPath(), slonyHelpCtl, (slonyInitPath != settings->GetSlonyHelpPath() ? true : false));
