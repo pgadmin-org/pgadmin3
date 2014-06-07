@@ -80,7 +80,7 @@ END_EVENT_TABLE()
 
 
 
-frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form)
+frmRestore::frmRestore(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 {
 	object = obj;
 
@@ -89,10 +89,8 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 	else
 		server = object->GetDatabase()->GetServer();
 
-	form = _form;
-
 	SetFont(settings->GetSystemFont());
-	LoadResource(_form, wxT("frmRestore"));
+	LoadResource(form, wxT("frmRestore"));
 	RestorePosition();
 
 	SetTitle(object->GetTranslatedMessage(RESTORETITLE));
