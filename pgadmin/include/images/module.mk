@@ -221,6 +221,8 @@ pgadmin3_SOURCES += \
 	include/images/readdata.png \
 	include/images/refresh.png \
 	include/images/reload.png \
+	include/images/resourcegroup.png \
+	include/images/resourcegroups.png \
 	include/images/restore.png \
 	include/images/roles.png \
 	include/images/rule.png \

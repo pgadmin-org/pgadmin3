@@ -37,6 +37,7 @@
 #include "utils/registry.h"
 #include "frm/frmReport.h"
 #include "dlg/dlgServer.h"
+#include "schema/edbResourceGroup.h"
 
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)
 #include "utils/sshTunnel.h"
@@ -197,6 +198,12 @@ wxMenu *pgServer::GetNewMenu()
 				groupFactory.AppendMenu(menu);
 			if (settings->GetDisplayOption(_("Users/login Roles")))
 				userFactory.AppendMenu(menu);
+		}
+		// Added Resource Group only for PPAS 9.4 and above
+		if (conn->GetIsEdb() && conn->EdbMinimumVersion(9, 4))
+		{
+			if (settings->GetDisplayOption(_("Resource Groups")))
+				resourceGroupFactory.AppendMenu(menu);
 		}
 	}
 	return menu;
@@ -1093,6 +1100,13 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 					browser->AppendCollection(this, groupFactory);
 				if (settings->GetDisplayOption(_("Users/login Roles")))
 					browser->AppendCollection(this, userFactory);
+			}
+
+			// Added Resource Group only for PPAS 9.4 and above
+			if (conn->GetIsEdb() && conn->EdbMinimumVersion(9, 4))
+			{
+				if (settings->GetDisplayOption(_("Resource Groups")))
+					browser->AppendCollection(this, resourceGroupFactory);
 			}
 
 			autovacuumRunning = true;

@@ -77,6 +77,8 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
 		engtype = wxT("Users-login Roles");
 	else if (objtype == _("Resource Queues"))
 		engtype = wxT("Resource Queues");
+	else if (objtype == _("Resource Groups"))
+		engtype = wxT("Resource Groups");
 	else if (objtype == _("Catalogs"))
 		engtype = wxT("Catalogs");
 	else if (objtype == _("Casts"))
@@ -195,6 +197,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	else if (objtype == _("Groups/group Roles")) engtype = wxT("Groups-login Roles");
 	else if (objtype == _("Users/login Roles")) engtype = wxT("Users-login Roles");
 	else if (objtype == _("Resource Queues")) engtype = wxT("Resource Queues");
+	else if (objtype == _("Resource Groups")) engtype = wxT("Resource Groups");
 	else if (objtype == _("Catalogs")) engtype = wxT("Catalogs");
 	else if (objtype == _("Casts")) engtype = wxT("Casts");
 	else if (objtype == _("Foreign Data Wrappers")) engtype = wxT("Foreign Data Wrappers");

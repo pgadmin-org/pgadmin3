@@ -92,7 +92,8 @@ TMP_ui += \
 	ui/frmOptions.xrc \
 	ui/frmPassword.xrc \
 	ui/frmReport.xrc \
-	ui/frmRestore.xrc
+	ui/frmRestore.xrc \
+	ui/dlgResourceGroup.xrc
 
 EXTRA_DIST += \
 	ui/module.mk \
