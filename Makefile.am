@@ -96,7 +96,10 @@ if SPHINX_BUILD
 	cd $(top_srcdir)/docs/en_US && $(MAKE) -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} htmlhelp
 endif
 
-all: doc
+xrc:
+	pgadmin/ui/embed-xrc
+
+all: doc xrc
 
 clean-local:
 	rm -rf $(top_srcdir)/docs/en_US/_build
