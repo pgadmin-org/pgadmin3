@@ -16,12 +16,13 @@
 #include "ctl/ctlListView.h"
 #include "schema/pgDatabase.h"
 #include "utils/sysSettings.h"
+#include "schema/pgSchema.h"
 
 // Class declarations
 class dlgSearchObject : public pgDialog
 {
 public:
-	dlgSearchObject(frmMain *p, pgDatabase *db);
+	dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj);
 	~dlgSearchObject();
 
 private:
@@ -31,6 +32,7 @@ private:
 	void OnChange(wxCommandEvent &ev);
 	void OnSelSearchResult(wxListEvent &ev);
 	wxString TranslatePath(wxString &path);
+	void ToggleBtnSearch(bool enable);
 	WX_DECLARE_STRING_HASH_MAP(wxString, LngMapping);
 	LngMapping aMap;
 
@@ -38,6 +40,8 @@ private:
 	frmMain *parent;
 	wxString header;
 	wxArrayString sectionName, sectionData, sectionTableHeader, sectionTableRows, sectionTableInfo, sectionSql;
+	wxString currentSchema;
+	int cbSchemaIdxCurrent;
 
 	DECLARE_EVENT_TABLE()
 };

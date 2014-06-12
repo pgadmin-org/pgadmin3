@@ -1,121 +1,214 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resource>
-  <object class="wxDialog" name="dlgSearchObject">
-    <title>Search Objects</title>
-    <size>353,240d</size>
-    <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
-    <object class="wxFlexGridSizer">
-      <cols>1</cols>
-      <growablerows>0</growablerows>
-      <growablecols>0</growablecols>
-      <object class="sizeritem">
-        <object class="wxFlexGridSizer">
-          <cols>2</cols>
-          <vgap>3</vgap>
-          <hgap>3</hgap>
-          <growablecols>1</growablecols>
-          <growablerows>2</growablerows>
-          <object class="sizeritem">
-            <object class="wxStaticText" name="stPattern">
-              <label>Pattern</label>
-            </object>
-            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-            <border>4</border>
-          </object>
-          <object class="sizeritem">
-            <object class="wxFlexGridSizer">
-              <cols>2</cols>
-              <vgap>5</vgap>
-              <hgap>5</hgap>
-              <growablecols>0</growablecols>
-              <growablerows>0</growablerows>
-              <object class="sizeritem">
-                <object class="wxTextCtrl" name="txtPattern">
-                  <tooltip>Enter part of the object's name you're looking for</tooltip>
-                </object>
-                <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT</flag>
-                <border>4</border>
-              </object>
-              <object class="sizeritem">
-                <object class="wxButton" name="btnSearch">
-                  <label>Find</label>
-                  <default>1</default>
-                  <style></style>
-                </object>
-                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP</flag>
-                <border>4</border>
-              </object>
-              <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-              <border>4</border>
-            </object>
-            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-            <border>4</border>
-          </object>
-          <object class="sizeritem">
-            <object class="wxStaticText" name="stType">
-              <label>Type</label>
-            </object>
-            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-            <border>4</border>
-          </object>
-          <object class="sizeritem">
-            <object class="wxComboBox" name="cbType">
-              <content/>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-            <border>4</border>
-          </object>
-          <object class="sizeritem">
-            <object class="wxStaticText" name="stResults">
-              <label>Result</label>
-            </object>
-            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-            <border>4</border>
-          </object>
-          <object class="sizeritem">
-            <object class="wxListCtrl" name="lcResults">
-			  <size>340,150d</size>
-              <style>wxLC_REPORT</style>
-            </object>
-            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT|wxBOTTOM</flag>
-            <border>4</border>
-          </object>
-        </object>
-        <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
-        <border>3</border>
-      </object>
-      <object class="sizeritem">
-        <object class="wxFlexGridSizer">
-          <cols>3</cols>
-          <growablecols>1</growablecols>
-          <object class="sizeritem">
-            <object class="wxButton" name="wxID_HELP">
-              <label>Help</label>
-            </object>
-            <flag>wxEXPAND|wxALL</flag>
-            <border>3</border>
-          </object>
-          <object class="spacer">
-            <size>0,0d</size>
-          </object>
-          <object class="sizeritem">
-            <object class="wxButton" name="wxID_CANCEL">
-              <label>&amp;Close</label>
-            </object>
-            <flag>wxEXPAND|wxALL</flag>
-            <border>3</border>
-          </object>
-        </object>
-        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
-      </object>
-      <object class="sizeritem">
-        <object class="wxStatusBar" name="unkStatusBar">
-          <style>wxST_SIZEGRIP</style>
-        </object>
-        <flag>wxEXPAND|wxALIGN_CENTRE</flag>
-        <border>3</border>
-      </object>
-    </object>
-  </object>
+	<object class="wxDialog" name="dlgSearchObject">
+		<title>Search Objects</title>
+		<size>353,240d</size>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+		<object class="wxFlexGridSizer">
+			<rows>0</rows>
+			<cols>1</cols>
+			<vgap>0</vgap>
+			<hgap>0</hgap>
+			<growablerows>0</growablerows>
+			<growablecols>0</growablecols>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxALIGN_CENTER|wxALL|wxEXPAND</flag>
+				<border>3</border>
+				<object class="wxGridBagSizer">
+					<vgap>5</vgap>
+					<hgap>3</hgap>
+					<growablecols>1</growablecols>
+					<growablerows>3</growablerows>
+					<object class="sizeritem">
+						<cellpos>0,0</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP</flag>
+						<border>4</border>
+						<object class="wxStaticText" name="stPattern">
+							<label>Pattern</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>0,1</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxEXPAND</flag>
+						<border>0</border>
+						<object class="wxFlexGridSizer">
+							<rows>0</rows>
+							<cols>2</cols>
+							<vgap>5</vgap>
+							<hgap>5</hgap>
+							<growablecols>0</growablecols>
+							<growablerows>0</growablerows>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxALIGN_CENTER_VERTICAL|wxEXPAND|wxLEFT|wxTOP</flag>
+								<border>3</border>
+								<object class="wxTextCtrl" name="txtPattern">
+									<tooltip>Enter part of the object&apos;s attribute you&apos;re looking for</tooltip>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxALIGN_CENTER_VERTICAL|wxTOP</flag>
+								<border>3</border>
+								<object class="wxButton" name="btnSearch">
+									<label>Find</label>
+									<default>1</default>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>1,0</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP</flag>
+						<border>4</border>
+						<object class="wxStaticText" name="stType">
+							<label>Type</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>1,1</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxBOTTOM|wxEXPAND|wxLEFT|wxTOP</flag>
+						<border>3</border>
+						<object class="wxComboBox" name="cbType">
+							<style>wxCB_READONLY|wxCB_DROPDOWN</style>
+							<size>270,-1d</size>
+							<content/>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>2,0</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP</flag>
+						<border>4</border>
+						<object class="wxStaticText" name="stSchema">
+							<label>Schema</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>2,1</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxBOTTOM|wxEXPAND|wxLEFT|wxTOP</flag>
+						<border>3</border>
+						<object class="wxComboBox" name="cbSchema">
+							<style>wxCB_DROPDOWN|wxCB_READONLY</style>
+							<size>270,-1d</size>
+							<content/>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>3,0</cellpos>
+						<cellspan>1,1</cellspan>
+						<flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP</flag>
+						<border>4</border>
+						<object class="wxStaticText" name="stResults">
+							<label>Result</label>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>3,1</cellpos>
+						<cellspan>1,2</cellspan>
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxFlexGridSizer">
+							<rows>0</rows>
+							<cols>1</cols>
+							<vgap>0</vgap>
+							<hgap>0</hgap>
+							<growablecols>0</growablecols>
+							<growablerows>0</growablerows>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>3</border>
+								<object class="wxListCtrl" name="lcResults">
+									<size>340,150d</size>
+									<style>wxLC_REPORT</style>
+								</object>
+							</object>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<cellpos>0,2</cellpos>
+						<cellspan>3,1</cellspan>
+						<flag>wxALIGN_CENTER_HORIZONTAL</flag>
+						<border>5</border>
+						<object class="wxBoxSizer">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxLEFT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxCheckBox" name="chkNames">
+									<label>names</label>
+									<checked>1</checked>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxLEFT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxCheckBox" name="chkDefinitions">
+									<label>definitions</label>
+									<checked>0</checked>
+								</object>
+							</object>
+							<object class="sizeritem">
+								<option>0</option>
+								<flag>wxLEFT|wxTOP</flag>
+								<border>5</border>
+								<object class="wxCheckBox" name="chkComments">
+									<label>comments</label>
+									<checked>0</checked>
+								</object>
+							</object>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxFlexGridSizer">
+					<rows>0</rows>
+					<cols>3</cols>
+					<vgap>0</vgap>
+					<hgap>0</hgap>
+					<growablecols>1</growablecols>
+					<growablerows></growablerows>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxEXPAND|wxALL</flag>
+						<border>3</border>
+						<object class="wxButton" name="wxID_HELP">
+							<label>Help</label>
+						</object>
+					</object>
+					<object class="spacer">
+						<size>0,0d</size>
+					</object>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxEXPAND|wxALL</flag>
+						<border>3</border>
+						<object class="wxButton" name="wxID_CANCEL">
+							<label>&amp;Close</label>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStatusBar" name="unkStatusBar">
+					<style>wxST_SIZEGRIP</style>
+				</object>
+				<flag>wxEXPAND|wxALIGN_CENTRE</flag>
+				<border>3</border>
+			</object>
+		</object>
+	</object>
 </resource>
