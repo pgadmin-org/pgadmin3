@@ -150,8 +150,12 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj)
 	cbSchema->Append(_("All schemas"));
 	cbSchema->Append(_("My schemas"));
 
-	if (obj->GetSchema())
-		currentSchema = obj->GetSchema()->GetName();
+	if (obj->GetSchema()) {
+		if (obj->GetSchema()->GetSchema())
+			currentSchema = obj->GetSchema()->GetSchema()->GetName();
+		else
+			currentSchema = obj->GetSchema()->GetName();
+	}
 	else if (obj->GetMetaType() == PGM_SCHEMA && !obj->IsCollection())
 		currentSchema = obj->GetName();
 	else
@@ -285,7 +289,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	if (chkNames->GetValue())
 	{
 		if (nextMode)
-			searchSQL += wxT("UNION ALL \n");
+			searchSQL += wxT("UNION \n");
 		nextMode = true;
 		searchSQL += wxT("SELECT * FROM (  ")
 		             wxT("	SELECT  ")
@@ -458,7 +462,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	if (chkDefinitions->GetValue())
 	{
 		if (nextMode)
-			searchSQL += wxT("UNION ALL \n");
+			searchSQL += wxT("UNION \n");
 		nextMode = true;
 		searchSQL += wxT("SELECT * FROM (  ")
 		             wxT("	SELECT CASE WHEN t.typname = 'trigger' THEN 'Trigger Functions' ELSE 'Functions' END AS type, p.proname as objectname,  ")
@@ -475,7 +479,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	if (chkComments->GetValue())
 	{
 		if (nextMode)
-			searchSQL += wxT("UNION ALL \n");
+			searchSQL += wxT("UNION \n");
 		nextMode = true;
 
 		wxString pd = wxT("(select pd.objoid, pd.classoid, pd.objsubid, c.relname")
@@ -725,7 +729,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		searchSQL += wxT("ii.nspname = ") + currentdb->GetConnection()->qtDbString(cbSchema->GetValue()) + wxT(" ");
 	}
 
-	searchSQL += wxT("ORDER BY 1, 2");
+	searchSQL += wxT("ORDER BY 1, 2, 3");
 
 	pgSet *set = currentdb->GetConnection()->ExecuteSet(searchSQL);
 	int i = 0;
