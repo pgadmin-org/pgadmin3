@@ -28,9 +28,7 @@ with the trailing space), and then hit Control and Space together to see
 a popup menu of autocomplete options. The autocomplete system is based on
 code from *psql*, the PostgreSQL command line interpreter and will
 generally be able to offer autocomplete options in the same places that
-it can in *psql*. You can optionally enable the Tab key to activate
-the autocomplete feature as well - the can be done on the
-:ref:`options dialog <options-query_tool>`.
+it can in *psql*.
 
 The editor also offers a number of features for helping with code formatting:
 
