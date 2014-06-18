@@ -246,6 +246,15 @@ bool pgConn::DoConnect()
 		}
 	}
 
+	if (!Initialize())
+		return false;
+
+	return true;
+}
+
+
+bool pgConn::Initialize()
+{
 	// Set client encoding to Unicode/Ascii, Datestyle to ISO, and ask for notices.
 	if (PQstatus(conn) == CONNECTION_OK)
 	{
@@ -270,10 +279,7 @@ bool pgConn::DoConnect()
 			sql += wxT("datname=") + qtString(db);
 		}
 
-
 		pgSet *set = ExecuteSet(sql);
-
-
 		if (set)
 		{
 			if (set->ColNumber(wxT("\"datlastsysoid\"")) >= 0)
@@ -312,12 +318,10 @@ bool pgConn::DoConnect()
 				else
 					return false;
 			}
+			return true;
 		}
 	}
-	else
-		return false;
-
-	return true;
+	return false;
 }
 
 
@@ -1005,6 +1009,7 @@ int pgConn::GetStatus() const
 void pgConn::Reset()
 {
 	PQreset(conn);
+	Initialize();
 }
 
 

@@ -287,6 +287,7 @@ protected:
 
 private:
 	bool DoConnect();
+	bool Initialize();
 
 	wxString qtString(const wxString &value);
 
