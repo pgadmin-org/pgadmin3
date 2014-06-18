@@ -506,6 +506,7 @@ pgObject *edbPackageFunctionFactory::CreateObjects(pgCollection *collection, ctl
 		restr = wxT(" WHERE eltclass = 'F' AND packageoid = ");
 
 	restr += ((edbPackageObjCollection *)collection)->GetPackage()->GetOidStr();
+	restr += restriction;
 
 	return AppendFunctions(collection, ((edbPackageObjCollection *)collection)->GetPackage(), browser, restr);
 }
@@ -520,6 +521,7 @@ pgObject *edbPackageProcedureFactory::CreateObjects(pgCollection *collection, ct
 		restr = wxT(" WHERE eltclass = 'P' AND packageoid = ");
 
 	restr += ((edbPackageObjCollection *)collection)->GetPackage()->GetOidStr();
+	restr += restriction;
 
 	return AppendFunctions(collection, ((edbPackageObjCollection *)collection)->GetPackage(), browser, restr);
 }
