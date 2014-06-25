@@ -105,7 +105,8 @@ int dlgAddFavourite::AddFavourite(wxString newtext)
 			ret = 0;
 	}
 
-	fld->AddNewFavourite(title, newtext);
+	if (r == wxID_OK)
+		fld->AddNewFavourite(title, newtext);
 	return ret;
 }
 
