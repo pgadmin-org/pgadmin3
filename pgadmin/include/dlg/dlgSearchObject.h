@@ -31,7 +31,10 @@ private:
 	void OnCancel(wxCommandEvent &ev);
 	void OnChange(wxCommandEvent &ev);
 	void OnSelSearchResult(wxListEvent &ev);
+	void SaveSettings();
+	void RestoreSettings();
 	wxString TranslatePath(wxString &path);
+	wxString getMapKeyByValue(wxString);
 	void ToggleBtnSearch(bool enable);
 	WX_DECLARE_STRING_HASH_MAP(wxString, LngMapping);
 	LngMapping aMap;

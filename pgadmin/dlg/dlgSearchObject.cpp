@@ -144,8 +144,6 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj)
 		cbType->Append(_("Collations"));
 	}
 
-	cbType->SetSelection(0);
-
 	cbSchema->Clear();
 	cbSchema->Append(_("All schemas"));
 	cbSchema->Append(_("My schemas"));
@@ -188,14 +186,77 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj)
 		delete set;
 	}
 
-	cbSchema->SetSelection(0);
-
+	RestoreSettings();
 	txtPattern->SetFocus();
 }
 
 
 dlgSearchObject::~dlgSearchObject()
 {
+	SavePosition();
+}
+
+void dlgSearchObject::SaveSettings()
+{
+	settings->Write(wxT("SearchObject/Pattern"), txtPattern->GetValue());
+	settings->Write(wxT("SearchObject/Type"), aMap[cbType->GetValue()]);
+	settings->Write(wxT("SearchObject/Schema"), cbSchema->GetValue());
+	settings->WriteBool(wxT("SearchObject/Names"), chkNames->GetValue());
+	settings->WriteBool(wxT("SearchObject/Definitions"), chkDefinitions->GetValue());
+	settings->WriteBool(wxT("SearchObject/Comments"), chkComments->GetValue());
+}
+
+wxString dlgSearchObject::getMapKeyByValue(wxString search_value)
+{
+	wxString key = wxEmptyString;
+	LngMapping::iterator it;
+
+	for (it = aMap.begin(); it != aMap.end(); ++it)
+	{
+		if (search_value.IsSameAs(it->second))
+		{
+			key = it->first;
+			break;
+		}
+	}
+	return key;
+}
+
+void dlgSearchObject::RestoreSettings()
+{
+	wxString val, mapkey;
+	bool bVal;
+	
+	// Pattern
+	settings->Read(wxT("SearchObject/Pattern"), &val, wxEmptyString);
+	txtPattern->SetValue(val);
+	
+	// Type
+	settings->Read(wxT("SearchObject/Type"), &val, wxT("All types"));
+	mapkey = getMapKeyByValue(val);
+	if (cbType->FindString(mapkey, true) == wxNOT_FOUND)
+		cbType->SetValue(getMapKeyByValue(wxT("All types")));
+	else
+		cbType->SetValue(mapkey);
+
+	// Schema
+	settings->Read(wxT("SearchObject/Schema"), &val, wxT("All schemas"));
+	if (cbSchema->FindString(val, true) == wxNOT_FOUND)
+		cbSchema->SetValue(wxT("All schemas"));
+	else
+		cbSchema->SetValue(val);
+
+	// names
+	settings->Read(wxT("SearchObject/Names"), &bVal, true);
+	chkNames->SetValue(bVal);
+	
+	// definitions
+	settings->Read(wxT("SearchObject/Definitions"), &bVal, false);
+	chkDefinitions->SetValue(bVal);
+	
+	// comments
+	settings->Read(wxT("SearchObject/Comments"), &bVal, false);
+	chkComments->SetValue(bVal);
 }
 
 void dlgSearchObject::OnHelp(wxCommandEvent &ev)
@@ -812,10 +873,12 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	}
 
 	if (statusBar)
+        {
 		if (i > 0)
 			statusBar->SetStatusText(wxString::Format(wxPLURAL("Found %d item", "Found %d items",i), i));
 		else
 			statusBar->SetStatusText(_("Nothing was found"));
+        }
 
 	ToggleBtnSearch(true);
 }
@@ -840,6 +903,7 @@ wxString dlgSearchObject::TranslatePath(wxString &path)
 
 void dlgSearchObject::OnCancel(wxCommandEvent &ev)
 {
+	SaveSettings();
 	if (IsModal())
 		EndModal(wxID_CANCEL);
 	else
