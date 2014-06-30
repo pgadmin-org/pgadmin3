@@ -1733,6 +1733,7 @@ void pgAdmin3::InitLogger()
 	sysLogger::logLevel = settings->GetLogLevel();
 
 	logger = new sysLogger();
+	wxLog::SetVerbose(true);
 	wxLog::SetActiveTarget(logger);
 	wxLog::Resume();
 }
