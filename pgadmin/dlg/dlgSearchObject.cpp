@@ -325,6 +325,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	if (!(chkNames->GetValue() || chkDefinitions->GetValue() || chkComments->GetValue()))
 		return; // should not happen
 
+	wxBusyCursor wait;
 	ToggleBtnSearch(false);
 	if (statusBar)
 		statusBar->SetStatusText(_("Searching..."));
@@ -526,14 +527,55 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		if (nextMode)
 			searchSQL += wxT("UNION \n");
 		nextMode = true;
-		searchSQL += wxT("SELECT * FROM (  ")
+		searchSQL += wxT("SELECT * FROM (  ") // Function's source code
 		             wxT("	SELECT CASE WHEN t.typname = 'trigger' THEN 'Trigger Functions' ELSE 'Functions' END AS type, p.proname as objectname,  ")
 		             wxT("	':Schemas/' || n.nspname || '/' || case when t.typname = 'trigger' then ':Trigger Functions' else ':Functions' end || '/' || p.proname as path, n.nspname ")
 		             wxT("	from pg_proc p  ")
 		             wxT("	left join pg_namespace n on p.pronamespace = n.oid  ")
 		             wxT("	left join pg_type t on p.prorettype = t.oid  ")
-		             // TODO: search for other object's definitions (constraint expressions, defaults and so on)
-		             wxT("WHERE p.prosrc ILIKE ") + txtPatternStr + wxT(" ");
+		             wxT("WHERE p.prosrc ILIKE ") + txtPatternStr + wxT(" ")
+		             wxT("UNION ") // Column's type name and default value
+		             wxT("select 'Columns', a.attname, ")
+		             wxT("':Schemas/' || n.nspname || '/' || ")
+		             wxT("case   ")
+		             wxT("	when t.relkind = 'r' then ':Tables' ")
+		             wxT("	when t.relkind = 'S' then ':Sequences' ")
+		             wxT("	when t.relkind = 'v' then ':Views' ")
+		             wxT("	else 'should not happen' ")
+		             wxT("end || '/' || t.relname || '/:Columns/' || a.attname AS path, n.nspname ")
+		             wxT("from pg_attribute a ")
+		             wxT("inner join pg_type ty on a.atttypid = ty.oid ")
+		             wxT("left join pg_attrdef ad on a.attrelid = ad.adrelid and a.attnum = ad.adnum ")
+		             wxT("inner join pg_class t on a.attrelid = t.oid and t.relkind in ('r','v') ")
+		             wxT("left join pg_namespace n on t.relnamespace = n.oid ")
+		             wxT("where a.attnum > 0 ")
+		             wxT("  and (ty.typname ilike ") + txtPatternStr + wxT(" or ad.adsrc ilike ") + txtPatternStr + wxT(") ")
+		             wxT("UNION ") // View's definition
+		             wxT("SELECT 'Views', c.relname, ")
+		             wxT("':Schemas/' || n.nspname || '/:Views/' || c.relname, n.nspname ")
+		             wxT(" FROM pg_class c ")
+		             wxT(" LEFT JOIN pg_namespace n ON n.oid = c.relnamespace ")
+		             wxT(" WHERE c.relkind = 'v' ")
+		             wxT("  and pg_get_viewdef(c.oid) ilike ") + txtPatternStr + wxT(" ")
+		             wxT("UNION ") // Relation's column names except for Views (searched earlier)
+		             wxT("SELECT CASE ")
+		             wxT("  WHEN c.relkind = 'c' THEN 'Types' ")
+		             wxT("	WHEN c.relkind = 'r' THEN 'Tables' ")
+		             wxT("	WHEN c.relkind = 'f' THEN 'Foreign Tables' ")
+		             wxT("	ELSE 'should not happen' ")
+		             wxT("	END AS type, c.relname AS objectname, ")
+		             wxT("	':Schemas/' || n.nspname || '/' || ")
+		             wxT("	CASE ")
+		             wxT("	WHEN c.relkind = 'c' THEN ':Types' ")
+		             wxT("	WHEN c.relkind = 'r' THEN ':Tables' ")
+		             wxT("	WHEN c.relkind = 'f' THEN ':Foreign Tables' ")
+		             wxT("	ELSE 'should not happen' ")
+		             wxT("	END || '/' || c.relname AS path, n.nspname ")
+		             wxT(" from pg_attribute a ")
+		             wxT(" inner join pg_class c on a.attrelid = c.oid and c.relkind in ('c','r','f') ")
+		             wxT(" left join pg_namespace n on c.relnamespace = n.oid ")
+		             wxT(" where a.attname ilike ") + txtPatternStr + wxT(" ");
+		             // TODO: search for other object's definitions (indexes, constraints and so on)
 		searchSQL += wxT(") sd \n");
 	} // search definitions
 
@@ -874,12 +916,12 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	}
 
 	if (statusBar)
-        {
+	{
 		if (i > 0)
 			statusBar->SetStatusText(wxString::Format(wxPLURAL("Found %d item", "Found %d items",i), i));
 		else
 			statusBar->SetStatusText(_("Nothing was found"));
-        }
+	}
 
 	ToggleBtnSearch(true);
 }
