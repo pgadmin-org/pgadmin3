@@ -193,6 +193,7 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj)
 
 dlgSearchObject::~dlgSearchObject()
 {
+	SaveSettings();
 	SavePosition();
 }
 
@@ -903,7 +904,6 @@ wxString dlgSearchObject::TranslatePath(wxString &path)
 
 void dlgSearchObject::OnCancel(wxCommandEvent &ev)
 {
-	SaveSettings();
 	if (IsModal())
 		EndModal(wxID_CANCEL);
 	else
