@@ -151,7 +151,8 @@ wxString pgView::GetSql(ctlTree *browser)
                     withoptions += wxT(", ");
 				withoptions = wxT("check_option=") + GetCheckOption();
             }
-			sql += wxT(" WITH (") + withoptions + wxT(")");
+			if (withoptions.Length() > 0)
+				sql += wxT(" WITH (") + withoptions + wxT(")");
 		}
 		else
 		{
