@@ -159,7 +159,7 @@ wxString pgSequence::GetSql(ctlTree *browser)
 		if (!GetConnection()->BackendMinimumVersion(8, 2))
 			sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
 		else
-			sql += GetGrant(wxT("rwU"), wxT("TABLE ") + GetQuotedFullIdentifier());
+			sql += GetGrant(wxT("rwU"), wxT("SEQUENCE ") + GetQuotedFullIdentifier());
 
 		sql += GetCommentSql();
 

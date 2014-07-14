@@ -370,7 +370,7 @@ wxString dlgSequence::GetSql()
 	if (!connection->BackendMinimumVersion(8, 2))
 		sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 	else
-		sql +=  GetGrant(wxT("rwU"), wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
+		sql +=  GetGrant(wxT("rwU"), wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()));
 
 	AppendComment(sql, wxT("SEQUENCE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), sequence);
 
