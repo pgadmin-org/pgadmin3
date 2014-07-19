@@ -215,6 +215,24 @@ queryFavouriteItem *queryFavouriteFolder::FindFavourite(int id)
 	return NULL;
 }
 
+queryFavouriteItem *queryFavouriteFolder::FindFavourite(const wxString &title)
+{
+	size_t i;
+	for (i = 0; i < favourites.GetCount(); i++)
+	{
+		if (favourites.Item(i)->GetId() == -2)
+		{
+			queryFavouriteFolder *subfolder = (queryFavouriteFolder *)favourites.Item(i);
+			queryFavouriteItem *match = subfolder->FindFavourite(title);
+			if (match != NULL)
+				return match;
+		}
+		else if (favourites.Item(i)->GetTitle() == title)
+			return favourites.Item(i);
+	}
+	return NULL;
+}
+
 queryFavouriteItem *queryFavouriteFolder::FindTreeItem(const wxTreeItemId &treeitem)
 {
 	if (treeid == treeitem)

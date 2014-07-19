@@ -70,6 +70,7 @@ public:
 	bool DeleteTreeItem(const wxTreeItemId &treeitem);
 
 	queryFavouriteItem *FindFavourite(int id);
+	queryFavouriteItem *FindFavourite(const wxString &title);
 	queryFavouriteItem *FindTreeItem(const wxTreeItemId &treeitem);
 
 	void AddNewFavourite(const wxString &title, const wxString &contents);

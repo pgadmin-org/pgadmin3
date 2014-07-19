@@ -129,6 +129,7 @@ enum
     MNU_ACTION = MNU_NEW + 1000, // leave space for objects
 
     MNU_FAVOURITES_ADD = MNU_ACTION + 1000, // leave space for actions
+    MNU_FAVOURITES_INJECT,
     MNU_FAVOURITES_MANAGE,
 
     MNU_MACROS_MANAGE = MNU_FAVOURITES_MANAGE + 1000, //leave space for favourites

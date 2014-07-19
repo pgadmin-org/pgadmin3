@@ -205,6 +205,7 @@ private:
 	void OnFocus(wxFocusEvent &event);
 	void OnSelectAll(wxCommandEvent &event);
 	void OnAddFavourite(wxCommandEvent &event);
+	void OnInjectFavourite(wxCommandEvent &event);
 	void OnManageFavourites(wxCommandEvent &event);
 	void OnSelectFavourite(wxCommandEvent &event);
 	void OnQuickReport(wxCommandEvent &event);
