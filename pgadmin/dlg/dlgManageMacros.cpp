@@ -23,7 +23,7 @@
 
 //pointer to controls
 #define lstKeys		CTRL_LISTVIEW("lstKeys")
-#define txtName	    CTRL_TEXT("txtName")
+#define txtName		CTRL_TEXT("txtName")
 #define txtSqlBox	CTRL_SQLBOX("txtSqlBox")
 #define btnClear	CTRL_BUTTON("btnClear")
 #define btnSave		CTRL_BUTTON("btnSave")
@@ -35,7 +35,7 @@ BEGIN_EVENT_TABLE(dlgManageMacros, DialogWithHelp)
 	EVT_BUTTON (XRCID("btnClear"),				dlgManageMacros::OnClear)
 	EVT_BUTTON (XRCID("btnSave"),				dlgManageMacros::OnSave)
 	EVT_TEXT   (XRCID("txtName"),				dlgManageMacros::OnNameChange)
-	EVT_STC_CHARADDED (XRCID("txtSqlBox"),      dlgManageMacros::OnQueryChange)
+	EVT_STC_CHANGE (XRCID("txtSqlBox"),			dlgManageMacros::OnQueryChange)
 END_EVENT_TABLE()
 
 dlgManageMacros::dlgManageMacros(wxWindow *parent, frmMain *form, queryMacroList *macros) :
@@ -43,6 +43,7 @@ dlgManageMacros::dlgManageMacros(wxWindow *parent, frmMain *form, queryMacroList
 {
 	SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("dlgManageMacros"));
+	RestorePosition();
 
 	this->macros = macros;
 
@@ -73,6 +74,8 @@ dlgManageMacros::dlgManageMacros(wxWindow *parent, frmMain *form, queryMacroList
 	// Clear Markers
 	anythingChanged = false;
 	thisMacroChanged = false;
+
+	txtSqlBox->SetModEventMask(wxSTC_MOD_INSERTTEXT | wxSTC_MOD_DELETETEXT);
 }
 
 void dlgManageMacros::AddKeyToList(int position, const wxString &key)
@@ -124,11 +127,9 @@ void dlgManageMacros::DeleteMacro(int listItem)
 	if (macros->DelMacro(key))
 	{
 		anythingChanged = true;
-		appQueryModify = true;
 		lstKeys->SetItem(listItem, 1, wxT(""));
 		txtName->ChangeValue(wxT(""));
 		txtSqlBox->SetText(wxT(""));
-		appQueryModify = false;
 		thisMacroChanged = false;
 		btnSave->Disable();
 		btnClear->Disable();
@@ -164,14 +165,14 @@ void dlgManageMacros::SetMacro(bool silent)
 		return;
 
 	key = lstKeys->GetItemText(item);
-	Name = txtName->GetValue();
-	query = txtSqlBox->GetText();
+	Name = txtName->GetValue().Trim();
+	query = txtSqlBox->GetText().Trim();
 
 	if (Name.IsEmpty() && query.IsEmpty())
 	{
 		DeleteMacro(item);
 	}
-	else if ((Name.IsEmpty() && !query.IsEmpty()) || (!Name.IsEmpty() && query.IsEmpty()))
+	else if (Name.IsEmpty() || query.IsEmpty())
 	{
 		if (!silent)
 			wxMessageBox(_("You must specify a query and a name for the macro"), _("Save macro"), wxICON_EXCLAMATION | wxOK);
@@ -196,21 +197,17 @@ void dlgManageMacros::OnKeySelect(wxListEvent &ev)
 	queryMacroItem *item = macros->FindMacro(key);
 	if (item != NULL)
 	{
-		appQueryModify = true;
 		txtName->ChangeValue(item->GetName());
 		txtSqlBox->SetText(item->GetQuery());
-		appQueryModify = false;
 		btnClear->Enable();
 		btnSave->Disable();
 	}
 	else
 	{
-		appQueryModify = true;
 		txtName->ChangeValue(wxT(""));
 		txtSqlBox->SetText(wxT(""));
-		appQueryModify = false;
 		btnClear->Disable();
-		btnClear->Disable();
+		btnSave->Disable();
 	}
 	thisMacroChanged = false;
 }
@@ -223,15 +220,11 @@ void dlgManageMacros::OnNameChange(wxCommandEvent &ev)
 
 void dlgManageMacros::OnQueryChange(wxStyledTextEvent &ev)
 {
-	if (!appQueryModify)
-	{
-		thisMacroChanged = true;
-		btnSave->Enable();
-	}
+	thisMacroChanged = true;
+	btnSave->Enable();
 }
 
 wxString dlgManageMacros::GetHelpPage() const
 {
 	return wxT("macros");
 }
-

@@ -41,7 +41,6 @@ private:
 
 	bool anythingChanged;
 	bool thisMacroChanged;
-	bool appQueryModify; // Marker to ignore modify events while setting query text
 
 	DECLARE_EVENT_TABLE()
 };
