@@ -30,7 +30,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='All|Win32'">
     <CustomBuildStep>
       <Message>Calling installer build script...</Message>
-      <Command>make.bat 1.19</Command>
+      <Command>make.bat 1.20</Command>
       <Outputs>.\pgadmin3.msi;%(Outputs)</Outputs>
     </CustomBuildStep>
     <Link>
@@ -45,7 +45,9 @@
     <None Include="resources\banner.bmp" />
     <None Include="resources\help.ico" />
     <None Include="resources\licence.rtf" />
-    <None Include="src\i18ndata.wxs" />
+    <None Include="src\i18ndata.wxs">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="src\i18nrefs.wxs" />
     <None Include="src\pgadmin3.wxs">
       <SubType>Designer</SubType>
