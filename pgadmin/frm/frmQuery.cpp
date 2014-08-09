@@ -1497,6 +1497,9 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 
 void frmQuery::UpdateFavouritesList()
 {
+	if (IsVisible() && menuBar->FindMenu(_("Fav&ourites")) == wxNOT_FOUND)
+		return;
+	
 	if (favourites)
 		delete favourites;
 
@@ -1513,6 +1516,9 @@ void frmQuery::UpdateFavouritesList()
 
 void frmQuery::UpdateMacrosList()
 {
+	if (IsVisible() && menuBar->FindMenu(_("&Macros")) == wxNOT_FOUND)
+		return;
+
 	if (macros)
 		delete macros;
 
