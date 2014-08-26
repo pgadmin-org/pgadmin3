@@ -11,8 +11,8 @@ following:
 * Is this behaviour expected? Have a look at the `FAQs <http://www.pgadmin.org/pgadmin3/faq/>`_.
 * Is this bug already reported?
   Check the `known bugs <http://www.pgadmin.org/pgadmin3/bugs.php>`_.
-* Are you running the latest version from the `beta website
-  <http://www.pgadmin.org/snapshots>`_? If not, try the newest stuff. 
+* Are you running the latest version from the `website
+  <http://www.postgresql.org/ftp/pgadmin3/release/>`_? If not, try the newest stuff. 
 
 Ahh, so you've found a new one then? 
 
