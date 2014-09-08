@@ -354,7 +354,6 @@ int dlgIndex::Go(bool modal)
 				descDef = index->GetOrdersArray().Item(colIdx);
 				nullsDef = index->GetNullsArray().Item(colIdx);
 				opclassDef = index->GetOpClassesArray().Item(colIdx);
-				nullsDef = index->GetNullsArray().Item(colIdx);
 
 				lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
 				lstColumns->SetItem(colIdx, 1, descDef);

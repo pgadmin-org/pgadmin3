@@ -85,7 +85,7 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 	if(showDataType && extended && getOwnerColumn())
 	{
 		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType() & getPrecision(), because when column is fk, type is not taken from this column, instead from original column (source of fk)
-		bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
+		bool havePrecision = columnType == dt_numeric || columnType == dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
 		if( havePrecision && getPrecision() >= 0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
@@ -124,7 +124,7 @@ wxString ddTextTableItemFigure::getType(bool raw)
 	if(raw)
 		return ddType;
 
-	bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
+	bool havePrecision = columnType == dt_numeric || columnType == dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
 	if( havePrecision && getPrecision() >= 0)
 	{
 		ddType.Truncate(ddType.Find(wxT("(")));

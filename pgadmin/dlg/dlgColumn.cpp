@@ -147,7 +147,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 
 					int icon = userFactory.GetIconId();
 
-					if (roleName.Left(6).IsSameAs(wxT("group ")), false)
+					if (roleName.Left(6).IsSameAs(wxT("group "), false))
 					{
 						icon = groupFactory.GetIconId();
 						roleName = wxT("group ") + qtStrip(roleName.Mid(6));

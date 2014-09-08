@@ -289,7 +289,7 @@ wxString pgColumn::GetPrivileges()
 			role = strCurrAcl.BeforeLast('=');
 			wxString value = strCurrAcl.Mid(role.Length() + 1).BeforeLast('/');
 
-			if (role.Left(6).IsSameAs(wxT("group ")), false)
+			if (role.Left(6).IsSameAs(wxT("group "), false))
 			{
 				role = wxT("group ") + qtIdent(qtStrip(role.Mid(6)));
 			}

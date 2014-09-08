@@ -87,7 +87,7 @@ dlgFindReplace::dlgFindReplace(ctlSQLBox *parent) :
 		rdOriginTop->SetValue(false);
 	}
 
-	// Origin
+	// Direction
 	settings->Read(wxT("FindReplace/Direction"), &val, wxT("f"));
 	if (val == wxT("b"))
 	{

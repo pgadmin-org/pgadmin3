@@ -156,6 +156,7 @@ private:
 class menuFactory
 {
 public:
+	virtual ~menuFactory();
 	virtual bool IsAction()
 	{
 		return false;

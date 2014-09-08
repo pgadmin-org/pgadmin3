@@ -411,6 +411,9 @@ menuFactory::menuFactory(menuFactoryList *list)
 		list->Add(this);
 }
 
+menuFactory::~menuFactory()
+{
+}
 
 actionFactory::actionFactory(menuFactoryList *list) : menuFactory(list)
 {

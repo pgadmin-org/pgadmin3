@@ -747,7 +747,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
 	// Save the display options
-	int changed = false;
+	bool changed = false;
 	for (unsigned int x = 0; x < lstDisplay->GetCount(); x++)
 	{
 		if (lstDisplay->IsChecked(x) != settings->GetDisplayOption(lstDisplay->GetString(x)))

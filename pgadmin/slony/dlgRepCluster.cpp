@@ -1230,21 +1230,19 @@ wxString dlgRepClusterUpgrade::GetSql()
 
 				if (language == wxT("c"))
 					sql += wxT("\n")
-					       wxT("AS '" + func.GetVal(wxT("probin")) + wxT("', '") +
-					           func.GetVal(wxT("prosrc")) + wxT("'");
-					           else
-						           sql += wxT(" AS\n")
-						                  wxT("$BODY$") + func.GetVal(wxT("prosrc")) + wxT("$BODY$");
+					       wxT("AS '" + func.GetVal(wxT("probin")) + wxT("', '") + func.GetVal(wxT("prosrc")) + wxT("'"));
+				else
+					sql += wxT(" AS\n")
+					       wxT("$BODY$") + func.GetVal(wxT("prosrc")) + wxT("$BODY$");
 
-						           sql += wxT(" LANGUAGE ")
-						                  +  language;
+				sql += wxT(" LANGUAGE ") + language;
 
-						           if (volat == wxT("v"))
-						           sql += wxT(" VOLATILE");
-						           else if (volat == wxT("i"))
-							           sql += wxT(" IMMUTABLE"));
-							else
-								sql += wxT(" STABLE");
+				if (volat == wxT("v"))
+					sql += wxT(" VOLATILE");
+				else if (volat == wxT("i"))
+					sql += wxT(" IMMUTABLE");
+				else
+					sql += wxT(" STABLE");
 
 				if (func.GetBool(wxT("proisstrict")))
 					sql += wxT(" STRICT");
