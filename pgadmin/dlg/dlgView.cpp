@@ -179,8 +179,11 @@ int dlgView::Go(bool modal)
 				// Checked the view as user is in edit materialized view mode
 				chkMaterializedView->SetValue(true);
 
-				// Disable the security barrie as user is editing the materailized view
+				// Disable the security barrier as user is editing the materailized view
 				chkSecurityBarrier->Disable();
+
+				// Disable the check-option as user is editing the materailized view
+				cbCheckOption->Disable();
 
 				// Disable the materialized view as user is editing it and not allowed to switch to other view
 				chkMaterializedView->Disable();
@@ -503,10 +506,9 @@ wxString dlgView::GetSql()
 			AppendSchemaChange(sql, wxT("TABLE " + qtIdent(view->GetSchema()->GetName()) + wxT(".") + qtIdent(name)));
 	}
 
+	name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
 	if (!view || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false))
 	{
-		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
-
 		if (editQuery)
 		{
 			// Delete the materialized view query
@@ -515,25 +517,30 @@ wxString dlgView::GetSql()
 
 		// Check if user creates the materialized view
 		if (!chkMaterializedView->GetValue())
+		{
 			sql += wxT("CREATE OR REPLACE VIEW ") + name;
-		else
+
+			if (connection->BackendMinimumVersion(9, 2) && chkSecurityBarrier->GetValue())
+				withoptions += wxT("security_barrier=true");
+			if (connection->BackendMinimumVersion(9, 4) && cbCheckOption->GetSelection() > 0)
+			{
+				if (withoptions.Length() > 0)
+					withoptions += wxT(", ");
+				withoptions += wxT("check_option=") + cbCheckOption->GetValue().Lower();
+			}
+
+			if (withoptions.Length() > 0)
+				sql += wxT(" WITH (") + withoptions + wxT(")");
+
+			sql += wxT(" AS\n")
+			       + txtSqlBox->GetText().Trim(true).Trim(false)
+			       + wxT(";\n");
+		}
+		else if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
+		{
 			sql += wxT("CREATE MATERIALIZED VIEW ") + name;
 
-		if (connection->BackendMinimumVersion(9, 2) && chkSecurityBarrier->GetValue())
-			withoptions += wxT("security_barrier=true");
-		if (connection->BackendMinimumVersion(9, 4))
-		{
-			if (withoptions.Length() > 0)
-				withoptions += wxT(", ");
-			withoptions += wxT("check_option=") + cbCheckOption->GetValue().Lower();
-		}
-
-		if (withoptions.Length() > 0)
-			sql += wxT(" WITH (") + withoptions + wxT(")");
-
-		// Add the parameter of tablespace and storage parameter to create the materilized view
-		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
-		{
+			// Add the parameter of tablespace and storage parameter to create the materilized view
 			if (txtFillFactor->GetValue().Trim().Length() > 0 || chkVacEnabled->GetValue() == true || chkToastVacEnabled->GetValue() == true)
 			{
 				bool fillFactorFlag, toastTableFlag;
@@ -548,12 +555,12 @@ wxString dlgView::GetSql()
 					fillFactorFlag = true;
 				}
 
+				bool valChanged = false;
+				wxString newVal;
+				wxString resetStr;
+
 				if (connection->BackendMinimumVersion(9, 3) && chkCustomVac->GetValue())
 				{
-					bool valChanged = false;
-					wxString newVal;
-					wxString resetStr;
-
 					FillAutoVacuumParameters(sql, resetStr, wxT("autovacuum_enabled"), BoolToStr(chkVacEnabled->GetValue()));
 
 					if (!fillFactorFlag)
@@ -627,12 +634,9 @@ wxString dlgView::GetSql()
 						FillAutoVacuumParameters(sql, resetStr, wxT("autovacuum_freeze_table_age"), newVal);
 					}
 				}
+
 				if (connection->BackendMinimumVersion(9, 3) && chkCustomToastVac->GetValue())
 				{
-					bool valChanged = false;
-					wxString newVal;
-					wxString resetStr;
-
 					FillAutoVacuumParameters(sql, resetStr, wxT("toast.autovacuum_enabled"), BoolToStr(chkToastVacEnabled->GetValue()));
 
 					if (!fillFactorFlag && !toastTableFlag)
@@ -721,37 +725,32 @@ wxString dlgView::GetSql()
 			else
 				sql += wxT("\n WITH NO DATA;\n");
 		}
-		else
-		{
-			sql += wxT(" AS\n")
-			       + txtSqlBox->GetText().Trim(true).Trim(false)
-			       + wxT(";\n");
-		}
 	}
 	else if (view)
 	{
-		if (connection->BackendMinimumVersion(9, 2))
+		if (!chkMaterializedView->GetValue())
 		{
-			if (chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() != wxT("true"))
-				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=true);\n");
-			else if (!chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() == wxT("true"))
-				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=false);\n");
+			if (connection->BackendMinimumVersion(9, 2))
+			{
+				if (chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() != wxT("true"))
+					sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=true);\n");
+				else if (!chkSecurityBarrier->GetValue() && view->GetSecurityBarrier() == wxT("true"))
+					sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (security_barrier=false);\n");
+			}
+
+			if (connection->BackendMinimumVersion(9, 4)
+					&& cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
+			{
+				if (cbCheckOption->GetValue().Cmp(wxT("No")) == 0)
+					sql += wxT("ALTER VIEW ") + name + wxT(" RESET (check_option);\n");
+				else
+					sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=") + cbCheckOption->GetValue().Lower() + wxT(");\n");
+			}
+
+			if (withoptions.Length() > 0)
+				sql += wxT(" WITH (") + withoptions + wxT(")");
 		}
-
-		if (connection->BackendMinimumVersion(9, 4)
-			&& cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
-		{
-			if (cbCheckOption->GetValue().Cmp(wxT("No")) == 0)
-				sql += wxT("ALTER VIEW ") + name + wxT(" RESET (check_option);\n");
-			else
-				sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=") + cbCheckOption->GetValue().Lower() + wxT(");\n");
-		}
-
-		if (withoptions.Length() > 0)
-			sql += wxT(" WITH (") + withoptions + wxT(")");
-
-
-		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
+		else if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
 		{
 			if (txtFillFactor->GetValue() != view->GetFillFactor())
 			{
@@ -791,11 +790,8 @@ wxString dlgView::GetSql()
 					       +  wxT(" WITH DATA;\n");
 				}
 			}
-		}
 
-		// Alter the storage parameters if it is materialized view
-		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
-		{
+			// Altered the storage parameters for the materialized view?
 			if (!chkCustomVac->GetValue())
 			{
 				if (hasVacuum)
@@ -905,10 +901,7 @@ wxString dlgView::GetSql()
 				if (changed)
 					sql += vacStr;
 			}
-		}
 
-		if (connection->BackendMinimumVersion(9, 3) && chkMaterializedView->GetValue())
-		{
 			if (!chkCustomToastVac->GetValue())
 			{
 				if (toastTableHasVacuum)
@@ -1048,7 +1041,8 @@ void dlgView::OnCheckMaterializedView(wxCommandEvent &ev)
 {
 	if (chkMaterializedView->GetValue())
 	{
-		// Security barrier and materialized view can not be enabled at the same time so display the message
+		// Security barrier and Check-option, are not applicable to the materialized view
+		cbCheckOption->Disable();
 		if (chkSecurityBarrier->GetValue())
 		{
 			wxMessageBox(_("The security barrier option is not applicable to materialized views and has been turned off."), _("View"), wxICON_EXCLAMATION | wxOK, this);
@@ -1069,15 +1063,12 @@ void dlgView::OnCheckMaterializedView(wxCommandEvent &ev)
 	}
 	else
 	{
-		if (forceSecurityBarrierChanged)
-		{
-			chkSecurityBarrier->Enable();
-			chkSecurityBarrier->SetValue(true);
-			forceSecurityBarrierChanged = false;
-		}
+		chkSecurityBarrier->Enable();
+		cbCheckOption->Enable();
+		chkSecurityBarrier->SetValue(forceSecurityBarrierChanged);
+		forceSecurityBarrierChanged = false;
 
 		DisableStorageParameters();
-		chkSecurityBarrier->Enable();
 	}
 }
 
