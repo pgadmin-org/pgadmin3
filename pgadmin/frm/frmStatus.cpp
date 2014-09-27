@@ -60,7 +60,7 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
 	EVT_MENU(MNU_COPY_QUERY,                      frmStatus::OnCopyQuery)
 
 	EVT_MENU(MNU_HELP,                            frmStatus::OnHelp)
-	EVT_MENU(MNU_CONTENTS,						  frmStatus::OnContents)
+	EVT_MENU(MNU_CONTENTS,                        frmStatus::OnContents)
 	EVT_MENU(MNU_STATUSPAGE,                      frmStatus::OnToggleStatusPane)
 	EVT_MENU(MNU_LOCKPAGE,                        frmStatus::OnToggleLockPane)
 	EVT_MENU(MNU_XACTPAGE,                        frmStatus::OnToggleXactPane)
@@ -94,14 +94,14 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
 	EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,        frmStatus::OnSelLockItem)
 	EVT_LIST_COL_CLICK(CTL_LOCKLIST,              frmStatus::OnSortLockGrid)
 	EVT_LIST_COL_RIGHT_CLICK(CTL_LOCKLIST,        frmStatus::OnRightClickLockGrid)
-	EVT_LIST_COL_END_DRAG(CTL_STATUSLIST,         frmStatus::OnChgColSizeLockGrid)
+	EVT_LIST_COL_END_DRAG(CTL_LOCKLIST,           frmStatus::OnChgColSizeLockGrid)
 
 	EVT_TIMER(TIMER_XACT_ID,                      frmStatus::OnRefreshXactTimer)
 	EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,          frmStatus::OnSelXactItem)
 	EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,        frmStatus::OnSelXactItem)
 	EVT_LIST_COL_CLICK(CTL_XACTLIST,              frmStatus::OnSortXactGrid)
 	EVT_LIST_COL_RIGHT_CLICK(CTL_XACTLIST,        frmStatus::OnRightClickXactGrid)
-	EVT_LIST_COL_END_DRAG(CTL_STATUSLIST,         frmStatus::OnChgColSizeXactGrid)
+	EVT_LIST_COL_END_DRAG(CTL_XACTLIST,           frmStatus::OnChgColSizeXactGrid)
 
 	EVT_TIMER(TIMER_LOG_ID,                       frmStatus::OnRefreshLogTimer)
 	EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,           frmStatus::OnSelLogItem)
@@ -2647,6 +2647,9 @@ void frmStatus::OnLocksTerminateBtn(wxCommandEvent &event)
 
 void frmStatus::OnStatusMenu(wxCommandEvent &event)
 {
+	wxListItem column;
+	column.SetMask(wxLIST_MASK_TEXT);
+
 	for (unsigned int i = 0; i < statusPopupMenu->GetMenuItemCount(); i++)
 	{
 		// Save column's width in a variable so that we can restore the old width
@@ -2661,7 +2664,6 @@ void frmStatus::OnStatusMenu(wxCommandEvent &event)
 			statusList->SetColumnWidth(i, 0);
 
 		// Save current width to restore it at next launch
-		wxListItem column;
 		statusList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
@@ -2675,6 +2677,9 @@ void frmStatus::OnStatusMenu(wxCommandEvent &event)
 
 void frmStatus::OnLockMenu(wxCommandEvent &event)
 {
+	wxListItem column;
+	column.SetMask(wxLIST_MASK_TEXT);
+
 	for (unsigned int i = 0; i < lockPopupMenu->GetMenuItemCount(); i++)
 	{
 		// Save column's width in a variable so that we can restore the old width
@@ -2689,7 +2694,6 @@ void frmStatus::OnLockMenu(wxCommandEvent &event)
 			lockList->SetColumnWidth(i, 0);
 
 		// Save current width to restore it at next launch
-		wxListItem column;
 		lockList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
@@ -2703,6 +2707,9 @@ void frmStatus::OnLockMenu(wxCommandEvent &event)
 
 void frmStatus::OnXactMenu(wxCommandEvent &event)
 {
+	wxListItem column;
+	column.SetMask(wxLIST_MASK_TEXT);
+
 	for (unsigned int i = 0; i < xactPopupMenu->GetMenuItemCount(); i++)
 	{
 		// Save column's width in a variable so that we can restore the old width
@@ -2717,7 +2724,6 @@ void frmStatus::OnXactMenu(wxCommandEvent &event)
 			xactList->SetColumnWidth(i, 0);
 
 		// Save current width to restore it at next launch
-		wxListItem column;
 		xactList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
@@ -3155,13 +3161,13 @@ void frmStatus::OnChgColSizeStatusGrid(wxListEvent &event)
 void frmStatus::OnChgColSizeLockGrid(wxListEvent &event)
 {
 	wxCommandEvent ev;
-	OnStatusMenu(ev);
+	OnLockMenu(ev);
 }
 
 void frmStatus::OnChgColSizeXactGrid(wxListEvent &event)
 {
 	wxCommandEvent ev;
-	OnStatusMenu(ev);
+	OnXactMenu(ev);
 }
 
 
