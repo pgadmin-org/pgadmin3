@@ -4,7 +4,7 @@ DMG_LICENCE=./pkg/mac/licence.r
 DMG_IMAGE=./pgAdmin3.dmg
 DMG_NAME=pgAdmin3
 HDIUTIL=/usr/bin/hdiutil
-REZ="/Developer/Tools/Rez /Developer/Headers/FlatCarbon/*.r"
+REZ="/usr/bin/Rez /System/Library/Frameworks/Carbon.framework/Versions/A/Headers/*.r"
 
 DMG_DIR=$DMG_IMAGE.src
 
