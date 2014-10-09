@@ -15,7 +15,7 @@ function CompleteSingleApp() {
 	pushd "$bundle" > /dev/null
 
 	#We skip nested apps here - those are treated specially
-	todo=$(file `find ./ -perm +0111 ! -type d ! -path "*.app/*" ! -name "*.app"` | grep "Mach-O executable" | awk -F ':| ' '{ORS=" "; print $1}' | uniq)
+	todo=$(file `find ./ -perm +0111 ! -type d ! -path "*.app/*" ! -name "*.app"` | grep "Mach-O i386 executable" | awk -F ':| ' '{ORS=" "; print $1}' | uniq)
 
 	echo "App: $tag: Found executables: $todo"
 	while test "$todo" != ""; do
@@ -38,18 +38,34 @@ function CompleteSingleApp() {
 			); do
 				lib_bn="$(basename "$lib")" ;
 				if ! test -f "Contents/Frameworks/$lib_bn"; then
-					echo "App: $tag: Adding library: $lib_bn (because of: $todo_obj)"
-					cp "$lib" "Contents/Frameworks/$lib_bn"
-					chmod 755 "Contents/Frameworks/$lib_bn"
-					install_name_tool \
-						-id "$lib_bn" \
-						"Contents/Frameworks/$lib_bn" || exit 1
+                                        target_file=""
+					target_path=""
+					echo "App: $tag: Adding symlink: $lib_bn (because of: $todo_obj)"
+					cp -R "$lib" "Contents/Frameworks/$lib_bn"
+					if ! test -L "Contents/Frameworks/$lib_bn"; then
+						chmod 755 "Contents/Frameworks/$lib_bn"
+					else
+						target_file=$(readlink "$lib")
+						target_path=$(dirname "$lib")/$target_file
+					        echo "App: $tag: Adding symlink target: $target_path"
+						cp "$target_path" "Contents/Frameworks/$target_file"
+						chmod 755 "Contents/Frameworks/$target_file"
+					fi
+					echo "Rewriting ID in Contents/Frameworks/$lib_bn to $lib_bn"
+                                        install_name_tool \
+                                                -id "$lib_bn" \
+                                                "Contents/Frameworks/$lib_bn" || exit 1
 					todo="$todo ./Contents/Frameworks/$lib_bn"
 				fi
+				echo "Rewriting library $lib to @executable_path/$fw_relpath/$lib_bn in $todo_obj"
 				install_name_tool -change \
 					"$lib" \
 					"@executable_path/$fw_relpath/$lib_bn" \
 					"$todo_obj" || exit 1
+                                install_name_tool -change \
+                                        "$target_path" \
+                                        "@executable_path/$fw_relpath/$target_file" \
+                                        "$todo_obj" || exit 1
 			done
 		done
 	done

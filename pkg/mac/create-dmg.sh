@@ -19,7 +19,7 @@ mkdir "$DMG_DIR" || exit 1
 
 echo "Copying data into temporary directory"
 for src in $DMG_SOURCES; do
-	cp -r "$src" "$DMG_DIR" || exit 1
+	cp -R "$src" "$DMG_DIR" || exit 1
 done
 
 echo "Creating image"
