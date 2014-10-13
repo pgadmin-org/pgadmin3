@@ -270,7 +270,7 @@ wxString pgTrigger::GetForEach() const
 
 void pgTrigger::ReadColumnDetails()
 {
-	if (!expandedKids && GetLanguage() != wxT("edbspl"))
+	if (!expandedKids)
 	{
 		expandedKids = true;
 
@@ -317,7 +317,7 @@ void pgTrigger::ReadColumnDetails()
 
 void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-	if (!expandedKids && GetLanguage() != wxT("edbspl"))
+	if (!expandedKids)
 	{
 		ReadColumnDetails();
 
@@ -326,15 +326,19 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 			// if no browser present, function will not be appended to tree
 			expandedKids = true;
 		}
-		if (triggerFunction)
-			delete triggerFunction;
 
-		// append function here
-		triggerFunction = functionFactory.AppendFunctions(this, GetSchema(), browser, wxT(
-		                      "WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
-		if (triggerFunction)
+		if (GetLanguage() != wxT("edbspl"))
 		{
-			iSetFunction(triggerFunction->GetQuotedFullIdentifier());
+			if (triggerFunction)
+				delete triggerFunction;
+
+			// append function here
+			triggerFunction = functionFactory.AppendFunctions(this, GetSchema(), browser, wxT(
+				"WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
+			if (triggerFunction)
+			{
+				iSetFunction(triggerFunction->GetQuotedFullIdentifier());
+			}
 		}
 	}
 
