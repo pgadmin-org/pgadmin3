@@ -283,7 +283,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
 {
 	if (sql.IsNull())
 	{
-		wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgListWithNames() + wxT(")");
+		wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgListWithNames(true) + wxT(")");
 		wxString qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgSigList() + wxT(")");
 
 		sql = wxT("-- Function: ") + qtSig + wxT("\n\n")
@@ -498,7 +498,7 @@ bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 	return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgFunction::GetArgListWithNames()
+wxString pgFunction::GetArgListWithNames(bool multiline)
 {
 	wxString args;
 
@@ -512,7 +512,13 @@ wxString pgFunction::GetArgListWithNames()
 			break;
 
 		if (args.Length() > 0)
-			args += wxT(", ");
+		{
+			args += (multiline) ? wxT(",\n    ") : wxT(", ");
+		}
+		else if (multiline)
+		{
+			args = wxT("\n    ");
+		}
 
 		wxString arg;
 

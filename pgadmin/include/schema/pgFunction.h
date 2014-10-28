@@ -50,7 +50,7 @@ public:
 	}
 
 	wxString GetFullName();
-	wxString GetArgListWithNames();
+	wxString GetArgListWithNames(bool multiline = false);
 	wxString GetArgSigList(const bool forScript = false);
 
 	wxArrayString &GetArgNamesArray()
