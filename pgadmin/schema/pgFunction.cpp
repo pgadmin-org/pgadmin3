@@ -501,6 +501,7 @@ bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 wxString pgFunction::GetArgListWithNames(bool multiline)
 {
 	wxString args;
+	unsigned int nArgs = 0;
 
 	for (unsigned int i = 0; i < argTypesArray.Count(); i++)
 	{
@@ -511,13 +512,10 @@ wxString pgFunction::GetArgListWithNames(bool multiline)
 		if (argModesArray.Item(i) == wxT("TABLE"))
 			break;
 
+		nArgs++;
 		if (args.Length() > 0)
 		{
 			args += (multiline) ? wxT(",\n    ") : wxT(", ");
-		}
-		else if (multiline)
-		{
-			args = wxT("\n    ");
 		}
 
 		wxString arg;
@@ -582,6 +580,12 @@ wxString pgFunction::GetArgListWithNames(bool multiline)
 
 		args += arg;
 	}
+
+	if (multiline && nArgs > 1)
+	{
+		args = wxT("\n    ") + args;
+	}
+
 	return args;
 }
 
