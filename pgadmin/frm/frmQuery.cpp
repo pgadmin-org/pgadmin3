@@ -300,7 +300,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	queryMenu = new wxMenu();
 	queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
 	queryMenu->Append(MNU_EXECPGS, _("Execute &pgScript\tF6"), _("Execute pgScript"));
-	queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file"));
+	queryMenu->Append(MNU_EXECFILE, _("Execute to file\tF8"), _("Execute query, write result to file"));
 	queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
 	queryMenu->Append(MNU_EXPLAINANALYZE, _("Explain analyze\tShift-F7"), _("Explain and analyze query"));
 
@@ -375,7 +375,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	UpdateRecentFiles();
 
-	wxAcceleratorEntry entries[14];
+	wxAcceleratorEntry entries[15];
 
 	entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
 	entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -390,9 +390,10 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	entries[10].Set(wxACCEL_CMD,                (int)'A',       MNU_SELECTALL);
 	entries[11].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 	entries[12].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
-	entries[13].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
+	entries[13].Set(wxACCEL_NORMAL,             WXK_F6,        MNU_EXECPGS);
+	entries[14].Set(wxACCEL_NORMAL,             WXK_F8,        MNU_EXECFILE);
 
-	wxAcceleratorTable accel(12, entries);
+	wxAcceleratorTable accel(15, entries);
 	SetAcceleratorTable(accel);
 
 	queryMenu->Enable(MNU_CANCEL, false);
