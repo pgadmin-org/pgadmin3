@@ -321,15 +321,44 @@ int dlgRepCluster::Go(bool modal)
 
 		//We need to find the exact Slony Version.
 		//NOTE: We are not supporting Slony versions less than 1.2.0
+		wxString tempScript = wxEmptyString;
+		bool isSlonyVersionBefore2_2_0 = false;
 
-		wxString tempScript;
-		AddScript(tempScript, wxT("slony1_funcs.sql"));
+		if(!AddScript(tempScript, wxT("slony1_funcs.sql")))
+		{
+			if(!AddScript(tempScript, wxT("slony1_funcs.2.2.0.sql")))
+			{
+				isSlonyVersionBefore2_2_0 = true;
+			}
+			else
+			{
+				isSlonyVersionBefore2_2_0 = false;
+			}
+		}
+		else
+		{
+			isSlonyVersionBefore2_2_0 = true;
+		}
 
 		if (tempScript.Contains(wxT("@MODULEVERSION@")) && slonyVersion.IsEmpty())
 		{
-			this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"));
-			slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
-			this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"));
+			bool hasVerFunc = false;
+			this->database->ExecuteVoid(wxT("RESET SEARCH_PATH;"));
+
+			if (isSlonyVersionBefore2_2_0)
+				hasVerFunc = this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"), false);
+			else
+				hasVerFunc = this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs.2.2.0', '_Slony_I_2_2_0_getModuleVersion' LANGUAGE C"), false);
+
+			if (hasVerFunc)
+			{
+				slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
+				this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"), false);
+			}
+			else
+			{
+				tempScript.Empty();
+			}
 
 			if (slonyVersion.IsEmpty())
 			{
@@ -339,20 +368,28 @@ int dlgRepCluster::Go(bool modal)
 		}
 
 		//Here we are finding the exact slony scripts version, which is based on Slony Version and PG Version.
-		// For Slony 1.2.0 to 1.2.17 and 2.0.0 if PG 7.3 script version is v73
-		// For Slony 1.2.0 to 1.2.17 and 2.0.0 if PG 7.4 script version is v74
+		// For Slony 1.2.0 to 1.2.21 and 2.0.0 if PG 7.3 script version is v73
+		// For Slony 1.2.0 to 1.2.21 and 2.0.0 if PG 7.4 script version is v74
 		// For Slony 1.2.0 to 1.2.6 if PG 8.0+ script version is v80
-		// For Slony 1.2.7 to 1.2.17 and 2.0.0 if PG 8.0 script version is v80
-		// For Slony 1.2.7 to 1.2.17 and 2.0.0 if PG 8.1+ script version is v81
+		// For Slony 1.2.7 to 1.2.21 and 2.0.0 if PG 8.0 script version is v80
+		// For Slony 1.2.7 to 1.2.21 and 2.0.0 if PG 8.1+ script version is v81
 		// For Slony 2.0.1 and 2.0.2 if PG 8.3+ script version is v83. (These version onwards do not support PG Version less than 8.3)
 		// For Slony 2.0.3 if PG 8.3 script version is v83.
 		// For Slony 2.0.3 if PG 8.4+ script version is v84.
-
-		//Since both 1.2 and 2.0 series is increasing, the following code needs to be updated with each Slony or PG update.
-
-
+		// For Slony 2.1.0 to 2.2.0 if PG 8.3 script version v83
+		// For Slony 2.1.0 to 2.2.0 if PG 8.4+ script version v84
+		// Since both 1.2 and 2.0 series is increasing, the following code needs to be updated with each Slony or PG update.
+		// For Slony 1.2.22 onwards if PG 7.4 script version v74
+		// For Slony 1.2.22 onwards if PG 8.0 script version v80
+		// For Slony 1.2.22 onwards if PG 8.3 script version v81
+		// For Slony 1.2.22 onwards if PG 8.4+ script version v84
 		if (!tempScript.IsEmpty())
 		{
+			wxString slonySeries;
+			long slonyMinorVersion;
+			slonySeries = slonyVersion.BeforeLast('.');
+			slonyVersion.AfterLast('.').ToLong(&slonyMinorVersion);
+
 			//Set the slony_base and slony_funcs script version.
 			if (SlonyMaximumVersion(wxT("1.2"), 6))
 			{
@@ -368,7 +405,27 @@ int dlgRepCluster::Go(bool modal)
 			}
 			else
 			{
-				if (SlonyMaximumVersion(wxT("1.2"), 17) || SlonyMaximumVersion(wxT("2.0"), 0))
+				// For slony verion 1.2.22 and above set the script version
+				if (slonySeries == wxT("1.2") && slonyMinorVersion >= 22)
+				{
+					if (connection->BackendMinimumVersion(8, 4))
+						scriptVersion = wxT("v84");
+					else
+					{
+						if (connection->BackendMinimumVersion(8, 1))
+							scriptVersion = wxT("v81");
+						else
+						{
+							if (connection->BackendMinimumVersion(8, 0))
+								scriptVersion = wxT("v80");
+							else
+								scriptVersion = wxT("v74");
+						}
+					}
+				}
+
+				// For slony major version 1.2, minor version <= 21 and slony version 2.0, set the script version
+				if (SlonyMaximumVersion(wxT("1.2"), 21) || SlonyMaximumVersion(wxT("2.0"), 0))
 				{
 					if (connection->BackendMinimumVersion(8, 1))
 						scriptVersion = wxT("v81");
@@ -391,16 +448,24 @@ int dlgRepCluster::Go(bool modal)
 						scriptVersion = wxT("v83");
 					else
 					{
-						if (SlonyMaximumVersion(wxT("2.0"), 3))
+						if (SlonyMaximumVersion(wxT("2.0"), 8))
+						{
+							if (connection->BackendMinimumVersion(8, 4))
+								scriptVersion = wxT("v84");
+						}
+
+						if (SlonyMaximumVersion(wxT("2.1"), 4) || SlonyMaximumVersion(wxT("2.2"), 0))
 						{
 							if (connection->BackendMinimumVersion(8, 4))
 								scriptVersion = wxT("v84");
 						}
 						else
-							scriptVersion = wxT("v83");
+						{
+							if (scriptVersion.IsEmpty())
+								scriptVersion = wxT("v83");
+						}
 					}
 				}
-
 			}
 
 			//Set the correct xxid version if applicable
@@ -423,7 +488,29 @@ int dlgRepCluster::Go(bool modal)
 			}
 			else
 			{
-				if (SlonyMaximumVersion(wxT("1.2"), 17) || SlonyMaximumVersion(wxT("2.0"), 0))
+				// For Slony 1.2.22 and above if PG 7.4 xxid version is v74
+				// For Slony 1.2.22 and above if PG 8.0 xxid version is v80
+				// For Slony 1.2.22 and above if PG 8.1 xxid version is v81
+				// For Slony 1.2.22 and above if PG 8.4+ xxid version is v84
+				if (slonySeries == wxT("1.2") && slonyMinorVersion >= 22)
+				{
+					if (connection->BackendMinimumVersion(8, 4))
+						xxidVersion = wxT("v84");
+					else
+					{
+						if (connection->BackendMinimumVersion(8, 1))
+							xxidVersion = wxT("v81");
+						else
+						{
+							if (connection->BackendMinimumVersion(8, 0))
+								xxidVersion = wxT("v80");
+							else
+								xxidVersion = wxT("v74");
+						}
+					}
+				}
+
+				if (SlonyMaximumVersion(wxT("1.2"), 21) || SlonyMaximumVersion(wxT("2.0"), 0))
 				{
 					if (!connection->BackendMinimumVersion(8, 4))
 					{
@@ -435,22 +522,43 @@ int dlgRepCluster::Go(bool modal)
 				}
 			}
 
+			wxString slonyBaseVersionFilename;
+			wxString slonyFuncsVersionFilename;
 
-			wxString slonyBaseVersionFilename = wxT("slony1_base.") + scriptVersion + wxT(".sql");
-			wxString slonyFuncsVersionFilename = wxT("slony1_funcs.") + scriptVersion + wxT(".sql");
+			if (SlonyMaximumVersion(wxT("2.2"), 0))
+			{
+				slonyBaseVersionFilename = wxT("slony1_base.") + scriptVersion + wxT(".2.2.0.sql");
+				slonyFuncsVersionFilename = wxT("slony1_funcs.") + scriptVersion + wxT(".2.2.0.sql");
+			}
+			else
+			{
+				slonyBaseVersionFilename = wxT("slony1_base.") + scriptVersion + wxT(".sql");
+				slonyFuncsVersionFilename = wxT("slony1_funcs.") + scriptVersion + wxT(".sql");
+			}
 
 			wxString xxidVersionFilename;
 
 			if (!xxidVersion.IsEmpty())
 				xxidVersionFilename = wxT("xxid.") + xxidVersion + wxT(".sql");
 
-			if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
-			        !AddScript(createScript, wxT("slony1_base.sql")) ||
+			if (SlonyMaximumVersion(wxT("2.2"), 0))
+			{
+				if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
+			        !AddScript(createScript, wxT("slony1_base.2.2.0.sql")) ||
 			        !AddScript(createScript, slonyBaseVersionFilename) ||
-			        !AddScript(createScript, wxT("slony1_funcs.sql")) ||
+			        !AddScript(createScript, wxT("slony1_funcs.2.2.0.sql")) ||
 			        !AddScript(createScript, slonyFuncsVersionFilename)))
 				createScript = wxEmptyString;
-
+			}
+			else
+			{
+				if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
+						!AddScript(createScript, wxT("slony1_base.sql")) ||
+						!AddScript(createScript, slonyBaseVersionFilename) ||
+						!AddScript(createScript, wxT("slony1_funcs.sql")) ||
+						!AddScript(createScript, slonyFuncsVersionFilename)))
+					createScript = wxEmptyString;
+			}
 		}
 
 		// Populate the server combo box
@@ -756,8 +864,18 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
 			    + txtNodeID->GetValue() + wxT(", ")
 			    + qtDbString(txtNodeName->GetValue());
 
-			if (StrToDouble(remoteVersion) >= 1.1 && StrToDouble(remoteVersion) < 2.0)
-				sql += wxT(", false");
+			// When user has not selected cluster drop down in that case "schemaPrefix" will be NULL,
+			// we have to use slonyVersion instead of remoteVersion
+			if (remoteVersion.IsEmpty())
+			{
+				if (StrToDouble(slonyVersion) >= 1.1 && StrToDouble(slonyVersion) < 2.0)
+					sql += wxT(", false");
+			}
+			else
+			{
+				if (StrToDouble(remoteVersion) >= 1.1 && StrToDouble(remoteVersion) < 2.0)
+					sql += wxT(", false");
+			}
 
 			sql += wxT(");\n")
 			       wxT("SELECT ") + schemaPrefix + wxT("enablenode(")
@@ -1014,9 +1132,16 @@ wxString dlgRepCluster::GetSql()
 			// We'll cache the result to save doing it again.
 			if (sql.Contains(wxT("@MODULEVERSION@")) && slonyVersion.IsEmpty())
 			{
-				this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"));
-				slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
-				this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"));
+				bool hasVerFunc = this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"), false);
+				if (!hasVerFunc)
+				{
+					hasVerFunc = this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs.2.2.0', '_Slony_I_2_2_0_getModuleVersion' LANGUAGE C"), false);
+				}
+				if (hasVerFunc)
+				{
+					slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
+					this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"), false);
+				}
 
 				if (slonyVersion.IsEmpty())
 				{
@@ -1025,6 +1150,14 @@ wxString dlgRepCluster::GetSql()
 				}
 			}
 			sql = ReplaceString(sql, wxT("@MODULEVERSION@"), slonyVersion);
+
+			// If slony version is greater then equal to 2.2 then replace @FUNCVERSION to 2_2_0
+			if (sql.Contains(wxT("@FUNCVERSION@")) && SlonyMaximumVersion(wxT("2.2"), 0))
+			{
+				wxString slonyFuncVersion = slonyVersion;
+				slonyFuncVersion.Replace(wxT("."),wxT("_"));
+				sql = ReplaceString(sql, wxT("@FUNCVERSION@"), slonyFuncVersion);
+			}
 		}
 
 		sql += wxT("\n")
@@ -1064,14 +1197,19 @@ wxString dlgRepCluster::GetSql()
 			    NumToStr(adminNode) + wxT(", ") +
 			    qtDbString(txtAdminNodeName->GetValue());
 
-			if (chkJoinCluster->GetValue())
+
+			// When user has not selected cluster drop down in that case "schemaPrefix" will be NULL,
+			// we have to use slonyVersion instead of remoteVersion
+			if (remoteVersion.IsEmpty())
 			{
-				if (StrToDouble(remoteVersion) >= 1.1)
+				if (StrToDouble(slonyVersion) >= 1.1 && StrToDouble(slonyVersion) < 2.0)
 					sql += wxT(", false");
 			}
 			else
 			{
-				if (createScript.Find(wxT("storeNode (int4, text)")) < 0)
+				// storeNode API contains three argument in slony version 1.1 and 1.2 (storeNode(int4,text,boolean)),
+				// slony version 2.0 onwards, storeNode API contains only two arguments e.g. storeNode(int4,text)
+				if (StrToDouble(remoteVersion) >= 1.1 && StrToDouble(remoteVersion) < 2.0)
 					sql += wxT(", false");
 			}
 

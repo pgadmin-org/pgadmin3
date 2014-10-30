@@ -537,13 +537,14 @@ wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
 	slCluster *cluster = (slCluster *)obj;
 
 	wxString notifyName;
+	wxString pidcol = cluster->GetDatabase()->BackendMinimumVersion(9, 2) ? wxT(" sa.pid ") : wxT(" sa.procpid ");
 
 	if (cluster->GetDatabase()->BackendMinimumVersion(9, 0))
 	{
 		notifyName = cluster->GetDatabase()->ExecuteScalar(
 		                 wxT("SELECT ") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")) +
 		                 wxT(" FROM _") + cluster->GetName() + wxT(".sl_nodelock nl,")
-		                 wxT(" pg_stat_activity sa WHERE nl.nl_backendpid = sa.procpid AND nl_nodeid = ")
+		                 wxT(" pg_stat_activity sa WHERE nl.nl_backendpid = ") + pidcol + wxT("AND nl_nodeid = ")
 		                 + NumToStr(cluster->GetLocalNodeID()));
 	}
 	else
