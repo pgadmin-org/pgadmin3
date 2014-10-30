@@ -420,8 +420,9 @@ void ctlSQLGrid::OnLabelClick(wxGridEvent &event)
 
 void ctlSQLGrid::AutoSizeColumn(int col, bool setAsMin, bool doLimit)
 {
-	if (col < (int)colMaxSizes.GetCount() && colMaxSizes[col] >= 0)
-		SetColSize(col, colMaxSizes[col]);
+	ColKeySizeHashMap::iterator it = colSizes.find(GetColKeyValue(col));
+	if (it != colSizes.end()) // Restore user-specified size
+		SetColSize(col, it->second);
 	else
 		wxGrid::AutoSizeColumn(col, setAsMin);
 
