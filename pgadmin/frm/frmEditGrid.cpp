@@ -2349,7 +2349,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString &tabName
 				columns[i].typeName = wxT("text");
 
 			columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
-			if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
+			if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8 || columns[i].type == PGOID_TYPE_INT2)
 			        && colSet->GetBool(wxT("atthasdef")))
 			{
 				wxString adsrc = colSet->GetVal(wxT("adsrc"));
@@ -2360,8 +2360,10 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString &tabName
 				{
 					if (columns[i].type == PGOID_TYPE_INT4)
 						columns[i].type = (Oid)PGOID_TYPE_SERIAL;
-					else
+					else if (columns[i].type == PGOID_TYPE_INT8)
 						columns[i].type = (Oid)PGOID_TYPE_SERIAL8;
+					else
+						columns[i].type = (Oid)PGOID_TYPE_SERIAL2;
 				}
 			}
 			columns[i].typlen = colSet->GetLong(wxT("typlen"));
@@ -2379,6 +2381,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString &tabName
 					SetNumberEditor(i, 20);
 					break;
 				case PGOID_TYPE_INT2:
+				case PGOID_TYPE_SERIAL2:
 					SetNumberEditor(i, 5);
 					break;
 				case PGOID_TYPE_INT4:
@@ -3084,7 +3087,8 @@ bool sqlTable::Paste()
 	for (col = 0; col < nCols; col++)
 	{
 		if (columns[col].type == (unsigned int)PGOID_TYPE_SERIAL ||
-		        columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8)
+		    columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8 ||
+		    columns[col].type == (unsigned int)PGOID_TYPE_SERIAL2)
 		{
 			wxMessageDialog msg(GetView()->GetParent(),
 			                    _("This table contains serial columns. Do you want to use the values in the clipboard for these columns?"),
@@ -3101,7 +3105,8 @@ bool sqlTable::Paste()
 	for (col = (hasOids ? 1 : 0); col < nCols && col < (int)data.GetCount(); col++)
 	{
 		if (!(skipSerial && (columns[col].type == (unsigned int)PGOID_TYPE_SERIAL ||
-		                     columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8)))
+		                     columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8 ||
+		                     columns[col].type == (unsigned int)PGOID_TYPE_SERIAL2)))
 		{
 			SetValue(row, col, data.Item(col));
 			GetView()->SetGridCursor(row, col);
