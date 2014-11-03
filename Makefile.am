@@ -97,7 +97,7 @@ if SPHINX_BUILD
 endif
 
 xrc:
-	pgadmin/ui/embed-xrc
+	$(top_srcdir)/pgadmin/ui/embed-xrc
 
 all: doc xrc
 

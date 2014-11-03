@@ -17,7 +17,7 @@ wxrc -c -o $( dirname $0 )/xrcDialogs.cpp.new $( dirname $0 )/*.xrc
 diff $( dirname $0 )/xrcDialogs.cpp.new $( dirname $0 )/xrcDialogs.cpp 1> /dev/null
 rc=$?
 
-if [[ $rc != 0 ]] ; then
+if [ x"$rc" != x"0" ] ; then
     mv $( dirname $0 )/xrcDialogs.cpp.new $( dirname $0 )/xrcDialogs.cpp
 else
     rm $( dirname $0 )/xrcDialogs.cpp.new
