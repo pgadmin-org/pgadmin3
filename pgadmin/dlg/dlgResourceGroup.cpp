@@ -40,6 +40,9 @@ dlgResourceGroup::dlgResourceGroup(pgaFactory *f, frmMain *frame, edbResourceGro
 	: dlgProperty(f, frame, wxT("dlgResourceGroup"))
 {
 	resourceGroup = node;
+	m_cpuRate = wxEmptyString;
+	m_dirtyRate = wxEmptyString;
+	m_isNameChange = false;
 }
 
 pgObject *dlgResourceGroup::GetObject()
@@ -70,6 +73,9 @@ int dlgResourceGroup::Go(bool modal)
 		txtCPURate->SetValue(wxT("0"));
 		txtDirtyRate->SetValue(wxT("0"));
 	}
+
+	m_cpuRate = txtCPURate->GetValue();
+	m_dirtyRate = txtDirtyRate->GetValue();
 
 	return dlgProperty::Go(modal);
 }
@@ -110,28 +116,51 @@ pgObject *dlgResourceGroup::CreateObject(pgCollection *collection)
 
 wxString dlgResourceGroup::GetSql()
 {
-	wxString sql;
+	wxString sql = wxEmptyString;
 	wxString name = GetName();
 	wxString cpuRate = txtCPURate->GetValue();
 	wxString dirtyRate = txtDirtyRate->GetValue();
 
 	if (resourceGroup)
 	{
-		// Edit Mode
 		AppendNameChange(sql, wxT("RESOURCE GROUP ") + resourceGroup->GetQuotedFullIdentifier());
 
-		sql += wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
-		       cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
+		// Update the flag if resource group name is changed so that next
+		// ALTER command will be displayed in the second SQL text box.
+		m_isNameChange = !sql.IsEmpty();
+
+		// Check the "cpu rate/dirty rate" limit is changed or not
+		if (!m_isNameChange && (m_cpuRate.compare(cpuRate) != 0 || m_dirtyRate.compare(dirtyRate) != 0))
+		{
+			sql += wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
+				cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
+		}
 	}
 	else
 	{
-		// Create Mode
-		wxString name = GetName();
-
 		sql = wxT("CREATE RESOURCE GROUP ") + qtIdent(name) + wxT(";\n");
-		sql += wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
-		       cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
 	}
+
+	return sql;
+}
+
+wxString dlgResourceGroup::GetSql2()
+{
+	wxString sql = wxEmptyString;
+	wxString name = GetName();
+	wxString cpuRate = txtCPURate->GetValue();
+	wxString dirtyRate = txtDirtyRate->GetValue();
+
+	if (!resourceGroup || m_isNameChange)
+	{
+		// Check the "cpu rate/dirty rate" limit is changed or not
+		if (m_cpuRate.compare(cpuRate) != 0 || m_dirtyRate.compare(dirtyRate) != 0)
+		{
+			sql = wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
+				cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
+		}
+	}
+
 	return sql;
 }
 

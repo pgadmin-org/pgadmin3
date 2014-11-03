@@ -21,16 +21,12 @@ class dlgResourceGroup : public dlgProperty
 public:
 	dlgResourceGroup(pgaFactory *factory, frmMain *frame, edbResourceGroup *node = 0);
 	wxString GetSql();
+	wxString GetSql2();
 	pgObject *CreateObject(pgCollection *collection);
 	pgObject *GetObject();
 
 	void CheckChange();
 	int Go(bool modal);
-
-	bool WannaSplitQueries()
-	{
-		return true;
-	}
 
 private:
 	void OnChange(wxCommandEvent &event);
@@ -38,6 +34,10 @@ private:
 
 private:
 	edbResourceGroup *resourceGroup;
+	wxString m_cpuRate;
+	wxString m_dirtyRate;
+	bool m_isNameChange;
+
 	DECLARE_EVENT_TABLE()
 };
 
