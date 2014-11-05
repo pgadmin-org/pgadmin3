@@ -22,9 +22,6 @@
 #include "dlg/dlgFindReplace.h"
 #include "frm/menu.h"
 
-// Must be last for reasons I haven't fully grokked...
-#include <wx/regex.h>
-
 wxString ctlSQLBox::sqlKeywords;
 
 // Additional pl/pgsql keywords we should highlight
@@ -159,7 +156,7 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
 	// Setup accelerators
 	wxAcceleratorEntry entries[2];
 	entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
-	entries[1].Set(wxACCEL_CTRL, (int)' ', MNU_AUTOCOMPLETE);
+	entries[1].Set(wxACCEL_CTRL, WXK_SPACE, MNU_AUTOCOMPLETE);
 	wxAcceleratorTable accel(2, entries);
 	SetAcceleratorTable(accel);
 
@@ -740,4 +737,3 @@ CharacterRange ctlSQLBox::RegexFindText(int minPos, int maxPos, const wxString &
 
 	return ft.chrgText;
 }
-
