@@ -15,7 +15,7 @@ function CompleteSingleApp() {
 	pushd "$bundle" > /dev/null
 
 	#We skip nested apps here - those are treated specially
-	todo=$(file `find ./ -perm +0111 ! -type d ! -path "*.app/*" ! -name "*.app"` | grep "Mach-O i386 executable" | awk -F ':| ' '{ORS=" "; print $1}' | uniq)
+	todo=$(file `find ./ -perm +0111 ! -type d ! -path "*.app/*" ! -name "*.app"` | grep -E "Mach-O (i386 )?executable" | awk -F ':| ' '{ORS=" "; print $1}' | uniq)
 
 	echo "App: $tag: Found executables: $todo"
 	while test "$todo" != ""; do
