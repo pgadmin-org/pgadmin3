@@ -104,9 +104,13 @@ pgadmin3_SOURCES += \
 	include/images/enumerations.png \
 	include/images/ex_aggregate.png \
 	include/images/ex_append.png \
+	include/images/ex_bmp_and.png \
 	include/images/ex_bmp_heap.png \
 	include/images/ex_bmp_index.png \
+	include/images/ex_bmp_or.png \
 	include/images/ex_cte_scan.png \
+	include/images/ex_delete.png \
+	include/images/ex_foreign_scan.png \
 	include/images/ex_group.png \
 	include/images/ex_hash.png \
 	include/images/ex_hash_anti_join.png \
@@ -116,12 +120,16 @@ pgadmin3_SOURCES += \
 	include/images/ex_hash_setop_intersect.png \
 	include/images/ex_hash_setop_intersect_all.png \
 	include/images/ex_hash_setop_unknown.png \
+	include/images/ex_index_only_scan.png \
 	include/images/ex_index_scan.png \
+	include/images/ex_insert.png \
 	include/images/ex_join.png \
 	include/images/ex_limit.png \
+	include/images/ex_lock_rows.png \
 	include/images/ex_materialize.png \
 	include/images/ex_merge.png \
 	include/images/ex_merge_anti_join.png \
+	include/images/ex_merge_append.png \
 	include/images/ex_merge_semi_join.png \
 	include/images/ex_nested.png \
 	include/images/ex_nested_loop_anti_join.png \
@@ -136,6 +144,8 @@ pgadmin3_SOURCES += \
 	include/images/ex_tid_scan.png \
 	include/images/ex_unique.png \
 	include/images/ex_unknown.png \
+	include/images/ex_update.png \
+	include/images/ex_values_scan.png \
 	include/images/ex_window_aggregate.png \
 	include/images/ex_worktable_scan.png \
 	include/images/exclude.png \
