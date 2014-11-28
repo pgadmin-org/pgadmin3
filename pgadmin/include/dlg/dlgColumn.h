@@ -23,7 +23,7 @@ class dlgColumn : public dlgTypeProperty
 {
 public:
 	dlgColumn(pgaFactory *factory, frmMain *frame, pgColumn *column, pgTable *parentNode);
-
+	void SetSecurityPage(const pgColumn *node);
 	void CheckChange();
 	void SetChangedCol(pgColumn *changedCol);
 	void ApplyChangesToObj(pgColumn *changedCol);
@@ -32,6 +32,8 @@ public:
 	pgObject *CreateObject(pgCollection *collection);
 	pgObject *GetObject();
 	wxString GetDefinition();
+	void GetVariableList(wxArrayString &);
+	void GetSecLabelList(wxArrayString &);
 	wxString GetPreviousDefinition()
 	{
 		return previousDefinition;

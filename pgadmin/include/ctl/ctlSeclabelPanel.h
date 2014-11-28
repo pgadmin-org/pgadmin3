@@ -42,7 +42,7 @@ public:
 	void SetObject(pgObject *obj);
 	void Disable();
 	wxString GetSqlForSecLabels(wxString objecttype = wxEmptyString, wxString objectname = wxEmptyString);
-
+	void GetCurrentProviderLabelArray(wxArrayString &secLabels);
 protected:
 	wxNotebook *nbNotebook;
 	pgConn *connection;
@@ -56,7 +56,7 @@ protected:
 	void OnDelSeclabel(wxCommandEvent &ev);
 	void OnProviderChange(wxCommandEvent &ev);
 	void OnSeclabelChange(wxCommandEvent &ev);
-
+	void OnChange(wxCommandEvent &ev);
 	DECLARE_EVENT_TABLE()
 };
 

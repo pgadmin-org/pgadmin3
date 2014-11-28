@@ -162,6 +162,26 @@ void ctlSecurityPanel::SetConnection(pgConn *conn)
 		stGroup->SetLabel(_("Role"));
 }
 
+wxString ctlSecurityPanel::GetUserPrivileges()
+{
+	wxString strPrivilages = wxEmptyString;
+	int cnt = lbPrivileges->GetItemCount();
+	int pos;
+	if(cnt > 0)
+	{
+		strPrivilages += wxT("{");
+		for (pos = 0 ; pos < cnt ; pos++)
+		{
+			if (pos != 0)
+				strPrivilages += wxT(",");
+
+			strPrivilages +=
+			    lbPrivileges->GetText(pos) + wxT("=") + lbPrivileges->GetText(pos, 1) +  wxT("/") + connection->GetUser();
+		}
+		strPrivilages += wxT("}");
+	}
+	return strPrivilages;
+}
 
 wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl, wxString column)
 {

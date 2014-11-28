@@ -51,6 +51,7 @@ public:
 	 *  Except column level privileges, column will be always an empty string in any case
 	 */
 	wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl = 0, wxString column = wxEmptyString);
+	wxString GetUserPrivileges();
 	bool DisablePrivilege(const wxString &priv);
 protected:
 	wxNotebook *nbNotebook;

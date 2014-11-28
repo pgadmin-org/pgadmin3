@@ -29,6 +29,8 @@ BEGIN_EVENT_TABLE(ctlSeclabelPanel, wxPanel)
 	EVT_LIST_ITEM_SELECTED(CTL_LBSECLABEL,  ctlSeclabelPanel::OnSeclabelSelChange)
 	EVT_BUTTON(CTL_ADDSECLABEL,             ctlSeclabelPanel::OnAddSeclabel)
 	EVT_BUTTON(CTL_DELSECLABEL,             ctlSeclabelPanel::OnDelSeclabel)
+	EVT_TEXT(CTL_PROVIDER,                  ctlSeclabelPanel::OnChange)
+	EVT_TEXT(CTL_SECLABEL,                  ctlSeclabelPanel::OnChange)
 END_EVENT_TABLE();
 
 DEFINE_LOCAL_EVENT_TYPE(EVT_SECLABELPANEL_CHANGE)
@@ -84,6 +86,8 @@ ctlSeclabelPanel::ctlSeclabelPanel(wxNotebook *nb)
 	// compute sizes
 	this->SetSizer(sizer0);
 	sizer0->Fit(this);
+
+	btnAddSeclabel->Enable(false);
 }
 
 
@@ -170,6 +174,12 @@ void ctlSeclabelPanel::OnAddSeclabel(wxCommandEvent &ev)
 	ev.Skip();
 }
 
+void ctlSeclabelPanel::OnChange(wxCommandEvent &event)
+{
+	wxString provider = txtProvider->GetValue().Trim(true).Trim(false);
+	wxString label = txtSeclabel->GetValue().Trim(true).Trim(false);
+	btnAddSeclabel->Enable(!provider.IsEmpty() && !label.IsEmpty());
+}
 
 void ctlSeclabelPanel::OnSeclabelSelChange(wxListEvent &ev)
 {
@@ -180,6 +190,14 @@ void ctlSeclabelPanel::OnSeclabelSelChange(wxListEvent &ev)
 	txtSeclabel->SetValue(lbSeclabels->GetText(lbSeclabels->GetSelection(), 1));
 }
 
+void ctlSeclabelPanel::GetCurrentProviderLabelArray(wxArrayString &secLabels)
+{
+	for(int indexList = 0; indexList < lbSeclabels->GetItemCount(); indexList++)
+	{
+		secLabels.Add(lbSeclabels->GetText(indexList));
+		secLabels.Add(lbSeclabels->GetText(indexList, 1));
+	}
+}
 
 wxString ctlSeclabelPanel::GetSqlForSecLabels(wxString objecttype, wxString objectname)
 {

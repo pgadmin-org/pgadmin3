@@ -26,7 +26,9 @@ enum
     COL_STATISTICS,
     COL_PGCOLUMN,
     COL_TYPEOID,
-    COL_CHANGEDCOL
+    COL_CHANGEDCOL,
+    COL_VARIABLE_LIST,
+    COL_SECLABEL_LIST
 };
 
 enum
@@ -55,6 +57,7 @@ public:
 
 	void CheckChange();
 	wxString GetSql();
+	bool Destroy();
 	pgObject *CreateObject(pgCollection *collection);
 	pgObject *GetObject();
 	~dlgTable();

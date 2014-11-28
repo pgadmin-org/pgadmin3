@@ -200,7 +200,10 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 	lstColumns->AddColumn(_("Column type oid"), 0);
 	// ... pgColumn* handle (used for changed columns)
 	lstColumns->AddColumn(_("Changed column"), 0);
-
+	// ... pgColumn* handle (used for variable list)
+	lstColumns->AddColumn(_("Variable List"), 0);
+	// ... pgColumn* handle (used for security label list)
+	lstColumns->AddColumn(_("Security Label List"), 0);
 	lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
 
@@ -210,6 +213,16 @@ dlgTable::~dlgTable()
 	size_t i;
 	for (i = 0; i < dtCache.GetCount(); i++)
 		delete dtCache.Item(i);
+}
+
+bool dlgTable::Destroy()
+{
+	for(int pos = 0; pos < lstColumns->GetItemCount(); pos++)
+	{
+		pgColumn *column2 = (pgColumn *) StrToLong(lstColumns->GetText(pos, COL_CHANGEDCOL));
+		if(column2) delete column2;
+	}
+	return dlgProperty::Destroy();
 }
 
 pgObject *dlgTable::GetObject()
@@ -1416,7 +1429,6 @@ wxString dlgTable::GetSql()
 		AppendOwnerNew(sql, wxT("TABLE ") + tabname);
 
 		// Extra column info
-
 		// Statistics
 		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
 		{
@@ -1425,6 +1437,38 @@ wxString dlgTable::GetSql()
 				       + wxT("\n  ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, COL_NAME))
 				       + wxT("\n  SET STATISTICS ") + lstColumns->GetText(pos, COL_STATISTICS)
 				       + wxT(";\n");
+		}
+	}
+
+	//variables
+	for (pos = 0; pos < lstColumns->GetItemCount(); pos++)
+	{
+		wxStringTokenizer varToken(lstColumns->GetText(pos, COL_VARIABLE_LIST), wxT(","));
+		while (varToken.HasMoreTokens())
+		{
+			sql += wxT("ALTER TABLE ") + tabname
+			       + wxT("\n  ALTER COLUMN ")
+			       + qtIdent(lstColumns->GetText(pos, COL_NAME))
+			       + wxT(" \nSET (");
+			sql += varToken.GetNextToken() + wxT(");\n");
+		}
+	}
+
+	//security labels
+	for (pos = 0; pos < lstColumns->GetItemCount(); pos++)
+	{
+		wxStringTokenizer varToken(lstColumns->GetText(pos, COL_SECLABEL_LIST), wxT(","));
+		wxString providerLabel = wxEmptyString;
+		wxString provider = wxEmptyString;
+		while (varToken.HasMoreTokens())
+		{
+			provider = varToken.GetNextToken();
+			if(varToken.HasMoreTokens())
+				providerLabel = varToken.GetNextToken();
+
+			sql += wxT("SECURITY LABEL FOR ") + provider
+			       + wxT("\n  ON COLUMN ") + qtIdent(lstColumns->GetText(pos, COL_NAME))
+			       + wxT("\n  IS ") + connection->qtDbString(providerLabel) + wxT(";\n");
 		}
 	}
 
@@ -1801,16 +1845,16 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
 	col.SetChangedCol(column2);
 	if (col.Go(true) != wxID_CANCEL)
 	{
-		delete column2;
-		pgColumn *changedColumn = new pgColumn(* column);
-		col.ApplyChangesToObj(changedColumn);
+		if(column2 == NULL)
+			column2 = new pgColumn(*column);
 
+		col.ApplyChangesToObj(column2);
 		lstColumns->SetItem(pos, COL_NAME, col.GetName());
 		lstColumns->SetItem(pos, COL_DEFINITION, col.GetDefinition());
 		lstColumns->SetItem(pos, COL_SQLCHANGE, col.GetSql());
 		lstColumns->SetItem(pos, COL_STATISTICS, col.GetStatistics());
 		lstColumns->SetItem(pos, COL_COMMENTS, col.GetComment());
-		lstColumns->SetItem(pos, COL_CHANGEDCOL, NumToStr((long)changedColumn));
+		lstColumns->SetItem(pos, COL_CHANGEDCOL, NumToStr((long)column2));
 	}
 	CheckChange();
 }
@@ -1847,6 +1891,36 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
 		lstColumns->SetItem(pos, COL_STATISTICS, col.GetStatistics());
 		lstColumns->SetItem(pos, COL_COMMENTS, col.GetComment());
 		lstColumns->SetItem(pos, COL_TYPEOID, col.GetTypeOid());
+
+		wxString perColumnListString = wxEmptyString;
+
+		//getting the variable list for each column
+		wxArrayString perColumnList;
+		col.GetVariableList(perColumnList);
+		for(size_t index = 0; index < perColumnList.GetCount(); index++)
+		{
+			if (index == 0)
+				perColumnListString	= perColumnList.Item(index);
+			else
+				perColumnListString += wxT(",") + perColumnList.Item(index);
+		}
+		lstColumns->SetItem(pos, COL_VARIABLE_LIST, perColumnListString);
+
+		//getting the security labels list for each column
+		if(connection->BackendMinimumVersion(9, 1))
+		{
+			wxString secLabelListString = wxEmptyString;
+			wxArrayString secLabelList;
+			col.GetSecLabelList(secLabelList);
+			for(size_t index = 0; index < secLabelList.GetCount(); index++)
+			{
+				if (index == 0)
+					secLabelListString	= secLabelList.Item(index);
+				else
+					secLabelListString += wxT(",") + secLabelList.Item(index);
+			}
+			lstColumns->SetItem(pos, COL_SECLABEL_LIST, secLabelListString);
+		}
 	}
 
 	CheckChange();
@@ -1863,6 +1937,7 @@ void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 
 	lstColumns->DeleteCurrentItem();
 
+	btnChangeCol->Disable();
 	btnRemoveCol->Disable();
 
 	CheckChange();

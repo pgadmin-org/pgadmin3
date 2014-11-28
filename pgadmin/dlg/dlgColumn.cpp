@@ -112,71 +112,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 			delete setGrp;
 		}
 
-		if (node)
-		{
-			wxString strAcl = node->GetAcl();
-			if (!strAcl.IsEmpty())
-			{
-				wxArrayString aclArray;
-				strAcl = strAcl.Mid(1, strAcl.Length() - 2);
-				getArrayFromCommaSeparatedList(strAcl, aclArray);
-				wxString roleName;
-				for (unsigned int index = 0; index < aclArray.Count(); index++)
-				{
-					wxString strCurrAcl = aclArray[index];
-
-					/*
-					* In rare case, we can have ',' (comma) in the user name.
-					* But, we need to handle them also
-					*/
-					if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
-					{
-						// Check it is start of the ACL
-						if (strCurrAcl[0U] == (wxChar)'"')
-							roleName = strCurrAcl + wxT(",");
-						continue;
-					}
-					else
-						strCurrAcl = roleName + strCurrAcl;
-
-					if (strCurrAcl[0U] == (wxChar)'"')
-						strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length() - 1);
-					roleName = strCurrAcl.BeforeLast('=');
-
-					wxString value = strCurrAcl.Mid(roleName.Length() + 1).BeforeLast('/');
-
-					int icon = userFactory.GetIconId();
-
-					if (roleName.Left(6).IsSameAs(wxT("group "), false))
-					{
-						icon = groupFactory.GetIconId();
-						roleName = wxT("group ") + qtStrip(roleName.Mid(6));
-					}
-					else if (roleName.IsEmpty())
-					{
-						icon = PGICON_PUBLIC;
-						roleName = wxT("public");
-					}
-					else
-					{
-						roleName = qtStrip(roleName);
-						for (unsigned int index = 0; index < groups.Count(); index++)
-							if (roleName == groups[index])
-							{
-								roleName = wxT("group ") + roleName;
-								icon = groupFactory.GetIconId();
-								break;
-							}
-					}
-
-					securityPage->lbPrivileges->AppendItem(icon, roleName, value);
-					currentAcl.Add(roleName + wxT("=") + value);
-
-					// Reset roleName
-					roleName.Empty();
-				}
-			}
-		}
+		SetSecurityPage(node);
 	}
 	else
 		securityPage->Disable();
@@ -202,6 +138,77 @@ pgObject *dlgColumn::GetObject()
 	return column;
 }
 
+void dlgColumn::SetSecurityPage(const pgColumn *node)
+{
+	if (node)
+	{
+		wxString strAcl = node->GetAcl();
+		securityPage->lbPrivileges->DeleteAllItems();
+		if (!strAcl.IsEmpty())
+		{
+			wxArrayString aclArray;
+			strAcl = strAcl.Mid(1, strAcl.Length() - 2);
+			getArrayFromCommaSeparatedList(strAcl, aclArray);
+			wxString roleName;
+			for (unsigned int index = 0; index < aclArray.Count(); index++)
+			{
+				wxString strCurrAcl = aclArray[index];
+
+				/*
+				* In rare case, we can have ',' (comma) in the user name.
+				* But, we need to handle them also
+				*/
+				if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
+				{
+					// Check it is start of the ACL
+					if (strCurrAcl[0U] == (wxChar)'"')
+						roleName = strCurrAcl + wxT(",");
+					continue;
+				}
+				else
+					strCurrAcl = roleName + strCurrAcl;
+
+				if (strCurrAcl[0U] == (wxChar)'"')
+					strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length() - 1);
+				roleName = strCurrAcl.BeforeLast('=');
+
+				wxString value = strCurrAcl.Mid(roleName.Length() + 1).BeforeLast('/');
+
+				int icon = userFactory.GetIconId();
+
+				if (roleName.Left(6).IsSameAs(wxT("group "), false))
+				{
+					icon = groupFactory.GetIconId();
+					roleName = wxT("group ") + qtStrip(roleName.Mid(6));
+				}
+				else if (roleName.IsEmpty())
+				{
+					icon = PGICON_PUBLIC;
+					roleName = wxT("public");
+				}
+				else
+				{
+					roleName = qtStrip(roleName);
+					for (unsigned int index = 0; index < groups.Count(); index++)
+						if (roleName == groups[index])
+						{
+							roleName = wxT("group ") + roleName;
+							icon = groupFactory.GetIconId();
+							break;
+						}
+				}
+
+				securityPage->lbPrivileges->AppendItem(icon, roleName, value);
+
+				if(changedColumn == NULL)
+					currentAcl.Add(roleName + wxT("=") + value);
+
+				// Reset roleName
+				roleName.Empty();
+			}
+		}
+	}
+}
 
 int dlgColumn::Go(bool modal)
 {
@@ -630,6 +637,40 @@ void dlgColumn::ApplyChangesToObj(pgColumn *changedCol)
 	{
 		changedCol->GetVariables().Add(lstVariables->GetText(pos) + wxT("=") + lstVariables->GetText(pos, 1));
 	}
+
+	if(securityPage && connection->BackendMinimumVersion(8, 4))
+	{
+		changedCol->iSetAcl(securityPage->GetUserPrivileges());
+	}
+
+	if(seclabelPage && connection->BackendMinimumVersion(9, 1))
+	{
+		wxArrayString secLabels;
+		wxString providers;
+		wxString labels;
+		seclabelPage->GetCurrentProviderLabelArray(secLabels);
+
+		if(!secLabels.IsEmpty())
+		{
+			for(size_t pos = 0; pos < secLabels.Count(); pos += 2)
+			{
+				if(pos == 0)
+				{
+					providers += wxT("{") + secLabels.Item(pos);
+					labels += wxT("{") + secLabels.Item(pos + 1);
+				}
+				else
+				{
+					providers += wxT(",") + secLabels.Item(pos);
+					labels += wxT(",") + secLabels.Item(pos + 1);
+				}
+			}
+			providers += wxT("}");
+			labels += wxT("}");
+		}
+		changedCol->iSetProviders(providers);
+		changedCol->iSetLabels(labels);
+	}
 }
 
 
@@ -655,8 +696,45 @@ void dlgColumn::ApplyChangesToDlg()
 		wxString item = changedColumn->GetVariables().Item(i);
 		lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
 	}
+
+	//setting privileges to changed values
+	SetSecurityPage(changedColumn);
+
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		wxArrayString seclabels = changedColumn->GetProviderLabelArray();
+		if (seclabels.GetCount() > 0)
+		{
+			for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+			{
+				seclabelPage->lbSeclabels->AppendItem(seclabels.Item(index),
+				                                      seclabels.Item(index + 1));
+			}
+		}
+	}
+	else if (seclabelPage != NULL)
+	{
+		seclabelPage->Disable();
+	}
 }
 
+void dlgColumn::GetVariableList(wxArrayString &variableList)
+{
+	wxString name;
+	wxString value;
+	for(int pos = 0; pos < lstVariables->GetItemCount(); pos++)
+	{
+		name = lstVariables->GetText(pos);
+		value = lstVariables->GetText(pos, 1);
+		variableList.Add(name + wxT("=") + value);
+	}
+}
+
+void dlgColumn::GetSecLabelList(wxArrayString &secLabelList)
+{
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
+		seclabelPage->GetCurrentProviderLabelArray(secLabelList);
+}
 
 wxString dlgColumn::GetDefinition()
 {
