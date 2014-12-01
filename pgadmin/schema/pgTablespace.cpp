@@ -253,7 +253,7 @@ void pgTablespace::MoveTablespace(frmMain *form)
 	dlgMoveTablespace rdo(form, GetConnection(), this);
 	if (rdo.ShowModal() != wxID_CANCEL)
 	{
-		if (wxMessageBox(_("Are you sure you wish to move objects from ") + GetQuotedFullIdentifier() + _(" to ") + rdo.GetTablespace() + _("?"), _("Move tablespace?"), wxYES_NO) != wxYES)
+		if (wxMessageBox(wxString::Format(_("Are you sure you wish to move objects from %s to %s?"), (const char *)GetQuotedFullIdentifier().mb_str(), (const char *)rdo.GetTablespace().mb_str()), _("Move tablespace?"), wxYES_NO) != wxYES)
 			return;
 
 		query = wxT("ALTER TABLESPACE ") + GetQuotedFullIdentifier();
