@@ -711,6 +711,11 @@ char *pg_query_to_single_ordered_string(char *query, void *dbptr)
 		res->MoveNext();
 	}
 
+	if(res)
+	{
+		delete res;
+		res = NULL;
+	}
 	ret.Trim();
 	// Trims both space and tab, but we want to keep the space!
 	if (ret.Length() > 0)

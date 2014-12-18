@@ -49,12 +49,14 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 		{
 			form->Refresh(obj);
 		}
+		delete res;
 		return (wxWindow *)NULL;
 	}
 
 	if (res->GetVal(wxT("proname")).Contains(wxT(":")))
 	{
 		wxLogError(_("Functions with a colon in the name cannot be debugged."));
+		delete res;
 		return (wxWindow *)NULL;
 	}
 	try
@@ -66,7 +68,7 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 		// just ignore this errors, we already logged them in native messages to
 		// the end-user
 	}
-
+	delete res;
 	return (wxWindow *)NULL;
 }
 
@@ -159,6 +161,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 	if (res->GetVal(wxT("proname")).Contains(wxT(":")))
 	{
 		wxLogError(_("Functions with a colon in the name cannot be debugged."));
+		delete res;
 		return (wxWindow *)NULL;
 	}
 
@@ -174,6 +177,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 			browser->DeleteChildren(coll->GetId());
 			coll->ShowTreeDetail(browser);
 		}
+		delete res;
 		return (wxWindow *)NULL;
 	}
 
@@ -187,6 +191,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 		// the end-user
 	}
 
+	delete res;
 	return (wxWindow *)NULL;
 }
 

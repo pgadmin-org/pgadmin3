@@ -298,6 +298,10 @@ void pgIndexBase::ReadColumnDetails()
 				columns += coldef;
 				quotedColumns += coldef;
 				columnList.Add(coldef);
+
+				//resolve memory leak occurred while expanding the index node in object browser
+				delete res;
+				res = NULL;
 			}
 		}
 		else

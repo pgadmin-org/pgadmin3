@@ -164,6 +164,7 @@ wxString gpExtTable::GetSql(ctlTree *browser)
 		wxString errtblname = extTable->GetVal(6);
 		wxString extencoding = extTable->GetVal(7);
 
+		delete extTable;
 
 		if ((command.Length() > 0) ||
 		        (locations.Mid(1, 4) ==  wxT("http")))

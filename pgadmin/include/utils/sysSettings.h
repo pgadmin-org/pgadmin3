@@ -24,7 +24,7 @@ class sysSettings : private wxConfig
 {
 public:
 	sysSettings(const wxString &name);
-
+	~sysSettings();
 	// Display options
 	bool GetDisplayOption(const wxString &objtype, bool GetDefault = false);
 	void SetDisplayOption(const wxString &objtype, bool display);

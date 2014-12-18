@@ -60,6 +60,16 @@ sysSettings::sysSettings(const wxString &name) : wxConfig(name)
 	}
 }
 
+sysSettings::~sysSettings()
+{
+
+	if(defaultSettings)
+	{
+		delete defaultSettings;
+		defaultSettings = NULL;
+	}
+}
+
 bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
 {
 	bool retval, def = true;

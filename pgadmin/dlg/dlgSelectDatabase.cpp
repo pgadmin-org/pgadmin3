@@ -111,6 +111,7 @@ void dlgSelectDatabase::Initialize()
 
 								res->MoveNext();
 							}
+							delete res;
 						}
 					}
 				}
@@ -168,6 +169,7 @@ void dlgSelectDatabase::OnSelActivate(wxTreeEvent &ev)
 						res->MoveNext();
 					}
 				}
+				delete res;
 			}
 			tcServers->Expand(selID);
 		}

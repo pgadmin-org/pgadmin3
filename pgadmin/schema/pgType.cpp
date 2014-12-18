@@ -312,6 +312,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				if (set->GetVal(wxT("rngsubdiff")) != wxT("-"))
 					iSetSubtypeDiff(set->GetVal(wxT("rngsubdiff")));
 			}
+			delete set;
 		}
 	}
 

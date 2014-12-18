@@ -252,6 +252,8 @@ bool pgRegKey::QueryValue(const wxString &strVal, wxString &sVal) const
 		}
 		else
 			sVal = pBuf;
+
+		free(pBuf);
 		return true;
 	}
 	return false;
