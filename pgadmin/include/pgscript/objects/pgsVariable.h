@@ -82,7 +82,7 @@ public:
 
 	enum pgsTypes
 	{
-	    pgsTReal, pgsTInt, pgsTString, pgsTRecord
+		pgsTReal, pgsTInt, pgsTString, pgsTRecord
 	};
 
 protected:

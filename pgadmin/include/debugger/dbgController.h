@@ -34,18 +34,18 @@ class frmDebugger;
 
 typedef enum
 {
-    DBG_SESSION_TYPE_UNKNOWN,   // Session could be in-context or direct
-    DBG_SESSION_TYPE_INCONTEXT, // Session is configured for in-context debugging
-    DBG_SESSION_TYPE_DIRECT     // Session is configured for direct debugging
+	DBG_SESSION_TYPE_UNKNOWN,   // Session could be in-context or direct
+	DBG_SESSION_TYPE_INCONTEXT, // Session is configured for in-context debugging
+	DBG_SESSION_TYPE_DIRECT     // Session is configured for direct debugging
 } DebuggerSessionType;
 
 
 typedef enum
 {
-    DEBUGGER_UNKNOWN_API = 0,
-    DEBUGGER_V1_API = 1,
-    DEBUGGER_V2_API = 2,
-    DEBUGGER_V3_API = 3
+	DEBUGGER_UNKNOWN_API = 0,
+	DEBUGGER_V1_API = 1,
+	DEBUGGER_V2_API = 2,
+	DEBUGGER_V3_API = 3
 } DebuggerApiVersion;
 
 

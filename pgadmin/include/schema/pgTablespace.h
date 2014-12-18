@@ -57,7 +57,7 @@ public:
 	pgConn *connection();
 
 	wxString GetSql(ctlTree *browser);
-    void MoveTablespace(frmMain *form);
+	void MoveTablespace(frmMain *form);
 	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 	bool HasStats()

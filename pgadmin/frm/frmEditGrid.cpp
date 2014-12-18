@@ -3088,8 +3088,8 @@ bool sqlTable::Paste()
 	for (col = 0; col < nCols; col++)
 	{
 		if (columns[col].type == (unsigned int)PGOID_TYPE_SERIAL ||
-		    columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8 ||
-		    columns[col].type == (unsigned int)PGOID_TYPE_SERIAL2)
+		        columns[col].type == (unsigned int)PGOID_TYPE_SERIAL8 ||
+		        columns[col].type == (unsigned int)PGOID_TYPE_SERIAL2)
 		{
 			wxMessageDialog msg(GetView()->GetParent(),
 			                    _("This table contains serial columns. Do you want to use the values in the clipboard for these columns?"),

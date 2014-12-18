@@ -100,16 +100,16 @@ wxString dlgMoveTablespace::GetTablespace()
 
 wxString dlgMoveTablespace::GetKind()
 {
-    wxString kind;
+	wxString kind;
 
 	if (cbKind->GetValue().Cmp(_("Tables")) == 0)
-        return wxT("TABLES");
+		return wxT("TABLES");
 	if (cbKind->GetValue().Cmp(_("Indexes")) == 0)
-        return wxT("INDEXES");
+		return wxT("INDEXES");
 	if (cbKind->GetValue().Cmp(_("Materialized views")) == 0)
-        return wxT("MATERIALIZED VIEWS");
+		return wxT("MATERIALIZED VIEWS");
 
-    return wxT("ALL");
+	return wxT("ALL");
 }
 
 wxString dlgMoveTablespace::GetOwner()

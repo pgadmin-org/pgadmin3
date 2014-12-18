@@ -117,9 +117,9 @@ private:
 
 	enum
 	{
-	    MARKER_CURRENT    = 0x02,       // Current line marker
-	    MARKER_CURRENT_BG = 0x04,       // Current line marker - background hilight
-	    MARKER_BREAKPOINT = 0x01,       // Breakpoint marker
+		MARKER_CURRENT    = 0x02,       // Current line marker
+		MARKER_CURRENT_BG = 0x04,       // Current line marker - background hilight
+		MARKER_BREAKPOINT = 0x01,       // Breakpoint marker
 	};
 
 private:

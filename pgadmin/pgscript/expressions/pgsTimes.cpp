@@ -56,5 +56,5 @@ pgsOperand pgsTimes::eval(pgsVarMap &vars) const
 	pgsOperand right(m_right->eval(vars));
 
 	// Return the result
-	return (*left * *right);
+	return (*left **right);
 }

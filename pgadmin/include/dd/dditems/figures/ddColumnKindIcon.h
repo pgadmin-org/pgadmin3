@@ -18,16 +18,16 @@ class ddColumnFigure;
 
 enum ddColumnType
 {
-    pk = 321,
-    uk,
-    none,
-    noaction  //no action kind means column type don't have right now a useful value
+	pk = 321,
+	uk,
+	none,
+	noaction  //no action kind means column type don't have right now a useful value
 };
 
 enum
 {
-    MNU_DDCTPKEY = 321,
-    MNU_DDCTUKEY
+	MNU_DDCTPKEY = 321,
+	MNU_DDCTUKEY
 };
 
 class ddColumnKindIcon : public hdAbstractMenuFigure

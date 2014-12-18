@@ -26,8 +26,8 @@ public:
 private:
 	enum typeSchema
 	{
-	    GQB_CATALOG,
-	    GQB_OTHER
+		GQB_CATALOG,
+		GQB_OTHER
 	};
 	void createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNode, typeSchema MetaType, int indexImage);
 };

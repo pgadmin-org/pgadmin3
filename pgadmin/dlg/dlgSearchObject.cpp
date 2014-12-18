@@ -149,7 +149,8 @@ dlgSearchObject::dlgSearchObject(frmMain *p, pgDatabase *db, pgObject *obj)
 	cbSchema->Append(_("All schemas"));
 	cbSchema->Append(_("My schemas"));
 
-	if (obj->GetSchema()) {
+	if (obj->GetSchema())
+	{
 		if (obj->GetSchema()->GetSchema())
 			currentSchema = obj->GetSchema()->GetSchema()->GetName();
 		else
@@ -228,11 +229,11 @@ void dlgSearchObject::RestoreSettings()
 {
 	wxString val, mapkey;
 	bool bVal;
-	
+
 	// Pattern
 	settings->Read(wxT("SearchObject/Pattern"), &val, wxEmptyString);
 	txtPattern->SetValue(val);
-	
+
 	// Type
 	settings->Read(wxT("SearchObject/Type"), &val, wxT("All types"));
 	mapkey = getMapKeyByValue(val);
@@ -251,11 +252,11 @@ void dlgSearchObject::RestoreSettings()
 	// names
 	settings->Read(wxT("SearchObject/Names"), &bVal, true);
 	chkNames->SetValue(bVal);
-	
+
 	// definitions
 	settings->Read(wxT("SearchObject/Definitions"), &bVal, false);
 	chkDefinitions->SetValue(bVal);
-	
+
 	// comments
 	settings->Read(wxT("SearchObject/Comments"), &bVal, false);
 	chkComments->SetValue(bVal);
@@ -310,10 +311,10 @@ void dlgSearchObject::OnChange(wxCommandEvent &ev)
 void dlgSearchObject::ToggleBtnSearch(bool enable)
 {
 	if(enable &&
-	   /* When someone searches for operators, the limit of 3 characters is ignored */
-	   (aMap[cbType->GetValue()] == wxT("Operators") || txtPattern->GetValue().Length() >= 3) &&
-	   // At least one search mode enabled
-	   (chkNames->GetValue() || chkDefinitions->GetValue() || chkComments->GetValue()))
+	        /* When someone searches for operators, the limit of 3 characters is ignored */
+	        (aMap[cbType->GetValue()] == wxT("Operators") || txtPattern->GetValue().Length() >= 3) &&
+	        // At least one search mode enabled
+	        (chkNames->GetValue() || chkDefinitions->GetValue() || chkComments->GetValue()))
 	{
 		btnSearch->Enable();
 	}
@@ -522,7 +523,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		             wxT("where lower(sn.objectname) like ") + txtPatternStr + wxT(" \n");
 	} // search names
 
-		// search definitions
+	// search definitions
 	if (chkDefinitions->GetValue())
 	{
 		if (nextMode)
@@ -576,7 +577,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		             wxT(" inner join pg_class c on a.attrelid = c.oid and c.relkind in ('c','r','f') ")
 		             wxT(" left join pg_namespace n on c.relnamespace = n.oid ")
 		             wxT(" where a.attname ilike ") + txtPatternStr + wxT(" ");
-		             // TODO: search for other object's definitions (indexes, constraints and so on)
+		// TODO: search for other object's definitions (indexes, constraints and so on)
 		searchSQL += wxT(") sd \n");
 	} // search definitions
 
@@ -771,35 +772,35 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		if(currentdb->BackendMinimumVersion(8, 4) && currentdb->GetConnection()->IsSuperuser())
 		{
 			searchSQL += wxT("	union")
-		                 wxT("	select 'Foreign Data Wrappers', fdw.fdwname, ':Foreign Data Wrappers/' || fdw.fdwname, NULL as nspname ")
-		                 wxT("	  from ") + pd +
-		                 wxT("	  JOIN pg_foreign_data_wrapper fdw ON pd.relname = 'pg_foreign_data_wrapper' and pd.objoid = fdw.oid")
-		                 wxT("	union ")
-		                 wxT("	select 'Foreign Server', sr.srvname, ':Foreign Data Wrappers/' || fdw.fdwname || '/:Foreign Servers/' || sr.srvname, NULL as nspname")
-		                 wxT("	  from ") + pd +
-		                 wxT("	  JOIN pg_foreign_server sr ON pd.relname = 'pg_foreign_server' and pd.objoid = sr.oid")
-		                 wxT("	inner join pg_foreign_data_wrapper fdw on sr.srvfdw = fdw.oid ");
+			             wxT("	select 'Foreign Data Wrappers', fdw.fdwname, ':Foreign Data Wrappers/' || fdw.fdwname, NULL as nspname ")
+			             wxT("	  from ") + pd +
+			             wxT("	  JOIN pg_foreign_data_wrapper fdw ON pd.relname = 'pg_foreign_data_wrapper' and pd.objoid = fdw.oid")
+			             wxT("	union ")
+			             wxT("	select 'Foreign Server', sr.srvname, ':Foreign Data Wrappers/' || fdw.fdwname || '/:Foreign Servers/' || sr.srvname, NULL as nspname")
+			             wxT("	  from ") + pd +
+			             wxT("	  JOIN pg_foreign_server sr ON pd.relname = 'pg_foreign_server' and pd.objoid = sr.oid")
+			             wxT("	inner join pg_foreign_data_wrapper fdw on sr.srvfdw = fdw.oid ");
 		}
 
 		if(currentdb->BackendMinimumVersion(9, 1))
 		{
 			searchSQL += wxT("	union")
-		                 wxT("	select 'Foreign Tables', c.relname, ':Schemas/' || ns.nspname || '/:Foreign Tables/' || c.relname, ns.nspname")
-		                 wxT("  from ") + pd +
-		                 wxT("  JOIN pg_class c ON pd.relname = 'pg_class' and pd.objoid = c.oid")
-		                 wxT("  join pg_foreign_table ft on ft.ftrelid = c.oid")
-		                 wxT("	inner join pg_namespace ns on c.relnamespace = ns.oid")
-		                 wxT("  union")
-		                 wxT("	select 'Extensions', x.extname, ':Extensions/' || x.extname, NULL AS nspname")
-		                 wxT("	FROM ") + pd +
-		                 wxT("	JOIN pg_extension x ON pd.relname = 'pg_extension' and pd.objoid = x.oid")
-		                 wxT("	JOIN pg_namespace n on x.extnamespace=n.oid")
-		                 wxT("	join pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name")
-		                 wxT("	union")
-		                 wxT("	SELECT 'Collations', c.collname, ':Schemas/' || n.nspname || '/:Collations/' || c.collname, n.nspname")
-		                 wxT("	FROM ") + pd +
-		                 wxT("	JOIN pg_collation c ON pd.relname = 'pg_collation' and pd.objoid = c.oid")
-		                 wxT("	JOIN pg_namespace n ON n.oid=c.collnamespace");
+			             wxT("	select 'Foreign Tables', c.relname, ':Schemas/' || ns.nspname || '/:Foreign Tables/' || c.relname, ns.nspname")
+			             wxT("  from ") + pd +
+			             wxT("  JOIN pg_class c ON pd.relname = 'pg_class' and pd.objoid = c.oid")
+			             wxT("  join pg_foreign_table ft on ft.ftrelid = c.oid")
+			             wxT("	inner join pg_namespace ns on c.relnamespace = ns.oid")
+			             wxT("  union")
+			             wxT("	select 'Extensions', x.extname, ':Extensions/' || x.extname, NULL AS nspname")
+			             wxT("	FROM ") + pd +
+			             wxT("	JOIN pg_extension x ON pd.relname = 'pg_extension' and pd.objoid = x.oid")
+			             wxT("	JOIN pg_namespace n on x.extnamespace=n.oid")
+			             wxT("	join pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name")
+			             wxT("	union")
+			             wxT("	SELECT 'Collations', c.collname, ':Schemas/' || n.nspname || '/:Collations/' || c.collname, n.nspname")
+			             wxT("	FROM ") + pd +
+			             wxT("	JOIN pg_collation c ON pd.relname = 'pg_collation' and pd.objoid = c.oid")
+			             wxT("	JOIN pg_namespace n ON n.oid=c.collnamespace");
 		}
 		searchSQL += wxT(") sc \n");
 	} // search comments
@@ -825,7 +826,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 		searchSQL += (nextPredicate) ? wxT("AND ") : wxT("WHERE ");
 		nextPredicate = true;
 		searchSQL += wxT("ii.nspname IN (SELECT n.nspname FROM pg_namespace n WHERE n.nspowner = (SELECT u.usesysid FROM pg_user u WHERE u.usename = ")
-		           + currentdb->GetConnection()->qtDbString(currentdb->GetConnection()->GetUser()) + wxT(")) ");
+		             + currentdb->GetConnection()->qtDbString(currentdb->GetConnection()->GetUser()) + wxT(")) ");
 	}
 	else if (cbSchema->GetValue() != _("All schemas"))
 	{
@@ -919,7 +920,7 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 	if (statusBar)
 	{
 		if (i > 0)
-			statusBar->SetStatusText(wxString::Format(wxPLURAL("Found %d item", "Found %d items",i), i));
+			statusBar->SetStatusText(wxString::Format(wxPLURAL("Found %d item", "Found %d items", i), i));
 		else
 			statusBar->SetStatusText(_("Nothing was found"));
 	}

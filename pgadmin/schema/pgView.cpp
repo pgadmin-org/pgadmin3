@@ -132,7 +132,7 @@ bool pgView::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 wxString pgView::GetSql(ctlTree *browser)
 {
-    wxString withoptions;
+	wxString withoptions;
 
 	if (sql.IsNull())
 	{
@@ -146,11 +146,11 @@ wxString pgView::GetSql(ctlTree *browser)
 			if (GetConnection()->BackendMinimumVersion(9, 2) && GetSecurityBarrier().Length() > 0)
 				withoptions = wxT("security_barrier=") + GetSecurityBarrier();
 			if (GetConnection()->BackendMinimumVersion(9, 4) && GetCheckOption().Length() > 0)
-            {
-                if (withoptions.Length() > 0)
-                    withoptions += wxT(", ");
+			{
+				if (withoptions.Length() > 0)
+					withoptions += wxT(", ");
 				withoptions = wxT("check_option=") + GetCheckOption();
-            }
+			}
 			if (withoptions.Length() > 0)
 				sql += wxT(" WITH (") + withoptions + wxT(")");
 		}
@@ -777,9 +777,9 @@ pgObject *pgViewFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 			view->iSetDefinition(views->GetVal(wxT("definition")));
 			view->iSetMaterializedView(false);
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 4))
-            {
-			    view->iSetCheckOption(views->GetVal(wxT("check_option")));
-            }
+			{
+				view->iSetCheckOption(views->GetVal(wxT("check_option")));
+			}
 
 			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
 			{

@@ -257,10 +257,10 @@ void pgTablespace::MoveTablespace(frmMain *form)
 			return;
 
 		query = wxT("ALTER TABLESPACE ") + GetQuotedFullIdentifier();
-        query += wxT(" MOVE ") + rdo.GetKind().Upper();
-        if (rdo.GetOwner().Length() > 0)
-            query += wxT(" OWNED BY ") + qtIdent(rdo.GetOwner());
-        query += wxT(" TO ") + qtIdent(rdo.GetTablespace());
+		query += wxT(" MOVE ") + rdo.GetKind().Upper();
+		if (rdo.GetOwner().Length() > 0)
+			query += wxT(" OWNED BY ") + qtIdent(rdo.GetOwner());
+		query += wxT(" TO ") + qtIdent(rdo.GetTablespace());
 
 		GetConnection()->ExecuteVoid(query);
 	}

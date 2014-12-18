@@ -1010,8 +1010,8 @@ void pgConn::Reset()
 {
 	PQreset(conn);
 
-        // Reset any vars that need to be in a defined state before connecting
-        needColQuoting = false;
+	// Reset any vars that need to be in a defined state before connecting
+	needColQuoting = false;
 
 	Initialize();
 }

@@ -23,9 +23,9 @@
 
 enum
 {
-    CTL_DDNOTEBOOK = 1001,
-    CTL_DDCONNECTION,
-    CTL_IMPSCHEMA
+	CTL_DDNOTEBOOK = 1001,
+	CTL_DDCONNECTION,
+	CTL_IMPSCHEMA
 };
 
 class frmDatabaseDesigner : public pgFrame
