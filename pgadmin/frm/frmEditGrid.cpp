@@ -2305,6 +2305,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString &tabName
 			}
 			allColsSet->MoveNext();
 		}
+		delete allColsSet;
 	}
 
 	pgSet *colSet = connection->ExecuteSet(

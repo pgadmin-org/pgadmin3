@@ -237,6 +237,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 		types->MoveNext();
 	}
 
+	delete types;
 	// Build the query to get all objects
 	wxString sql =
 	    wxT("SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n")

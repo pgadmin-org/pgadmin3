@@ -322,6 +322,11 @@ ddStubTable *ddImportDBUtils::getTable(pgConn *connection, wxString tableName, O
 		}
 		setUniqueConstraints(connection, table);
 		setPkName(connection, table);
+		if(inhtables)
+		{
+			delete inhtables;
+			inhtables = NULL;
+		}
 		return table;
 	}
 
@@ -658,6 +663,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 								{
 									error = true;
 									wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+									delete foreignKeys;
 									return;
 								}
 							}
@@ -671,6 +677,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 						if(fkFromPk == false && ukIndex < 0)
 						{
 							wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+							delete foreignKeys;
 							return;
 						}
 
@@ -777,6 +784,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 						else
 						{
 							wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+							delete foreignKeys;
 							return;
 						}
 
@@ -1137,6 +1145,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 					{
 						error = true;
 						wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+						delete foreignKeys;
 						return false;
 					}
 				}
@@ -1150,6 +1159,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 			if(fkFromPk == false && ukIndex < 0)
 			{
 				wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+				delete foreignKeys;
 				return false;
 			}
 
@@ -1250,6 +1260,7 @@ bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxSt
 			else
 			{
 				wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR | wxOK);
+				delete foreignKeys;
 				return false;
 			}
 			delete sourceStubTable;

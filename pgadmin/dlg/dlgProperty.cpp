@@ -566,7 +566,9 @@ void dlgProperty::FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlCo
 				cb2->Append(set->GetVal(0));
 			set->MoveNext();
 		}
+		delete set;
 	}
+
 }
 
 
@@ -1989,6 +1991,7 @@ void dlgDefaultSecurityProperty::AddUsers(ctlComboBox *combobox)
 
 				set->MoveNext();
 			}
+			delete set;
 		}
 	}
 }

@@ -305,6 +305,7 @@ void pgTrigger::ReadColumnDetails()
 				i++;
 				res->MoveNext();
 			}
+			delete res;
 		}
 		else
 		{
