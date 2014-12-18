@@ -19,16 +19,16 @@
 
 enum
 {
-    CTL_DEFPROPSQL = 500,
-    CTL_DEFMSG,
-    CTL_DEFLBPRIV,
-    CTL_DEFSTATICGROUP,
-    CTL_DEFCBGROUP,
-    CTL_DEFADDPRIV,
-    CTL_DEFDELPRIV,
-    CTL_DEFALLPRIV,
-    CTL_DEFALLPRIVGRANT,
-    CTL_DEFPRIVCB          // base for all privilege checkboxes, must be last
+	CTL_DEFPROPSQL = 500,
+	CTL_DEFMSG,
+	CTL_DEFLBPRIV,
+	CTL_DEFSTATICGROUP,
+	CTL_DEFCBGROUP,
+	CTL_DEFADDPRIV,
+	CTL_DEFDELPRIV,
+	CTL_DEFALLPRIV,
+	CTL_DEFALLPRIVGRANT,
+	CTL_DEFPRIVCB          // base for all privilege checkboxes, must be last
 };
 
 class defaultPrivilegesOn
@@ -53,7 +53,7 @@ class ctlDefaultSecurityPanel : public wxPanel
 {
 
 public:
-	ctlDefaultSecurityPanel(pgConn * , wxNotebook * , wxImageList *);
+	ctlDefaultSecurityPanel(pgConn *, wxNotebook *, wxImageList *);
 
 	wxString GetDefaultPrivileges(const wxString &schemaName);
 	void     UpdatePrivilegePages(bool createDefPrivs, const wxString &defPrivsOnTables,

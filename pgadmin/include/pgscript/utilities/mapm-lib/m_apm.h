@@ -48,20 +48,20 @@
 extern "C" {
 #endif
 
-	typedef unsigned char UCHAR;
+typedef unsigned char UCHAR;
 
-	typedef struct
-	{
-		UCHAR	*m_apm_data;
-		long	m_apm_id;
-		int     m_apm_refcount;       /* <- used only by C++ MAPM class */
-		int	m_apm_malloclength;
-		int	m_apm_datalength;
-		int	m_apm_exponent;
-		int	m_apm_sign;
-	} M_APM_struct;
+typedef struct
+{
+	UCHAR	*m_apm_data;
+	long	m_apm_id;
+	int     m_apm_refcount;       /* <- used only by C++ MAPM class */
+	int	m_apm_malloclength;
+	int	m_apm_datalength;
+	int	m_apm_exponent;
+	int	m_apm_sign;
+} M_APM_struct;
 
-	typedef M_APM_struct *M_APM;
+typedef M_APM_struct *M_APM;
 
 
 #define MAPM_LIB_VERSION \
@@ -69,106 +69,106 @@ extern "C" {
 #define MAPM_LIB_SHORT_VERSION "4.9.5"
 
 
-	/*
-	 *	convienient predefined constants
-	 */
+/*
+ *	convienient predefined constants
+ */
 
-	extern	M_APM	MM_Zero;
-	extern	M_APM	MM_One;
-	extern	M_APM	MM_Two;
-	extern	M_APM	MM_Three;
-	extern	M_APM	MM_Four;
-	extern	M_APM	MM_Five;
-	extern	M_APM	MM_Ten;
+extern	M_APM	MM_Zero;
+extern	M_APM	MM_One;
+extern	M_APM	MM_Two;
+extern	M_APM	MM_Three;
+extern	M_APM	MM_Four;
+extern	M_APM	MM_Five;
+extern	M_APM	MM_Ten;
 
-	extern	M_APM	MM_PI;
-	extern	M_APM	MM_HALF_PI;
-	extern	M_APM	MM_2_PI;
-	extern	M_APM	MM_E;
+extern	M_APM	MM_PI;
+extern	M_APM	MM_HALF_PI;
+extern	M_APM	MM_2_PI;
+extern	M_APM	MM_E;
 
-	extern	M_APM	MM_LOG_E_BASE_10;
-	extern	M_APM	MM_LOG_10_BASE_E;
-	extern	M_APM	MM_LOG_2_BASE_E;
-	extern	M_APM	MM_LOG_3_BASE_E;
+extern	M_APM	MM_LOG_E_BASE_10;
+extern	M_APM	MM_LOG_10_BASE_E;
+extern	M_APM	MM_LOG_2_BASE_E;
+extern	M_APM	MM_LOG_3_BASE_E;
 
 
-	/*
-	 *	function prototypes
-	 */
+/*
+ *	function prototypes
+ */
 
-	extern	M_APM	m_apm_init(void);
-	extern	void	m_apm_free(M_APM);
-	extern	void	m_apm_free_all_mem(void);
-	extern	void	m_apm_trim_mem_usage(void);
-	extern	char	*m_apm_lib_version(char *);
-	extern	char	*m_apm_lib_short_version(char *);
+extern	M_APM	m_apm_init(void);
+extern	void	m_apm_free(M_APM);
+extern	void	m_apm_free_all_mem(void);
+extern	void	m_apm_trim_mem_usage(void);
+extern	char	*m_apm_lib_version(char *);
+extern	char	*m_apm_lib_short_version(char *);
 
-	extern	void	m_apm_set_string(M_APM, const char *);
-	extern	void	m_apm_set_double(M_APM, double);
-	extern	void	m_apm_set_long(M_APM, long);
+extern	void	m_apm_set_string(M_APM, const char *);
+extern	void	m_apm_set_double(M_APM, double);
+extern	void	m_apm_set_long(M_APM, long);
 
-	extern	void	m_apm_to_string(char *, int, M_APM);
-	extern  void	m_apm_to_fixpt_string(char *, int, M_APM);
-	extern  void	m_apm_to_fixpt_stringex(char *, int, M_APM, char, char, int);
-	extern  char	*m_apm_to_fixpt_stringexp(int, M_APM, char, char, int);
-	extern  void    m_apm_to_integer_string(char *, M_APM);
+extern	void	m_apm_to_string(char *, int, M_APM);
+extern  void	m_apm_to_fixpt_string(char *, int, M_APM);
+extern  void	m_apm_to_fixpt_stringex(char *, int, M_APM, char, char, int);
+extern  char	*m_apm_to_fixpt_stringexp(int, M_APM, char, char, int);
+extern  void    m_apm_to_integer_string(char *, M_APM);
 
-	extern	void	m_apm_absolute_value(M_APM, M_APM);
-	extern	void	m_apm_negate(M_APM, M_APM);
-	extern	void	m_apm_copy(M_APM, M_APM);
-	extern	void	m_apm_round(M_APM, int, M_APM);
-	extern	int	m_apm_compare(M_APM, M_APM);
-	extern	int	m_apm_sign(M_APM);
-	extern	int	m_apm_exponent(M_APM);
-	extern	int	m_apm_significant_digits(M_APM);
-	extern	int	m_apm_is_integer(M_APM);
-	extern	int	m_apm_is_even(M_APM);
-	extern	int	m_apm_is_odd(M_APM);
+extern	void	m_apm_absolute_value(M_APM, M_APM);
+extern	void	m_apm_negate(M_APM, M_APM);
+extern	void	m_apm_copy(M_APM, M_APM);
+extern	void	m_apm_round(M_APM, int, M_APM);
+extern	int	m_apm_compare(M_APM, M_APM);
+extern	int	m_apm_sign(M_APM);
+extern	int	m_apm_exponent(M_APM);
+extern	int	m_apm_significant_digits(M_APM);
+extern	int	m_apm_is_integer(M_APM);
+extern	int	m_apm_is_even(M_APM);
+extern	int	m_apm_is_odd(M_APM);
 
-	extern	void	m_apm_gcd(M_APM, M_APM, M_APM);
-	extern	void	m_apm_lcm(M_APM, M_APM, M_APM);
+extern	void	m_apm_gcd(M_APM, M_APM, M_APM);
+extern	void	m_apm_lcm(M_APM, M_APM, M_APM);
 
-	extern	void	m_apm_add(M_APM, M_APM, M_APM);
-	extern	void	m_apm_subtract(M_APM, M_APM, M_APM);
-	extern	void	m_apm_multiply(M_APM, M_APM, M_APM);
-	extern	void	m_apm_divide(M_APM, int, M_APM, M_APM);
-	extern	void	m_apm_integer_divide(M_APM, M_APM, M_APM);
-	extern	void	m_apm_integer_div_rem(M_APM, M_APM, M_APM, M_APM);
-	extern	void	m_apm_reciprocal(M_APM, int, M_APM);
-	extern	void	m_apm_factorial(M_APM, M_APM);
-	extern	void	m_apm_floor(M_APM, M_APM);
-	extern	void	m_apm_ceil(M_APM, M_APM);
-	extern	void	m_apm_get_random(M_APM);
-	extern	void	m_apm_set_random_seed(char *);
+extern	void	m_apm_add(M_APM, M_APM, M_APM);
+extern	void	m_apm_subtract(M_APM, M_APM, M_APM);
+extern	void	m_apm_multiply(M_APM, M_APM, M_APM);
+extern	void	m_apm_divide(M_APM, int, M_APM, M_APM);
+extern	void	m_apm_integer_divide(M_APM, M_APM, M_APM);
+extern	void	m_apm_integer_div_rem(M_APM, M_APM, M_APM, M_APM);
+extern	void	m_apm_reciprocal(M_APM, int, M_APM);
+extern	void	m_apm_factorial(M_APM, M_APM);
+extern	void	m_apm_floor(M_APM, M_APM);
+extern	void	m_apm_ceil(M_APM, M_APM);
+extern	void	m_apm_get_random(M_APM);
+extern	void	m_apm_set_random_seed(char *);
 
-	extern	void	m_apm_sqrt(M_APM, int, M_APM);
-	extern	void	m_apm_cbrt(M_APM, int, M_APM);
-	extern	void	m_apm_log(M_APM, int, M_APM);
-	extern	void	m_apm_log10(M_APM, int, M_APM);
-	extern	void	m_apm_exp(M_APM, int, M_APM);
-	extern	void	m_apm_pow(M_APM, int, M_APM, M_APM);
-	extern  void	m_apm_integer_pow(M_APM, int, M_APM, int);
-	extern  void	m_apm_integer_pow_nr(M_APM, M_APM, int);
+extern	void	m_apm_sqrt(M_APM, int, M_APM);
+extern	void	m_apm_cbrt(M_APM, int, M_APM);
+extern	void	m_apm_log(M_APM, int, M_APM);
+extern	void	m_apm_log10(M_APM, int, M_APM);
+extern	void	m_apm_exp(M_APM, int, M_APM);
+extern	void	m_apm_pow(M_APM, int, M_APM, M_APM);
+extern  void	m_apm_integer_pow(M_APM, int, M_APM, int);
+extern  void	m_apm_integer_pow_nr(M_APM, M_APM, int);
 
-	extern	void	m_apm_sin_cos(M_APM, M_APM, int, M_APM);
-	extern	void	m_apm_sin(M_APM, int, M_APM);
-	extern	void	m_apm_cos(M_APM, int, M_APM);
-	extern	void	m_apm_tan(M_APM, int, M_APM);
-	extern	void	m_apm_arcsin(M_APM, int, M_APM);
-	extern	void	m_apm_arccos(M_APM, int, M_APM);
-	extern	void	m_apm_arctan(M_APM, int, M_APM);
-	extern	void	m_apm_arctan2(M_APM, int, M_APM, M_APM);
+extern	void	m_apm_sin_cos(M_APM, M_APM, int, M_APM);
+extern	void	m_apm_sin(M_APM, int, M_APM);
+extern	void	m_apm_cos(M_APM, int, M_APM);
+extern	void	m_apm_tan(M_APM, int, M_APM);
+extern	void	m_apm_arcsin(M_APM, int, M_APM);
+extern	void	m_apm_arccos(M_APM, int, M_APM);
+extern	void	m_apm_arctan(M_APM, int, M_APM);
+extern	void	m_apm_arctan2(M_APM, int, M_APM, M_APM);
 
-	extern  void    m_apm_sinh(M_APM, int, M_APM);
-	extern  void    m_apm_cosh(M_APM, int, M_APM);
-	extern  void    m_apm_tanh(M_APM, int, M_APM);
-	extern  void    m_apm_arcsinh(M_APM, int, M_APM);
-	extern  void    m_apm_arccosh(M_APM, int, M_APM);
-	extern  void    m_apm_arctanh(M_APM, int, M_APM);
+extern  void    m_apm_sinh(M_APM, int, M_APM);
+extern  void    m_apm_cosh(M_APM, int, M_APM);
+extern  void    m_apm_tanh(M_APM, int, M_APM);
+extern  void    m_apm_arcsinh(M_APM, int, M_APM);
+extern  void    m_apm_arccosh(M_APM, int, M_APM);
+extern  void    m_apm_arctanh(M_APM, int, M_APM);
 
-	extern  void    m_apm_cpp_precision(int);   /* only for C++ wrapper */
+extern  void    m_apm_cpp_precision(int);   /* only for C++ wrapper */
 
-	/* more intuitive alternate names for the ARC functions ... */
+/* more intuitive alternate names for the ARC functions ... */
 
 #define m_apm_asin m_apm_arcsin
 #define m_apm_acos m_apm_arccos

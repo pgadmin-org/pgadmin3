@@ -16,13 +16,13 @@
 
 enum ddBrowser
 {
-    DD_BROWSER = 13000
+	DD_BROWSER = 13000
 };
 
 enum ddBrowserImages
 {
-    DD_IMG_FIG_DATABASE = 0,
-    DD_IMG_FIG_TABLE = 1
+	DD_IMG_FIG_DATABASE = 0,
+	DD_IMG_FIG_TABLE = 1
 };
 
 class ddModelBrowser : public wxTreeCtrl

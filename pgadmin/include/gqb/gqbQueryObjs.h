@@ -29,11 +29,11 @@ class gqbQueryJoin;
 // GQB-TODO: Add all kinds of joins
 enum type_Join
 {
-    _equally,
-    _lesser,
-    _greater,
-    _equlesser,
-    _equgreater
+	_equally,
+	_lesser,
+	_greater,
+	_equlesser,
+	_equgreater
 
 };
 

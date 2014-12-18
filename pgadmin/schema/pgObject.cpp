@@ -1507,11 +1507,11 @@ wxString pgSchemaObject::GetQuotedFullIdentifier() const
 
 enum tokentype
 {
-    SQLTK_NORMAL = 0,
-    SQLTK_JOINMOD,
-    SQLTK_JOIN,
-    SQLTK_ON,
-    SQLTK_UNION
+	SQLTK_NORMAL = 0,
+	SQLTK_JOINMOD,
+	SQLTK_JOIN,
+	SQLTK_ON,
+	SQLTK_UNION
 
 };
 

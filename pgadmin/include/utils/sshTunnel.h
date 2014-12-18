@@ -39,10 +39,10 @@ struct _LIBSSH2_USERAUTH_KBDINT_RESPONSE;
 
 enum enAuthenticationMethod
 {
-    AUTH_NONE = 0,
-    AUTH_PASSWORD,
-    AUTH_KEYBOARD_INTERACTIVE,
-    AUTH_PUBLICKEY = 4
+	AUTH_NONE = 0,
+	AUTH_PASSWORD,
+	AUTH_KEYBOARD_INTERACTIVE,
+	AUTH_PUBLICKEY = 4
 };
 
 void LogSSHTunnelErrors(const wxString &msg, const int &id);

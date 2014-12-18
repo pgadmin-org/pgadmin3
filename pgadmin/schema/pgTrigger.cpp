@@ -335,7 +335,7 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 
 			// append function here
 			triggerFunction = functionFactory.AppendFunctions(this, GetSchema(), browser, wxT(
-				"WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
+			                      "WHERE pr.oid=") + NumToStr(functionOid) + wxT("::oid\n"));
 			if (triggerFunction)
 			{
 				iSetFunction(triggerFunction->GetQuotedFullIdentifier());

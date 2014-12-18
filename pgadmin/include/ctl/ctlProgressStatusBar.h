@@ -49,10 +49,10 @@ protected:
 
 	enum
 	{
-	    Status_field,
-	    ProgressBar_field,
-	    ProgressStatus_field,
-	    Max_Field
+		Status_field,
+		ProgressBar_field,
+		ProgressStatus_field,
+		Max_Field
 	};
 
 	DECLARE_EVENT_TABLE()

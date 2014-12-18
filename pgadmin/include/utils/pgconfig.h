@@ -66,30 +66,30 @@ public:
 
 	enum pgHbaConnectType
 	{
-	    PGC_LOCAL = 0,
-	    PGC_HOST,
-	    PGC_HOSTSSL,
-	    PGC_HOSTNOSSL,
-	    PGC_INVALIDCONF
+		PGC_LOCAL = 0,
+		PGC_HOST,
+		PGC_HOSTSSL,
+		PGC_HOSTNOSSL,
+		PGC_INVALIDCONF
 	};
 	enum pgHbaMethod
 	{
-	    PGC_TRUST = 0,
-	    PGC_REJECT,
-	    PGC_MD5,
-	    PGC_CRYPT,
-	    PGC_PASSWORD,
-	    PGC_KRB4,
-	    PGC_KRB5,
-	    PGC_IDENT,
-	    PGC_PAM,
-	    PGC_LDAP,
-	    PGC_GSS,
-	    PGC_SSPI,
-	    PGC_CERT,
-	    PGC_PEER,
-	    PGC_RADIUS,
-	    PGC_INVALIDMETHOD
+		PGC_TRUST = 0,
+		PGC_REJECT,
+		PGC_MD5,
+		PGC_CRYPT,
+		PGC_PASSWORD,
+		PGC_KRB4,
+		PGC_KRB5,
+		PGC_IDENT,
+		PGC_PAM,
+		PGC_LDAP,
+		PGC_GSS,
+		PGC_SSPI,
+		PGC_CERT,
+		PGC_PEER,
+		PGC_RADIUS,
+		PGC_INVALIDMETHOD
 	};
 
 	wxString text;
@@ -125,39 +125,39 @@ class pgSettingItem
 public:
 	enum pgConfigType
 	{
-	    PGC_BOOL = 0,
-	    PGC_INT,
-	    PGC_REAL,
-	    PGC_STRING
+		PGC_BOOL = 0,
+		PGC_INT,
+		PGC_REAL,
+		PGC_STRING
 	};
 
 	enum pgConfigContext
 	{
-	    PGC_INTERNAL = 0,
-	    PGC_POSTMASTER,
-	    PGC_SIGHUP,
-	    PGC_BACKEND,
-	    PGC_SUSET,
-	    PGC_USERLIMIT,
-	    PGC_USERSET,
-	    PGC_UNKNOWNCONTEXT
+		PGC_INTERNAL = 0,
+		PGC_POSTMASTER,
+		PGC_SIGHUP,
+		PGC_BACKEND,
+		PGC_SUSET,
+		PGC_USERLIMIT,
+		PGC_USERSET,
+		PGC_UNKNOWNCONTEXT
 	};
 
 	enum pgConfigSource
 	{
-	    PGC_DEFAULT = 0,
-	    PGC_ENVIRONMENT,
-	    PGC_FILE,
-	    PGC_ARGV,
-	    PGC_UNPRIV,
-	    PGC_DATABASE,
-	    PGC_USER,
-	    PGC_CLIENT,
-	    PGC_OVERRIDE,
-	    PGC_INTERACTIVE,
-	    PGC_TEST,
-	    PGC_SESSION,
-	    PGC_UNKNOWNSOURCE
+		PGC_DEFAULT = 0,
+		PGC_ENVIRONMENT,
+		PGC_FILE,
+		PGC_ARGV,
+		PGC_UNPRIV,
+		PGC_DATABASE,
+		PGC_USER,
+		PGC_CLIENT,
+		PGC_OVERRIDE,
+		PGC_INTERACTIVE,
+		PGC_TEST,
+		PGC_SESSION,
+		PGC_UNKNOWNSOURCE
 	};
 
 	pgSettingItem()

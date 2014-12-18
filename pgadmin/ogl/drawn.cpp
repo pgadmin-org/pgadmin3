@@ -1338,7 +1338,7 @@ static int HexToInt1(wxChar hex)
 		case wxT('F'):
 			return 15;
 #if 0
-			// handling this default outside switch removes warning under Borland
+		// handling this default outside switch removes warning under Borland
 		default:
 			return 0;
 #endif

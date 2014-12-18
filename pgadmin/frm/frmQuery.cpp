@@ -1500,7 +1500,7 @@ void frmQuery::UpdateFavouritesList()
 {
 	if (IsVisible() && menuBar->FindMenu(_("Fav&ourites")) == wxNOT_FOUND)
 		return;
-	
+
 	if (favourites)
 		delete favourites;
 
@@ -3441,19 +3441,19 @@ void frmQuery::SaveExplainAsImage(wxCommandEvent &ev)
 		wxBitmapType imgType;
 		switch (index)
 		{
-				// bmp
+			// bmp
 			case 0:
 				strType = wxT(".bmp");
 				imgType = wxBITMAP_TYPE_BMP;
 				break;
-				// jpeg
+			// jpeg
 			case 1:
 				strType = wxT(".jpeg");
 				imgType = wxBITMAP_TYPE_JPEG;
 				break;
-				// default (png)
+			// default (png)
 			default:
-				// png
+			// png
 			case 2:
 				strType = wxT(".png");
 				imgType = wxBITMAP_TYPE_PNG;

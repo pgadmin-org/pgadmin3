@@ -261,7 +261,8 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 			}
 		}
 		// Merge Append
-		else if (token2 == wxT("Append")) {
+		else if (token2 == wxT("Append"))
+		{
 			s = new ExplainShape(*ex_merge_append_png_img, descr);
 		}
 		else
@@ -381,7 +382,8 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 	else if (token == wxT("Index"))
 	{
 		// Index Only Scan
-		if (token2 == wxT("Only") && token3 == wxT("Scan")) {
+		if (token2 == wxT("Only") && token3 == wxT("Scan"))
+		{
 			s = new ExplainShape(*ex_index_only_scan_png_img, descr, 4, 3);
 		}
 	}

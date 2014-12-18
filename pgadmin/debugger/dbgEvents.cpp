@@ -125,7 +125,7 @@ void dbgController::ResultTargetComplete(pgQueryResultEvent &_ev)
 				        _("Debugger(%ld): Execution of the debugging target terminated due to connection loss.\n"),
 				        m_execConnThread->GetId()));
 				break;
-				// This is very unlikely, unless we made mistake creating the query
+			// This is very unlikely, unless we made mistake creating the query
 			case pgQueryResultEvent::PGQ_STRING_INVALID:
 				wxLogInfo(
 				    wxString::Format(
@@ -341,7 +341,7 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 	switch(_qry->ReturnCode())
 	{
 		case pgQueryResultEvent::PGQ_CONN_LOST:
-			// This is very unlikely, unless we made mistake creating the query
+		// This is very unlikely, unless we made mistake creating the query
 		case pgQueryResultEvent::PGQ_STRING_INVALID:
 		case PGRES_EMPTY_QUERY:
 		case pgQueryResultEvent::PGQ_ERROR_PREPARE_CALLABLE:
@@ -354,17 +354,17 @@ bool dbgController::HandleQuery(pgBatchQuery *_qry, const wxString &_err)
 		case PGRES_FATAL_ERROR:
 			break;
 
-			// This is unlikely, we do not generate an event, when execution is
-			// cancelled
+		// This is unlikely, we do not generate an event, when execution is
+		// cancelled
 		case pgQueryResultEvent::PGQ_EXECUTION_CANCELLED:
 			break;
 		case PGRES_COMMAND_OK:
 		case PGRES_TUPLES_OK:
 			UNLOCKMUTEX(m_dbgThreadLock);
 			return true;
-			// Hmm - where did it come from?
-			// We never call a function, which results into these results
-			// Anyway - we will return true as we have the result
+		// Hmm - where did it come from?
+		// We never call a function, which results into these results
+		// Anyway - we will return true as we have the result
 		case PGRES_COPY_IN:
 		case PGRES_COPY_OUT:
 			UNLOCKMUTEX(m_dbgThreadLock);

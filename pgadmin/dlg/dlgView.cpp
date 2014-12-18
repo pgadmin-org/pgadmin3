@@ -739,7 +739,7 @@ wxString dlgView::GetSql()
 			}
 
 			if (connection->BackendMinimumVersion(9, 4)
-					&& cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
+			        && cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
 			{
 				if (cbCheckOption->GetValue().Cmp(wxT("No")) == 0)
 					sql += wxT("ALTER VIEW ") + name + wxT(" RESET (check_option);\n");

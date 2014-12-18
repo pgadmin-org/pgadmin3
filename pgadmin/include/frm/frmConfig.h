@@ -27,11 +27,11 @@ public:
 
 	enum tryMode
 	{
-	    NONE = 0,
-	    ANYFILE,
-	    HBAFILE,
-	    MAINFILE,
-	    PGPASSFILE
+		NONE = 0,
+		ANYFILE,
+		HBAFILE,
+		MAINFILE,
+		PGPASSFILE
 	};
 
 	static frmConfig *Create(const wxString &title, const wxString &configFile, tryMode mode);

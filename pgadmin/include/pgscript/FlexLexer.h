@@ -53,7 +53,8 @@
 #    define FLEX_STD std::
 #  endif
 
-extern "C++" {
+extern "C++"
+{
 
 	struct yy_buffer_state;
 	typedef int yy_state_type;
@@ -73,16 +74,16 @@ extern "C++" {
 		}
 
 		virtual void
-		yy_switch_to_buffer( struct yy_buffer_state *new_buffer ) = 0;
+		yy_switch_to_buffer( struct yy_buffer_state * new_buffer ) = 0;
 		virtual struct yy_buffer_state *
-		yy_create_buffer( FLEX_STD istream *s, int size ) = 0;
-		virtual void yy_delete_buffer( struct yy_buffer_state *b ) = 0;
-		virtual void yyrestart( FLEX_STD istream *s ) = 0;
+		yy_create_buffer( FLEX_STD istream * s, int size ) = 0;
+		virtual void yy_delete_buffer( struct yy_buffer_state * b ) = 0;
+		virtual void yyrestart( FLEX_STD istream * s ) = 0;
 
 		virtual int yylex() = 0;
 
 		// Call yylex with new input/output sources.
-		int yylex( FLEX_STD istream *new_in, FLEX_STD ostream *new_out = 0 )
+		int yylex( FLEX_STD istream * new_in, FLEX_STD ostream *new_out = 0 )
 		{
 			switch_streams( new_in, new_out );
 			return yylex();
@@ -91,7 +92,7 @@ extern "C++" {
 		// Switch to new input/output streams.  A nil stream pointer
 		// indicates "keep the current one".
 		virtual void switch_streams( FLEX_STD istream *new_in = 0,
-		                             FLEX_STD ostream *new_out = 0 ) = 0;
+		FLEX_STD ostream *new_out = 0 ) = 0;
 
 		int lineno() const
 		{
@@ -123,7 +124,8 @@ extern "C++" {
 // yyFlexLexer, as discussed in the flex man page.
 #define yyFlexLexerOnce
 
-extern "C++" {
+extern "C++"
+{
 
 	class yyFlexLexer : public FlexLexer
 	{
@@ -134,16 +136,16 @@ extern "C++" {
 
 		virtual ~yyFlexLexer();
 
-		void yy_switch_to_buffer( struct yy_buffer_state *new_buffer );
-		struct yy_buffer_state *yy_create_buffer( FLEX_STD istream *s, int size );
-		void yy_delete_buffer( struct yy_buffer_state *b );
-		void yyrestart( FLEX_STD istream *s );
+		void yy_switch_to_buffer( struct yy_buffer_state * new_buffer );
+		struct yy_buffer_state * yy_create_buffer( FLEX_STD istream * s, int size );
+		void yy_delete_buffer( struct yy_buffer_state * b );
+		void yyrestart( FLEX_STD istream * s );
 
-		void yypush_buffer_state( struct yy_buffer_state *new_buffer );
+		void yypush_buffer_state( struct yy_buffer_state * new_buffer );
 		void yypop_buffer_state(void);
 
 		virtual int yylex();
-		virtual void switch_streams( FLEX_STD istream *new_in, FLEX_STD ostream *new_out );
+		virtual void switch_streams( FLEX_STD istream * new_in, FLEX_STD ostream * new_out );
 
 	protected:
 		virtual int LexerInput( char *buf, int max_size );
@@ -154,8 +156,8 @@ extern "C++" {
 		int yyinput();
 
 		void yy_load_buffer_state();
-		void yy_init_buffer( struct yy_buffer_state *b, FLEX_STD istream *s );
-		void yy_flush_buffer( struct yy_buffer_state *b );
+		void yy_init_buffer( struct yy_buffer_state * b, FLEX_STD istream * s );
+		void yy_flush_buffer( struct yy_buffer_state * b );
 
 		int yy_start_stack_ptr;
 		int yy_start_stack_depth;

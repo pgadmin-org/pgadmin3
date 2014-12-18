@@ -17,10 +17,10 @@
 // Note: This must match the radio buttons on dlgType
 enum TYPE_CLASS
 {
-    TYPE_COMPOSITE = 0,
-    TYPE_ENUM,
-    TYPE_EXTERNAL,
-    TYPE_RANGE
+	TYPE_COMPOSITE = 0,
+	TYPE_ENUM,
+	TYPE_EXTERNAL,
+	TYPE_RANGE
 };
 
 class pgTypeFactory : public pgSchemaObjFactory

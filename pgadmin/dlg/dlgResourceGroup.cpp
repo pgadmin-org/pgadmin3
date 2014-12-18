@@ -133,7 +133,7 @@ wxString dlgResourceGroup::GetSql()
 		if (!m_isNameChange && (m_cpuRate.compare(cpuRate) != 0 || m_dirtyRate.compare(dirtyRate) != 0))
 		{
 			sql += wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
-				cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
+			       cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
 		}
 	}
 	else
@@ -157,7 +157,7 @@ wxString dlgResourceGroup::GetSql2()
 		if (m_cpuRate.compare(cpuRate) != 0 || m_dirtyRate.compare(dirtyRate) != 0)
 		{
 			sql = wxT("ALTER RESOURCE GROUP ") + qtIdent(name) + wxT(" SET cpu_rate_limit = ") +
-				cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
+			      cpuRate + wxT(", dirty_rate_limit = ") + dirtyRate + wxT(";\n");
 		}
 	}
 

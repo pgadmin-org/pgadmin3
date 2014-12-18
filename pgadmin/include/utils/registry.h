@@ -22,23 +22,23 @@ class pgRegKey
 public:
 	enum PGREGWOWMODE
 	{
-	    /*
-	     * Read/Write 32 bit registry for 32 bit applications,
-	     * Read/Write 64 bit registry for 64 bit applications
-	     */
-	    PGREG_WOW_DEFAULT,
-	    /* Read/Write 32 bit registry */
-	    PGREG_WOW32,
-	    /* Read/Write 64 bit registry on 64 bit windows */
-	    PGREG_WOW64
+		/*
+		 * Read/Write 32 bit registry for 32 bit applications,
+		 * Read/Write 64 bit registry for 64 bit applications
+		 */
+		PGREG_WOW_DEFAULT,
+		/* Read/Write 32 bit registry */
+		PGREG_WOW32,
+		/* Read/Write 64 bit registry on 64 bit windows */
+		PGREG_WOW64
 	};
 
 	enum PGREGACCESSMODE
 	{
-	    /* READ ONLY */
-	    PGREG_READ,
-	    /* READ & Write */
-	    PGREG_WRITE
+		/* READ ONLY */
+		PGREG_READ,
+		/* READ & Write */
+		PGREG_WRITE
 	};
 
 public:

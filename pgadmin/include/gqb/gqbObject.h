@@ -14,15 +14,15 @@
 
 enum type_gqbObject
 {
-    GQB_DATABASE,
-    GQB_SCHEMA,
-    GQB_TABLE,
-    GQB_VIEW,
-    GQB_COLUMN,
-    GQB_QUERYOBJ,
-    GQB_QUERY,
-    GQB_JOIN,
-    GQB_RESTRICTION
+	GQB_DATABASE,
+	GQB_SCHEMA,
+	GQB_TABLE,
+	GQB_VIEW,
+	GQB_COLUMN,
+	GQB_QUERYOBJ,
+	GQB_QUERY,
+	GQB_JOIN,
+	GQB_RESTRICTION
 };
 
 // Create Array Objects used as base for gqbCollections

@@ -544,19 +544,19 @@ int dlgRepCluster::Go(bool modal)
 			if (SlonyMaximumVersion(wxT("2.2"), 0))
 			{
 				if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
-			        !AddScript(createScript, wxT("slony1_base.2.2.0.sql")) ||
-			        !AddScript(createScript, slonyBaseVersionFilename) ||
-			        !AddScript(createScript, wxT("slony1_funcs.2.2.0.sql")) ||
-			        !AddScript(createScript, slonyFuncsVersionFilename)))
-				createScript = wxEmptyString;
+				        !AddScript(createScript, wxT("slony1_base.2.2.0.sql")) ||
+				        !AddScript(createScript, slonyBaseVersionFilename) ||
+				        !AddScript(createScript, wxT("slony1_funcs.2.2.0.sql")) ||
+				        !AddScript(createScript, slonyFuncsVersionFilename)))
+					createScript = wxEmptyString;
 			}
 			else
 			{
 				if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
-						!AddScript(createScript, wxT("slony1_base.sql")) ||
-						!AddScript(createScript, slonyBaseVersionFilename) ||
-						!AddScript(createScript, wxT("slony1_funcs.sql")) ||
-						!AddScript(createScript, slonyFuncsVersionFilename)))
+				        !AddScript(createScript, wxT("slony1_base.sql")) ||
+				        !AddScript(createScript, slonyBaseVersionFilename) ||
+				        !AddScript(createScript, wxT("slony1_funcs.sql")) ||
+				        !AddScript(createScript, slonyFuncsVersionFilename)))
 					createScript = wxEmptyString;
 			}
 		}
@@ -1155,7 +1155,7 @@ wxString dlgRepCluster::GetSql()
 			if (sql.Contains(wxT("@FUNCVERSION@")) && SlonyMaximumVersion(wxT("2.2"), 0))
 			{
 				wxString slonyFuncVersion = slonyVersion;
-				slonyFuncVersion.Replace(wxT("."),wxT("_"));
+				slonyFuncVersion.Replace(wxT("."), wxT("_"));
 				sql = ReplaceString(sql, wxT("@FUNCVERSION@"), slonyFuncVersion);
 			}
 		}
@@ -1362,8 +1362,8 @@ wxString dlgRepClusterUpgrade::GetSql()
 				}
 				sql += wxT(")\n")
 				       wxT("  RETURNS ");
-				if (func.GetBool(wxT("proretset")))
-				sql += wxT("SETOF "));
+				       if (func.GetBool(wxT("proretset")))
+				       sql += wxT("SETOF "));
 				sql += qtIdent(func.GetVal(wxT("rettype")));
 
 				if (language == wxT("c"))
