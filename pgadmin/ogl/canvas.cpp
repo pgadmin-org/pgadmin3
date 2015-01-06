@@ -67,6 +67,8 @@ wxShapeCanvas::wxShapeCanvas(wxWindow *parent, wxWindowID id,
 
 wxShapeCanvas::~wxShapeCanvas()
 {
+	if(m_shapeDiagram)
+		delete m_shapeDiagram;
 }
 
 #if OGL_USE_BUFFERED_PAINT

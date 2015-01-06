@@ -129,6 +129,12 @@ gqbView::~gqbView()
 
 	if (m_gqbPopup)
 		delete m_gqbPopup;
+
+	if(orderByRGridTable)
+		delete orderByRGridTable;
+
+	if(orderByLGridTable)
+		delete orderByLGridTable;
 }
 
 

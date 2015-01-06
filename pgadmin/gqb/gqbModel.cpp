@@ -42,6 +42,8 @@ gqbModel::~gqbModel()
 		delete columnsAlias;
 
 	//GQB-TODO: delete restrictions
+	if(restrictions)
+		delete restrictions;
 }
 
 

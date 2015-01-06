@@ -700,6 +700,9 @@ frmQuery::~frmQuery()
 
 	if (mainForm)
 		mainForm->RemoveFrame(this);
+
+	if (macros)
+		delete macros;
 }
 
 
