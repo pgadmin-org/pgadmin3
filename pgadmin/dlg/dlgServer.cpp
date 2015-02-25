@@ -550,6 +550,8 @@ int dlgServer::Go(bool modal)
 		colourPicker->SetColour(colour);
 	}
 
+	// Call CheckRange to set state on OK button
+        CheckChange();
 	return dlgProperty::Go(modal);
 }
 
