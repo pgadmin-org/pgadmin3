@@ -8,13 +8,16 @@ cd ..
 REM Compile the HTML Help
 "%ProgramFiles%\HTML Help Workshop\hhc.exe" ./en_US/_build/htmlhelp/pgadmin3.hhp
 
-REM Regenerate the cache file used by the wx viewer.
-IF NOT EXIST %WXWIN%\utils\hhp2cached\vc_mswu\hhp2cached.exe GOTO NO_HHP2CACHED
+IF EXIST %WXWIN%\utils\hhp2cached\vc_mswu SET BUILDDIR=vc_mswu
+else SET BUILDDIR=vc_mswudll
 
-"%WXWIN%\utils\hhp2cached\vc_mswu\hhp2cached.exe" ./en_US/_build/htmlhelp/pgadmin3.hhp
+REM Regenerate the cache file used by the wx viewer.
+IF NOT EXIST %WXWIN%\utils\hhp2cached\%BUILDDIR%\hhp2cached.exe GOTO NO_HHP2CACHED
+
+"%WXWIN%\utils\hhp2cached\%BUILDDIR%\hhp2cached.exe" ./en_US/_build/htmlhelp/pgadmin3.hhp
 
 EXIT 0
 
 :NO_HHP2CACHED
-ECHO Could not find %WXWIN%\utils\hhp2cached\vc_mswu\hhp2cached.exe!!
+ECHO Could not find %WXWIN%\utils\hhp2cached\%BUILDDIR%\hhp2cached.exe!
 EXIT 1
