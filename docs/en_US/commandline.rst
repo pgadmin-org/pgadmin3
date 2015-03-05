@@ -25,6 +25,11 @@ when starting it.
   connection. The server status window will automatically be connected to the
   server specified in the connection string. This option cannot be used together
   with the **-S** switch.
+  
+  **NOTE:** The "password" connection string option will not be recognised for
+  security reasons. Please use a 
+  `PGPASSFILE <http://www.postgresql.org/docs/current/static/libpq.html#libpq-connect>`_ 
+  if you need to store the connection password.
 
 * **-q** Open a :ref:`Query Tool <query>` window upon connection. If used
   together with the  **-s <server description>** option, the query tool
@@ -37,6 +42,11 @@ when starting it.
   connection. The query tool will automatically be connected to the server
   specified in the connection string. This option cannot be used together with
   the **-q** switch.
+  
+  **NOTE:** The "password" connection string option will not be recognised for
+  security reasons. Please use a 
+  `PGPASSFILE <http://www.postgresql.org/docs/current/static/libpq.html#libpq-connect>`_ 
+  if you need to store the connection password.
 
 * **-f <SQL script>** Automatically open the specified SQL script in the
   :ref:`Query Tool <query>`. Only useful with -q or -qc.
