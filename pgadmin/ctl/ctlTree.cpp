@@ -318,6 +318,58 @@ pgCollection *ctlTree::FindCollection(pgaFactory &factory, wxTreeItemId parent)
 }
 
 
+void ctlTree::NavigateTree(int keyCode)
+{
+	switch(keyCode)
+	{
+		case WXK_LEFT:
+			{
+				//If tree item has children and is expanded, collapse it, otherwise select it's parent if has one
+				wxTreeItemId currItem = GetSelection();
+
+				if (ItemHasChildren(currItem) && IsExpanded(currItem))
+				{
+					Collapse(currItem);
+				}
+				else
+				{
+					wxTreeItemId parent = GetItemParent(currItem);
+					if (parent.IsOk())
+					{
+						SelectItem(currItem, false);
+						SelectItem(parent, true);
+					}
+				}
+			}
+			break;
+		case WXK_RIGHT:
+			{
+				//If tree item do not have any children ignore it,
+				//otherwise  expand it if not expanded, and select first child if already expanded
+				wxTreeItemId currItem = GetSelection();
+
+				if(ItemHasChildren(currItem))
+				{
+					if (!IsExpanded(currItem))
+					{
+						Expand(currItem);
+					}
+					else
+					{
+						wxCookieType cookie;
+						wxTreeItemId firstChild = GetFirstChild(currItem, cookie);
+						SelectItem(currItem, false);
+						SelectItem(firstChild, true);
+					}
+				}
+			}
+			break;
+		default:
+			wxASSERT_MSG(false, _("Currently handles only right and left arrow key, other keys are working"));
+			break;
+	}
+}
+
 //////////////////////
 
 treeObjectIterator::treeObjectIterator(ctlTree *brow, pgObject *obj)

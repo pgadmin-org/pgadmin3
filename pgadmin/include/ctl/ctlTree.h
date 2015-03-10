@@ -40,6 +40,7 @@ public:
 	pgObject *FindObject(pgaFactory &factory, wxTreeItemId parent);
 	pgCollection *FindCollection(pgaFactory &factory, wxTreeItemId parent);
 	wxTreeItemId FindItem(const wxTreeItemId &item, const wxString &str);
+	void NavigateTree(int keyCode);
 	virtual ~ctlTree();
 
 	DECLARE_EVENT_TABLE()

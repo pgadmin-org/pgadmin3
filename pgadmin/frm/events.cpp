@@ -130,7 +130,8 @@ void frmMain::OnSize(wxSizeEvent &event)
 // to reset m_metaDown
 void frmMain::OnTreeKeyDown(wxTreeEvent &event)
 {
-	switch (event.GetKeyCode())
+	int keyCode = event.GetKeyCode();
+	switch (keyCode)
 	{
 		case WXK_F1:
 			OnHelp(event);
@@ -140,6 +141,11 @@ void frmMain::OnTreeKeyDown(wxTreeEvent &event)
 			break;
 		case WXK_DELETE:
 			OnDelete(event);
+			break;
+			// Is tempting to write all cases(this handler) in tree control itself
+		case WXK_LEFT:
+		case WXK_RIGHT:
+			browser->NavigateTree(keyCode);
 			break;
 		default:
 			event.Skip();
