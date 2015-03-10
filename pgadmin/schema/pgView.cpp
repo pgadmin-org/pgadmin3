@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgColumn.h"
+#include "schema/pgIndexConstraint.h"
 #include "schema/pgView.h"
 #include "frm/frmMain.h"
 #include "frm/frmHint.h"
@@ -112,6 +113,9 @@ wxMenu *pgView::GetNewMenu()
 	{
 		ruleFactory.AppendMenu(menu);
 		triggerFactory.AppendMenu(menu);
+		if (GetMaterializedView()) {
+			indexFactory.AppendMenu(menu);
+		}
 	}
 	return menu;
 }
@@ -366,6 +370,9 @@ wxString pgView::GetSql(ctlTree *browser)
 				sql += GetSeqLabelsSql();
 		}
 
+		if (IsMatViewFlag) {
+			AppendStuff(sql, browser, indexFactory);
+		}
 		AppendStuff(sql, browser, ruleFactory);
 		AppendStuff(sql, browser, triggerFactory);
 	}
@@ -470,6 +477,9 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		browser->RemoveDummyChild(this);
 
 		browser->AppendCollection(this, columnFactory);
+
+		if (GetMaterializedView())
+			browser->AppendCollection(this, indexFactory);
 
 		pgCollection *collection = browser->AppendCollection(this, ruleFactory);
 		collection->iSetOid(GetOid());
