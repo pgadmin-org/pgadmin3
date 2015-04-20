@@ -237,6 +237,7 @@ frmMain::frmMain(const wxString &title)
 
 	browser->Expand(root);
 	browser->SortChildren(root);
+	browser->SetFocus();
 }
 
 
