@@ -745,16 +745,15 @@ void frmMain::OnSelRightClick(wxTreeEvent &event)
 	{
 		browser->SelectItem(item);
 
-		// Prevent changes to "currentObject" by "execSelchange" function by another thread.
-		// Will hold the lock until we do popup on the respective object.
-		//
+		// Prevent changes to "currentObject" by "execSelchange" function by another
+		// thread. Will hold the lock until we have the actual object in hand.
 		s_currentObjectMutex.Lock();
 		currentObject = browser->GetObject(item);
+		s_currentObjectMutex.Unlock();
 	}
 
 	if (currentObject)
 		doPopup(browser, event.GetPoint(), currentObject);
-	s_currentObjectMutex.Unlock();
 }
 
 
