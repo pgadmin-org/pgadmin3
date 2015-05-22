@@ -570,7 +570,6 @@ wxString dlgServer::GetPassword()
 
 pgObject *dlgServer::CreateObject(pgCollection *collection)
 {
-	wxString name = GetName();
 	pgServer *obj = NULL;
 
 #if defined(HAVE_OPENSSL_CRYPTO) || defined(HAVE_GCRYPT)

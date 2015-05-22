@@ -139,7 +139,6 @@ void dlgManageMacros::DeleteMacro(int listItem)
 void dlgManageMacros::OnClear(wxCommandEvent &ev)
 {
 	int item;
-	wxString key;
 	item = lstKeys->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
 	if (item == -1)

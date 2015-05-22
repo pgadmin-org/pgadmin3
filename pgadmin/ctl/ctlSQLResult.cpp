@@ -325,8 +325,7 @@ wxString sqlResultTable::GetValue(int row, int col)
 			{
 
 				wxString decimalMark = wxT(".");
-				wxString s = wxEmptyString;
-				s = thread->DataSet()->GetVal(col);
+				wxString s = thread->DataSet()->GetVal(col);
 
 				if(thread->DataSet()->ColTypClass(col) == PGTYPCLASS_NUMERIC &&
 				        settings->GetDecimalMark().Length() > 0)

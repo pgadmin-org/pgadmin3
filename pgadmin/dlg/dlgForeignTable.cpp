@@ -379,8 +379,6 @@ void dlgForeignTable::OnMemberRemove(wxCommandEvent &ev)
 
 pgObject *dlgForeignTable::CreateObject(pgCollection *collection)
 {
-	wxString name = GetName();
-
 	pgObject *obj = 0;
 	return obj;
 }

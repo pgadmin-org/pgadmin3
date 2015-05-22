@@ -100,8 +100,6 @@ wxString dlgMoveTablespace::GetTablespace()
 
 wxString dlgMoveTablespace::GetKind()
 {
-	wxString kind;
-
 	if (cbKind->GetValue().Cmp(_("Tables")) == 0)
 		return wxT("TABLES");
 	if (cbKind->GetValue().Cmp(_("Indexes")) == 0)

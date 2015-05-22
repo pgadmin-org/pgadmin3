@@ -133,7 +133,7 @@ int dlgIndexConstraint::Go(bool modal)
 		// We only display the column options (ASC/DESC, NULLS FIRST/LAST)
 		// on exclude constraints with btree
 		wxArrayString colsArr = index->GetColumnList();
-		wxString colDef, colRest, colName, descDef, nullsDef, opclassDef, withDef;
+		wxString colDef, colRest, descDef, nullsDef, opclassDef, withDef;
 		const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST");
 		const wxString descOrder = wxT(" DESC");
 		if (wxString(factory->GetTypeName()).Upper() == wxT("EXCLUDE") && index->GetIndexType() == wxT("btree"))

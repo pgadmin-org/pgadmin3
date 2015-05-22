@@ -220,7 +220,6 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				int anzvar = 0;
 				while (!set->Eof())
 				{
-					wxString element;
 					if (anzvar++)
 					{
 						typesList += wxT(", ");
@@ -232,8 +231,6 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 					pgDatatype dt(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")),
 					              set->GetBool(wxT("isdup")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
-
-					wxString nspname = set->GetVal(wxT("nspname"));
 
 					typesList += dt.GetSchemaPrefix(GetDatabase()) + dt.FullName();
 					typesArray.Add(dt.GetSchemaPrefix(GetDatabase()) + dt.FullName());
@@ -272,7 +269,6 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				int anzvar = 0;
 				while (!set->Eof())
 				{
-					wxString element;
 					if (anzvar++)
 					{
 						labelList += wxT(", ");

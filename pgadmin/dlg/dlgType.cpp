@@ -1007,8 +1007,6 @@ void dlgType::OnLabelRemove(wxCommandEvent &ev)
 
 pgObject *dlgType::CreateObject(pgCollection *collection)
 {
-	wxString name = GetName();
-
 	pgObject *obj = 0; //pgType::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtDbString(name));
 	return obj;
 }

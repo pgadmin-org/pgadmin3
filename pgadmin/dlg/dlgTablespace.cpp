@@ -171,8 +171,6 @@ void dlgTablespace::CheckChange()
 	}
 	else
 	{
-		wxString name = GetName();
-
 		CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
 		CheckValid(enable, !txtLocation->GetValue().IsEmpty(), _("Please specify location."));
 	}

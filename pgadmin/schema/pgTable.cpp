@@ -843,7 +843,6 @@ wxString pgTable::GetUpdateSql(ctlTree *browser)
 
 wxString pgTable::GetDeleteSql(ctlTree *browser)
 {
-	wxString qms;
 	wxString sql =
 	    wxT("DELETE FROM ") + GetQuotedFullIdentifier() + wxT("\n")
 	    wxT(" WHERE <condition>;\n");

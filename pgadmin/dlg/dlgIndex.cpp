@@ -344,8 +344,7 @@ int dlgIndex::Go(bool modal)
 		// on PostgreSQL 8.3+, for btree indexes.
 		wxArrayString colsArr = index->GetColumnList();
 		wxArrayString collationsArray = index->GetCollationsArray();
-		wxString colDef, colRest, colName, descDef, nullsDef, opclassDef, collation;
-		const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
+		wxString colDef, descDef, nullsDef, opclassDef;
 		if (this->database->BackendMinimumVersion(8, 3) && index->GetIndexType() == wxT("btree"))
 		{
 			for (unsigned int colIdx = 0, colsCount = colsArr.Count(); colIdx < colsCount; colIdx++)

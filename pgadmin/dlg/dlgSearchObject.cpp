@@ -854,7 +854,6 @@ void dlgSearchObject::OnSearch(wxCommandEvent &ev)
 			if(objectType == wxT("Login Roles") || objectType == wxT("Group Roles") || objectType == wxT("Tablespaces"))
 			{
 				wxStringTokenizer tkz(databasePath, wxT("/"));
-				wxString newPath;
 				while(tkz.HasMoreTokens())
 				{
 					wxString token = tkz.GetNextToken();

@@ -738,7 +738,7 @@ void dlgColumn::GetSecLabelList(wxArrayString &secLabelList)
 
 wxString dlgColumn::GetDefinition()
 {
-	wxString sql, col;
+	wxString sql;
 	sql = GetQuotedTypename(cbDatatype->GetGuessedSelection());
 	if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 		sql += wxT(" COLLATE ") + cbCollation->GetValue();

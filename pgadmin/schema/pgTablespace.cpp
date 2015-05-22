@@ -283,8 +283,6 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 {
 	pgTablespace *tablespace = 0;
 
-	wxString tabname;
-
 	pgSet *tablespaces;
 	if (collection->GetConnection()->BackendMinimumVersion(9, 2))
 		tablespaces = collection->GetServer()->ExecuteSet(

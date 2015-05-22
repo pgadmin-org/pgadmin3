@@ -1550,7 +1550,6 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		if (!colour.IsEmpty())
 		{
 			wxColour cColour;
-			wxString sColour = wxEmptyString;
 
 			if (cColour.Set(colour))
 				colour = cColour.GetAsString(wxC2S_HTML_SYNTAX);
@@ -1649,7 +1648,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	while (pgKey != NULL)
 	{
 		pgRegKey *svcKey = NULL;
-		wxString svcName, temp;
+		wxString svcName;
 		long cookie = 0;
 		DWORD tmpport = 0;
 		bool flag = false;
