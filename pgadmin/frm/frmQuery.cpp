@@ -121,6 +121,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_EXPLAINANALYZE,    frmQuery::OnExplain)
 	EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
 	EVT_MENU(MNU_AUTOROLLBACK,      frmQuery::OnAutoRollback)
+	EVT_MENU(MNU_AUTOCOMMIT,        frmQuery::OnAutoCommit)
 	EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
 	EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
 	EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
@@ -316,6 +317,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	queryMenu->Append(MNU_CLEARHISTORY, _("Clear history"), _("Clear history window."));
 	queryMenu->AppendSeparator();
 	queryMenu->Append(MNU_AUTOROLLBACK, _("&Auto-Rollback"), _("Rollback the current transaction if an error is detected"), wxITEM_CHECK);
+	queryMenu->Append(MNU_AUTOCOMMIT, _("&Auto-Commit"), _("Auto commit the cuurent transaction"), wxITEM_CHECK);
 	queryMenu->AppendSeparator();
 	queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
 	menuBar->Append(queryMenu, _("&Query"));
@@ -559,8 +561,12 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	bool bVal;
 
 	// Auto-rollback
-	settings->Read(wxT("frmQuery/AutoRollback"), &bVal, false);
+	bVal = settings->GetAutoRollback();
 	queryMenu->Check(MNU_AUTOROLLBACK, bVal);
+
+	// Auto-commit
+	bVal = settings->GetAutoCommit();
+	queryMenu->Check(MNU_AUTOCOMMIT, bVal);
 
 	// Auto indent
 	settings->Read(wxT("frmQuery/AutoIndent"), &bVal, true);
@@ -823,6 +829,15 @@ void frmQuery::OnAutoRollback(wxCommandEvent &event)
 	settings->WriteBool(wxT("frmQuery/AutoRollback"), queryMenu->IsChecked(MNU_AUTOROLLBACK));
 }
 
+void frmQuery::OnAutoCommit(wxCommandEvent &event)
+{
+	queryMenu->Check(MNU_AUTOCOMMIT, event.IsChecked());
+	if(event.IsChecked() && conn->GetTxStatus() != PQTRANS_IDLE)
+		wxMessageBox(
+			_("The current transaction is still in progess.\n\nIn order to take the effect of AUTOCOMMIT mode, please complete the transaction by executing COMMIT, or ROLLBACK statement."),
+			_("Warning - Transaction in progress"), wxICON_INFORMATION | wxOK, this);
+	settings->WriteBool(wxT("frmQuery/AutoCommit"), queryMenu->IsChecked(MNU_AUTOCOMMIT));
+}
 
 void frmQuery::OnAutoIndent(wxCommandEvent &event)
 {
@@ -2486,6 +2501,9 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 	startTimeQuery = wxGetLocalTimeMillis();
 	timer.Start(10);
 
+	if (!queryMenu->IsChecked(MNU_AUTOCOMMIT) && conn->GetTxStatus() == PQTRANS_IDLE && !isBeginNotRequired(query))
+		conn->ExecuteVoid(wxT("BEGIN;"));
+
 	if (sqlResult->Execute(query, resultToRetrieve, this, QUERY_COMPLETE, qi) >= 0)
 	{
 		// Return and wait for the result
@@ -2495,6 +2513,177 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 	completeQuery(false, false, false);
 }
 
+bool frmQuery::isBeginNotRequired(wxString query)
+{
+	int	wordlen = 0;
+
+	query = query.Trim(false);
+
+	/*
+	 * Check word length (since "beginx" is not "begin").
+	 */
+	while(wxIsalpha(query.GetChar(wordlen)))
+		wordlen++;
+
+	/*
+	 * Transaction control commands.  These should include every keyword that
+	 * gives rise to a TransactionStmt in the backend grammar, except for the
+	 * savepoint-related commands.
+	 *
+	 * (We assume that START must be START TRANSACTION, since there is
+	 * presently no other "START foo" command.)
+	 */
+	wxString keyword = query.SubString(0, wordlen-1);
+	if (wordlen == 5 && keyword.CmpNoCase(wxT("abort")) == 0)
+		return true;
+	if (wordlen == 5 && keyword.CmpNoCase(wxT("begin")) == 0)
+		return true;
+	if (wordlen == 5 && keyword.CmpNoCase(wxT("start")) == 0)
+		return true;
+	if (wordlen == 6 && keyword.CmpNoCase(wxT("commit")) == 0)
+		return true;
+	if (wordlen == 3 && keyword.CmpNoCase(wxT("end")) == 0)
+		return true;
+	if (wordlen == 8 && keyword.CmpNoCase(wxT("rollback")) == 0)
+		return true;
+	if (wordlen == 7 && keyword.CmpNoCase(wxT("prepare")) == 0)
+	{
+		/* PREPARE TRANSACTION is a TC command, PREPARE foo is not */
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		wordlen = 0;
+		while(wxIsalpha(query.GetChar(wordlen)))
+			wordlen++;
+		keyword = query.SubString(0, wordlen-1);
+
+		if (wordlen == 11 && keyword.CmpNoCase(wxT("transaction")) == 0)
+			return true;
+		return false;
+	}
+
+	/*
+	 * Commands not allowed within transactions.  The statements checked for
+	 * here should be exactly those that call PreventTransactionChain() in the
+	 * backend.
+	 */
+	if (wordlen == 6 && keyword.CmpNoCase(wxT("vacuum")) == 0)
+		return true;
+	if (wordlen == 7 && keyword.CmpNoCase(wxT("cluster")) == 0)
+	{
+		/* CLUSTER with any arguments is allowed in transactions */
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		if(wxIsalpha(((wxChar)query.at(0))))
+			return false;		/* has additional words */
+		return true;			/* it's CLUSTER without arguments */
+	}
+
+	if (wordlen == 6 && keyword.CmpNoCase(wxT("create")) == 0)
+	{
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		wordlen = 0;
+		while(wxIsalpha(query.GetChar(wordlen)))
+			wordlen++;
+		keyword = query.SubString(0, wordlen-1);
+
+		if (wordlen == 8 && keyword.CmpNoCase(wxT("database")) == 0)
+			return true;
+		if (wordlen == 10 && keyword.CmpNoCase(wxT("tablespace")) == 0)
+			return true;
+
+		/* CREATE [UNIQUE] INDEX CONCURRENTLY isn't allowed in xacts */
+		if (wordlen == 6 && keyword.CmpNoCase(wxT("cluster")) == 0)
+		{
+			query = query.SubString(keyword.Length(),query.Length()-1);
+			query = query.Trim(false);
+
+			wordlen = 0;
+			while(wxIsalpha(query.GetChar(wordlen)))
+				wordlen++;
+			keyword = query.SubString(0, wordlen-1);
+		}
+
+		if (wordlen == 5 &&  keyword.CmpNoCase(wxT("index")) == 0)
+		{
+			query = query.SubString(keyword.Length(),query.Length()-1);
+			query = query.Trim(false);
+
+			wordlen = 0;
+			while(wxIsalpha(query.GetChar(wordlen)))
+				wordlen++;
+			keyword = query.SubString(0, wordlen-1);
+
+			if (wordlen == 12 &&  keyword.CmpNoCase(wxT("concurrently")) == 0)
+				return true;
+		}
+
+		return false;
+	}
+
+	if (wordlen == 5 &&  keyword.CmpNoCase(wxT("alter")) == 0)
+	{
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		wordlen = 0;
+		while(wxIsalpha(query.GetChar(wordlen)))
+			wordlen++;
+		keyword = query.SubString(0, wordlen-1);
+
+		/* ALTER SYSTEM isn't allowed in xacts */
+		if (wordlen == 6 && keyword.CmpNoCase(wxT("system")) == 0)
+			return true;
+
+		return false;
+	}
+
+	/*
+	 * Note: these tests will match DROP SYSTEM and REINDEX TABLESPACE, which
+	 * aren't really valid commands so we don't care much. The other four
+	 * possible matches are correct.
+	 */
+	if ((wordlen == 4 && keyword.CmpNoCase(wxT("drop")) == 0) ||
+		(wordlen == 7 && keyword.CmpNoCase(wxT("reindex")) == 0))
+	{
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		wordlen = 0;
+		while(wxIsalpha(query.GetChar(wordlen)))
+			wordlen++;
+		keyword = query.SubString(0, wordlen-1);
+
+		if (wordlen == 8 && keyword.CmpNoCase(wxT("database")) == 0)
+			return true;
+		if (wordlen == 6 && keyword.CmpNoCase(wxT("system")) == 0)
+			return true;
+		if (wordlen == 10 && keyword.CmpNoCase(wxT("tablespace")) == 0)
+			return true;
+		return false;
+	}
+
+	/* DISCARD ALL isn't allowed in xacts, but other variants are allowed. */
+	if (wordlen == 7 && keyword.CmpNoCase(wxT("discard")) == 0)
+	{
+		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.Trim(false);
+
+		wordlen = 0;
+		while(wxIsalpha(query.GetChar(wordlen)))
+			wordlen++;
+		keyword = query.SubString(0, wordlen-1);
+
+		if (wordlen == 3 && keyword.CmpNoCase(wxT("all")) == 0)
+			return true;
+		return false;
+	}
+
+	return false;
+}
 
 // When the query completes, it raises an event which we process here.
 void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
@@ -2839,7 +3028,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 	msgHistory->ShowPosition(0);
 
 	// If the transaction aborted for some reason, issue a rollback to cleanup.
-	if (settings->GetAutoRollback() && conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
+	if (queryMenu->IsChecked(MNU_AUTOROLLBACK) && conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
 		conn->ExecuteVoid(wxT("ROLLBACK;"));
 
 	setTools(false);

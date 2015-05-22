@@ -23,6 +23,8 @@ Use the fields on the *Query editor* dialog to specify workspace preferences for
 
 * **Enable Auto ROLLBACK** - Check the box next to *Enable Auto ROLLBACK* to instruct the query tool to execute a ROLLBACK if a query fails.
 
+* **Enable Auto COMMIT** - Check the box next to *Enable Auto COMMIT* to instruct the query tool to enable auto commit after executing the query.
+
 * **Keywords in uppercase** - Check the box next to *Keywords in uppercase* to instruct the Query tool to convert any keywords entered to an uppercase font.
 
 .. image:: images/options-colours.png

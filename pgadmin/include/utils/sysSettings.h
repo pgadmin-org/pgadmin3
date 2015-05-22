@@ -367,12 +367,22 @@ public:
 	bool GetAutoRollback() const
 	{
 		bool b;
-		Read(wxT("frmQuery/AutoRollback"), &b, true);
+		Read(wxT("frmQuery/AutoRollback"), &b, false);
 		return b;
 	}
 	void SetAutoRollback(const bool newval)
 	{
 		WriteBool(wxT("frmQuery/AutoRollback"), newval);
+	}
+	bool GetAutoCommit() const
+	{
+		bool b;
+		Read(wxT("frmQuery/AutoCommit"), &b, true);
+		return b;
+	}
+	void SetAutoCommit(const bool newval)
+	{
+		WriteBool(wxT("frmQuery/AutoCommit"), newval);
 	}
 	wxString GetDecimalMark() const
 	{

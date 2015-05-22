@@ -199,6 +199,7 @@ private:
 	void OnRedo(wxCommandEvent &event);
 	void OnSaveHistory(wxCommandEvent &event);
 	void OnAutoRollback(wxCommandEvent &event);
+	void OnAutoCommit(wxCommandEvent &event);
 	void OnChangeConnection(wxCommandEvent &ev);
 	void OnClearHistory(wxCommandEvent &event);
 	void OnActivate(wxActivateEvent &event);
@@ -239,6 +240,7 @@ private:
 	void execQuery(const wxString &query, int resultToRetrieve = 0, bool singleResult = false, const int queryOffset = 0, bool toFile = false, bool explain = false, bool verbose = false);
 	void OnQueryComplete(pgQueryResultEvent &ev);
 	void completeQuery(bool done, bool explain, bool verbose);
+	bool isBeginNotRequired(wxString query);
 	void OnScriptComplete(wxCommandEvent &ev);
 	void setTools(const bool running);
 	void showMessage(const wxString &msg, const wxString &msgShort = wxT(""));
