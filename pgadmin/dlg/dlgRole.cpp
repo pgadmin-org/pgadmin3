@@ -219,7 +219,10 @@ int dlgRole::Go(bool modal)
 		chkCreateRole->SetValue(role->GetCreateRole());
 		chkSuperuser->SetValue(role->GetSuperuser());
 		chkInherits->SetValue(role->GetInherits());
-		chkUpdateCat->SetValue(role->GetUpdateCatalog());
+		if (!connection->BackendMinimumVersion(9, 5))
+			chkUpdateCat->SetValue(role->GetUpdateCatalog());
+		else
+			chkUpdateCat->Disable();
 		chkCanLogin->SetValue(role->GetCanLogin());
 		chkReplication->SetValue(role->GetReplication());
 		if (role->GetAccountExpires().IsValid() && role->GetAccountExpires().GetValue() != -1)
@@ -385,7 +388,8 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
 			return;
 		}
 	}
-	chkUpdateCat->SetValue(chkSuperuser->GetValue());
+	chkUpdateCat->SetValue(chkSuperuser->GetValue() &&
+		!connection->BackendMinimumVersion(9, 5));
 	CheckChange();
 }
 
@@ -403,7 +407,8 @@ void dlgRole::CheckChange()
 		timValidUntil->SetTime(wxDefaultDateTime);
 
 	if (!readOnly)
-		chkUpdateCat->Enable(chkSuperuser->GetValue());
+		chkUpdateCat->Enable(chkSuperuser->GetValue() &&
+			!connection->BackendMinimumVersion(9, 5));
 
 	// Check the passwords match
 	if (txtPasswd->GetValue() != txtRePasswd->GetValue())
@@ -693,7 +698,8 @@ wxString dlgRole::GetSql()
 		if (!options.IsNull())
 			sql += wxT("ALTER ROLE ") + qtIdent(name) + options + wxT(";\n");
 
-		if (chkUpdateCat->GetValue() != role->GetUpdateCatalog())
+		if (!connection->BackendMinimumVersion(9, 5) &&
+				chkUpdateCat->GetValue() != role->GetUpdateCatalog())
 		{
 			if (!connection->HasPrivilege(wxT("Table"), wxT("pg_authid"), wxT("update")))
 				sql += wxT(" -- Can't update 'UpdateCatalog privilege: can't write to pg_authid.\n")
@@ -827,7 +833,8 @@ wxString dlgRole::GetSql()
 		}
 		sql += wxT(";\n") + grants;
 
-		if (superuser && !chkUpdateCat->GetValue())
+		if (superuser && !chkUpdateCat->GetValue() &&
+			!connection->BackendMinimumVersion(9, 5))
 			sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(name) + wxT(";\n");
 	}
 

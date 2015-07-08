@@ -177,7 +177,8 @@ int pgRole::GetIconId()
 
 bool pgRole::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	if (GetUpdateCatalog())
+	if ((GetUpdateCatalog() && !server->GetConnection()->BackendMinimumVersion(9, 5)) ||
+		(server->GetConnection()->BackendMinimumVersion(9, 5) && this->GetSuperuser()))
 	{
 		wxMessageDialog dlg(frame,
 		                    _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
@@ -226,7 +227,8 @@ wxString pgRole::GetSql(ctlTree *browser)
 			AppendIfFilled(sql, wxT(" RESOURCE QUEUE "), GetRolQueueName());
 		sql += wxT(";\n");
 
-		if (this->GetSuperuser() && !GetUpdateCatalog())
+		if (this->GetSuperuser() && !GetUpdateCatalog() &&
+			!server->GetConnection()->BackendMinimumVersion(9, 5))
 			sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
 
 		size_t index;
@@ -458,7 +460,9 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Superuser?"), BoolToYesNo(GetSuperuser()));
 		properties->AppendItem(_("Create databases?"), BoolToYesNo(GetCreateDatabase()));
 		properties->AppendItem(_("Create roles?"), BoolToYesNo(GetCreateRole()));
-		properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
+
+		if (!server->GetConnection()->BackendMinimumVersion(9, 5))
+			properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 		properties->AppendItem(_("Inherits?"), BoolToYesNo(GetInherits()));
 		if (server->GetConnection()->BackendMinimumVersion(9, 1))
 		{
@@ -641,7 +645,9 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 			role->iSetCreateRole(roles->GetBool(wxT("rolcreaterole")));
 			role->iSetCreateDatabase(roles->GetBool(wxT("rolcreatedb")));
 			role->iSetSuperuser(roles->GetBool(wxT("rolsuper")));
-			role->iSetUpdateCatalog(roles->GetBool(wxT("rolcatupdate")));
+
+			if (!collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 5))
+				role->iSetUpdateCatalog(roles->GetBool(wxT("rolcatupdate")));
 			role->iSetAccountExpires(roles->GetDateTime(wxT("rolvaliduntil")));
 			role->iSetIsValidInfinity(roles->GetVal(wxT("rolvaliduntil")) == wxT("infinity") ? true : false);
 			role->iSetPassword(roles->GetVal(wxT("rolpassword")));
