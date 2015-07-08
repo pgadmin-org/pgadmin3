@@ -284,7 +284,7 @@ char    *M_lowercase(char *s)
 	return(s);
 }
 /****************************************************************************/
-/*    returns char position of first occurence of s2 in s1
+/*    returns char position of first occurrence of s2 in s1
 	  or -1 if no match found
 */
 int     M_strposition(char *s1, char *s2)

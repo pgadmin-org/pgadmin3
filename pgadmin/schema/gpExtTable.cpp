@@ -336,7 +336,7 @@ wxString gpExtTable::GetSql(ctlTree *browser)
 
 				/*
 				* NOTE: error tables get automatically generated if don't exist.
-				* therefore we must be sure that this statment will be dumped after
+				* therefore we must be sure that this statement will be dumped after
 				* the error relation CREATE is dumped, so that we won't try to
 				* create it twice. For now we rely on the fact that we pick dumpable
 				* objects sorted by OID, and error table oid *should* always be less

@@ -1754,7 +1754,7 @@ void frmQuery::OnChangeStc(wxStyledTextEvent &event)
 	// that seems to be m_modificationType == 512.
 	if (event.m_modificationType != 512 &&
 	        // Sometimes there come events 20 and 520 AFTER the initial query was set by constructor.
-	        // Their occurence is related to query's size and possibly international characters in it (??)
+	        // Their occurrence is related to query's size and possibly international characters in it (??)
 	        // Filter them out to keep "initial" origin of query text.
 	        (origin != ORIGIN_INITIAL || (event.m_modificationType != 20 && event.m_modificationType != 520)))
 	{

@@ -9,8 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-/* 
- * BUG: Must compile as C and not C++, becase of 
+/*
+ * BUG: Must compile as C and not C++, because of
  * http://support.microsoft.com/default.aspx?scid=kb%3Ben-us%3B315481
  * Adds a bit of C<->C++ cruft...
  */

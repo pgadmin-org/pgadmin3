@@ -932,7 +932,7 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 			// Warn the user about partially applied changes, but don't bail out.
 			// Carry on as if everything was successful (because the most important
 			// change was!!
-			wxMessageBox(_("An error occured executing the second stage SQL statement.\n\nChanges may have been partially applied."), _("Warning"), wxICON_EXCLAMATION | wxOK, this);
+			wxMessageBox(_("An error occurred executing the second stage SQL statement.\n\nChanges may have been partially applied."), _("Warning"), wxICON_EXCLAMATION | wxOK, this);
 		}
 		else // Only apend schema changes if there was no error.
 		{
@@ -2221,7 +2221,7 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 #endif
 	if (!IsUpToDate())
 	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
+		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) != wxYES)
 			return;
 	}
 

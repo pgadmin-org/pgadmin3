@@ -102,7 +102,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	// Get the current sort columns, and populate the listbox.
 	// The current columns will be parsed char by char to allow us
 	// to cope with quoted column names with commas in them (let's hope
-	// noone ever does that, but sod's law etc....)
+	// no one ever does that, but sod's law etc....)
 	bool inColumn = true, inQuote = false;
 	wxString sortCols = parent->GetSortCols();
 	wxString col, dir;

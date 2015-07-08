@@ -192,7 +192,7 @@ void frmMain::AddPluginUtility(PluginUtility *util)
 #endif
 #endif
 
-	// Only add apps targetted to this, or any platform
+	// Only add apps targeted to this, or any platform
 	if (util->platform.Lower() == thisPlatform || util->platform == wxEmptyString)
 	{
 		// Only add an app with a title and command

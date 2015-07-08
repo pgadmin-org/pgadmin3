@@ -262,7 +262,7 @@ void gqbGridOrderTable::changesPositions(int sPos, int dPos)
 // Change a single row or a range to one pos up or down (but no more than one position)
 void gqbGridOrderTable::changesRangeOnePos(int topPos, int bottomPos, int newTop)
 {
-	// Eliminate side effect of zero base array on calculations, but carefull newTop still it's zero based
+	// Eliminate side effect of zero base array on calculations, but careful newTop still it's zero based
 	topPos++;
 	bottomPos++;
 	int sizeRange = bottomPos - (topPos - 1), size = GetNumberRows();

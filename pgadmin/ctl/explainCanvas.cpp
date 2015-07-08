@@ -327,7 +327,7 @@ void ExplainText::OnMouseLost(wxMouseCaptureLostEvent &ev)
 {
 	/*
 	 * We will not do anything here.
-	 * But - in order to resolve a wierd bug on window, when using
+	 * But - in order to resolve a weird bug on window, when using
 	 * wxPopupTransientWindow, related to loosing the mouse control,
 	 * was not taken care properly, we have to introduce this function
 	 * to avoid the crash.

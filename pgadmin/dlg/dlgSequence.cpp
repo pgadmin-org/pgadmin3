@@ -268,7 +268,7 @@ wxString dlgSequence::GetSql()
 			AppendOwnerChange(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
 
 		// This is where things get hairy. Per some thought by Horvath Gabor,
-		// we need to adjust the min/max sequence values, and the the current
+		// we need to adjust the min/max sequence values, and the current
 		// value per the rules:
 		//
 		// 1 Any ALTER SEQUENCE MIN/MAXVALUE statements that widen the range

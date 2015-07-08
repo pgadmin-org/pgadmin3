@@ -417,7 +417,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
 		if (!GetDatabase()->BackendMinimumVersion(7, 4))
 		{
-			// 7.3 misses the ANY(array) comparision
+			// 7.3 misses the ANY(array) comparison
 			pgSet *set = ExecuteSet(
 			                 wxT("SELECT conkey\n")
 			                 wxT("  FROM pg_constraint ct\n")

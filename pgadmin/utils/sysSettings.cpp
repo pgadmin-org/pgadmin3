@@ -10,7 +10,7 @@
 // Note: This class stores and manages all the applications settings.
 //       Settings are all read in the ctor, but may be written either in
 //       the relevant SetXXX() member function for rarely written settings
-//       or in the dtor for reguarly changed settings such as form sizes.
+//       or in the dtor for regularly changed settings such as form sizes.
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"

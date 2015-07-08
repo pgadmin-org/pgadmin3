@@ -258,7 +258,7 @@ private:
 	int Execute();
 	int RaiseEvent(int _retval = 0);
 
-	// Queries to be exectued
+	// Queries to be executed
 	pgBatchQueryArray  m_queries;
 	// Current running query index
 	int                m_currIndex;

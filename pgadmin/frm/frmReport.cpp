@@ -361,7 +361,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
 		}
 	}
 
-	// If report is empty, an error must have occured
+	// If report is empty, an error must have occurred
 	if (report.IsEmpty())
 		return;
 

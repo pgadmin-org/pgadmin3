@@ -305,7 +305,7 @@ void	m_apm_to_fixpt_string(char *ss, int dplaces, M_APM mtmp)
 	}
 
 	/*
-	 *  at this point, the number is non-zero and the the output
+	 *  at this point, the number is non-zero and the output
 	 *  string will contain at least 1 significant digit.
 	 */
 

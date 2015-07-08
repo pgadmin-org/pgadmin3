@@ -595,7 +595,7 @@ void frmDebugger::OnPositionStc(wxStyledTextEvent &event)
 ////////////////////////////////////////////////////////////////////////////////
 // OnVarChange()
 //
-//     This functions handles the event occured when the user edits a variable
+//     This functions handles the event occurred when the user edits a variable
 //     value. Submit the changed value to the debugger server
 //
 void frmDebugger::OnVarChange(wxGridEvent &_ev)

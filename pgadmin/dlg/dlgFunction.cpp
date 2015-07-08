@@ -383,8 +383,8 @@ int dlgFunction::Go(bool modal)
 		cbReturntype->Disable();
 		chkSetof->Disable();
 		cbDatatype->Disable();
-		// Editing paramter for wrapped functions is not allowed
-		// It will anyway throw an error, if we try to edit the paramter list
+		// Editing parameter for wrapped functions is not allowed
+		// It will anyway throw an error, if we try to edit the parameter list
 		if ( connection->GetIsEdb() &&
 		        function->GetSource().Trim(false).StartsWith( wxT( "$__EDBwrapped__$" )))
 		{
