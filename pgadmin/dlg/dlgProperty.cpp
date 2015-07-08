@@ -2000,7 +2000,7 @@ void dlgDefaultSecurityProperty::AddUsers(ctlComboBox *combobox)
 void dlgDefaultSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 {
 	wxSize l_size = ev.GetSize();
-	if (defaultSecurityPage && l_size.GetWidth() > 10 && l_size.GetWidth() > 25)
+	if (defaultSecurityPage && l_size.GetWidth() > 10 && l_size.GetHeight() > 25)
 		defaultSecurityPage->SetSize(l_size.GetWidth() - 10, l_size.GetHeight() - 25);
 	dlgSecurityProperty::OnChangeSize(ev);
 }
