@@ -149,6 +149,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_LOWER_CASE,        frmQuery::OnChangeToLowerCase)
 	EVT_MENU(MNU_COMMENT_TEXT,      frmQuery::OnCommentText)
 	EVT_MENU(MNU_UNCOMMENT_TEXT,    frmQuery::OnUncommentText)
+	EVT_MENU(MNU_EXTERNALFORMAT,    frmQuery::OnExternalFormat)
 	EVT_MENU(MNU_LF,                frmQuery::OnSetEOLMode)
 	EVT_MENU(MNU_CRLF,              frmQuery::OnSetEOLMode)
 	EVT_MENU(MNU_CR,                frmQuery::OnSetEOLMode)
@@ -293,6 +294,8 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	formatMenu->Append(MNU_BLOCK_OUTDENT, _("Block &Outdent\tShift-Tab"), _("Outdent the selected block"));
 	formatMenu->Append(MNU_COMMENT_TEXT, _("Co&mment Text\tCtrl-K"), _("Comment out the selected text"));
 	formatMenu->Append(MNU_UNCOMMENT_TEXT, _("Uncomme&nt Text\tCtrl-Shift-K"), _("Uncomment the selected text"));
+	formatMenu->AppendSeparator();
+	formatMenu->Append(MNU_EXTERNALFORMAT, _("External Format\tCtrl-Shift-F"), _("Call external formatting command"));
 	editMenu->AppendSubMenu(formatMenu, _("F&ormat"));
 	editMenu->Append(MNU_LINEENDS, _("&Line ends"), lineEndMenu);
 
@@ -3175,6 +3178,16 @@ void frmQuery::OnUncommentText(wxCommandEvent &event)
 {
 	if (FindFocus()->GetId() == CTL_SQLQUERY)
 		sqlQuery->BlockComment(true);
+}
+
+void frmQuery::OnExternalFormat(wxCommandEvent &event)
+{
+	if (FindFocus()->GetId() == CTL_SQLQUERY) {
+		wxBusyCursor wait;
+		SetStatusText(_("Running formatting command..."), STATUSPOS_MSGS);
+		SetStatusText(sqlQuery->ExternalFormat(), STATUSPOS_MSGS);
+		sqlQuery->SetFocus(); // could loose focus after running formatting process
+	}
 }
 
 wxBitmap frmQuery::CreateBitmap(const wxColour &colour)

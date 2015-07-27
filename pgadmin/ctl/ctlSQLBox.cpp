@@ -21,6 +21,7 @@
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgFindReplace.h"
 #include "frm/menu.h"
+#include "utils/sysProcess.h"
 
 wxString ctlSQLBox::sqlKeywords;
 
@@ -41,6 +42,7 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
 	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
 	EVT_STC_PAINTED(-1,  ctlSQLBox::OnPositionStc)
 	EVT_STC_MARGINCLICK(-1, ctlSQLBox::OnMarginClick)
+	EVT_END_PROCESS(-1,  ctlSQLBox::OnEndProcess)
 END_EVENT_TABLE()
 
 
@@ -53,6 +55,8 @@ ctlSQLBox::ctlSQLBox()
 	m_dlgFindReplace = 0;
 	m_autoIndent = false;
 	m_autocompDisabled = false;
+	process = 0;
+	processID = 0;
 }
 
 
@@ -63,6 +67,8 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 	m_database = NULL;
 
 	m_autocompDisabled = false;
+	process = 0;
+	processID = 0;
 
 	Create(parent, id, pos, size, style);
 }
@@ -553,6 +559,108 @@ void ctlSQLBox::UpdateLineNumber()
 	}
 }
 
+void ctlSQLBox::OnEndProcess(wxProcessEvent &ev)
+{
+	if (process)
+	{
+		processErrorOutput = process->ReadErrorStream();
+		processOutput += process->ReadInputStream();
+		processExitCode = ev.GetExitCode();
+		delete process;
+		process = 0;
+		processID = 0;
+	}
+}
+
+wxString ctlSQLBox::ExternalFormat()
+{
+	wxString msg;
+	processOutput = wxEmptyString;
+
+	bool isSelected = true;
+	wxString processInput = GetSelectedText();
+	if (processInput.IsEmpty())
+	{
+		processInput = GetText();
+		isSelected = false;
+	}
+	if (processInput.IsEmpty())
+		return _("Nothing to format.");
+
+	wxString formatCmd = settings->GetExtFormatCmd();
+	if (formatCmd.IsEmpty()) {
+		return _("You need to setup a formatting command");
+	}
+
+	if (process)
+	{
+		delete process;
+		process = NULL;
+		processID = 0;
+	}
+	processOutput = wxEmptyString;
+	processErrorOutput = wxEmptyString;
+	processExitCode = 0;
+
+	process = new sysProcess(this, wxConvUTF8);
+	processID = wxExecute(formatCmd, wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER, process);
+	if (!processID) {
+		delete process;
+		process = NULL;
+		processID = 0;
+		msg = _("Couldn't run formatting command: ") + formatCmd;
+		return msg;
+	}
+	process->WriteOutputStream(processInput);
+	process->CloseOutput();
+
+	int timeoutMs = settings->GetExtFormatTimeout();
+	int timeoutStepMs = 100;
+	int i=0;
+	while (process && i * timeoutStepMs < timeoutMs) {
+		wxSafeYield();
+		if (process)
+			processOutput += process->ReadInputStream();
+		wxSafeYield();
+		wxMilliSleep(timeoutStepMs);
+		i++;
+	}
+
+	if (process) {
+		AbortProcess();
+		return wxString::Format(_("Formatting command did not respond in %d ms"), timeoutMs);
+	}
+
+	if (processExitCode != 0) {
+		processErrorOutput.Replace(wxT("\n"), wxT(" "));
+		msg = wxString::Format(_("Error %d: "), processExitCode) + processErrorOutput;
+		return msg;
+	} else if (processOutput.Trim().IsEmpty()) {
+		return _("Formatting command error: Output is empty.");
+	}
+
+	if (isSelected)
+		ReplaceSelection(processOutput);
+	else
+		SetText(processOutput);
+
+	return _("Formatting complete.");
+}
+
+void ctlSQLBox::AbortProcess()
+{
+	if (process && processID)
+	{
+#ifdef __WXMSW__
+		// SIGTERM is useless for Windows console apps
+		wxKill(processID, wxSIGKILL, NULL, wxKILL_CHILDREN);
+#else
+		wxKill(processID, wxSIGTERM, NULL, wxKILL_CHILDREN);
+#endif
+		processID = 0;
+	}
+}
+
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent &event)
 {
 	int pos = GetCurrentPos();
@@ -679,6 +787,7 @@ ctlSQLBox::~ctlSQLBox()
 		m_dlgFindReplace->Destroy();
 		m_dlgFindReplace = 0;
 	}
+	AbortProcess();
 }
 
 

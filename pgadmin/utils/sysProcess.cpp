@@ -19,17 +19,17 @@
 #include "utils/sysProcess.h"
 
 
-sysProcess::sysProcess(wxEvtHandler *evh)
-	: wxProcess(evh)
+sysProcess::sysProcess(wxEvtHandler *evh, wxMBConv &conv)
+	: wxProcess(evh), m_conv(conv)
 {
 	pid = 0;
 	Redirect();
 }
 
 
-sysProcess *sysProcess::Create(const wxString &exec, wxEvtHandler *evh, wxArrayString *env)
+sysProcess *sysProcess::Create(const wxString &exec, wxEvtHandler *evh, wxArrayString *env, wxMBConv &conv)
 {
-	sysProcess *proc = new sysProcess(evh);
+	sysProcess *proc = new sysProcess(evh, conv);
 	if (env)
 		proc->SetEnvironment(*env);
 
@@ -45,7 +45,6 @@ sysProcess *sysProcess::Create(const wxString &exec, wxEvtHandler *evh, wxArrayS
 bool sysProcess::Run(const wxString &exec)
 {
 	pid = wxExecute(exec, wxEXEC_ASYNC, this);
-
 	return (pid != 0);
 }
 
@@ -83,6 +82,14 @@ wxString sysProcess::ReadErrorStream()
 	return wxEmptyString;
 }
 
+void sysProcess::WriteOutputStream(const wxString &out)
+{
+	// With wxEOL_DOS (=wxEOL_NATIVE in Windows) WriteString() will turn each '\n'
+	//   into "\r\n", thus making "\r\n" a wrong "\r\r\n".
+	// With wxEOL_UNIX it passes EOL characters as-is, which is preferable.
+	wxTextOutputStream tos(*GetOutputStream(), wxEOL_UNIX);
+	tos.WriteString(out);
+}
 
 wxString sysProcess::ReadStream(wxInputStream *input)
 {
@@ -97,7 +104,7 @@ wxString sysProcess::ReadStream(wxInputStream *input)
 		if (size)
 		{
 			buffer[size] = 0;
-			str.Append(wxString::Format(wxT("%s"), wxString(buffer, wxConvLibc).c_str()));
+			str.Append(wxString::Format(wxT("%s"), wxString(buffer, m_conv).c_str()));
 		}
 	}
 	return str;

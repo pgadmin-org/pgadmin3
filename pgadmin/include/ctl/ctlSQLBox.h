@@ -34,6 +34,8 @@ struct TextToFind
 	struct CharacterRange chrgText;
 };
 
+class sysProcess;
+
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl
 {
@@ -67,14 +69,23 @@ public:
 	}
 	bool BlockComment(bool uncomment = false);
 	void UpdateLineNumber();
+	wxString ExternalFormat();
+	void AbortProcess();
 
 	CharacterRange RegexFindText(int minPos, int maxPos, const wxString &text);
 
 	DECLARE_DYNAMIC_CLASS(ctlSQLBox)
 	DECLARE_EVENT_TABLE()
 
-private:
+protected:
+	void OnEndProcess(wxProcessEvent &ev);
 
+	sysProcess *process;
+	long processID;
+	wxString processOutput, processErrorOutput;
+	int processExitCode;
+
+private:
 	void OnPositionStc(wxStyledTextEvent &event);
 	void OnMarginClick(wxStyledTextEvent &event);
 

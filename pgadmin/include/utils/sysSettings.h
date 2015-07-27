@@ -450,6 +450,26 @@ public:
 	{
 		Write(wxT("MacrosFile"), newval);
 	}
+	wxString GetExtFormatCmd()
+	{
+		wxString s;
+		Read(wxT("ExtFormatCmd"), &s, wxEmptyString);
+		return s;
+	}
+	void SetExtFormatCmd(const wxString &newval)
+	{
+		Write(wxT("ExtFormatCmd"), newval);
+	}
+	long GetExtFormatTimeout() const
+	{
+		long l;
+		Read(wxT("ExtFormatTimeout"), &l, 3000L);
+		return l;
+	}
+	void SetExtFormatTimeout(const long newval)
+	{
+		WriteLong(wxT("ExtFormatTimeout"), newval);
+	}
 	wxString GetHistoryFile();
 	void SetHistoryFile(const wxString &newval)
 	{
