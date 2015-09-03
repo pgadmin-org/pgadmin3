@@ -262,6 +262,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 	// tell the manager to "commit" all the changes just made
 	manager.Update();
 
+	autoOrderBy = false;
 	if (obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION)
 	{
 		pgTable *table = (pgTable *)obj;
@@ -270,6 +271,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 		hasOids = table->GetHasOids();
 		tableName = table->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + table->GetQuotedIdentifier();
 		primaryKeyColNumbers = table->GetPrimaryKeyColNumbers();
+		autoOrderBy = true; // default order by PK/OID will be discarded when a user defines his order
 		orderBy = table->GetQuotedPrimaryKey();
 		if (orderBy.IsEmpty() && hasOids)
 			orderBy = wxT("oid");
@@ -638,8 +640,14 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 
 	sqlTable *table = sqlGrid->GetTable();
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString old_sort_string = GetSortCols().Trim();
-	wxString new_sort_string;
+	wxString old_sort_string, new_sort_string;
+
+	if (autoOrderBy) {
+		autoOrderBy = false;
+		old_sort_string = wxT("");
+	}
+	else
+		old_sort_string = GetSortCols().Trim();
 
 	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
 	{
@@ -678,8 +686,14 @@ void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 
 	sqlTable *table = sqlGrid->GetTable();
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString old_sort_string = GetSortCols().Trim();
-	wxString new_sort_string;
+	wxString old_sort_string, new_sort_string;
+
+	if (autoOrderBy) {
+		autoOrderBy = false;
+		old_sort_string = wxT("");
+	}
+	else
+		old_sort_string = GetSortCols().Trim();
 
 	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
 	{
