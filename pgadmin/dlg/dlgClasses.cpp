@@ -563,7 +563,7 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 				if (txtMessages)
 					txtMessages->AppendText(
 							_("Total query runtime: ") +
-							ElaspsedTimeToStr(
+							ElapsedTimeToStr(
 								wxGetLocalTimeMillis() - startTime
 								)
 							);

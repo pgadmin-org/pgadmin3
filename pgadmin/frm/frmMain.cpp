@@ -1352,7 +1352,7 @@ void frmMain::EndMsg(bool done)
 	{
 		// Get the execution time & display it
 		float timeval = stopwatch.Time();
-		statusBar->SetStatusText(ElaspsedTimeToStr(timeval), 2);
+		statusBar->SetStatusText(ElapsedTimeToStr(timeval), 2);
 
 		// Display the 'Done' message
 		if (done)
@@ -1362,7 +1362,7 @@ void frmMain::EndMsg(bool done)
 
 		wxLogStatus(
 				wxT("%s (%s)"), timermsg.c_str(),
-				ElaspsedTimeToStr(timeval).c_str()
+				ElapsedTimeToStr(timeval).c_str()
 				);
 		wxEndBusyCursor();
 	}

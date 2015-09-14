@@ -2726,7 +2726,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 	msgHistory->AppendText(str);
 
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	SetStatusText(ElaspsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
+	SetStatusText(ElapsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
 
 	if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
 	{
@@ -2742,7 +2742,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 				showMessage(
 						wxString::Format(
 							_("Query returned successfully with no result in %s."),
-							ElaspsedTimeToStr(elapsedQuery).c_str()
+							ElapsedTimeToStr(elapsedQuery).c_str()
 							),
 						_("OK.")
 						);
@@ -2755,7 +2755,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 							wxString::Format(
 								_("Query returned successfully: one row with OID %ld inserted, %s execution time."),
 								(long)insertedOid,
-								ElaspsedTimeToStr(elapsedQuery).c_str()),
+								ElapsedTimeToStr(elapsedQuery).c_str()),
 							wxString::Format(
 								_("One row with OID %ld inserted."),
 								(long)insertedOid
@@ -2767,7 +2767,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 					showMessage(
 							wxString::Format(
 								_("Query returned successfully: one row affected, %s execution time."),
-								ElaspsedTimeToStr(elapsedQuery).c_str()),
+								ElapsedTimeToStr(elapsedQuery).c_str()),
 							wxString::Format(_("One row affected."))
 							);
 				}
@@ -2778,7 +2778,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 						wxString::Format(
 							_("Query returned successfully: %d rows affected, %s execution time."),
 							insertedCount,
-							ElaspsedTimeToStr(elapsedQuery).c_str()
+							ElapsedTimeToStr(elapsedQuery).c_str()
 							),
 						wxString::Format(
 							_("%d rows affected."), insertedCount
@@ -2909,13 +2909,13 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 				sqlResult->DisplayData();
 
 				SetStatusText(
-						ElaspsedTimeToStr(elapsedQuery),
+						ElapsedTimeToStr(elapsedQuery),
 						STATUSPOS_SECS
 						);
 
 				str = wxString::Format(
 						_("Total query runtime: %s\n"),
-						ElaspsedTimeToStr(elapsedQuery).c_str()
+						ElapsedTimeToStr(elapsedQuery).c_str()
 						);
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
@@ -3021,12 +3021,15 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
 
 	// Manage timer
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	wxString fmtExecTime = ElaspsedTimeToStr(elapsedQuery);
+	wxString fmtExecTime = ElapsedTimeToStr(elapsedQuery);
 	SetStatusText(fmtExecTime, STATUSPOS_SECS);
 	SetStatusText(_("pgScript completed."), STATUSPOS_MSGS);
-	wxString str = _("Total pgScript runtime: ") + fmtExecTime + "\n\n";
-	msgHistory->AppendText(str);
-
+	msgHistory->AppendText(
+            wxString::Format(
+                _("Total pgScript runtime: %s\n\n"),
+                fmtExecTime.c_str()
+                )
+            );
 	// Check whether there was an error/exception
 	if (pgScript->errorOccurred() && pgScript->errorLine() >= 1)
 	{
@@ -3148,7 +3151,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 void frmQuery::OnTimer(wxTimerEvent &event)
 {
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	SetStatusText(ElaspsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
+	SetStatusText(ElapsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
 
 	wxString str = sqlResult->GetMessagesAndClear();
 	if (!str.IsEmpty())
