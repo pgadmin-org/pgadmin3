@@ -2522,11 +2522,12 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	int	wordlen = 0;
 
 	query = query.Trim(false);
+	size_t queryLen = query.Len();
 
 	/*
 	 * Check word length (since "beginx" is not "begin").
 	 */
-	while(wxIsalpha(query.GetChar(wordlen)))
+	while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 		wordlen++;
 
 	/*
@@ -2537,7 +2538,8 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	 * (We assume that START must be START TRANSACTION, since there is
 	 * presently no other "START foo" command.)
 	 */
-	wxString keyword = query.SubString(0, wordlen-1);
+	wxString keyword = query.SubString(0, wordlen - 1);
+
 	if (wordlen == 5 && keyword.CmpNoCase(wxT("abort")) == 0)
 		return true;
 	if (wordlen == 5 && keyword.CmpNoCase(wxT("begin")) == 0)
@@ -2553,13 +2555,14 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	if (wordlen == 7 && keyword.CmpNoCase(wxT("prepare")) == 0)
 	{
 		/* PREPARE TRANSACTION is a TC command, PREPARE foo is not */
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen, queryLen - 1);
 		query = query.Trim(false);
-
+		queryLen = query.Len();
 		wordlen = 0;
-		while(wxIsalpha(query.GetChar(wordlen)))
+
+		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
-		keyword = query.SubString(0, wordlen-1);
+		keyword = query.SubString(0, wordlen - 1);
 
 		if (wordlen == 11 && keyword.CmpNoCase(wxT("transaction")) == 0)
 			return true;
@@ -2576,8 +2579,9 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	if (wordlen == 7 && keyword.CmpNoCase(wxT("cluster")) == 0)
 	{
 		/* CLUSTER with any arguments is allowed in transactions */
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen, queryLen - 1);
 		query = query.Trim(false);
+		queryLen = query.Len();
 
 		if(wxIsalpha(((wxChar)query.at(0))))
 			return false;		/* has additional words */
@@ -2586,12 +2590,14 @@ bool frmQuery::isBeginNotRequired(wxString query)
 
 	if (wordlen == 6 && keyword.CmpNoCase(wxT("create")) == 0)
 	{
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen, queryLen - 1);
 		query = query.Trim(false);
-
+		queryLen = query.Len();
 		wordlen = 0;
-		while(wxIsalpha(query.GetChar(wordlen)))
+
+		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
+
 		keyword = query.SubString(0, wordlen-1);
 
 		if (wordlen == 8 && keyword.CmpNoCase(wxT("database")) == 0)
@@ -2602,22 +2608,24 @@ bool frmQuery::isBeginNotRequired(wxString query)
 		/* CREATE [UNIQUE] INDEX CONCURRENTLY isn't allowed in xacts */
 		if (wordlen == 6 && keyword.CmpNoCase(wxT("cluster")) == 0)
 		{
-			query = query.SubString(keyword.Length(),query.Length()-1);
+			query = query.SubString(wordlen, queryLen - 1);
 			query = query.Trim(false);
-
+			queryLen = query.Len();
 			wordlen = 0;
-			while(wxIsalpha(query.GetChar(wordlen)))
+
+			while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 				wordlen++;
 			keyword = query.SubString(0, wordlen-1);
 		}
 
 		if (wordlen == 5 &&  keyword.CmpNoCase(wxT("index")) == 0)
 		{
-			query = query.SubString(keyword.Length(),query.Length()-1);
+			query = query.SubString(wordlen, queryLen - 1);
 			query = query.Trim(false);
-
+			queryLen = query.Len();
 			wordlen = 0;
-			while(wxIsalpha(query.GetChar(wordlen)))
+
+			while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 				wordlen++;
 			keyword = query.SubString(0, wordlen-1);
 
@@ -2630,13 +2638,14 @@ bool frmQuery::isBeginNotRequired(wxString query)
 
 	if (wordlen == 5 &&  keyword.CmpNoCase(wxT("alter")) == 0)
 	{
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen, queryLen - 1);
 		query = query.Trim(false);
-
+		queryLen = query.Len();
 		wordlen = 0;
-		while(wxIsalpha(query.GetChar(wordlen)))
+
+		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
-		keyword = query.SubString(0, wordlen-1);
+		keyword = query.SubString(0, wordlen - 1);
 
 		/* ALTER SYSTEM isn't allowed in xacts */
 		if (wordlen == 6 && keyword.CmpNoCase(wxT("system")) == 0)
@@ -2653,13 +2662,14 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	if ((wordlen == 4 && keyword.CmpNoCase(wxT("drop")) == 0) ||
 		(wordlen == 7 && keyword.CmpNoCase(wxT("reindex")) == 0))
 	{
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen , queryLen - 1);
 		query = query.Trim(false);
-
+		queryLen = query.Len();
 		wordlen = 0;
-		while(wxIsalpha(query.GetChar(wordlen)))
+
+		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
-		keyword = query.SubString(0, wordlen-1);
+		keyword = query.SubString(0, wordlen - 1);
 
 		if (wordlen == 8 && keyword.CmpNoCase(wxT("database")) == 0)
 			return true;
@@ -2673,13 +2683,14 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	/* DISCARD ALL isn't allowed in xacts, but other variants are allowed. */
 	if (wordlen == 7 && keyword.CmpNoCase(wxT("discard")) == 0)
 	{
-		query = query.SubString(keyword.Length(),query.Length()-1);
+		query = query.SubString(wordlen, queryLen - 1);
 		query = query.Trim(false);
-
+		queryLen = query.Len();
 		wordlen = 0;
-		while(wxIsalpha(query.GetChar(wordlen)))
+
+		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
-		keyword = query.SubString(0, wordlen-1);
+		keyword = query.SubString(0, wordlen - 1);
 
 		if (wordlen == 3 && keyword.CmpNoCase(wxT("all")) == 0)
 			return true;
