@@ -1352,9 +1352,7 @@ void frmMain::EndMsg(bool done)
 	{
 		// Get the execution time & display it
 		float timeval = stopwatch.Time();
-		wxString time;
-		time.Printf(_("%.2f secs"), (timeval / 1000));
-		statusBar->SetStatusText(time, 2);
+		statusBar->SetStatusText(ElaspsedTimeToStr(timeval), 2);
 
 		// Display the 'Done' message
 		if (done)
@@ -1362,7 +1360,10 @@ void frmMain::EndMsg(bool done)
 		else
 			statusBar->SetStatusText(timermsg + _(" Failed."), 1);
 
-		wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
+		wxLogStatus(
+				wxT("%s (%s)"), timermsg.c_str(),
+				ElaspsedTimeToStr(timeval).c_str()
+				);
 		wxEndBusyCursor();
 	}
 }

@@ -561,8 +561,12 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			if (isOk)
 			{
 				if (txtMessages)
-					txtMessages->AppendText(_("Total query runtime: ")
-					                        + (wxGetLocalTimeMillis() - startTime).ToString() + wxT(" ms."));
+					txtMessages->AppendText(
+							_("Total query runtime: ") +
+							ElaspsedTimeToStr(
+								wxGetLocalTimeMillis() - startTime
+								)
+							);
 
 				btnOK->SetLabel(_("Done"));
 				btnCancel->Disable();

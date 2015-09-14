@@ -55,6 +55,7 @@
 #include "utils/sysLogger.h"
 #include "utils/sysSettings.h"
 #include "utils/utffile.h"
+#include "utils/misc.h"
 #include "pgscript/pgsApplication.h"
 
 // Icons
@@ -2714,7 +2715,7 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 	msgHistory->AppendText(str);
 
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+	SetStatusText(ElaspsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
 
 	if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
 	{
@@ -2727,29 +2728,51 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			OID insertedOid = sqlResult->InsertedOid();
 			if (insertedCount < 0)
 			{
-				showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
-				                             elapsedQuery.ToString().c_str()), _("OK."));
+				showMessage(
+						wxString::Format(
+							_("Query returned successfully with no result in %s."),
+							ElaspsedTimeToStr(elapsedQuery).c_str()
+							),
+						_("OK.")
+						);
 			}
 			else if (insertedCount == 1)
 			{
 				if (insertedOid)
 				{
-					showMessage(wxString::Format(_("Query returned successfully: one row with OID %ld inserted, %s ms execution time."),
-					                             (long)insertedOid, elapsedQuery.ToString().c_str()),
-					            wxString::Format(_("One row with OID %ld inserted."), (long)insertedOid));
+					showMessage(
+							wxString::Format(
+								_("Query returned successfully: one row with OID %ld inserted, %s execution time."),
+								(long)insertedOid,
+								ElaspsedTimeToStr(elapsedQuery).c_str()),
+							wxString::Format(
+								_("One row with OID %ld inserted."),
+								(long)insertedOid
+								)
+							);
 				}
 				else
 				{
-					showMessage(wxString::Format(_("Query returned successfully: one row affected, %s ms execution time."),
-					                             elapsedQuery.ToString().c_str()),
-					            wxString::Format(_("One row affected.")));
+					showMessage(
+							wxString::Format(
+								_("Query returned successfully: one row affected, %s execution time."),
+								ElaspsedTimeToStr(elapsedQuery).c_str()),
+							wxString::Format(_("One row affected."))
+							);
 				}
 			}
 			else
 			{
-				showMessage(wxString::Format(_("Query returned successfully: %d rows affected, %s ms execution time."),
-				                             insertedCount, elapsedQuery.ToString().c_str()),
-				            wxString::Format(_("%d rows affected."), insertedCount));
+				showMessage(
+						wxString::Format(
+							_("Query returned successfully: %d rows affected, %s execution time."),
+							insertedCount,
+							ElaspsedTimeToStr(elapsedQuery).c_str()
+							),
+						wxString::Format(
+							_("%d rows affected."), insertedCount
+							)
+						);
 			}
 		}
 		else if (sqlResult->RunStatus() == PGRES_EMPTY_QUERY)
@@ -2863,20 +2886,52 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			}
 			else
 			{
-				SetStatusText(wxString::Format(wxPLURAL("Retrieving data: %d row.", "Retrieving data: %d rows.", (int)rowsTotal), (int)rowsTotal), STATUSPOS_MSGS);
+				SetStatusText(
+						wxString::Format(
+							wxPLURAL(
+								_("Retrieving data: %d row."),
+								_("Retrieving data: %d rows."),
+								(int)rowsTotal), (int)rowsTotal),
+						STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
 
 				sqlResult->DisplayData();
 
-				SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+				SetStatusText(
+						ElaspsedTimeToStr(elapsedQuery),
+						STATUSPOS_SECS
+						);
 
-				str = _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") ;
+				str = wxString::Format(
+						_("Total query runtime: %s\n"),
+						ElaspsedTimeToStr(elapsedQuery).c_str()
+						);
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
 
-				showMessage(wxString::Format(wxPLURAL("%d row retrieved.", "%d rows retrieved.", (int)sqlResult->NumRows()), (int)sqlResult->NumRows()), _("OK."));
+				showMessage(
+						wxString::Format(
+							wxPLURAL(
+								_("%d row retrieved."),
+								_("%d rows retrieved."),
+								(int)sqlResult->NumRows()
+								),
+							(int)sqlResult->NumRows()
+							),
+						_("OK.")
+						);
 			}
-			SetStatusText(wxString::Format(wxPLURAL("%ld row.", "%ld rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
+			SetStatusText(
+					wxString::Format(
+						wxPLURAL(
+							_("%ld row."),
+							_("%ld rows."),
+							rowsTotal
+							),
+						rowsTotal
+						),
+					STATUSPOS_ROWS
+					);
 		}
 	}
 
@@ -2955,9 +3010,10 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
 
 	// Manage timer
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+	wxString fmtExecTime = ElaspsedTimeToStr(elapsedQuery);
+	SetStatusText(fmtExecTime, STATUSPOS_SECS);
 	SetStatusText(_("pgScript completed."), STATUSPOS_MSGS);
-	wxString str = _("Total pgScript runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n\n");
+	wxString str = _("Total pgScript runtime: ") + fmtExecTime + "\n\n";
 	msgHistory->AppendText(str);
 
 	// Check whether there was an error/exception
@@ -3081,7 +3137,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 void frmQuery::OnTimer(wxTimerEvent &event)
 {
 	elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
-	SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+	SetStatusText(ElaspsedTimeToStr(elapsedQuery), STATUSPOS_SECS);
 
 	wxString str = sqlResult->GetMessagesAndClear();
 	if (!str.IsEmpty())
@@ -3091,12 +3147,23 @@ void frmQuery::OnTimer(wxTimerEvent &event)
 	}
 
 	// Increase the granularity for longer running queries
-	if (elapsedQuery > 200 && timer.GetInterval() == 10 && timer.IsRunning())
+	if (timer.IsRunning())
 	{
-		timer.Stop();
-		timer.Start(100);
+		// Set timer to fire every 100 ms if >200 ms elapsed
+		if (elapsedQuery > 200 && timer.GetInterval() < 100)
+		{
+			timer.Stop();
+			timer.Start(100);
+		}
+		// Set timer to fire every 1000 ms if >60 seconds elapsed
+		else if (elapsedQuery > 60 * 1000 && timer.GetInterval() < 1000)
+		{
+			timer.Stop();
+			timer.Start(1000);
+		}
 	}
 }
+
 
 // Adjust sizes of GQB components, Located here because need to
 // avoid some issues when implementing inside controller/view Classes

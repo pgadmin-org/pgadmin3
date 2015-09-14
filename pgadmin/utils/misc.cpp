@@ -219,6 +219,28 @@ wxString DateToStr(const wxDateTime &datetime)
 }
 
 
+wxString ElaspsedTimeToStr(wxLongLong msec)
+{
+	wxTimeSpan tsMsec(0, 0, 0, msec);
+
+	int days = tsMsec.GetDays();
+	int hours = (wxTimeSpan(tsMsec.GetHours(), 0, 0, 0) - wxTimeSpan(days * 24)).GetHours();
+	int minutes = (wxTimeSpan(0, tsMsec.GetMinutes(), 0, 0) - wxTimeSpan(hours)).GetMinutes();
+	long seconds = (wxTimeSpan(0, 0, tsMsec.GetSeconds(), 0) - wxTimeSpan(0, minutes)).GetSeconds().ToLong();
+	long milliseconds = (wxTimeSpan(0, 0, 0, tsMsec.GetMilliseconds()) - wxTimeSpan(0, 0, seconds)).GetMilliseconds().ToLong();
+
+	if (days > 0)
+		return wxString::Format("%d %s, %02d:%02d:%02ld hours", days, wxT("days"), hours, minutes, seconds);
+	else if (hours > 0)
+		return wxString::Format("%02d:%02d:%02ld hours", hours, minutes, seconds);
+	else if (msec >= 1000 * 60)
+		return wxString::Format("%02d:%02ld minutes", minutes, seconds);
+	else if (msec >= 1000)
+		return wxString::Format("%ld.%ld secs", seconds, milliseconds / 100);
+	else
+		return msec.ToString() + wxT(" msec");
+}
+
 wxDateTime StrToDateTime(const wxString &value)
 {
 	wxDateTime dt;

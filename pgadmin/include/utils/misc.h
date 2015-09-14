@@ -117,6 +117,7 @@ wxString NumToStr(double value);
 wxString NumToStr(OID value);
 wxString NumToStr(wxLongLong value);
 wxString DateToStr(const wxDateTime &datetime);
+wxString ElaspsedTimeToStr(wxLongLong msec);
 
 
 // Quoting
