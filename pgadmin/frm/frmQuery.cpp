@@ -2900,8 +2900,8 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 				SetStatusText(
 						wxString::Format(
 							wxPLURAL(
-								_("Retrieving data: %d row."),
-								_("Retrieving data: %d rows."),
+								"Retrieving data: %d row.",
+								"Retrieving data: %d rows.",
 								(int)rowsTotal), (int)rowsTotal),
 						STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
@@ -2923,8 +2923,8 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 				showMessage(
 						wxString::Format(
 							wxPLURAL(
-								_("%d row retrieved."),
-								_("%d rows retrieved."),
+								"%d row retrieved.",
+								"%d rows retrieved.",
 								(int)sqlResult->NumRows()
 								),
 							(int)sqlResult->NumRows()
@@ -2935,8 +2935,8 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			SetStatusText(
 					wxString::Format(
 						wxPLURAL(
-							_("%ld row."),
-							_("%ld rows."),
+							"%ld row.",
+							"%ld rows.",
 							rowsTotal
 							),
 						rowsTotal
