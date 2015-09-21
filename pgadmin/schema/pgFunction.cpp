@@ -662,7 +662,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 	}
 
 	pgSet *functions = obj->GetDatabase()->ExecuteSet(
-	                       wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
+	                       wxT("SELECT pr.oid, pr.xmin, pr.*, pg_get_function_result(pr.oid) AS typname, typns.nspname AS typnsp, lanname, ") +
 	                       argNamesCol  + argDefsCol + proConfigCol + proType +
 	                       wxT("       pg_get_userbyid(proowner) as funcowner, description") + seclab + wxT("\n")
 	                       wxT("  FROM pg_proc pr\n")
