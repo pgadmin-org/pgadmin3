@@ -23,12 +23,12 @@
 #include <wx/url.h>
 #include <wx/stdpaths.h>
 #include <wx/wfstream.h>
-
+#include <wx/filename.h>
+#include <wx/dir.h>
 // App headers
 #include "utils/sysSettings.h"
 #include "utils/sysLogger.h"
 #include "utils/misc.h"
-
 sysSettings::sysSettings(const wxString &name) : wxConfig(name)
 {
 	// Open the default settings file
@@ -762,6 +762,8 @@ void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
+	wxASSERT_MSG(cfgname == sysSettings::PGPASS,
+			wxT("Handles only pgpass configuration"));
 	if (cfgname == PGPASS)
 	{
 #if wxCHECK_VERSION(2, 9, 5)
@@ -769,27 +771,67 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
 #else
 		wxStandardPaths stdp;
 #endif
-		wxString fname = stdp.GetUserConfigDir();
-#ifdef WIN32
-		fname += wxT("\\postgresql");
-		if (!wxDirExists(fname))
-			wxMkdir(fname);
-		switch(cfgname)
+		wxString fname;
+		bool bpsfile = wxGetEnv(wxT("PGPASSFILE"), &fname);
+		if (!bpsfile)
 		{
-			case PGPASS:
-				fname += wxT("\\pgpass.conf");
-				break;
+			fname = stdp.GetUserConfigDir();
+#ifdef WIN32
+			fname += wxT("\\postgresql");
+			if (!wxDirExists(fname))
+				wxMkdir(fname);
+			fname += wxT("\\pgpass.conf");
 		}
 #else
-		switch(cfgname)
-		{
-			case PGPASS:
-				fname += wxT("/.pgpass");
-				break;
+			fname += wxT("/.pgpass");
 		}
 #endif
+		else
+		{
+			if(!wxFileName::FileExists(fname))
+			{
+				wxFileName dirTemp = wxFileName::DirName(fname);
+				/*
+				 * wxFileName::DirName() does not return the directory path of
+				 * the file. It assumes that the given path is of a directory,
+				 * when the specified file/directory does not exist.
+				 *
+				 * Hence - removeing it to get the actual parent directory.
+				 */
+				dirTemp.RemoveLastDir();
+
+				if (!dirTemp.DirExists())
+				{
+					wxFileName dir = dirTemp;
+
+					// Decide which are folders we need to create
+					wxString sRemoveOnError = dirTemp.GetPath();
+
+					while(!dirTemp.DirExists())
+					{
+						sRemoveOnError = dirTemp.GetPath();
+						dirTemp.RemoveLastDir();
+					}
+
+					if (!dir.Mkdir(0755, wxPATH_MKDIR_FULL))
+					{
+						// In case of failure decide - we may need to delete
+						// the created directory structure from exists parent
+						// directory.
+						if (wxDir::Exists(sRemoveOnError))
+							wxFileName::Rmdir(sRemoveOnError);
+					}
+				}
+			}
+		}
+
+		wxFile f;
+		if (!f.Exists(fname))
+			f.Create(fname, false, wxS_IRUSR | wxS_IWUSR);
+
 		return fname;
 	}
+
 	return wxT("");
 }
 

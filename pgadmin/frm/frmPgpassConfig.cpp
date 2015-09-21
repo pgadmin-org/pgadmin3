@@ -61,10 +61,10 @@ frmPgpassConfig::frmPgpassConfig(frmMain *parent)
 
 	lastPath = sysSettings::GetConfigFile(sysSettings::PGPASS);
 	wxFile f;
-	if (!f.Exists(lastPath))
-		f.Create(lastPath, false, wxS_DEFAULT);
-
-	OpenLastFile();
+	if (f.Exists(lastPath))
+	{
+	    OpenLastFile();
+	}
 
 	helpMenu->Enable(MNU_HINT, false);
 	toolBar->EnableTool(MNU_HINT, false);

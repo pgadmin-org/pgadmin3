@@ -325,9 +325,6 @@ void frmConfig::OpenLastFile()
 	wxUtfFile file(lastPath, wxFile::read, wxFONTENCODING_SYSTEM);
 	if (file.IsOpened())
 	{
-#ifdef __WXMSW__
-		_setmode(file.fd(), _O_BINARY);
-#endif
 		wxString buffer;
 		file.Read(buffer);
 		file.Close();

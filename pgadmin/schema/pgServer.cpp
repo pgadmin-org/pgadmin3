@@ -610,12 +610,11 @@ void pgServer::StorePassword()
 {
 	wxString fname = passwordFilename();
 
-	wxUtfFile file;
 	if (!wxFile::Exists(fname))
 	{
-		file.Create(fname, false, S_IREAD | S_IWRITE);
+		return;
 	}
-
+        wxUtfFile file;
 	// Don't try to read and write in one OP - it doesn't work well
 	wxString before;
 	file.Open(fname, wxFile::read, wxFONTENCODING_SYSTEM);
