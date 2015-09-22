@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2014, The pgAdmin Development Team
+// Copyright (C) 2002 - 2015, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // hdDragTrackerTool.cpp - A Tool that allow to drag and drop figures at the view
