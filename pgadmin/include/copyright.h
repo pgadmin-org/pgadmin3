@@ -12,8 +12,8 @@
 #ifndef COPYRIGHT_H
 #define COPYRIGHT_H
 
-#define COPYRIGHT               wxT("Copyright 2002 - 2014, The pgAdmin Development Team")
-#define COPYRIGHT_WIN32         "\251 2002 - 2014, The pgAdmin Development Team"
+#define COPYRIGHT               wxT("Copyright 2002 - 2015, The pgAdmin Development Team")
+#define COPYRIGHT_WIN32         "\251 2002 - 2015, The pgAdmin Development Team"
 #define LICENSE                 _("This software is released under the PostgreSQL Licence.")
 
 #endif
