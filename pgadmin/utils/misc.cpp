@@ -268,15 +268,15 @@ void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0, cons
 	scrW = screenSize.x;
 	scrH = screenSize.y;
 
-	if (pos.x < 0)
-		pos.x = 0;
-	if (pos.y < 0)
-		pos.y = 0;
-
 	if (pos.x > scrW - w0)
 		pos.x = scrW - w0;
 	if (pos.y > scrH - h0)
 		pos.y = scrH - h0;
+
+	if (pos.x < 0)
+		pos.x = 0;
+	if (pos.y < 0)
+		pos.y = 0;
 
 	if (size.GetWidth() < w0)
 		size.SetWidth(w0);

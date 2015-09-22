@@ -37,16 +37,20 @@ Changes
 
 Date       Dev Ver     Change details
 ---------- --- ------  --------------
+2015-09-21 AV  1.22.0  Reset the position (x, y) for dialog(s), and frame(s) to
+                       0 (if found negative), while saving its position and
+                       size. [Reported By: Mark, Patch: Sanket Mehta,
+                       Reworked, and Reviewed: Ashesh]
 2015-09-21 AV  1.22.0  Fixes an issue identifying the return type to TABLE in
                        some cases, using pg_get_function_result(..) for the
                        same instead of format_type(..)
-					   [Reported By: Guillermo E. Villanueva,
-					   PATCH:Sanket Mehta]
+                       [Reported By: Guillermo E. Villanueva,
+                       PATCH:Sanket Mehta]
 2015-09-21 AV  1.22.0  Honour PGPASSFILE environment variable for saving,
                        retrieving the password instead of always works with
-					   pgpass.conf (on windows)/.pgpass (on non-windows)
-					   [PATCH: Prasad Somwanshi, Reworked by: Sanket Mehta,
-					   Reviewed by: Ashesh Vashi, Sanket Mehta]
+                       pgpass.conf (on windows)/.pgpass (on non-windows)
+                       [PATCH: Prasad Somwanshi, Reworked by: Sanket Mehta,
+                       Reviewed by: Ashesh Vashi, Sanket Mehta]
 2015-09-14 AV  1.22.0  Fix a segfault occurs while detecting transaction
                        section requirement, when autocommit has been disabled.
                        [Reported by John Obaterspok, Patch by Sanket Mehta]

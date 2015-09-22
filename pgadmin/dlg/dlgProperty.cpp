@@ -257,8 +257,11 @@ int dlgProperty::Go(bool modal)
 		SetSize(settings->Read(prop, GetSize()));
 
 	wxPoint pos = settings->Read(prop, GetPosition());
-	if (pos.x >= 0 && pos.y >= 0)
-		Move(pos);
+	if (pos.x < 0)
+		pos.x = 0;
+	if (pos.y < 0)
+		pos.y = 0;
+	Move(pos);
 
 	wxSize size = GetSize();
 	CheckOnScreen(this, pos, size, origSize.GetWidth(), origSize.GetHeight());

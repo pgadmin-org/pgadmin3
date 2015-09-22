@@ -154,7 +154,12 @@ void pgDialog::SavePosition()
 	if (!IsIconized())
 	{
 #endif
-		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
+		wxPoint pos = GetPosition();
+		if (pos.x < 0)
+			pos.x = 0;
+		if (pos.y < 0)
+			pos.y = 0;
+		settings->WriteSizePoint(dlgName, GetSize(), pos);
 #ifndef __WXGTK__
 	}
 #endif
@@ -364,7 +369,12 @@ void pgFrame::SavePosition()
 	if (!IsIconized())
 	{
 #endif
-		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
+		wxPoint pos = GetPosition();
+		if (pos.x < 0)
+			pos.x = 0;
+		if (pos.y < 0)
+			pos.y = 0;
+		settings->WriteSizePoint(dlgName, GetSize(), pos);
 		settings->WriteBool(dlgName + wxT("/Maximized"), IsMaximized());
 #ifndef __WXGTK__
 	}
