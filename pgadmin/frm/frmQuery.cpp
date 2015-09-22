@@ -1458,37 +1458,48 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 	if (closing)
 		return;
 
-	wxWindow *wnd = currentControl();
-	if (wnd != NULL)
-	{
-		if (   relatesToWindow(wnd, sqlQuery)
-		        || relatesToWindow(wnd, sqlResult)
-		        || relatesToWindow(wnd, msgResult)
-		        || relatesToWindow(wnd, msgHistory)
-		        || relatesToWindow(wnd, scratchPad)   )
-		{
-			if (relatesToWindow(wnd, sqlQuery))
-			{
-				canUndo = sqlQuery->CanUndo();
-				canRedo = sqlQuery->CanRedo();
-				canPaste = sqlQuery->CanPaste();
-				canFind = true;
-				canAddFavourite = (sqlQuery->GetLength() > 0) && (settings->GetFavouritesFile().Length() > 0);
-				canManageFavourite = (settings->GetFavouritesFile().Length() > 0);
-			}
-			else if (relatesToWindow(wnd, scratchPad))
-				canPaste = true;
-			canCopy = true;
-			canCut = true;
-			canClear = true;
-		}
-	}
-
 	canSaveExplain = explainCanvas->GetDiagram()->GetCount() > 0;
 
 	if (allowUpdateModelSize)
 	{
 		canSaveGQB = controller->getView() != NULL && controller->getView()->canSaveAsImage();
+	}
+
+	saveasImageMenu->Enable(MNU_SAVEAS_IMAGE_GQB, canSaveGQB);
+	saveasImageMenu->Enable(MNU_SAVEAS_IMAGE_EXPLAIN, canSaveExplain);
+
+	wxWindow *wnd = currentControl();
+	if (wnd == NULL)
+		return;
+
+	if (relatesToWindow(wnd, sqlQuery)
+			|| relatesToWindow(wnd, sqlResult)
+			|| relatesToWindow(wnd, msgResult)
+			|| relatesToWindow(wnd, msgHistory)
+			|| relatesToWindow(wnd, scratchPad))
+	{
+		if (relatesToWindow(wnd, sqlQuery))
+		{
+			canUndo = sqlQuery->CanUndo();
+			canRedo = sqlQuery->CanRedo();
+			canPaste = sqlQuery->CanPaste();
+			canFind = true;
+			canAddFavourite = (sqlQuery->GetLength() > 0) && (settings->GetFavouritesFile().Length() > 0);
+			canManageFavourite = (settings->GetFavouritesFile().Length() > 0);
+		}
+		else if (relatesToWindow(wnd, scratchPad))
+		{
+			canPaste = true;
+			canCopy = true;
+			canCut = true;
+			canClear = true;
+		}
+		else
+		{
+			canCopy = true;
+			canCut = true;
+			canClear = true;
+		}
 	}
 
 	toolBar->EnableTool(MNU_UNDO, canUndo);
