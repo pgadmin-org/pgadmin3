@@ -1490,16 +1490,10 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 		else if (relatesToWindow(wnd, scratchPad))
 		{
 			canPaste = true;
-			canCopy = true;
-			canCut = true;
-			canClear = true;
 		}
-		else
-		{
-			canCopy = true;
-			canCut = true;
-			canClear = true;
-		}
+		canCopy = true;
+		canCut = true;
+		canClear = true;
 	}
 
 	toolBar->EnableTool(MNU_UNDO, canUndo);
