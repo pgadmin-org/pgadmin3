@@ -3,7 +3,7 @@
 // pgAdmin III - PostgreSQL Tools
 //
 // Portions Copyright (C) 1998 - 2011, Julian Smart
-// Portions Copyright (C) 2011 - 2014, The pgAdmin Development Team
+// Portions Copyright (C) 2011 - 2015, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // constrnt.cpp - OGL Constraint classes
