@@ -172,10 +172,10 @@ frmMain::frmMain(const wxString &title)
 	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
 #endif
 
-	listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
-	listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
+	listViews->AddPage(properties, _("Properties"));	// NBP_PROPERTIES
+	listViews->AddPage(statistics, _("Statistics"));	// NBP_STATISTICS
 	listViews->AddPage(dependencies, _("Dependencies"));    // NBP_DEPENDENCIES
-	listViews->AddPage(dependents, _("Dependents"));        // NBP_DEPENDENTS
+	listViews->AddPage(dependents, _("Dependents"));	// NBP_DEPENDENTS
 
 	properties->SetImageList(imageList, wxIMAGE_LIST_SMALL);
 	statistics->SetImageList(imageList, wxIMAGE_LIST_SMALL);
@@ -337,7 +337,7 @@ void frmMain::CreateMenus()
 	new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
 
 	fileMenu->AppendSeparator();
-	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-Q"),                _("Quit this program."));
+	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-Q"),		_("Quit this program."));
 
 	new slonyRestartFactory(menuFactories, slonyMenu, 0);
 	new slonyUpgradeFactory(menuFactories, slonyMenu, 0);
@@ -354,7 +354,7 @@ void frmMain::CreateMenus()
 
 	// -------------------------
 
-	editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),                _("Copy selected text to clipboard"));
+	editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),		_("Copy selected text to clipboard"));
 	editMenu->AppendSeparator();
 
 	// -------------------------
@@ -516,13 +516,13 @@ void frmMain::CreateMenus()
 	treeContextMenu = 0;
 
 	// Status bar
-	statusBar = CreateStatusBar(3);
-	int iWidths[3] = {0, -1, 100};
-	SetStatusWidths(3, iWidths);
+	statusBar = CreateStatusBar(4);
+	int iWidths[4] = {0, -1, 400, 100};
+	SetStatusWidths(4, iWidths);
 	SetStatusBarPane(-1);
 	statusBar->SetStatusText(wxT(""), 0);
 	statusBar->SetStatusText(_("Ready."), 1);
-	statusBar->SetStatusText(_("0 Secs"), 2);
+	statusBar->SetStatusText(_("0 Secs"), 3);
 
 	wxAcceleratorEntry entries[4];
 	entries[0].Set(wxACCEL_NORMAL, WXK_F5, refFact->GetId());
@@ -874,8 +874,8 @@ bool frmMain::CheckAlive()
 												if (!userInformed)
 												{
 													wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the database?"),
-													                    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()),
-													                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+															    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()),
+															    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
 													closeIt = (dlg.ShowModal() != wxID_YES);
 													userInformed = true;
@@ -891,7 +891,7 @@ bool frmMain::CheckAlive()
 												{
 													// Create a server object and connect it.
 													wxBusyInfo waiting(wxString::Format(_("Reconnecting to database %s"),
-													                                    db->GetName().c_str()), this);
+																	    db->GetName().c_str()), this);
 
 													// Give the UI a chance to redraw
 													wxSafeYield();
@@ -927,8 +927,8 @@ bool frmMain::CheckAlive()
 							if (!userInformed)
 							{
 								wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the server?"),
-								                    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()),
-								                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+										    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()),
+										    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
 								closeIt = (dlg.ShowModal() != wxID_YES);
 								userInformed = true;
@@ -944,7 +944,7 @@ bool frmMain::CheckAlive()
 							{
 								// Create a server object and connect it.
 								wxBusyInfo waiting(wxString::Format(_("Reconnecting to server %s (%s:%d)"),
-								                                    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+												    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
 								// Give the UI a chance to redraw
 								wxSafeYield();
@@ -1055,7 +1055,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 {
 	// Create a server object and connect it.
 	wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
-	                                    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+					    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
 	// Give the UI a chance to redraw
 	wxSafeYield();
@@ -1352,7 +1352,18 @@ void frmMain::EndMsg(bool done)
 	{
 		// Get the execution time & display it
 		float timeval = stopwatch.Time();
-		statusBar->SetStatusText(ElapsedTimeToStr(timeval), 2);
+		statusBar->SetStatusText(ElapsedTimeToStr(timeval), 3);
+ 
+		// Display the name of the connection for currently selected object
+		wxString connection;
+		if (currentObject)
+		{
+			pgConn *conn = currentObject->GetConnection();
+	   
+			if (conn)
+				connection = conn->GetName();
+		}
+		statusBar->SetStatusText(connection,2);
 
 		// Display the 'Done' message
 		if (done)
