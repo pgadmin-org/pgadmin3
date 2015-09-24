@@ -142,7 +142,7 @@ void frmMain::OnTreeKeyDown(wxTreeEvent &event)
 		case WXK_DELETE:
 			OnDelete(event);
 			break;
-			// Is tempting to write all cases(this handler) in tree control itself
+		// Is tempting to write all cases(this handler) in tree control itself
 		case WXK_LEFT:
 		case WXK_RIGHT:
 			browser->NavigateTree(keyCode);

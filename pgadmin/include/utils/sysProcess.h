@@ -32,7 +32,7 @@ public:
 
 private:
 	int pid;
-	wxMBConv& m_conv;
+	wxMBConv &m_conv;
 	void OnTerminate(int pid, int status) const;
 	wxString ReadStream(wxInputStream *input);
 };

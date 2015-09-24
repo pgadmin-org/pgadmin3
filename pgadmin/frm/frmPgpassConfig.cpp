@@ -63,7 +63,7 @@ frmPgpassConfig::frmPgpassConfig(frmMain *parent)
 	wxFile f;
 	if (f.Exists(lastPath))
 	{
-	    OpenLastFile();
+		OpenLastFile();
 	}
 
 	helpMenu->Enable(MNU_HINT, false);

@@ -838,8 +838,8 @@ void frmQuery::OnAutoCommit(wxCommandEvent &event)
 	queryMenu->Check(MNU_AUTOCOMMIT, event.IsChecked());
 	if(event.IsChecked() && conn->GetTxStatus() != PQTRANS_IDLE)
 		wxMessageBox(
-			_("The current transaction is still in progess.\n\nIn order to take the effect of AUTOCOMMIT mode, please complete the transaction by executing COMMIT, or ROLLBACK statement."),
-			_("Warning - Transaction in progress"), wxICON_INFORMATION | wxOK, this);
+		    _("The current transaction is still in progess.\n\nIn order to take the effect of AUTOCOMMIT mode, please complete the transaction by executing COMMIT, or ROLLBACK statement."),
+		    _("Warning - Transaction in progress"), wxICON_INFORMATION | wxOK, this);
 	settings->WriteBool(wxT("frmQuery/AutoCommit"), queryMenu->IsChecked(MNU_AUTOCOMMIT));
 }
 
@@ -1473,10 +1473,10 @@ void frmQuery::updateMenu(bool allowUpdateModelSize)
 		return;
 
 	if (relatesToWindow(wnd, sqlQuery)
-			|| relatesToWindow(wnd, sqlResult)
-			|| relatesToWindow(wnd, msgResult)
-			|| relatesToWindow(wnd, msgHistory)
-			|| relatesToWindow(wnd, scratchPad))
+	        || relatesToWindow(wnd, sqlResult)
+	        || relatesToWindow(wnd, msgResult)
+	        || relatesToWindow(wnd, msgHistory)
+	        || relatesToWindow(wnd, scratchPad))
 	{
 		if (relatesToWindow(wnd, sqlQuery))
 		{
@@ -2603,7 +2603,7 @@ bool frmQuery::isBeginNotRequired(wxString query)
 		while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 			wordlen++;
 
-		keyword = query.SubString(0, wordlen-1);
+		keyword = query.SubString(0, wordlen - 1);
 
 		if (wordlen == 8 && keyword.CmpNoCase(wxT("database")) == 0)
 			return true;
@@ -2620,7 +2620,7 @@ bool frmQuery::isBeginNotRequired(wxString query)
 
 			while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 				wordlen++;
-			keyword = query.SubString(0, wordlen-1);
+			keyword = query.SubString(0, wordlen - 1);
 		}
 
 		if (wordlen == 5 &&  keyword.CmpNoCase(wxT("index")) == 0)
@@ -2632,7 +2632,7 @@ bool frmQuery::isBeginNotRequired(wxString query)
 
 			while((size_t)wordlen < queryLen && wxIsalpha(query.GetChar(wordlen)))
 				wordlen++;
-			keyword = query.SubString(0, wordlen-1);
+			keyword = query.SubString(0, wordlen - 1);
 
 			if (wordlen == 12 &&  keyword.CmpNoCase(wxT("concurrently")) == 0)
 				return true;
@@ -2665,7 +2665,7 @@ bool frmQuery::isBeginNotRequired(wxString query)
 	 * possible matches are correct.
 	 */
 	if ((wordlen == 4 && keyword.CmpNoCase(wxT("drop")) == 0) ||
-		(wordlen == 7 && keyword.CmpNoCase(wxT("reindex")) == 0))
+	        (wordlen == 7 && keyword.CmpNoCase(wxT("reindex")) == 0))
 	{
 		query = query.SubString(wordlen , queryLen - 1);
 		query = query.Trim(false);
@@ -2745,50 +2745,50 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			if (insertedCount < 0)
 			{
 				showMessage(
-						wxString::Format(
-							_("Query returned successfully with no result in %s."),
-							ElapsedTimeToStr(elapsedQuery).c_str()
-							),
-						_("OK.")
-						);
+				    wxString::Format(
+				        _("Query returned successfully with no result in %s."),
+				        ElapsedTimeToStr(elapsedQuery).c_str()
+				    ),
+				    _("OK.")
+				);
 			}
 			else if (insertedCount == 1)
 			{
 				if (insertedOid)
 				{
 					showMessage(
-							wxString::Format(
-								_("Query returned successfully: one row with OID %ld inserted, %s execution time."),
-								(long)insertedOid,
-								ElapsedTimeToStr(elapsedQuery).c_str()),
-							wxString::Format(
-								_("One row with OID %ld inserted."),
-								(long)insertedOid
-								)
-							);
+					    wxString::Format(
+					        _("Query returned successfully: one row with OID %ld inserted, %s execution time."),
+					        (long)insertedOid,
+					        ElapsedTimeToStr(elapsedQuery).c_str()),
+					    wxString::Format(
+					        _("One row with OID %ld inserted."),
+					        (long)insertedOid
+					    )
+					);
 				}
 				else
 				{
 					showMessage(
-							wxString::Format(
-								_("Query returned successfully: one row affected, %s execution time."),
-								ElapsedTimeToStr(elapsedQuery).c_str()),
-							wxString::Format(_("One row affected."))
-							);
+					    wxString::Format(
+					        _("Query returned successfully: one row affected, %s execution time."),
+					        ElapsedTimeToStr(elapsedQuery).c_str()),
+					    wxString::Format(_("One row affected."))
+					);
 				}
 			}
 			else
 			{
 				showMessage(
-						wxString::Format(
-							_("Query returned successfully: %d rows affected, %s execution time."),
-							insertedCount,
-							ElapsedTimeToStr(elapsedQuery).c_str()
-							),
-						wxString::Format(
-							_("%d rows affected."), insertedCount
-							)
-						);
+				    wxString::Format(
+				        _("Query returned successfully: %d rows affected, %s execution time."),
+				        insertedCount,
+				        ElapsedTimeToStr(elapsedQuery).c_str()
+				    ),
+				    wxString::Format(
+				        _("%d rows affected."), insertedCount
+				    )
+				);
 			}
 		}
 		else if (sqlResult->RunStatus() == PGRES_EMPTY_QUERY)
@@ -2903,51 +2903,51 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			else
 			{
 				SetStatusText(
-						wxString::Format(
-							wxPLURAL(
-								"Retrieving data: %d row.",
-								"Retrieving data: %d rows.",
-								(int)rowsTotal), (int)rowsTotal),
-						STATUSPOS_MSGS);
+				    wxString::Format(
+				        wxPLURAL(
+				            "Retrieving data: %d row.",
+				            "Retrieving data: %d rows.",
+				            (int)rowsTotal), (int)rowsTotal),
+				    STATUSPOS_MSGS);
 				wxTheApp->Yield(true);
 
 				sqlResult->DisplayData();
 
 				SetStatusText(
-						ElapsedTimeToStr(elapsedQuery),
-						STATUSPOS_SECS
-						);
+				    ElapsedTimeToStr(elapsedQuery),
+				    STATUSPOS_SECS
+				);
 
 				str = wxString::Format(
-						_("Total query runtime: %s\n"),
-						ElapsedTimeToStr(elapsedQuery).c_str()
-						);
+				          _("Total query runtime: %s\n"),
+				          ElapsedTimeToStr(elapsedQuery).c_str()
+				      );
 				msgResult->AppendText(str);
 				msgHistory->AppendText(str);
 
 				showMessage(
-						wxString::Format(
-							wxPLURAL(
-								"%d row retrieved.",
-								"%d rows retrieved.",
-								(int)sqlResult->NumRows()
-								),
-							(int)sqlResult->NumRows()
-							),
-						_("OK.")
-						);
+				    wxString::Format(
+				        wxPLURAL(
+				            "%d row retrieved.",
+				            "%d rows retrieved.",
+				            (int)sqlResult->NumRows()
+				        ),
+				        (int)sqlResult->NumRows()
+				    ),
+				    _("OK.")
+				);
 			}
 			SetStatusText(
-					wxString::Format(
-						wxPLURAL(
-							"%ld row.",
-							"%ld rows.",
-							rowsTotal
-							),
-						rowsTotal
-						),
-					STATUSPOS_ROWS
-					);
+			    wxString::Format(
+			        wxPLURAL(
+			            "%ld row.",
+			            "%ld rows.",
+			            rowsTotal
+			        ),
+			        rowsTotal
+			    ),
+			    STATUSPOS_ROWS
+			);
 		}
 	}
 
@@ -3030,11 +3030,11 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
 	SetStatusText(fmtExecTime, STATUSPOS_SECS);
 	SetStatusText(_("pgScript completed."), STATUSPOS_MSGS);
 	msgHistory->AppendText(
-            wxString::Format(
-                _("Total pgScript runtime: %s\n\n"),
-                fmtExecTime.c_str()
-                )
-            );
+	    wxString::Format(
+	        _("Total pgScript runtime: %s\n\n"),
+	        fmtExecTime.c_str()
+	    )
+	);
 	// Check whether there was an error/exception
 	if (pgScript->errorOccurred() && pgScript->errorLine() >= 1)
 	{
@@ -3268,7 +3268,8 @@ void frmQuery::OnUncommentText(wxCommandEvent &event)
 
 void frmQuery::OnExternalFormat(wxCommandEvent &event)
 {
-	if (FindFocus()->GetId() == CTL_SQLQUERY) {
+	if (FindFocus()->GetId() == CTL_SQLQUERY)
+	{
 		wxBusyCursor wait;
 		SetStatusText(_("Running formatting command..."), STATUSPOS_MSGS);
 		SetStatusText(sqlQuery->ExternalFormat(), STATUSPOS_MSGS);

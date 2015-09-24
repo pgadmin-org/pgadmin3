@@ -874,8 +874,8 @@ bool frmMain::CheckAlive()
 												if (!userInformed)
 												{
 													wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the database?"),
-															    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()),
-															    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+													                    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()),
+													                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
 													closeIt = (dlg.ShowModal() != wxID_YES);
 													userInformed = true;
@@ -891,7 +891,7 @@ bool frmMain::CheckAlive()
 												{
 													// Create a server object and connect it.
 													wxBusyInfo waiting(wxString::Format(_("Reconnecting to database %s"),
-																	    db->GetName().c_str()), this);
+													                                    db->GetName().c_str()), this);
 
 													// Give the UI a chance to redraw
 													wxSafeYield();
@@ -927,8 +927,8 @@ bool frmMain::CheckAlive()
 							if (!userInformed)
 							{
 								wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the server?"),
-										    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()),
-										    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
+								                    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()),
+								                    wxICON_EXCLAMATION | wxYES_NO | wxYES_DEFAULT);
 
 								closeIt = (dlg.ShowModal() != wxID_YES);
 								userInformed = true;
@@ -944,7 +944,7 @@ bool frmMain::CheckAlive()
 							{
 								// Create a server object and connect it.
 								wxBusyInfo waiting(wxString::Format(_("Reconnecting to server %s (%s:%d)"),
-												    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+								                                    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
 								// Give the UI a chance to redraw
 								wxSafeYield();
@@ -1055,7 +1055,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 {
 	// Create a server object and connect it.
 	wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
-					    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+	                                    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
 	// Give the UI a chance to redraw
 	wxSafeYield();
@@ -1353,17 +1353,17 @@ void frmMain::EndMsg(bool done)
 		// Get the execution time & display it
 		float timeval = stopwatch.Time();
 		statusBar->SetStatusText(ElapsedTimeToStr(timeval), 3);
- 
+
 		// Display the name of the connection for currently selected object
 		wxString connection;
 		if (currentObject)
 		{
 			pgConn *conn = currentObject->GetConnection();
-	   
+
 			if (conn)
 				connection = conn->GetName();
 		}
-		statusBar->SetStatusText(connection,2);
+		statusBar->SetStatusText(connection, 2);
 
 		// Display the 'Done' message
 		if (done)
@@ -1372,9 +1372,9 @@ void frmMain::EndMsg(bool done)
 			statusBar->SetStatusText(timermsg + _(" Failed."), 1);
 
 		wxLogStatus(
-				wxT("%s (%s)"), timermsg.c_str(),
-				ElapsedTimeToStr(timeval).c_str()
-				);
+		    wxT("%s (%s)"), timermsg.c_str(),
+		    ElapsedTimeToStr(timeval).c_str()
+		);
 		wxEndBusyCursor();
 	}
 }

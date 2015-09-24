@@ -389,7 +389,7 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
 		}
 	}
 	chkUpdateCat->SetValue(chkSuperuser->GetValue() &&
-		!connection->BackendMinimumVersion(9, 5));
+	                       !connection->BackendMinimumVersion(9, 5));
 	CheckChange();
 }
 
@@ -408,7 +408,7 @@ void dlgRole::CheckChange()
 
 	if (!readOnly)
 		chkUpdateCat->Enable(chkSuperuser->GetValue() &&
-			!connection->BackendMinimumVersion(9, 5));
+		                     !connection->BackendMinimumVersion(9, 5));
 
 	// Check the passwords match
 	if (txtPasswd->GetValue() != txtRePasswd->GetValue())
@@ -699,7 +699,7 @@ wxString dlgRole::GetSql()
 			sql += wxT("ALTER ROLE ") + qtIdent(name) + options + wxT(";\n");
 
 		if (!connection->BackendMinimumVersion(9, 5) &&
-				chkUpdateCat->GetValue() != role->GetUpdateCatalog())
+		        chkUpdateCat->GetValue() != role->GetUpdateCatalog())
 		{
 			if (!connection->HasPrivilege(wxT("Table"), wxT("pg_authid"), wxT("update")))
 				sql += wxT(" -- Can't update 'UpdateCatalog privilege: can't write to pg_authid.\n")
@@ -834,7 +834,7 @@ wxString dlgRole::GetSql()
 		sql += wxT(";\n") + grants;
 
 		if (superuser && !chkUpdateCat->GetValue() &&
-			!connection->BackendMinimumVersion(9, 5))
+		        !connection->BackendMinimumVersion(9, 5))
 			sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(name) + wxT(";\n");
 	}
 

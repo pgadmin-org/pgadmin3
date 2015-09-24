@@ -178,7 +178,7 @@ int pgRole::GetIconId()
 bool pgRole::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
 	if ((GetUpdateCatalog() && !server->GetConnection()->BackendMinimumVersion(9, 5)) ||
-		(server->GetConnection()->BackendMinimumVersion(9, 5) && this->GetSuperuser()))
+	        (server->GetConnection()->BackendMinimumVersion(9, 5) && this->GetSuperuser()))
 	{
 		wxMessageDialog dlg(frame,
 		                    _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
@@ -228,7 +228,7 @@ wxString pgRole::GetSql(ctlTree *browser)
 		sql += wxT(";\n");
 
 		if (this->GetSuperuser() && !GetUpdateCatalog() &&
-			!server->GetConnection()->BackendMinimumVersion(9, 5))
+		        !server->GetConnection()->BackendMinimumVersion(9, 5))
 			sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
 
 		size_t index;

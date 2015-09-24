@@ -113,7 +113,8 @@ wxMenu *pgView::GetNewMenu()
 	{
 		ruleFactory.AppendMenu(menu);
 		triggerFactory.AppendMenu(menu);
-		if (GetMaterializedView()) {
+		if (GetMaterializedView())
+		{
 			indexFactory.AppendMenu(menu);
 		}
 	}
@@ -370,7 +371,8 @@ wxString pgView::GetSql(ctlTree *browser)
 				sql += GetSeqLabelsSql();
 		}
 
-		if (IsMatViewFlag) {
+		if (IsMatViewFlag)
+		{
 			AppendStuff(sql, browser, indexFactory);
 		}
 		AppendStuff(sql, browser, ruleFactory);

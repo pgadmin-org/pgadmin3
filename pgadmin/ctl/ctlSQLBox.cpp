@@ -588,7 +588,8 @@ wxString ctlSQLBox::ExternalFormat()
 		return _("Nothing to format.");
 
 	wxString formatCmd = settings->GetExtFormatCmd();
-	if (formatCmd.IsEmpty()) {
+	if (formatCmd.IsEmpty())
+	{
 		return _("You need to setup a formatting command");
 	}
 
@@ -603,8 +604,9 @@ wxString ctlSQLBox::ExternalFormat()
 	processExitCode = 0;
 
 	process = new sysProcess(this, wxConvUTF8);
-	processID = wxExecute(formatCmd, wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER, process);
-	if (!processID) {
+	processID = wxExecute(formatCmd, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, process);
+	if (!processID)
+	{
 		delete process;
 		process = NULL;
 		processID = 0;
@@ -616,8 +618,9 @@ wxString ctlSQLBox::ExternalFormat()
 
 	int timeoutMs = settings->GetExtFormatTimeout();
 	int timeoutStepMs = 100;
-	int i=0;
-	while (process && i * timeoutStepMs < timeoutMs) {
+	int i = 0;
+	while (process && i * timeoutStepMs < timeoutMs)
+	{
 		wxSafeYield();
 		if (process)
 			processOutput += process->ReadInputStream();
@@ -626,16 +629,20 @@ wxString ctlSQLBox::ExternalFormat()
 		i++;
 	}
 
-	if (process) {
+	if (process)
+	{
 		AbortProcess();
 		return wxString::Format(_("Formatting command did not respond in %d ms"), timeoutMs);
 	}
 
-	if (processExitCode != 0) {
+	if (processExitCode != 0)
+	{
 		processErrorOutput.Replace(wxT("\n"), wxT(" "));
 		msg = wxString::Format(_("Error %d: "), processExitCode) + processErrorOutput;
 		return msg;
-	} else if (processOutput.Trim().IsEmpty()) {
+	}
+	else if (processOutput.Trim().IsEmpty())
+	{
 		return _("Formatting command error: Output is empty.");
 	}
 

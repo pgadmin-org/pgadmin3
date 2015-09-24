@@ -763,7 +763,7 @@ void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
 	wxASSERT_MSG(cfgname == sysSettings::PGPASS,
-			wxT("Handles only pgpass configuration"));
+	             wxT("Handles only pgpass configuration"));
 	if (cfgname == PGPASS)
 	{
 #if wxCHECK_VERSION(2, 9, 5)

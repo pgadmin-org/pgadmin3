@@ -551,7 +551,7 @@ int dlgServer::Go(bool modal)
 	}
 
 	// Call CheckRange to set state on OK button
-        CheckChange();
+	CheckChange();
 	return dlgProperty::Go(modal);
 }
 

@@ -231,19 +231,19 @@ wxString ElapsedTimeToStr(wxLongLong msec)
 
 	if (days > 0)
 		return wxString::Format(
-                wxT("%d %s, %02d:%02d:%02ld hours"),
-                days, wxT("days"), hours, minutes, seconds
-                );
+		           wxT("%d %s, %02d:%02d:%02ld hours"),
+		           days, wxT("days"), hours, minutes, seconds
+		       );
 	else if (hours > 0)
 		return wxString::Format(
-                wxT("%02d:%02d:%02ld hours"), hours, minutes, seconds
-                );
+		           wxT("%02d:%02d:%02ld hours"), hours, minutes, seconds
+		       );
 	else if (msec >= 1000 * 60)
 		return wxString::Format(wxT("%02d:%02ld minutes"), minutes, seconds);
 	else if (msec >= 1000)
 		return wxString::Format(
-                wxT("%ld.%ld secs"), seconds, milliseconds / 100
-                );
+		           wxT("%ld.%ld secs"), seconds, milliseconds / 100
+		       );
 	else
 		return msec.ToString() + wxT(" msec");
 }

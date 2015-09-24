@@ -572,11 +572,11 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			{
 				if (txtMessages)
 					txtMessages->AppendText(
-							_("Total query runtime: ") +
-							ElapsedTimeToStr(
-								wxGetLocalTimeMillis() - startTime
-								)
-							);
+					    _("Total query runtime: ") +
+					    ElapsedTimeToStr(
+					        wxGetLocalTimeMillis() - startTime
+					    )
+					);
 
 				btnOK->SetLabel(_("Done"));
 				btnCancel->Disable();

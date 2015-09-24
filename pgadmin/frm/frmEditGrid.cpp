@@ -642,7 +642,8 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString old_sort_string, new_sort_string;
 
-	if (autoOrderBy) {
+	if (autoOrderBy)
+	{
 		autoOrderBy = false;
 		old_sort_string = wxT("");
 	}
@@ -688,7 +689,8 @@ void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString old_sort_string, new_sort_string;
 
-	if (autoOrderBy) {
+	if (autoOrderBy)
+	{
 		autoOrderBy = false;
 		old_sort_string = wxT("");
 	}
