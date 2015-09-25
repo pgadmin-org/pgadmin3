@@ -227,6 +227,8 @@ pgadmin3_SOURCES += \
 	include/images/query_execfile.png \
 	include/images/query_execute.png \
 	include/images/query_explain.png \
+	include/images/query_commit.png \
+	include/images/query_rollback.png \
 	include/images/query_pgscript.png \
 	include/images/readdata.png \
 	include/images/refresh.png \

@@ -77,6 +77,8 @@
 #include "images/query_execfile.pngc"
 #include "images/query_explain.pngc"
 #include "images/query_cancel.pngc"
+#include "images/query_commit.pngc"
+#include "images/query_rollback.pngc"
 #include "images/help.pngc"
 #include "images/gqbJoin.pngc"
 
@@ -120,6 +122,8 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
 	EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
 	EVT_MENU(MNU_EXPLAINANALYZE,    frmQuery::OnExplain)
+	EVT_MENU(MNU_DOCOMMIT,          frmQuery::OnCommit)
+	EVT_MENU(MNU_DOROLLBACK,        frmQuery::OnRollback)
 	EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
 	EVT_MENU(MNU_AUTOROLLBACK,      frmQuery::OnAutoRollback)
 	EVT_MENU(MNU_AUTOCOMMIT,        frmQuery::OnAutoCommit)
@@ -324,6 +328,9 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	queryMenu->Append(MNU_AUTOCOMMIT, _("&Auto-Commit"), _("Auto commit the cuurent transaction"), wxITEM_CHECK);
 	queryMenu->AppendSeparator();
 	queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
+	queryMenu->AppendSeparator();
+	queryMenu->Append(MNU_DOCOMMIT, _("Commit\tCtrl-Shift-C"), _("Commit"));
+	queryMenu->Append(MNU_DOROLLBACK, _("Rollback\tCtrl-Shift-R"), _("Rollback"));
 	menuBar->Append(queryMenu, _("&Query"));
 
 	favouritesMenu = new wxMenu();
@@ -434,6 +441,10 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	toolBar->AddTool(MNU_EXECFILE, wxEmptyString, *query_execfile_png_bmp, _("Execute query, write result to file"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_EXPLAIN, wxEmptyString, *query_explain_png_bmp, _("Explain query"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_CANCEL, wxEmptyString, *query_cancel_png_bmp, _("Cancel query"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
+
+	toolBar->AddTool(MNU_DOCOMMIT, wxEmptyString, *query_commit_png_bmp, _("Commit"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DOROLLBACK, wxEmptyString, *query_rollback_png_bmp, _("Rollback"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 
 	toolBar->AddTool(MNU_HELP, wxEmptyString, *help_png_bmp, _("Display help on SQL commands."), wxITEM_NORMAL);
@@ -2206,6 +2217,16 @@ void frmQuery::OnExplain(wxCommandEvent &event)
 	execQuery(sql, resultToRetrieve, true, offset, false, true, verbose);
 }
 
+void frmQuery::OnCommit(wxCommandEvent &event)
+{
+	execQuery(wxT("COMMIT;"));
+}
+
+void frmQuery::OnRollback(wxCommandEvent &event)
+{
+	execQuery(wxT("ROLLBACK;"));
+}
+
 // Update the main SQL query from the GQB if desired
 bool frmQuery::updateFromGqb(bool executing)
 {
@@ -2423,17 +2444,23 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 
 void frmQuery::setTools(const bool running)
 {
+	bool canEndTransaction = (!running && conn->GetTxStatus() != PQTRANS_IDLE);
+
 	toolBar->EnableTool(MNU_EXECUTE, !running);
 	toolBar->EnableTool(MNU_EXECPGS, !running);
 	toolBar->EnableTool(MNU_EXECFILE, !running);
 	toolBar->EnableTool(MNU_EXPLAIN, !running);
 	toolBar->EnableTool(MNU_CANCEL, running);
+	toolBar->EnableTool(MNU_DOCOMMIT, canEndTransaction);
+	toolBar->EnableTool(MNU_DOROLLBACK, canEndTransaction);
 	queryMenu->Enable(MNU_EXECUTE, !running);
 	queryMenu->Enable(MNU_EXECPGS, !running);
 	queryMenu->Enable(MNU_EXECFILE, !running);
 	queryMenu->Enable(MNU_EXPLAIN, !running);
 	queryMenu->Enable(MNU_EXPLAINANALYZE, !running);
 	queryMenu->Enable(MNU_CANCEL, running);
+	queryMenu->Enable(MNU_DOCOMMIT, canEndTransaction);
+	queryMenu->Enable(MNU_DOROLLBACK, canEndTransaction);
 	fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
 	fileMenu->Enable(MNU_QUICKREPORT, sqlResult->CanExport());
 	fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
