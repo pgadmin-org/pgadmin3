@@ -40,11 +40,14 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
 	EVT_MENU(MNU_FIND, ctlSQLBox::OnSearchReplace)
 	EVT_MENU(MNU_AUTOCOMPLETE, ctlSQLBox::OnAutoComplete)
 	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
+#ifdef __WXMAC__
 	EVT_STC_PAINTED(-1,  ctlSQLBox::OnPositionStc)
+#else
+	EVT_STC_UPDATEUI(-1, ctlSQLBox::OnPositionStc)
+#endif
 	EVT_STC_MARGINCLICK(-1, ctlSQLBox::OnMarginClick)
 	EVT_END_PROCESS(-1,  ctlSQLBox::OnEndProcess)
 END_EVENT_TABLE()
-
 
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLBox, wxStyledTextCtrl)
