@@ -28,6 +28,7 @@
 #include <wx/imaglist.h>
 #include <wx/busyinfo.h>
 #include <wx/sysopt.h>
+#include <wx/textbuf.h>
 #include <wx/clipbrd.h>
 
 // wxAUI
@@ -672,7 +673,7 @@ void frmMain::OnCopy(wxCommandEvent &ev)
 	ctlSQLBox *sb = dynamic_cast<ctlSQLBox *>(currentControl);
 	if (sb)
 	{
-		text = sb->GetSelectedText();
+		text = wxTextBuffer::Translate(sb->GetSelectedText());
 	}
 
 	// Set the clipboard text
