@@ -433,7 +433,13 @@ public:
 	int GetLineEndingType() const
 	{
 		int i;
-		Read(wxT("LineEndingType"), &i, 2);
+		int defval = 2;
+#ifdef __WXMSW__
+		defval = 0; /* SC_EOL_CRLF in Scintilla.h */
+#else
+		defval = 2; /* SC_EOL_LF in Scintilla.h */
+#endif
+		Read(wxT("LineEndingType"), &i, defval);
 		return i;
 	}
 	void SetLineEndingType(const int newval)
