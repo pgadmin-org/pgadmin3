@@ -659,11 +659,7 @@ void frmMain::OnCopy(wxCommandEvent &ev)
 			{
 				text.Append(lv->GetText(row, col) + wxT("\t"));
 			}
-#ifdef __WXMSW__
-			text.Append(wxT("\r\n"));
-#else
 			text.Append(wxT("\n"));
-#endif
 			row = lv->GetNextSelected(row);
 		}
 		text = text.Trim();
@@ -673,13 +669,13 @@ void frmMain::OnCopy(wxCommandEvent &ev)
 	ctlSQLBox *sb = dynamic_cast<ctlSQLBox *>(currentControl);
 	if (sb)
 	{
-		text = wxTextBuffer::Translate(sb->GetSelectedText());
+		text = sb->GetSelectedText();
 	}
 
 	// Set the clipboard text
 	if (text.Length() > 0 && wxTheClipboard->Open())
 	{
-		wxTheClipboard->SetData(new wxTextDataObject(text));
+		wxTheClipboard->SetData(new wxTextDataObject(wxTextBuffer::Translate(text)));
 		wxTheClipboard->Close();
 	}
 }
