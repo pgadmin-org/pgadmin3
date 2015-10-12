@@ -51,6 +51,11 @@ will be sent to the database server, which executes it. You may also
 execute just a part of the text, by selecting only the text that you
 want the server to execute.
 
+Options on the *Query* menu allow you to control COMMIT and ROLLBACK behavior for transactions:
+
+* Check the box next to *Auto-Rollback* to instruct the server to automatically roll back a transaction if an error occurs during the transaction.
+* Check the box next to *Auto-Commit* to instruct the server to automatically commit each transaction.  Any changes made by the transaction will be visible to others, and are guaranteed to be durable in the event of a crash.  By default, auto-commit behavior is enabled.
+
 Explain from the Query menu, or F7 function key will execute the
 EXPLAIN command. The database server will analyze the query that's
 sent to it, and will return the results.
