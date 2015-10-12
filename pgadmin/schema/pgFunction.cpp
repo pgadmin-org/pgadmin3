@@ -305,8 +305,6 @@ wxString pgFunction::GetSql(ctlTree *browser)
 		else
 		{
 			sql += wxT("\n  RETURNS ");
-			if (GetReturnAsSet() && !GetReturnType().StartsWith(wxT("TABLE")))
-				sql += wxT("SETOF ");
 			sql += GetReturnType();
 
 			sql += wxT(" AS\n");
