@@ -28,9 +28,8 @@ public:
 	dlgMoveTablespace(frmMain *win, pgConn *conn, pgTablespace *tblspc);
 	~dlgMoveTablespace();
 	wxString GetTablespace();
-	wxString GetKind();
+	wxArrayString GetKind();
 	wxString GetOwner();
-
 private:
 	pgConn *connection;
 	frmMain *parent;

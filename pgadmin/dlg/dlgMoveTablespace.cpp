@@ -98,16 +98,22 @@ wxString dlgMoveTablespace::GetTablespace()
 	return cbMoveTo->GetValue();
 }
 
-wxString dlgMoveTablespace::GetKind()
+wxArrayString dlgMoveTablespace::GetKind()
 {
+	wxArrayString kinds;
 	if (cbKind->GetValue().Cmp(_("Tables")) == 0)
-		return wxT("TABLES");
-	if (cbKind->GetValue().Cmp(_("Indexes")) == 0)
-		return wxT("INDEXES");
-	if (cbKind->GetValue().Cmp(_("Materialized views")) == 0)
-		return wxT("MATERIALIZED VIEWS");
-
-	return wxT("ALL");
+		kinds.Add(wxT("TABLE"));
+	else if (cbKind->GetValue().Cmp(_("Indexes")) == 0)
+		kinds.Add(wxT("INDEX"));
+	else if (cbKind->GetValue().Cmp(_("Materialized views")) == 0)
+		kinds.Add(wxT("MATERIALIZED VIEW"));
+	else
+	{
+		kinds.Add(wxT("TABLE"));
+		kinds.Add(wxT("INDEX"));
+		kinds.Add(wxT("MATERIALIZED VIEW"));
+	}
+	return kinds;
 }
 
 wxString dlgMoveTablespace::GetOwner()
