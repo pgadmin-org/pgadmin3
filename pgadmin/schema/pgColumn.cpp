@@ -545,23 +545,43 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
 	pgColumn *column = 0;
 	pgDatabase *database = collection->GetDatabase();
-	wxString sql;
-	int currentcol;
-	int currentlimit;
+	inheritHashMap inhMap;
 
-	// grab inherited tables
-	sql = wxT("SELECT inhparent::regclass AS inhrelname,\n")
-	      wxT("  (SELECT count(*) FROM pg_attribute WHERE attrelid=inhparent AND attnum>0) AS colscount\n")
-	      wxT("  FROM pg_inherits\n")
-	      wxT("  WHERE inhrelid =  ") + collection->GetOidStr() + wxT("::oid\n")
-	      wxT("  ORDER BY inhseqno");
-	pgSet *inhtables = database->ExecuteSet(sql);
+	// grab inherited tables with attibute names
+	pgSet *inhtables = database->ExecuteSet(
+			wxT("SELECT\n")
+			wxT("    array_to_string(array_agg(inhrelname), ', ') inhrelname,\n")
+			wxT("    attrname\n")
+			wxT("FROM\n")
+			wxT("    (SELECT\n")
+			wxT("        inhparent::regclass AS inhrelname,\n")
+			wxT("        a.attname AS attrname\n")
+			wxT("    FROM\n")
+			wxT("        pg_inherits i\n")
+			wxT("        LEFT JOIN pg_attribute a ON\n")
+			wxT("            (attrelid = inhparent AND attnum > 0)\n")
+			wxT("    WHERE inhrelid = ") + collection->GetOidStr() + wxT("::oid\n")
+			wxT("    ORDER BY inhseqno) a\n")
+			wxT("GROUP BY attrname"));
+
+	if (inhtables)
+	{
+		while (!inhtables->Eof())
+		{
+			wxString attrName = inhtables->GetVal(wxT("attrname"));
+			wxString inhrelName = inhtables->GetVal(wxT("inhrelname"));
+			inhMap[attrName] = inhrelName;
+			inhtables->MoveNext();
+		}
+
+		delete inhtables;
+	}
 
 	wxString systemRestriction;
 	if (!settings->GetShowSystemObjects())
 		systemRestriction = wxT("\n   AND att.attnum > 0");
 
-	sql =
+	wxString sql =
 	    wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, format_type(ty.oid,att.atttypmod) AS displaytypname, tn.nspname as typnspname, et.typname as elemtypname,\n")
 	    wxT("  ty.typstorage AS defaultstorage, cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
 	    wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
@@ -604,17 +624,10 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 	pgSet *columns = database->ExecuteSet(sql);
 	if (columns)
 	{
-		currentcol = 0;
-		if (inhtables && !inhtables->Eof())
-		{
-			currentlimit = inhtables->GetLong(wxT("colscount"));
-		}
 		while (!columns->Eof())
 		{
-			if (columns->GetLong(wxT("attnum")) > 0) // ignore system columns before inherited columns
-				currentcol++;
-
-			column = new pgColumn(collection->GetTable(), columns->GetVal(wxT("attname")));
+			wxString attrName = columns->GetVal(wxT("attname"));
+			column = new pgColumn(collection->GetTable(), attrName);
 
 			column->iSetAttTypId(columns->GetOid(wxT("atttypid")));
 			column->iSetColNumber(columns->GetLong(wxT("attnum")));
@@ -665,18 +678,10 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 			column->iSetTableName(columns->GetVal(wxT("relname")));
 			column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
 
-			if (inhtables)
-			{
-				if (currentcol > currentlimit)
-				{
-					inhtables->MoveNext();
-					if (!inhtables->Eof())
-						currentlimit += inhtables->GetLong(wxT("colscount"));
-				}
-
-				if (!inhtables->Eof())
-					column->iSetInheritedTableName(inhtables->GetVal(wxT("inhrelname")));
-			}
+			// Check whether the attribute is inherited
+			inheritHashMap::iterator it = inhMap.find(attrName);
+			if (it != inhMap.end())
+				column->iSetInheritedTableName(it->second);
 
 			column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
 			column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
@@ -711,9 +716,10 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 				break;
 		}
 
-		delete inhtables;
 		delete columns;
 	}
+
+	inhMap.clear();
 	return column;
 }
 

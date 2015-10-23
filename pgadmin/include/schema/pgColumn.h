@@ -15,6 +15,8 @@
 // App headers
 #include "pgTable.h"
 
+WX_DECLARE_STRING_HASH_MAP(wxString, inheritHashMap);
+
 class pgCollection;
 
 class pgColumnFactory : public pgTableObjFactory
