@@ -327,7 +327,7 @@ void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 		if (connection()->BackendMinimumVersion(9, 2))
 			sql += wxT(", temp_files AS ") + qtIdent(_("Temporary files")) +
-			       wxT(", temp_bytes AS ") + qtIdent(_("Size of temporary files")) +
+			       wxT(", pg_size_pretty(temp_bytes) AS ") + qtIdent(_("Size of temporary files")) +
 			       wxT(", deadlocks AS ") + qtIdent(_("Deadlocks")) +
 			       wxT(", blk_read_time AS ") + qtIdent(_("Block read time")) +
 			       wxT(", blk_write_time AS ") + qtIdent(_("Block write time"));
