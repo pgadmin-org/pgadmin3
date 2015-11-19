@@ -254,32 +254,32 @@ void pgTablespace::MoveTablespace(frmMain *form)
 	if (rdo.ShowModal() != wxID_CANCEL)
 	{
 		if (wxMessageBox(wxString::Format(
-			_("Are you sure you wish to move objects from %s to %s?"),
-			GetQuotedFullIdentifier().c_str(),rdo.GetTablespace().c_str()),
-			_("Move tablespace?"),
-			wxYES_NO) != wxYES)
+		                     _("Are you sure you wish to move objects from %s to %s?"),
+		                     GetQuotedFullIdentifier().c_str(), rdo.GetTablespace().c_str()),
+		                 _("Move tablespace?"),
+		                 wxYES_NO) != wxYES)
 			return;
 
 		wxArrayString kind = rdo.GetKind();
 		wxString      ownerInfo,
 		              moveTo = qtIdent(rdo.GetTablespace()),
-			      currTblSpace = GetQuotedFullIdentifier();
+		              currTblSpace = GetQuotedFullIdentifier();
 
 		if (rdo.GetOwner().Length() > 0)
 		{
 			ownerInfo = wxString::Format(
-				wxT(" OWNED BY %s"),
-				qtIdent(rdo.GetOwner()).c_str());
+			                wxT(" OWNED BY %s"),
+			                qtIdent(rdo.GetOwner()).c_str());
 		}
 
 		for(size_t index = 0; index < kind.GetCount(); ++index)
 		{
 			query += wxString::Format(
-				wxT("ALTER %s ALL IN TABLESPACE %s%s SET TABLESPACE %s;\n"),
-				kind.Item(index).c_str(),
-				currTblSpace.c_str(),
-				ownerInfo.c_str(),
-				moveTo.c_str());
+			             wxT("ALTER %s ALL IN TABLESPACE %s%s SET TABLESPACE %s;\n"),
+			             kind.Item(index).c_str(),
+			             currTblSpace.c_str(),
+			             ownerInfo.c_str(),
+			             moveTo.c_str());
 		}
 		GetConnection()->ExecuteVoid(query);
 	}

@@ -324,24 +324,24 @@ wxString pgColumn::GetDefinition()
 
 		schpref = schema->GetQuotedPrefix();
 		full_tabname = GetTableName() + wxT("_") + GetName() + wxT("_seq");
-        
-        // If the generated sequence name is longer than 64 characters, then
-        //   - If both table & column name exceed 29 chars, truncate both to 29
-        //   - If one of table or column name exceeds 29 chars, truncate it to
-        //     29 chars plus however much less than 29 chars the other name is.
-        if (full_tabname.Length() > 64)
-        {
-            int tlen = GetTableName().Length();
-            int clen = GetName().Length();
-        
-            if (tlen > 29 && clen > 29)
-                full_tabname = GetTableName().Left(29) + wxT("_") + GetName().Left(29) + wxT("_seq");
-            else if (tlen > 29)
-                full_tabname = GetTableName().Left(29 + (29 - clen)) + wxT("_") + GetName() + wxT("_seq");
-            else if (clen > 29)
-                full_tabname = GetTableName() + wxT("_") + GetName().Left(29 + (29 - tlen)) + wxT("_seq");
-        }
-        
+
+		// If the generated sequence name is longer than 64 characters, then
+		//   - If both table & column name exceed 29 chars, truncate both to 29
+		//   - If one of table or column name exceeds 29 chars, truncate it to
+		//     29 chars plus however much less than 29 chars the other name is.
+		if (full_tabname.Length() > 64)
+		{
+			int tlen = GetTableName().Length();
+			int clen = GetName().Length();
+
+			if (tlen > 29 && clen > 29)
+				full_tabname = GetTableName().Left(29) + wxT("_") + GetName().Left(29) + wxT("_seq");
+			else if (tlen > 29)
+				full_tabname = GetTableName().Left(29 + (29 - clen)) + wxT("_") + GetName() + wxT("_seq");
+			else if (clen > 29)
+				full_tabname = GetTableName() + wxT("_") + GetName().Left(29 + (29 - tlen)) + wxT("_seq");
+		}
+
 		full_tabname = qtIdent(full_tabname);
 
 		if (schpref != wxEmptyString)
@@ -567,20 +567,20 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 
 	// grab inherited tables with attibute names
 	pgSet *inhtables = database->ExecuteSet(
-			wxT("SELECT\n")
-			wxT("    array_to_string(array_agg(inhrelname), ', ') inhrelname,\n")
-			wxT("    attrname\n")
-			wxT("FROM\n")
-			wxT("    (SELECT\n")
-			wxT("        inhparent::regclass AS inhrelname,\n")
-			wxT("        a.attname AS attrname\n")
-			wxT("    FROM\n")
-			wxT("        pg_inherits i\n")
-			wxT("        LEFT JOIN pg_attribute a ON\n")
-			wxT("            (attrelid = inhparent AND attnum > 0)\n")
-			wxT("    WHERE inhrelid = ") + collection->GetOidStr() + wxT("::oid\n")
-			wxT("    ORDER BY inhseqno) a\n")
-			wxT("GROUP BY attrname"));
+	                       wxT("SELECT\n")
+	                       wxT("    array_to_string(array_agg(inhrelname), ', ') inhrelname,\n")
+	                       wxT("    attrname\n")
+	                       wxT("FROM\n")
+	                       wxT("    (SELECT\n")
+	                       wxT("        inhparent::regclass AS inhrelname,\n")
+	                       wxT("        a.attname AS attrname\n")
+	                       wxT("    FROM\n")
+	                       wxT("        pg_inherits i\n")
+	                       wxT("        LEFT JOIN pg_attribute a ON\n")
+	                       wxT("            (attrelid = inhparent AND attnum > 0)\n")
+	                       wxT("    WHERE inhrelid = ") + collection->GetOidStr() + wxT("::oid\n")
+	                       wxT("    ORDER BY inhseqno) a\n")
+	                       wxT("GROUP BY attrname"));
 
 	if (inhtables)
 	{
