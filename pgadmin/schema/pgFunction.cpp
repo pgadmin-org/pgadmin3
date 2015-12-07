@@ -289,7 +289,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
 		sql = wxT("-- Function: ") + qtSig + wxT("\n\n")
 		      + wxT("-- DROP FUNCTION ") + qtSig + wxT(";\n\n");
 		
-		if (GetFunctionDefByPg())
+		if (!!GetFunctionDefByPg())
 		{
 			sql += GetFunctionDefByPg();
 		}
@@ -961,7 +961,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			function->iSetReturnAsSet(functions->GetBool(wxT("proretset")));
 			function->iSetIsStrict(functions->GetBool(wxT("proisstrict")));
 			function->iSetSource(functions->GetVal(wxT("prosrc")));
-			if (functionDefByPgSelect)
+			if (!!functionDefByPgSelect)
 			{
 				function->iSetFunctionDefByPg(functions->GetVal(wxT("function_def_by_pg")));
 			}
