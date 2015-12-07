@@ -118,6 +118,14 @@ public:
 	{
 		source = s;
 	}
+	wxString GetFunctionDefByPg() const
+	{
+		return functionDefByPg;
+	}
+	void iSetFunctionDefByPg(const wxString &s)
+	{
+		functionDefByPg = s;
+	}
 	wxString GetBin() const
 	{
 		return bin;
@@ -251,7 +259,7 @@ protected:
 	pgFunction(pgSchema *newSchema, int newType, const wxString &newName = wxT(""));
 
 private:
-	wxString returnType, language, volatility, source, bin;
+	wxString returnType, language, volatility, source, functionDefByPg, bin;
 	wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
 	bool returnAsSet, secureDefiner, isStrict, isWindow, isLeakProof;
 	long argCount, cost, rows, argDefValCount, procType;
