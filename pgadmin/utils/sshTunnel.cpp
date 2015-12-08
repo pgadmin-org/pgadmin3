@@ -131,7 +131,7 @@ bool CSSHTunnelThread::Initialize()
 		rc = libssh2_session_handshake(m_session, m_sock);
 		if (rc)
 		{
-			LogSSHTunnelErrors(wxString::Format(_("SSH error: Error when starting up SSH session with error code %d"), rc), GetId());
+			LogSSHTunnelErrors(wxString::Format(_("SSH error: Error when starting up SSH session with error code %d"), rc), GetId(), m_session);
 			return false;
 		}
 
@@ -177,7 +177,7 @@ bool CSSHTunnelThread::Initialize()
 			rc = libssh2_userauth_password(m_session, m_username.mb_str(), m_password.mb_str());
 			if (rc)
 			{
-				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by password failed with error code %d"), rc), GetId());
+				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by password failed with error code %d"), rc), GetId(), m_session);
 				Cleanup();
 				return false;
 			}
@@ -187,7 +187,7 @@ bool CSSHTunnelThread::Initialize()
 			rc = libssh2_userauth_keyboard_interactive(m_session, m_username.mb_str(), &CSSHTunnelThread::keyboard_interactive);
 			if (rc)
 			{
-				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by password failed with error code %d"), rc), GetId());
+				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by password failed with error code %d"), rc), GetId(), m_session);
 				Cleanup();
 				return false;
 			}
@@ -201,7 +201,7 @@ bool CSSHTunnelThread::Initialize()
 #endif
 			if (rc)
 			{
-				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by identity file failed with error code %d"), rc), GetId());
+				LogSSHTunnelErrors(wxString::Format(_("SSH error: Authentication by identity file failed with error code %d"), rc), GetId(), m_session);
 				Cleanup();
 				return false;
 			}
@@ -599,13 +599,27 @@ shutdown:
 	return NULL;
 }
 
-void LogSSHTunnelErrors(const wxString &msg, const int &id)
+void LogSSHTunnelErrors(const wxString &msg, const int &id, struct _LIBSSH2_SESSION *session)
 {
 	g_SSHThreadMutex.TryLock();
 
+	wxString errorMsg = msg;
+	// If session is not NULL then fetch the last error on that session
+	if (session)
+	{
+		char* errmsg;
+		int errmsg_len;
+		libssh2_session_last_error(session, &errmsg, &errmsg_len, 0);
+		if (errmsg_len > 0)
+		{
+			wxString errmsg_s(errmsg, wxConvLibc);
+			errorMsg += wxString::Format(_(" [%s]"), errmsg_s.c_str());
+		}
+	}
+
 	wxCommandEvent event(SSH_TUNNEL_ERROR_EVENT, id);
 	// Give it some contents
-	event.SetString(msg);
+	event.SetString(errorMsg);
 
 	// Do send it
 	wxPostEvent(winMain, event);

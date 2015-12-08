@@ -45,7 +45,7 @@ enum enAuthenticationMethod
 	AUTH_PUBLICKEY = 4
 };
 
-void LogSSHTunnelErrors(const wxString &msg, const int &id);
+void LogSSHTunnelErrors(const wxString &msg, const int &id, struct _LIBSSH2_SESSION *session = NULL);
 static wxMutex g_SSHThreadMutex;
 
 WX_DECLARE_HASH_SET( int, wxIntegerHash, wxIntegerEqual, subThreadSDSet);

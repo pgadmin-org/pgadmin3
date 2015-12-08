@@ -104,7 +104,9 @@ fi
 AM_CONDITIONAL([BUILD_SSH_TUNNEL], [test x$BUILD_SSH_TUNNEL = xyes])
 
 if test "$ac_cv_libssl" = "yes"; then
-	CPPFLAGS="$CPPFLAGS -DHAVE_OPENSSL_CRYPTO"
+    AC_DEFINE(LIBSSH2_OPENSSL, 1, [Compile libssh2 with OpenSSL support])
+    AC_DEFINE(HAVE_OPENSSL_CRYPTO, 1, [Compile libssh2 with OpenSSL support])
+	CPPFLAGS="$CPPFLAGS -DHAVE_OPENSSL_CRYPTO -DLIBSSH2_OPENSSL"
 	LIBS="$LIBS $LIBSSL"
 fi
 
