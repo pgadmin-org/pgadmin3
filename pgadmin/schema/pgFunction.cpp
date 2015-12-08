@@ -291,7 +291,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
 		
 		if (!!GetFunctionDefByPg())
 		{
-			sql += GetFunctionDefByPg();
+			sql += GetFunctionDefByPg().Trim();
 		}
 		else if (GetLanguage() == wxT("edbspl") && GetProcType() == 2)
 		{
