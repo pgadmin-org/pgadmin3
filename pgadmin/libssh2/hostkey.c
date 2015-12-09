@@ -93,7 +93,7 @@ hostkey_method_ssh_rsa_init(LIBSSH2_SESSION * session,
     s += 4;
     n = s;
 
-    _libssh2_rsa_new(&rsactx, e, e_len, n, n_len, NULL, 0,
+    ret = _libssh2_rsa_new(&rsactx, e, e_len, n, n_len, NULL, 0,
                      NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0)
     if (ret) {
         return -1;
