@@ -289,9 +289,10 @@ wxString pgFunction::GetSql(ctlTree *browser)
 		sql = wxT("-- Function: ") + qtSig + wxT("\n\n")
 		      + wxT("-- DROP FUNCTION ") + qtSig + wxT(";\n\n");
 		
-		if (!!GetFunctionDefByPg())
+		wxString functionDefByPgTrim = GetFunctionDefByPg().Trim();
+		if (!functionDefByPgTrim.IsEmpty())
 		{
-			sql += GetFunctionDefByPg().Trim();
+			sql += functionDefByPgTrim;
 		}
 		else if (GetLanguage() == wxT("edbspl") && GetProcType() == 2)
 		{
@@ -961,7 +962,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			function->iSetReturnAsSet(functions->GetBool(wxT("proretset")));
 			function->iSetIsStrict(functions->GetBool(wxT("proisstrict")));
 			function->iSetSource(functions->GetVal(wxT("prosrc")));
-			if (!!functionDefByPgSelect)
+			if (!functionDefByPgSelect.IsEmpty())
 			{
 				function->iSetFunctionDefByPg(functions->GetVal(wxT("function_def_by_pg")));
 			}
