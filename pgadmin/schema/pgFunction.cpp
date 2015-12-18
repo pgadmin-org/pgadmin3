@@ -356,16 +356,19 @@ wxString pgFunction::GetSql(ctlTree *browser)
 		if (!sql.Strip(wxString::both).EndsWith(wxT(";")))
 			sql += wxT(";");
 
-		size_t i;
-		for (i = 0 ; i < configList.GetCount() ; i++)
+		if (functionDefByPgTrim.IsEmpty())
 		{
-			if (configList.Item(i).BeforeFirst('=') != wxT("search_path") &&
-			        configList.Item(i).BeforeFirst('=') != wxT("temp_tablespaces"))
-				sql += wxT("\nALTER FUNCTION ") + qtSig
-				       + wxT(" SET ") + configList.Item(i).BeforeFirst('=') + wxT("='") + configList.Item(i).AfterFirst('=') + wxT("';\n");
-			else
-				sql += wxT("\nALTER FUNCTION ") + qtSig
-				       + wxT(" SET ") + configList.Item(i).BeforeFirst('=') + wxT("=") + configList.Item(i).AfterFirst('=') + wxT(";\n");
+			size_t i;
+			for (i = 0 ; i < configList.GetCount() ; i++)
+			{
+				if (configList.Item(i).BeforeFirst('=') != wxT("search_path") &&
+					configList.Item(i).BeforeFirst('=') != wxT("temp_tablespaces"))
+					sql += wxT("\nALTER FUNCTION ") + qtSig
+					       + wxT(" SET ") + configList.Item(i).BeforeFirst('=') + wxT("='") + configList.Item(i).AfterFirst('=') + wxT("';\n");
+				else
+					sql += wxT("\nALTER FUNCTION ") + qtSig
+					       + wxT(" SET ") + configList.Item(i).BeforeFirst('=') + wxT("=") + configList.Item(i).AfterFirst('=') + wxT(";\n");
+			}
 		}
 
 		sql += wxT("\n")
