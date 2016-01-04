@@ -358,12 +358,7 @@ int dlgView::Go(bool modal)
 				DisableMaterializedView();
 			}
 
-			if (view->GetCheckOption().Cmp(wxT("cascaded")) == 0)
-				cbCheckOption->SetSelection(2);
-			else if (view->GetCheckOption().Cmp(wxT("local")) == 0)
-				cbCheckOption->SetSelection(1);
-			else
-				cbCheckOption->SetSelection(0);
+			cbCheckOption->SetSelection(GetIndexCheckOption(view->GetCheckOption()));
 		}
 	}
 	else
@@ -446,7 +441,7 @@ void dlgView::CheckChange()
 
 		if (connection->BackendMinimumVersion(9, 4) && view)
 		{
-			enable = enable || cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0;
+			enable = enable || (cbCheckOption->GetSelection() != GetIndexCheckOption(view->GetCheckOption()));
 		}
 	}
 
@@ -526,7 +521,10 @@ wxString dlgView::GetSql()
 			{
 				if (withoptions.Length() > 0)
 					withoptions += wxT(", ");
-				withoptions += wxT("check_option=") + cbCheckOption->GetValue().Lower();
+				if (cbCheckOption->GetSelection() == 1)
+				    withoptions += wxT("check_option=local");
+				if (cbCheckOption->GetSelection() == 2)
+				    withoptions += wxT("check_option=cascaded");
 			}
 
 			if (withoptions.Length() > 0)
@@ -739,12 +737,17 @@ wxString dlgView::GetSql()
 			}
 
 			if (connection->BackendMinimumVersion(9, 4)
-			        && cbCheckOption->GetValue().Lower().Cmp(view->GetCheckOption()) != 0)
+			        && cbCheckOption->GetSelection() != GetIndexCheckOption(view->GetCheckOption()) )
 			{
-				if (cbCheckOption->GetValue().Cmp(wxT("No")) == 0)
+				if ((cbCheckOption->GetSelection()) == 0)
 					sql += wxT("ALTER VIEW ") + name + wxT(" RESET (check_option);\n");
 				else
-					sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=") + cbCheckOption->GetValue().Lower() + wxT(");\n");
+				{
+					if (cbCheckOption->GetSelection() == 1)
+					    sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=local") + wxT(");\n");
+					if (cbCheckOption->GetSelection() == 2)
+					    sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=cascaded") + wxT(");\n");
+				}
 			}
 
 			if (withoptions.Length() > 0)
@@ -1217,4 +1220,14 @@ void dlgView::DisableStorageParameters()
 	txtToastFreezeMinAge->Disable();
 	txtToastFreezeMaxAge->Disable();
 	txtToastFreezeTableAge->Disable();
+}
+
+int dlgView::GetIndexCheckOption(const wxString &str) const
+{
+    if (str.Cmp(wxT("local")) == 0)
+	return 1;
+    if (str.Cmp(wxT("cascaded")) == 0)
+	return 2;
+
+    return 0;
 }

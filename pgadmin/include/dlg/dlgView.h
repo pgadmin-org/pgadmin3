@@ -45,6 +45,7 @@ private:
 	wxString AppendNum(bool &changed, wxTextCtrl *ctl, wxString val);
 	void DisableMaterializedView();
 	void DisableStorageParameters();
+	int GetIndexCheckOption(const wxString &str) const;
 
 	pgSchema *schema;
 	pgView *view;
