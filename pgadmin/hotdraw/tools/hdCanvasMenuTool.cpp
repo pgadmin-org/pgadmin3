@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2015, The pgAdmin Development Team
+// Copyright (C) 2002 - 2016, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // hdCanvasMenuTool.cpp - Allow to set up a menu at main canvas in case of not finding a tool or handle that manages an event

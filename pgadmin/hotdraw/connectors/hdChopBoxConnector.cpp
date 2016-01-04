@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 //
-// Copyright (C) 2002 - 2015, The pgAdmin Development Team
+// Copyright (C) 2002 - 2016, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // hdChopBoxConnector.cpp - Connector for center of figure to line crossing one limit line of rect

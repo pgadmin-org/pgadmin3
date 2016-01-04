@@ -6,7 +6,7 @@ The PostgreSQL Licence
 **********************
 
 
-**Copyright (C) 2002 - 2015, The pgAdmin Development Team**
+**Copyright (C) 2002 - 2016, The pgAdmin Development Team**
 
 Permission to use, copy, modify, and distribute this software and its
 documentation for any purpose, without fee, and without a written agreement is
