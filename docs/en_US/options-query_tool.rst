@@ -27,6 +27,17 @@ Use the fields on the *Query editor* dialog to specify workspace preferences for
 
 * **Keywords in uppercase** - Check the box next to *Keywords in uppercase* to instruct the Query tool to convert any keywords entered to an uppercase font.
 
+* **External formatting utility** - Use the *External formatting utility* field to provide the name of a formatting tool that can be used to make queries more readable.  Use of a tool that provides support for UTF-8 multi-byte characters is not required, but is preferable.    The utility must:
+
+  * Accept a STDIN stream and write the result set to STDOUT
+  * Provide a result in less than 3 seconds
+  * Exit with a code 0 on success
+
+  To use an external formatting tool in the Query Editor:
+
+  * Provide the name of the formatting tool in the *External formatting utility* field of the *Options* dialogue.
+  * In the Query Editor, select a block of text for formatting, and Press Ctrl+Shift+f, or navigate through the *Edit* menu to the *Format* menu, and select *External Format*.
+
 .. image:: images/options-colours.png
 
 Use the fields displayed on the *Colours* dialog to select colours for items displayed in the Query tool:
