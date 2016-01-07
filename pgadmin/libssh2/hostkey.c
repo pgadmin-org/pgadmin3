@@ -277,8 +277,8 @@ hostkey_method_ssh_dss_init(LIBSSH2_SESSION * session,
     libssh2_dsa_ctx *dsactx;
     const unsigned char *p, *q, *g, *y, *s;
     unsigned long p_len, q_len, g_len, y_len, len;
-    (void) hostkey_data_len;
 	int ret;
+    (void) hostkey_data_len;
 
     if (*abstract) {
         hostkey_method_ssh_dss_dtor(session, abstract);
