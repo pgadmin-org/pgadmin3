@@ -932,9 +932,6 @@ wxString dlgFunction::GetSql()
 		if (!isProcedure)
 		{
 			sql += wxT(" RETURNS ");
-			if (chkSetof->GetValue() && !cbReturntype->GetValue().StartsWith(wxT("TABLE")))
-				sql += wxT("SETOF ");
-
 			sql += cbReturntype->GetValue();
 		}
 
