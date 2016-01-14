@@ -676,7 +676,7 @@ wxString CleanHelpPath(const wxString &path)
 	        thePath.Lower().EndsWith(wxT(".zip")))
 		return thePath;
 
-	// In all othe cases we must have a directory
+	// In all other cases we must have a directory
 	wxString sep;
 
 	// Figure out the appropriate seperator
@@ -764,9 +764,22 @@ void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
 			// the old help path (stored in the settings) is no longer working
 			static wxString gpHelpPath = settings->GetGpHelpPath();
 
+			// Note: never end the URL on "index.html"
+			// InitHelp() does obscure magic with this ending
+			if (gpHelpPath.CmpNoCase(wxT("http://docs.gopivotal.com/gpdb/")) == 0)
+			{
+				gpHelpPath = wxT("http://gpdb.docs.pivotal.io/");
+				// Replace the path to the old domain with the link to
+				// the new documentation path
+				// The old link is working for now, but there is no guarantee
+				// that it will stay this way
+				// Also the new link automatically redirects to the latest version
+				settings->SetGpHelpPath(gpHelpPath);
+			}
+
 			if (gpHelpPath.CmpNoCase(wxT("http://www.greenplum.com/docs/3300/")) == 0)
 			{
-				gpHelpPath = wxT("http://docs.gopivotal.com/gpdb/");
+				gpHelpPath = wxT("http://gpdb.docs.pivotal.io/");
 				// this is the old link, update the link to the new documentation link
 				// problem: this saves the link into the configuration file
 				settings->SetGpHelpPath(gpHelpPath);
