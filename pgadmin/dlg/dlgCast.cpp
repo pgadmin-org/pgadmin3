@@ -157,10 +157,14 @@ void dlgCast::OnChangeType(wxCommandEvent &ev)
 		    wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
 		    wxT(" WHERE proargtypes[0] = ")
 		    +  GetTypeOid(cbSourceType->GetGuessedSelection())
-		    +  wxT("\n   AND proargtypes[1] = 0")
-		    wxT("\n   AND prorettype = ")
+			+ wxT("\n AND CASE ")
+			+ wxT("\n WHEN array_length(proargtypes, 1) = 2 THEN")
+			+ wxT("\n proargtypes[1] = 23")
+			+ wxT("\n WHEN array_length(proargtypes, 1) >= 3 THEN")
+			+ wxT("\n proargtypes[1] = 23 AND proargtypes[2] = 16")
+			+ wxT("\n ELSE true END")
+		    + wxT("\n   AND prorettype = ")
 		    +  GetTypeOid(cbTargetType->GetGuessedSelection());
-
 		pgSet *set = connection->ExecuteSet(qry);
 		if (set)
 		{
