@@ -326,7 +326,7 @@ int dlgType::Go(bool modal)
 		{
 			while (!set->Eof())
 			{
-				wxString name = qtIdent(set->GetVal(wxT("typname")));
+				wxString name = qtTypeIdent(set->GetVal(wxT("typname")));
 				cbSubtype->Append(name);
 				set->MoveNext();
 			}
@@ -496,10 +496,19 @@ int dlgType::Go(bool modal)
 
 		// Load the RANGE informations
 		cbSubtype->SetValue(type->GetSubtypeFunctionStr());
-		cbSubtypeOpclass->SetValue(type->GetSubtypeOpClassFunctionStr());
-		cbRngCollation->SetValue(type->GetCollationFunctionStr());
-		cbCanonical->SetValue(type->GetCanonical());
-		cbSubtypeDiff->SetValue(type->GetSubtypeDiff());
+		cbSubtype->Disable();
+		cbSubtypeOpclass->Append(type->GetSubtypeOpClassFunctionStr());
+		cbSubtypeOpclass->SetSelection(0);
+		cbSubtypeOpclass->Disable();
+		cbRngCollation->Append(type->GetCollationFunctionStr());
+		cbRngCollation->SetSelection(0);
+		cbRngCollation->Disable();
+		cbCanonical->Append(type->GetCanonical());
+		cbCanonical->SetSelection(0);
+		cbCanonical->Disable();
+		cbSubtypeDiff->Append(type->GetSubtypeDiff());
+		cbSubtypeDiff->SetSelection(0);
+		cbSubtypeDiff->Disable();
 
 		if (!connection->BackendMinimumVersion(7, 5))
 			cbOwner->Disable();
