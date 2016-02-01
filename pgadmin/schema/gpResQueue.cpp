@@ -257,13 +257,13 @@ wxString gpResQueueCollection::GetTranslatedMessage(int kindOfMessage) const
 	switch (kindOfMessage)
 	{
 		case RETRIEVINGDETAILS:
-			message = _("Retrieving details on ressource queues");
+			message = _("Retrieving details on resource queues");
 			break;
 		case REFRESHINGDETAILS:
-			message = _("Refreshing ressource queues");
+			message = _("Refreshing resource queues");
 			break;
 		case GRANTWIZARDTITLE:
-			message = _("Privileges for ressource queues");
+			message = _("Privileges for resource queues");
 			break;
 		case OBJECTSLISTREPORT:
 			message = _("Ressource queues list report");
