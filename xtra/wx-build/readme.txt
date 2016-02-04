@@ -1,6 +1,14 @@
 This directory contains scripts for building a suitable installation of 
 wxWidgets for your platform to allow you to build pgAdmin.
 
+Patches
+=======
+
+The patches sub-directory contains patches to wxWidgets that resolve known
+issues to pgAdmin.
+
+wxmac-2_8_12-font-dialogue.diff - Fixes the font selection dialogue on Mac.
+
 GTK
 ===
 
