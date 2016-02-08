@@ -61,6 +61,12 @@ const wxString SERVER_MIN_VERSION_T = wxT("8.4");
 const short SERVER_MAX_VERSION_N = 0x0905;
 const wxString SERVER_MAX_VERSION_T = wxT("9.5");
 
+// Supported Greenplum Database and Greenplum HAWQ minimum and maximum values.
+const short GP_MIN_VERSION_N = 0x0802;
+const wxString GP_MIN_VERSION_T = wxT("8.2");
+const short GP_MAX_VERSION_N = 0x0803;
+const wxString GP_MAX_VERSION_T = wxT("8.3");
+
 // The registry file
 #ifndef __WXMSW__
 #define REGISTRY_FILE wxT("/etc/postgres-reg.ini")

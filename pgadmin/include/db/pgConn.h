@@ -110,6 +110,7 @@ public:
 	}
 	bool GetIsEdb();
 	bool GetIsGreenplum();
+	bool GetIsHawq();
 	wxString EncryptPassword(const wxString &user, const wxString &password);
 	wxString qtDbString(const wxString &value);
 	pgConn *Duplicate(const wxString &_appName = wxT(""));
@@ -295,6 +296,7 @@ private:
 	int minorVersion, majorVersion, patchVersion;
 	bool isEdb;
 	bool isGreenplum;
+	bool isHawq;
 
 	wxString reservedNamespaces;
 	wxString connstr;

@@ -371,6 +371,7 @@ pgConn *pgConn::Duplicate(const wxString &_appName)
 	res->patchVersion = patchVersion;
 	res->isEdb = isEdb;
 	res->isGreenplum = isGreenplum;
+	res->isHawq = isHawq;
 	res->reservedNamespaces = reservedNamespaces;
 
 	for (size_t index = FEATURE_INITIALIZED; index < FEATURE_LAST; index++)
@@ -414,6 +415,13 @@ bool pgConn::GetIsGreenplum()
 	// to retrieve Greenplum flag
 	BackendMinimumVersion(0, 0);
 	return isGreenplum;
+}
+
+bool pgConn::GetIsHawq()
+{
+	// to retrieve Greenplum HAWQ flag
+	BackendMinimumVersion(0, 0);
+	return isHawq;
 }
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
@@ -484,6 +492,7 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
 		}
 
 		isGreenplum = version.Upper().Matches(wxT("*GREENPLUM DATABASE*"));
+		isHawq = version.Upper().Matches(wxT("*GREENPLUM DATABASE*")) && version.Upper().Matches(wxT("*HAWQ*"));;
 	}
 
 	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
