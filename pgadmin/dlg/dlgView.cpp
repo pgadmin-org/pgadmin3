@@ -522,9 +522,9 @@ wxString dlgView::GetSql()
 				if (withoptions.Length() > 0)
 					withoptions += wxT(", ");
 				if (cbCheckOption->GetSelection() == 1)
-				    withoptions += wxT("check_option=local");
+					withoptions += wxT("check_option=local");
 				if (cbCheckOption->GetSelection() == 2)
-				    withoptions += wxT("check_option=cascaded");
+					withoptions += wxT("check_option=cascaded");
 			}
 
 			if (withoptions.Length() > 0)
@@ -744,9 +744,9 @@ wxString dlgView::GetSql()
 				else
 				{
 					if (cbCheckOption->GetSelection() == 1)
-					    sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=local") + wxT(");\n");
+						sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=local") + wxT(");\n");
 					if (cbCheckOption->GetSelection() == 2)
-					    sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=cascaded") + wxT(");\n");
+						sql += wxT("ALTER VIEW ") + name + wxT("\n  SET (check_option=cascaded") + wxT(");\n");
 				}
 			}
 
@@ -1224,10 +1224,10 @@ void dlgView::DisableStorageParameters()
 
 int dlgView::GetIndexCheckOption(const wxString &str) const
 {
-    if (str.Cmp(wxT("local")) == 0)
-	return 1;
-    if (str.Cmp(wxT("cascaded")) == 0)
-	return 2;
+	if (str.Cmp(wxT("local")) == 0)
+		return 1;
+	if (str.Cmp(wxT("cascaded")) == 0)
+		return 2;
 
-    return 0;
+	return 0;
 }

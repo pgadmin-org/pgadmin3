@@ -607,7 +607,7 @@ void LogSSHTunnelErrors(const wxString &msg, const int &id, struct _LIBSSH2_SESS
 	// If session is not NULL then fetch the last error on that session
 	if (session)
 	{
-		char* errmsg;
+		char *errmsg;
 		int errmsg_len;
 		libssh2_session_last_error(session, &errmsg, &errmsg_len, 0);
 		if (errmsg_len > 0)
