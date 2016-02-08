@@ -851,7 +851,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 				// this might change once the merge with recent PG versions makes progress
 				// therefore also check for the max version
 				if (!(conn->BackendMinimumVersion(GP_MIN_VERSION_N >> 8, GP_MIN_VERSION_N & 0x00FF)) ||
-					(conn->BackendMinimumVersion(GP_MAX_VERSION_N >> 8, (GP_MAX_VERSION_N & 0x00FF) + 1)))
+				        (conn->BackendMinimumVersion(GP_MAX_VERSION_N >> 8, (GP_MAX_VERSION_N & 0x00FF) + 1)))
 				{
 					if (GP_MIN_VERSION_N == GP_MAX_VERSION_N)
 					{
