@@ -226,7 +226,7 @@ wxString ElapsedTimeToStr(wxLongLong msec)
 	int days = tsMsec.GetDays();
 	int hours = (wxTimeSpan(tsMsec.GetHours(), 0, 0, 0) - wxTimeSpan(days * 24)).GetHours();
 	int minutes = (wxTimeSpan(0, tsMsec.GetMinutes(), 0, 0) - wxTimeSpan(hours)).GetMinutes();
-	long seconds = (wxTimeSpan(0, 0, tsMsec.GetSeconds(), 0) - wxTimeSpan(0, minutes)).GetSeconds().ToLong();
+	long seconds = (wxTimeSpan(0, 0, tsMsec.GetSeconds(), 0) - wxTimeSpan(hours, minutes)).GetSeconds().ToLong();
 	long milliseconds = (wxTimeSpan(0, 0, 0, tsMsec.GetMilliseconds()) - wxTimeSpan(0, 0, seconds)).GetMilliseconds().ToLong();
 
 	if (days > 0)

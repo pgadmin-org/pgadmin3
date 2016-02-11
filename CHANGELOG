@@ -37,6 +37,8 @@ Changes
 
 Date       Dev Ver     Change details
 ---------- --- ------  --------------
+2016-02-11 DP  1.22.2  Fix display of elapsed query time for queries running
+                       longer than 1 hour [Иван Полещук]
 2016-02-08 DP  1.22.1  Don't barf when connecting to Greenplum or Greenplum 
                        HAWQ [Andreas 'ads' Scherbaum]
 2016-02-01 DP  1.22.1  Fix selection of conversion functions in the CREATE
@@ -166,7 +168,7 @@ Date       Dev Ver     Change details
                        [Fredrik de Vibe]
 2014-05-28 DP  1.18.2  Fix escape handling in pgpass files [Akshay Joshi]
 2014-05-04 GL  1.18.2  GQB forgot the materialized views. Report from Eduard
-                       Sz�cs.
+                       Szöcs.
 2014-02-13 AV  1.20.0  Enable backward search in SQL Box using Shift + F3
                        [J.F. Oster]
 2014-03-07 AV  1.18.2  Don't set log_min_messages from the debugger
@@ -731,7 +733,7 @@ Date       Dev Ver     Change details
                        plugins.d directory. This makes it much easier for
                        other software to register itself as a plugin.
 2010-07-28 DP  1.12.0  Ensure the highlight colour in the SQL textboxes will
-                       work with the system colours [Benedek L�szl�].
+                       work with the system colours [Benedek László].
 2010-07-24 GL  1.14.0  Support for Exclusion Constraints.
 2010-07-24 GL  1.14.0  Better i18n by getting rid of GetTranslatedTypeName().
 2010-07-24 GL  1.14.0  Add a contextual menu to reset a table/function's
@@ -942,7 +944,7 @@ Date       Dev Ver     Change details
 2009-09-17 GL  1.12.0  Add a button to open the query tool with the query
                        selected in the frmStatus window.
 2009-09-04 GL  1.12.0  Add an option to automatically rollback a failed
-                       transaction, per a report from C�dric Duprez.
+                       transaction, per a report from Cédric Duprez.
 2009-09-01 DP  1.10.1  Fix domain creation/modification for domains in 
                        non-default schemas.
 2009-09-01 GL  1.12.0  Remembers correctly window's maximized status, per a
@@ -1134,7 +1136,7 @@ Date       Dev Ver     Change details
 2008-03-22 DP  1.8.3   If stopping the server service fails after stopping
                        dependent services, wait 5 seconds and try again up to 10
                        times to allow the dependents time to shutdown fully.
-2008-03-20 DP  1.10.0  Add a DELETE script option for tables [R�mi Flament]
+2008-03-20 DP  1.10.0  Add a DELETE script option for tables [Rémi Flament]
 2008-03-19 DP  1.8.3   Don't include the -h option when calling pg_dump or
                        pg_restore if there is no hostname to specify.
 2008-03-18 DP  1.8.3   Convert setting names to lower case so we don't end up
@@ -1962,8 +1964,8 @@ Date       Dev Ver     Change details
 2005-02-07 AHP 1.2.1   fix libpq/ssl library detection
 2005-01-14 AP  1.2.1   table statistics including TOAST and indexes
 2005-01-14 AP  1.2.1   fix adding sequence columns
-2005-01-14 AP  1.2.1   fix Grant Wizard for functions per Robert K�pferl
-2005-01-14 AP  1.2.1   fix reengineered DOMAIN with CHECK per Robert K�pferl
+2005-01-14 AP  1.2.1   fix Grant Wizard for functions per Robert Köpferl
+2005-01-14 AP  1.2.1   fix reengineered DOMAIN with CHECK per Robert Köpferl
 2005-01-13 DP  1.2.1   fix EXPLICIT CAST sql generation per Merlin Moncure
 2005-01-07 AP  1.2.1   fix closing QueryTool if FindDlg still open per 
                        Maximiliano Di Rienzo
