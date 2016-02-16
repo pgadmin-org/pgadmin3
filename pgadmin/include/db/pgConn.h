@@ -143,11 +143,11 @@ public:
 	}
 	wxString GetUser() const
 	{
-		return wxString(PQuser(conn), *conv);
+		return conn ? wxString(PQuser(conn), *conv) : wxT("");
 	}
 	wxString GetPassword() const
 	{
-		return wxString(PQpass(conn), *conv);
+		return conn ? wxString(PQpass(conn), *conv) : wxT("");
 	}
 	wxString GetRole() const
 	{
@@ -196,15 +196,15 @@ public:
 	}
 	int GetPort() const
 	{
-		return atoi(PQport(conn));
+		return conn ? atoi(PQport(conn)) : 0;
 	};
 	wxString GetTTY() const
 	{
-		return wxString(PQtty(conn), *conv);
+		return conn ? wxString(PQtty(conn), *conv) : wxT("");
 	}
 	wxString GetOptions() const
 	{
-		return wxString(PQoptions(conn), *conv);
+		return conn ? wxString(PQoptions(conn), *conv) : wxT("");
 	}
 	int GetSslMode() const
 	{
@@ -213,7 +213,7 @@ public:
 	wxString GetSslModeName();
 	int GetBackendPID() const
 	{
-		return PQbackendPID(conn);
+		return conn ? PQbackendPID(conn) : 0;
 	}
 	int GetStatus() const;
 	int GetLastResultStatus() const
