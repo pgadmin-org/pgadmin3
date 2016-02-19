@@ -74,11 +74,23 @@ public:
 
 	CharacterRange RegexFindText(int minPos, int maxPos, const wxString &text);
 
+	// Having multiple SQL tabs warrants the following properties to be tracked per tab
+	void SetChanged(bool b);
+	bool IsChanged();
+	void SetOrigin(int origin);
+	int GetOrigin();
+	void SetFilename(wxString &filename);
+	wxString GetFilename();
+	void SetTitle(wxString &title);
+	wxString GetTitle(bool withChangeInd = true);
+	wxString GetChangeIndicator();
+
 	DECLARE_DYNAMIC_CLASS(ctlSQLBox)
 	DECLARE_EVENT_TABLE()
 
 protected:
 	void OnEndProcess(wxProcessEvent &ev);
+	void UpdateTitle();
 
 	sysProcess *process;
 	long processID;
@@ -92,6 +104,13 @@ private:
 	dlgFindReplace *m_dlgFindReplace;
 	pgConn *m_database;
 	bool m_autoIndent, m_autocompDisabled;
+
+	// Variables to track info per SQL box
+	wxString m_filename;
+	wxString m_title;
+	wxString m_changestr;
+	bool m_changed;
+	int m_origin;
 
 	friend class QueryPrintout;
 };

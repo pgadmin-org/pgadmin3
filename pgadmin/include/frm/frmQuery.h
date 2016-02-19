@@ -101,11 +101,11 @@ public:
 	}
 	void SetChanged(bool p_changed)
 	{
-		changed = p_changed;
+		sqlQuery->SetChanged(p_changed);
 	}
 	void SetOrigin(int p_origin)
 	{
-		origin = p_origin;
+		sqlQuery->SetOrigin(p_origin);
 	}
 	void SetLastPath(wxString p_lastpath)
 	{
@@ -134,6 +134,11 @@ private:
 	wxButton *btnDeleteCurrent;
 	wxButton *btnDeleteAll;
 	wxArrayString histoQueries;
+
+	ctlAuiNotebook *sqlQueryBook;  //container for all SQL tabs
+	size_t sqlQueryCounter;  //for initial tab names
+	ctlSQLBox *sqlQueryExec;  //currently executing SQL tab
+	ctlSQLBox *sqlQueryExecLast;  //output pane shows results for this SQL tab
 
 	// Query timing/status update
 	wxTimer timer;
@@ -261,6 +266,30 @@ private:
 
 	bool relatesToWindow(wxWindow *which, wxWindow *related);
 
+	// Methods related to SQL tabs
+	void SqlBookAddPage();
+	bool SqlBookRemovePage();
+	bool SqlBookCanChangePage();
+	void SqlBookSetAutoIndent(bool b);
+	void SqlBookSetWrapMode(bool b);
+	void SqlBookSetIndentGuides(bool b);
+	void SqlBookSetViewWhiteSpace(bool b);
+	void SqlBookSetViewEOL(bool b);
+	void SqlBookSetViewLineNumbers(bool b);
+	void SqlBookSetDatabase(pgConn *con);
+	void SqlBookUpdatePageTitle();
+	void SqlBookDisconnectPage(ctlSQLBox *box = NULL);
+	bool SqlBookClose(bool canVeto);
+	// SQL tabs event handlers
+	void OnSqlBookAddPage(wxCommandEvent &event);
+	void OnSqlBookPageClose(wxAuiNotebookEvent &event);
+	void OnSqlBookPageChanged(wxAuiNotebookEvent &event);
+	void OnSqlBookPageChanging(wxAuiNotebookEvent &event);
+
+	void BeginPerspectiveChange();
+	void EndPerspectiveChange(bool update = false);
+	void SetOutputPaneCaption(bool update = false);
+
 	wxWindow *currentControl();
 	wxMenu *queryMenu;
 	wxMenu *favouritesMenu;
@@ -278,9 +307,6 @@ private:
 	bool aborted;
 	bool lastFileFormat;
 	bool m_loadingfile;
-
-	// Complements dirty flag, showing last origin of query's modification (see enum ORIGIN_..)
-	int origin;
 
 	// A simple mutex-like flag to prevent concurrent script execution.
 	// Required because the pgScript parser isn't currently thread-safe :-(

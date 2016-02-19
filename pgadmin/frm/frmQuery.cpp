@@ -84,6 +84,7 @@
 
 #define CTRLID_CONNECTION       4200
 #define CTRLID_DATABASELABEL    4201
+#define CTL_SQLQUERYBOOK        4202
 
 #define XML_FROM_WXSTRING(s) ((const xmlChar *)(const char *)s.mb_str(wxConvUTF8))
 #define WXSTRING_FROM_XML(s) wxString((char *)s, wxConvUTF8)
@@ -106,6 +107,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
 	EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
 	EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
+	EVT_MENU(MNU_NEWSQLTAB,         frmQuery::OnSqlBookAddPage)
 	EVT_MENU(MNU_EXPORT,            frmQuery::OnExport)
 	EVT_MENU(MNU_SAVEAS_IMAGE_GQB,     frmQuery::SaveExplainAsImage)
 	EVT_MENU(MNU_SAVEAS_IMAGE_EXPLAIN, frmQuery::SaveExplainAsImage)
@@ -170,6 +172,9 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 	EVT_PGQUERYRESULT(QUERY_COMPLETE, frmQuery::OnQueryComplete)
 	EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
 	EVT_AUINOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
+	EVT_AUINOTEBOOK_PAGE_CHANGED(CTL_SQLQUERYBOOK, frmQuery::OnSqlBookPageChanged)
+	EVT_AUINOTEBOOK_PAGE_CHANGING(CTL_SQLQUERYBOOK, frmQuery::OnSqlBookPageChanging)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(CTL_SQLQUERYBOOK, frmQuery::OnSqlBookPageClose)
 	EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
 	EVT_BUTTON(CTL_DELETECURRENTBTN, frmQuery::OnDeleteCurrent)
 	EVT_BUTTON(CTL_DELETEALLBTN,     frmQuery::OnDeleteAll)
@@ -235,7 +240,6 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	loading = true;
 	closing = false;
-	origin = ORIGIN_MANUAL;
 
 	dlgName = wxT("frmQuery");
 	recentKey = wxT("RecentFiles");
@@ -263,6 +267,11 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	saveasImageMenu->Append(MNU_SAVEAS_IMAGE_GQB, _("Graphical Query (image)"), _("Save Graphical Query as an image"));
 	saveasImageMenu->Append(MNU_SAVEAS_IMAGE_EXPLAIN, _("Explain (image)"), _("Save output of Explain as an image"));
 	fileMenu->Append(wxID_ANY, _("Save as"), saveasImageMenu);
+
+	// SQL tabs related menu items
+	fileMenu->AppendSeparator();
+	fileMenu->Append(MNU_NEWSQLTAB, _("New SQL &tab\tCtrl-T"), _("Open a new query tab"));
+
 	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_EXPORT, _("&Export..."),  _("Export data to file"));
 	fileMenu->Append(MNU_QUICKREPORT, _("&Quick report..."),  _("Run a quick report..."));
@@ -388,7 +397,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	UpdateRecentFiles();
 
-	wxAcceleratorEntry entries[15];
+	wxAcceleratorEntry entries[16];
 
 	entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
 	entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -405,8 +414,9 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	entries[12].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
 	entries[13].Set(wxACCEL_NORMAL,             WXK_F6,        MNU_EXECPGS);
 	entries[14].Set(wxACCEL_NORMAL,             WXK_F8,        MNU_EXECFILE);
+	entries[15].Set(wxACCEL_CTRL,               (int)'T',      MNU_NEWSQLTAB);
 
-	wxAcceleratorTable accel(15, entries);
+	wxAcceleratorTable accel(16, entries);
 	SetAcceleratorTable(accel);
 
 	queryMenu->Enable(MNU_CANCEL, false);
@@ -421,7 +431,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-	toolBar->AddTool(MNU_NEW, wxEmptyString, *file_new_png_bmp, _("New window"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_NEWSQLTAB, wxEmptyString, *file_new_png_bmp, _("New SQL tab"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_OPEN, wxEmptyString, *file_open_png_bmp, _("Open file"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_SAVE, wxEmptyString, *file_save_png_bmp, _("Save file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
@@ -494,13 +504,14 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	// This one will contain the SQL box
 	wxBoxSizer *boxSQL = new wxBoxSizer(wxHORIZONTAL);
 
-	// Query box
-	sqlQuery = new ctlSQLBox(pnlQuery, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
-	sqlQuery->SetDatabase(conn);
-	sqlQuery->SetMarginWidth(1, 16);
-	sqlQuery->SetDropTarget(new DnDFile(this));
-	SetEOLModeDisplay(sqlQuery->GetEOLMode());
-	boxSQL->Add(sqlQuery, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM, 1);
+	// Use sqlQueryBook instead of sqlQuery and put the book inside boxSQL sizer.
+	// We don't add any SQL tabs until all menu items are initialized from settings.
+	sqlQueryBook = new ctlAuiNotebook(pnlQuery, CTL_SQLQUERYBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_CLOSE_ON_ACTIVE_TAB | wxAUI_NB_WINDOWLIST_BUTTON);
+	sqlQueryCounter = 0;
+	sqlQueryExec = NULL;
+	sqlQueryExecLast = NULL;
+
+	boxSQL->Add(sqlQueryBook, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM, 1);
 
 	boxQuery->Add(boxSQL, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM, 1);
 
@@ -535,8 +546,6 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	outputPane->AddPage(msgResult, _("Messages"));
 	outputPane->AddPage(msgHistory, _("History"));
 
-	sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
-	sqlQuery->Connect(wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -586,46 +595,29 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	// Auto indent
 	settings->Read(wxT("frmQuery/AutoIndent"), &bVal, true);
 	editMenu->Check(MNU_AUTOINDENT, bVal);
-	if (bVal)
-		sqlQuery->SetAutoIndent(true);
-	else
-		sqlQuery->SetAutoIndent(false);
 
 	// Word wrap
 	settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
 	viewMenu->Check(MNU_WORDWRAP, bVal);
-	if (bVal)
-		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
-	else
-		sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
 
 	// Indent Guides
 	settings->Read(wxT("frmQuery/ShowIndentGuides"), &bVal, false);
 	viewMenu->Check(MNU_SHOWINDENTGUIDES, bVal);
-	if (bVal)
-		sqlQuery->SetIndentationGuides(true);
-	else
-		sqlQuery->SetIndentationGuides(false);
 
 	// Whitespace
 	settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
 	viewMenu->Check(MNU_SHOWWHITESPACE, bVal);
-	if (bVal)
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
-	else
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
 
 	// Line ends
 	settings->Read(wxT("frmQuery/ShowLineEnds"), &bVal, false);
 	viewMenu->Check(MNU_SHOWLINEENDS, bVal);
-	if (bVal)
-		sqlQuery->SetViewEOL(1);
-	else
-		sqlQuery->SetViewEOL(0);
 
 	// Line number
 	settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
 	viewMenu->Check(MNU_SHOWLINENUMBER, bVal);
+
+	// Create the SQL box. After this, sqlQuery variable can be used.
+	SqlBookAddPage();
 
 	if (!file.IsEmpty() && wxFileName::FileExists(file))
 	{
@@ -641,12 +633,13 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 		sqlQuery->SetText(query);
 		sqlQuery->Colourise(0, query.Length());
 		wxSafeYield();                            // needed to process sqlQuery modify event
-		changed = false;
-		origin = ORIGIN_INITIAL;
+		sqlQuery->SetChanged(false);
+		sqlQuery->SetOrigin(ORIGIN_INITIAL);
 		/* _title if not empty should contain displayName of base object for the query.
 		   It's pretty good for a proposed filename if the user chooses to Save As. */
 		lastFilename = _title;
 		setExtendedTitle();
+		SqlBookUpdatePageTitle();
 	}
 
 	updateMenu();
@@ -818,6 +811,9 @@ void frmQuery::OnAuiUpdate(wxAuiManagerEvent &event)
 
 void frmQuery::OnDefaultView(wxCommandEvent &event)
 {
+	// Reset captions to whatever AuiManager expects in perspective
+	BeginPerspectiveChange();
+
 	manager.LoadPerspective(FRMQUERY_DEFAULT_PERSPECTIVE, true);
 
 	// Reset the captions for the current language
@@ -826,6 +822,8 @@ void frmQuery::OnDefaultView(wxCommandEvent &event)
 	manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
 	manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 	manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
+
+	EndPerspectiveChange(false);
 
 	manager.Update();
 
@@ -860,10 +858,7 @@ void frmQuery::OnAutoIndent(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/AutoIndent"), editMenu->IsChecked(MNU_AUTOINDENT));
 
-	if (editMenu->IsChecked(MNU_AUTOINDENT))
-		sqlQuery->SetAutoIndent(true);
-	else
-		sqlQuery->SetAutoIndent(false);
+	SqlBookSetAutoIndent(event.IsChecked());
 }
 
 
@@ -873,10 +868,7 @@ void frmQuery::OnWordWrap(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/WordWrap"), viewMenu->IsChecked(MNU_WORDWRAP));
 
-	if (viewMenu->IsChecked(MNU_WORDWRAP))
-		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
-	else
-		sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+	SqlBookSetWrapMode(event.IsChecked());
 }
 
 
@@ -886,10 +878,7 @@ void frmQuery::OnShowIndentGuides(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/ShowIndentGuides"), viewMenu->IsChecked(MNU_SHOWINDENTGUIDES));
 
-	if (viewMenu->IsChecked(MNU_SHOWINDENTGUIDES))
-		sqlQuery->SetIndentationGuides(true);
-	else
-		sqlQuery->SetIndentationGuides(false);
+	SqlBookSetIndentGuides(event.IsChecked());
 }
 
 
@@ -899,10 +888,7 @@ void frmQuery::OnShowWhitespace(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/ShowWhitespace"), viewMenu->IsChecked(MNU_SHOWWHITESPACE));
 
-	if (viewMenu->IsChecked(MNU_SHOWWHITESPACE))
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
-	else
-		sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
+	SqlBookSetViewWhiteSpace(event.IsChecked());
 }
 
 
@@ -912,10 +898,7 @@ void frmQuery::OnShowLineEnds(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/ShowLineEnds"), viewMenu->IsChecked(MNU_SHOWLINEENDS));
 
-	if (viewMenu->IsChecked(MNU_SHOWLINEENDS))
-		sqlQuery->SetViewEOL(1);
-	else
-		sqlQuery->SetViewEOL(0);
+	SqlBookSetViewEOL(event.IsChecked());
 }
 
 
@@ -925,7 +908,7 @@ void frmQuery::OnShowLineNumber(wxCommandEvent &event)
 
 	settings->WriteBool(wxT("frmQuery/ShowLineNumber"), viewMenu->IsChecked(MNU_SHOWLINENUMBER));
 
-	sqlQuery->UpdateLineNumber();
+	SqlBookSetViewLineNumbers(event.IsChecked());
 }
 
 void frmQuery::OnActivate(wxActivateEvent &event)
@@ -1080,6 +1063,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 	else
 	{
 		conn = (pgConn *)cbConnection->GetClientData(sel);
+		SqlBookSetDatabase(conn);
 		sqlResult->SetConnection(conn);
 		pgScript->SetConnection(conn);
 		title = wxT("Query - ") + cbConnection->GetValue();
@@ -1421,17 +1405,18 @@ void frmQuery::OnRedo(wxCommandEvent &ev)
 void frmQuery::setExtendedTitle()
 {
 	wxString chgStr;
-	if (changed)
+	if (sqlQuery->IsChanged())
 		chgStr = wxT(" *");
 
-	if (lastPath.IsNull())
+	wxString filename = sqlQuery->GetFilename();
+	if (filename.IsNull())
 		SetTitle(title + chgStr);
 	else
 	{
-		SetTitle(title + wxT(" - [") + lastPath + wxT("]") + chgStr);
+		SetTitle(title + wxT(" - [") + filename + wxT("]") + chgStr);
 	}
 	// Allow to save initial queries though they are not changed
-	bool enableSave = changed || (origin == ORIGIN_INITIAL);
+	bool enableSave = sqlQuery->IsChanged() || (sqlQuery->GetOrigin() == ORIGIN_INITIAL);
 	toolBar->EnableTool(MNU_SAVE, enableSave);
 	fileMenu->Enable(MNU_SAVE, enableSave);
 }
@@ -1668,11 +1653,12 @@ void frmQuery::OnSelectFavourite(wxCommandEvent &event)
 
 bool frmQuery::CheckChanged(bool canVeto)
 {
-	if (changed && settings->GetAskSaveConfirmation())
+	if (sqlQuery->IsChanged() && settings->GetAskSaveConfirmation())
 	{
-		wxString fn;
-		if (!lastPath.IsNull())
-			fn = wxString::Format(_("The text in file %s has changed.\nDo you want to save changes?"), lastPath.c_str());
+		wxString fn, filename;
+		filename = sqlQuery->GetFilename();
+		if (!filename.IsNull())
+			fn = wxString::Format(_("The text in file %s has changed.\nDo you want to save changes?"), filename.c_str());
 		else
 			fn = _("The text has changed.\nDo you want to save changes?");
 		wxMessageDialog msg(this, fn, _("Query"),
@@ -1683,12 +1669,12 @@ bool frmQuery::CheckChanged(bool canVeto)
 		switch (msg.ShowModal())
 		{
 			case wxID_YES:
-				if (lastPath.IsNull())
+				if (filename.IsNull())
 					OnSaveAs(noEvent);
 				else
 					OnSave(noEvent);
 
-				return changed;
+				return sqlQuery->IsChanged();
 
 			case wxID_CANCEL:
 				return true;
@@ -1732,7 +1718,7 @@ void frmQuery::OnClose(wxCloseEvent &event)
 		return;
 	}
 
-	if (CheckChanged(event.CanVeto()) && event.CanVeto())
+	if (SqlBookClose(event.CanVeto()) && event.CanVeto())
 	{
 		event.Veto();
 		return;
@@ -1749,7 +1735,6 @@ void frmQuery::OnClose(wxCloseEvent &event)
 
 	Hide();
 
-	sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 	msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -1776,15 +1761,16 @@ void frmQuery::OnChangeStc(wxStyledTextEvent &event)
 	        // Sometimes there come events 20 and 520 AFTER the initial query was set by constructor.
 	        // Their occurrence is related to query's size and possibly international characters in it (??)
 	        // Filter them out to keep "initial" origin of query text.
-	        (origin != ORIGIN_INITIAL || (event.m_modificationType != 20 && event.m_modificationType != 520)))
+	        (sqlQuery->GetOrigin() != ORIGIN_INITIAL || (event.m_modificationType != 20 && event.m_modificationType != 520)))
 	{
 		// This is the default change origin.
 		// In other cases the changer function will reset it after this event.
-		origin = ORIGIN_MANUAL;
-		if (!changed)
+		sqlQuery->SetOrigin(ORIGIN_MANUAL);
+		if (!sqlQuery->IsChanged())
 		{
-			changed = true;
+			sqlQuery->SetChanged(true);
 			setExtendedTitle();
+			SqlBookUpdatePageTitle();
 		}
 	}
 	// do not allow update of model size of GQB on input (key press) of each
@@ -1826,9 +1812,11 @@ void frmQuery::OpenLastFile()
 		sqlQuery->Colourise(0, str.Length());
 		sqlQuery->EmptyUndoBuffer();
 		wxSafeYield();                            // needed to process sqlQuery modify event
-		changed = false;
-		origin = ORIGIN_FILE;
+		sqlQuery->SetFilename(lastPath);
+		sqlQuery->SetChanged(false);
+		sqlQuery->SetOrigin(ORIGIN_FILE);
 		setExtendedTitle();
+		SqlBookUpdatePageTitle();
 		SetLineEndingStyle();
 		UpdateRecentFiles(true);
 		if(mainForm != NULL)
@@ -1881,26 +1869,28 @@ void frmQuery::OnOpen(wxCommandEvent &event)
 void frmQuery::OnSave(wxCommandEvent &event)
 {
 	bool modeUnicode = settings->GetUnicodeFile();
+	wxString filename = sqlQuery->GetFilename();
 
-	if (lastPath.IsNull())
+	if (filename.IsNull())
 	{
 		OnSaveAs(event);
 		return;
 	}
 
-	wxUtfFile file(lastPath, wxFile::write, modeUnicode ? wxFONTENCODING_UTF8 : wxFONTENCODING_DEFAULT);
+	wxUtfFile file(filename, wxFile::write, modeUnicode ? wxFONTENCODING_UTF8 : wxFONTENCODING_DEFAULT);
 	if (file.IsOpened())
 	{
 		if ((file.Write(sqlQuery->GetText()) == 0) && (!modeUnicode))
 			wxMessageBox(_("Query text incomplete.\nQuery contained characters that could not be converted to the local charset.\nPlease correct the data or try using UTF8 instead."));
 		file.Close();
-		changed = false;
+		sqlQuery->SetChanged(false);
 		setExtendedTitle();
 		UpdateRecentFiles();
+		SqlBookUpdatePageTitle();
 	}
 	else
 	{
-		wxLogError(__("Could not write the file %s: Errcode=%d."), lastPath.c_str(), wxSysErrorCode());
+		wxLogError(__("Could not write the file %s: Errcode=%d."), filename.c_str(), wxSysErrorCode());
 	}
 }
 
@@ -1924,7 +1914,7 @@ void frmQuery::SetLineEndingStyle()
 	{
 		wxMessageBox(_("This file contains mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION | wxOK);
 		sqlQuery->ConvertEOLs(mode);
-		changed = true;
+		sqlQuery->SetChanged(true);
 		setExtendedTitle();
 		updateMenu();
 	}
@@ -1940,27 +1930,7 @@ void frmQuery::SetLineEndingStyle()
 
 	// Now set the status text, menu options, and the mode
 	sqlQuery->SetEOLMode(mode);
-	switch(mode)
-	{
-
-		case wxSTC_EOL_LF:
-			lineEndMenu->Check(MNU_LF, true);
-			SetStatusText(_("Unix"), STATUSPOS_FORMAT);
-			break;
-
-		case wxSTC_EOL_CRLF:
-			lineEndMenu->Check(MNU_CRLF, true);
-			SetStatusText(_("DOS"), STATUSPOS_FORMAT);
-			break;
-
-		case wxSTC_EOL_CR:
-			lineEndMenu->Check(MNU_CR, true);
-			SetStatusText(_("Mac"), STATUSPOS_FORMAT);
-			break;
-
-		default:
-			wxLogError(wxT("Someone created a new line ending style! Run, run for your lives!!"));
-	}
+	SetEOLModeDisplay(mode);
 
 	delete reCRLF;
 	delete reCR;
@@ -1992,12 +1962,14 @@ void frmQuery::OnSetEOLMode(wxCommandEvent &event)
 
 	SetEOLModeDisplay(mode);
 
-	if (!changed)
+	if (!sqlQuery->IsChanged())
 	{
-		changed = true;
+		sqlQuery->SetChanged(true);
 		setExtendedTitle();
 	}
+	setExtendedTitle();
 
+	// TODO: Figure out why this is here?
 	pgScript->SetConnection(conn);
 }
 
@@ -2031,11 +2003,16 @@ void frmQuery::SetEOLModeDisplay(int mode)
 
 void frmQuery::OnSaveAs(wxCommandEvent &event)
 {
+	wxString filename;
+	filename = sqlQuery->GetFilename();
+	if (filename.IsNull())
+		filename = lastFilename;
+
 #ifdef __WXMSW__
-	wxFileDialog *dlg = new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename,
+	wxFileDialog *dlg = new wxFileDialog(this, _("Save query file as"), lastDir, filename, /*lastFilename,*/
 	                                     _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 #else
-	wxFileDialog *dlg = new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename,
+	wxFileDialog *dlg = new wxFileDialog(this, _("Save query file as"), lastDir, filename, /*lastFilename,*/
 	                                     _("Query files (*.sql)|*.sql|All files (*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 #endif
 	if (dlg->ShowModal() == wxID_OK)
@@ -2069,14 +2046,17 @@ void frmQuery::OnSaveAs(wxCommandEvent &event)
 			if ((file.Write(sqlQuery->GetText()) == 0) && (!lastFileFormat))
 				wxMessageBox(_("Query text incomplete.\nQuery contained characters that could not be converted to the local charset.\nPlease correct the data or try using UTF8 instead."));
 			file.Close();
-			changed = false;
+			sqlQuery->SetChanged(false);
+			sqlQuery->SetFilename(lastPath);
 
 			// Forget about Initial origin thus making "Save" button behave as usual
 			// (be enabled/disabled according to dirty flag only).
-			if (origin == ORIGIN_INITIAL)
-				origin = ORIGIN_FILE;
+			if (sqlQuery->GetOrigin() == ORIGIN_INITIAL)
+				sqlQuery->SetOrigin(ORIGIN_FILE);
 
 			setExtendedTitle();
+			SqlBookUpdatePageTitle();
+			SetOutputPaneCaption(true);
 			UpdateRecentFiles();
 			fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
 		}
@@ -2257,7 +2237,7 @@ bool frmQuery::updateFromGqb(bool executing)
 
 	// Only prompt the user if the dirty flag is set, and last modification wasn't from GQB,
 	// and the textbox is not empty, and the new query is different.
-	if(changed && origin != ORIGIN_GQB &&
+	if (sqlQuery->IsChanged() && sqlQuery->GetOrigin() != ORIGIN_GQB &&
 	        !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n"))
 	{
 		wxString fn;
@@ -2267,7 +2247,7 @@ bool frmQuery::updateFromGqb(bool executing)
 			fn = _("The generated SQL query has changed.\nDo you want to update it?");
 
 		wxMessageDialog msg(this, fn, _("Query"), wxYES_NO | wxICON_EXCLAMATION);
-		if(msg.ShowModal() == wxID_YES && changed)
+		if(msg.ShowModal() == wxID_YES && sqlQuery->IsChanged())
 		{
 			canGenerate = true;
 		}
@@ -2287,8 +2267,8 @@ bool frmQuery::updateFromGqb(bool executing)
 		sqlQuery->Colourise(0, sqlQuery->GetText().Length());
 		wxSafeYield();                            // needed to process sqlQuery modify event
 		sqlNotebook->SetSelection(0);
-		changed = true;
-		origin = ORIGIN_GQB;
+		sqlQuery->SetChanged(true);
+		sqlQuery->SetOrigin(ORIGIN_GQB);
 		setExtendedTitle();
 
 		gqbUpdateRunning = false;
@@ -2437,6 +2417,7 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 		}
 		query.Replace(wxT("$SELECTION$"), selection);
 	}
+
 	execQuery(query);
 	sqlQuery->SetFocus();
 }
@@ -2495,7 +2476,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 	sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
 	sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
 
-	if (!changed)
+	if (!sqlQuery->IsChanged())
 		setExtendedTitle();
 
 	aborted = false;
@@ -2519,6 +2500,12 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 		}
 	}
 
+	// Remember the tab from which execute was called. By the time query completes, SQL tab selection may change.
+	sqlQueryExec = sqlQuery;
+	// Because the output pane is clear during query execution, we clear the result source title on Output Pane.
+	sqlQueryExecLast = NULL;
+	SetOutputPaneCaption(true);
+
 	// We must do this lot before the query starts, otherwise
 	// it might not happen once the main thread gets busy with
 	// other stuff.
@@ -2528,7 +2515,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 	msgResult->Clear();
 	msgResult->SetFont(settings->GetSQLFont());
 
-	msgHistory->AppendText(_("-- Executing query:\n"));
+	msgHistory->AppendText(wxString::Format(_("-- Executing query [%s]:\n"), sqlQueryExec->GetTitle(false).c_str()));
 	msgHistory->AppendText(query);
 	msgHistory->AppendText(wxT("\n"));
 	Update();
@@ -2852,9 +2839,9 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 			if (!errMsg2.IsEmpty())
 				showMessage(errMsg2);
 
-			if (errPos > 0)
+			if (errPos > 0 && sqlQueryExec != NULL)
 			{
-				int selStart = sqlQuery->GetSelectionStart(), selEnd = sqlQuery->GetSelectionEnd();
+				int selStart = sqlQueryExec->GetSelectionStart(), selEnd = sqlQueryExec->GetSelectionEnd();
 				if (selStart == selEnd)
 					selStart = 0;
 
@@ -2862,29 +2849,29 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 
 				// Set an indicator on the error word (break on any kind of bracket, a space or full stop)
 				int sPos = errPos + selStart - 1, wEnd = 1;
-				sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
-				int c = sqlQuery->GetCharAt(sPos + wEnd);
-				size_t len = sqlQuery->GetText().Length();
+				sqlQueryExec->StartStyling(sPos, wxSTC_INDICS_MASK);
+				int c = sqlQueryExec->GetCharAt(sPos + wEnd);
+				size_t len = sqlQueryExec->GetText().Length();
 				while(c != ' ' && c != '(' && c != '{' && c != '[' && c != '.' &&
 				        (unsigned int)(sPos + wEnd) < len)
 				{
 					wEnd++;
-					c = sqlQuery->GetCharAt(sPos + wEnd);
+					c = sqlQueryExec->GetCharAt(sPos + wEnd);
 				}
-				sqlQuery->SetStyling(wEnd, wxSTC_INDIC0_MASK);
+				sqlQueryExec->SetStyling(wEnd, wxSTC_INDIC0_MASK);
 
-				int line = 0, maxLine = sqlQuery->GetLineCount();
-				while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart + 1)
+				int line = 0, maxLine = sqlQueryExec->GetLineCount();
+				while (line < maxLine && sqlQueryExec->GetLineEndPosition(line) < errPos + selStart + 1)
 					line++;
 				if (line < maxLine)
 				{
-					sqlQuery->GotoPos(sPos);
-					sqlQuery->MarkerAdd(line, 0);
+					sqlQueryExec->GotoPos(sPos);
+					sqlQueryExec->MarkerAdd(line, 0);
 
-					if (!changed)
+					if (!sqlQueryExec->IsChanged())
 						setExtendedTitle();
 
-					sqlQuery->EnsureVisible(line);
+					sqlQueryExec->EnsureVisible(line);
 				}
 			}
 		}
@@ -2981,9 +2968,9 @@ void frmQuery::OnQueryComplete(pgQueryResultEvent &ev)
 	if (sqlResult->RunStatus() == PGRES_TUPLES_OK || sqlResult->RunStatus() == PGRES_COMMAND_OK)
 	{
 		// Get the executed query
-		wxString executedQuery = sqlQuery->GetSelectedText();
+		wxString executedQuery = sqlQueryExec->GetSelectedText();
 		if (executedQuery.IsNull())
-			executedQuery = sqlQuery->GetText();
+			executedQuery = sqlQueryExec->GetText();
 
 		// Same query, but without return feeds and carriage returns
 		wxString executedQueryWithoutReturns = executedQuery;
@@ -3176,6 +3163,11 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 		updateMenu();
 	}
 
+	// Change the output pane caption so the user knows which tab the result came from
+	sqlQueryExecLast = sqlQueryExec;
+	SetOutputPaneCaption(true);
+
+	sqlQueryExec = NULL;
 	sqlQuery->SetFocus();
 }
 
@@ -3478,8 +3470,8 @@ void frmQuery::OnChangeQuery(wxCommandEvent &event)
 		sqlQuery->SetText(query);
 		sqlQuery->Colourise(0, query.Length());
 		wxSafeYield();                            // needed to process sqlQuery modify event
-		changed = true;
-		origin = ORIGIN_HISTORY;
+		sqlQuery->SetChanged(true);
+		sqlQuery->SetOrigin(ORIGIN_HISTORY);
 		setExtendedTitle();
 		SetLineEndingStyle();
 		btnDeleteCurrent->Enable(true);
@@ -3521,6 +3513,332 @@ void frmQuery::OnDeleteAll(wxCommandEvent &event)
 		btnDeleteAll->Enable(false);
 		SaveQueries();
 	}
+}
+
+void frmQuery::BeginPerspectiveChange()
+{
+	manager.GetPane(_("outputPane")).Caption(_("Output pane"));
+}
+
+void frmQuery::EndPerspectiveChange(bool update)
+{
+	SetOutputPaneCaption(update);
+}
+
+void frmQuery::SetOutputPaneCaption(bool update)
+{
+	wxString caption;
+	wxString title;
+
+	if (sqlQueryExecLast == NULL)
+		caption = _("Output pane");
+	else
+	{
+		// We don't want to make it look like Output Pane has been changed,
+		// so request the title without the change indicator
+		title = sqlQueryExecLast->GetTitle(false);
+		caption = wxString::Format(_("Output pane [%s]"), title.c_str());
+	}
+
+	manager.GetPane(wxT("outputPane")).Caption(caption);
+
+	if (update)
+		manager.Update();
+}
+
+// Methods related to SQL tabs //
+
+void frmQuery::OnSqlBookPageChanged(wxAuiNotebookEvent &event)
+{
+	// Try to always keep sqlQuery variable pointing to the currently selected SQLBox.
+	// When closing and removing all tabs, page count may be zero.
+	if (sqlQueryBook->GetPageCount() > 0)
+	{
+		size_t curpage = sqlQueryBook->GetSelection();
+		sqlQuery = wxDynamicCast(sqlQueryBook->GetPage(curpage), ctlSQLBox);
+		if (sqlQuery != NULL)
+		{
+			// Update UI with chosen query's info
+			SetEOLModeDisplay(sqlQuery->GetEOLMode());
+			setExtendedTitle();
+
+			sqlQuery->SetFocus();
+		}
+	}
+	else
+	{
+		// This should help us find bugs (such as using sqlQuery after closing all tabs) much faster.
+		sqlQuery = NULL;
+	}
+}
+
+void frmQuery::OnSqlBookPageChanging(wxAuiNotebookEvent &event)
+{
+	// Veto event while page change is prohibited.
+	if (!SqlBookCanChangePage())
+	{
+		event.Veto();
+		wxMessageBox(_("Cannot change to selected SQL tab now. Try again a bit later."));
+	}
+}
+
+void frmQuery::OnSqlBookAddPage(wxCommandEvent &event)
+{
+	if (SqlBookCanChangePage())
+		SqlBookAddPage();
+	else
+		wxMessageBox(_("Cannot add a new SQL tab now. Try again a bit later."));
+}
+
+void frmQuery::OnSqlBookPageClose(wxAuiNotebookEvent &event)
+{
+	// Don't allow removal of the last SQL box via user generated event
+	size_t pagecnt = sqlQueryBook->GetPageCount();
+	if (pagecnt == 1)
+	{
+		event.Veto();
+		wxMessageBox(_("Cannot remove the last SQL tab"));
+		return;
+	}
+
+	// Prevent removing the page that is currently being executed
+	if (sqlQueryExec != NULL && sqlQueryExec == sqlQuery)
+	{
+		event.Veto();
+		wxMessageBox(_("The query on this SQL tab is still running.\nWait for it to finish or cancel it before closing the tab."));
+		return;
+	}
+
+	if (CheckChanged(true))
+	{
+		event.Veto();
+		return;
+	}
+
+	// If removing the tab for which results are displayed, reset the output pane's caption
+	if (sqlQuery == sqlQueryExecLast)
+	{
+		sqlQueryExecLast = NULL;
+		SetOutputPaneCaption(true);
+	}
+
+	SqlBookDisconnectPage();
+}
+
+bool frmQuery::SqlBookCanChangePage()
+{
+	return !(m_loadingfile || ms_pgScriptRunning);
+}
+
+void frmQuery::SqlBookAddPage()
+{
+	ctlSQLBox *box;
+	wxString caption;
+	bool bVal;
+
+	// All SQL boxes use the same wxID, CTL_SQLQUERY.
+	// This should probably be changed, but it works for now and has minimal impact on existing code.
+	box = new ctlSQLBox(sqlQueryBook, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+	box->SetDatabase(conn);
+	box->SetMarginWidth(1, 16);
+	box->SetDropTarget(new DnDFile(this));
+	box->SetChanged(false);
+	box->SetOrigin(ORIGIN_MANUAL);
+
+	bVal = editMenu->IsChecked(MNU_AUTOINDENT);
+	box->SetAutoIndent(bVal);
+
+	bVal = viewMenu->IsChecked(MNU_WORDWRAP);
+	box->SetWrapMode(bVal ? wxSTC_WRAP_WORD : wxSTC_WRAP_NONE);
+
+	bVal = viewMenu->IsChecked(MNU_SHOWINDENTGUIDES);
+	box->SetIndentationGuides(bVal);
+
+	bVal = viewMenu->IsChecked(MNU_SHOWWHITESPACE);
+	box->SetViewWhiteSpace(bVal ? wxSTC_WS_VISIBLEALWAYS : wxSTC_WS_INVISIBLE);
+
+	bVal = viewMenu->IsChecked(MNU_SHOWLINEENDS);
+	box->SetViewEOL(bVal ? 1 : 0);
+
+	box->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+	box->Connect(wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+
+	sqlQueryCounter ++;
+	caption = wxString::Format(_("Query %i"), sqlQueryCounter);
+	box->SetTitle(caption);
+	sqlQueryBook->AddPage(box, caption, true);
+
+	// Probably not needed, as the line above should trigger the PageChange event
+	sqlQuery = box;
+}
+
+void frmQuery::SqlBookDisconnectPage(ctlSQLBox *box)
+{
+	if (box == NULL)
+		box = sqlQuery;
+
+	if (box != NULL)
+	{
+		box->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+		box->Disconnect(wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+	}
+}
+
+bool frmQuery::SqlBookRemovePage()
+{
+	size_t pageidx;
+	if (sqlQueryBook->GetPageCount() > 0)
+	{
+		// If removing the tab for which results are displayed, reset the output pane's caption
+		if (sqlQuery == sqlQueryExecLast)
+		{
+			sqlQueryExecLast = NULL;
+			SetOutputPaneCaption(true);
+		}
+
+		SqlBookDisconnectPage();
+		pageidx = sqlQueryBook->GetSelection();
+		return sqlQueryBook->DeletePage(pageidx);
+	}
+	return false;
+}
+
+void frmQuery::SqlBookSetAutoIndent(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetAutoIndent(b);
+	}
+}
+
+void frmQuery::SqlBookSetWrapMode(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetWrapMode(b ? wxSTC_WRAP_WORD : wxSTC_WRAP_NONE);
+	}
+}
+
+void frmQuery::SqlBookSetIndentGuides(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetIndentationGuides(b);
+	}
+}
+
+void frmQuery::SqlBookSetViewWhiteSpace(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetViewWhiteSpace(b ? wxSTC_WS_VISIBLEALWAYS : wxSTC_WS_INVISIBLE);
+	}
+}
+
+void frmQuery::SqlBookSetViewEOL(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetViewEOL(b ? 1 : 0);
+	}
+}
+
+void frmQuery::SqlBookSetViewLineNumbers(bool b)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->UpdateLineNumber();
+	}
+}
+
+void frmQuery::SqlBookSetDatabase(pgConn *con)
+{
+	size_t i, cnt;
+	ctlSQLBox *box;
+
+	for (i = 0, cnt = sqlQueryBook->GetPageCount(); i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			box->SetDatabase(con);
+	}
+}
+
+void frmQuery::SqlBookUpdatePageTitle()
+{
+	size_t index;
+	wxString title;
+
+	if (sqlQueryBook->GetPageCount() > 0 && sqlQuery != NULL)
+	{
+		index = sqlQueryBook->GetPageIndex(sqlQuery);
+		if (index == wxNOT_FOUND)
+			return;
+
+		title = sqlQuery->GetTitle();
+		if (sqlQueryBook->GetPageText(index) != title)
+			sqlQueryBook->SetPageText(index, title);
+	}
+}
+
+// Returns true if any SQL tab attempts to veto the closing, false otherwise.
+bool frmQuery::SqlBookClose(bool canVeto)
+{
+	size_t i = 0;
+	size_t cnt = sqlQueryBook->GetPageCount();
+	ctlSQLBox *box;
+
+	// See if we have any unsaved changes and prompt to save them
+	for (i = 0; i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL && box->IsChanged())
+		{
+			sqlQueryBook->SetSelection(i);
+			if (CheckChanged(canVeto))
+				return true;
+		}
+	}
+
+	// If we got here, the window will be closed
+	for (i = 0; i < cnt; ++i)
+	{
+		box = wxDynamicCast(sqlQueryBook->GetPage(i), ctlSQLBox);
+		if (box != NULL)
+			SqlBookDisconnectPage(box);
+	}
+
+	return false;
 }
 
 

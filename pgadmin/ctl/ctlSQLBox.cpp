@@ -184,6 +184,87 @@ void ctlSQLBox::SetDatabase(pgConn *db)
 	m_database = db;
 }
 
+void ctlSQLBox::SetChanged(bool b)
+{
+	if (m_changed != b)
+	{
+		m_changed = b;
+		UpdateTitle();
+	}
+}
+
+bool ctlSQLBox::IsChanged()
+{
+	return m_changed;
+}
+
+void ctlSQLBox::SetOrigin(int origin)
+{
+	m_origin = origin;
+}
+
+int ctlSQLBox::GetOrigin()
+{
+	return m_origin;
+}
+
+void ctlSQLBox::SetFilename(wxString &filename)
+{
+	m_filename = filename;
+	UpdateTitle();
+}
+
+wxString ctlSQLBox::GetFilename()
+{
+	return m_filename;
+}
+
+void ctlSQLBox::SetTitle(wxString &title)
+{
+	m_title = title;
+}
+
+wxString ctlSQLBox::GetTitle(bool withChangeInd)
+{
+	wxString title = m_title;
+	wxString chStr;
+	if (!withChangeInd)
+	{
+		chStr = GetChangeIndicator();
+		if (title.EndsWith(chStr))
+			title = title.Mid(0, title.Len() - chStr.Len());
+	}
+	return title;
+}
+
+wxString ctlSQLBox::GetChangeIndicator()
+{
+	if (m_changestr.IsEmpty())
+		m_changestr = _("*");
+	return m_changestr;
+}
+
+void ctlSQLBox::UpdateTitle()
+{
+	bool hasCh = false;
+	wxString chStr = GetChangeIndicator();
+	wxString title = GetFilename();
+
+	if (!title.IsEmpty())
+		title = wxFileName::FileName(title).GetFullName();
+	else
+		title = GetTitle();
+
+	hasCh = title.EndsWith(chStr);
+
+	if (IsChanged() && !hasCh)
+		title = title + chStr;
+	else if (!IsChanged() && hasCh)
+		title = title.Mid(0, title.Len() - chStr.Len());
+
+	SetTitle(title);
+}
+
 void ctlSQLBox::OnSearchReplace(wxCommandEvent &ev)
 {
 	if (!m_dlgFindReplace)
