@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 bundle_name="pgAdmin3-Debug"
 
 if test -d "$bundle_name.app"; then
