@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 DMG_SOURCES="./pgAdmin3.app"
 DMG_LICENCE=./pkg/mac/licence.r
 DMG_IMAGE=./pgAdmin3.dmg
