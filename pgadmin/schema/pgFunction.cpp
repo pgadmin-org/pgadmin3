@@ -659,17 +659,38 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 		         wxT("(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=pr.oid) AS providers");
 	}
 
-	pgSet *functions = obj->GetDatabase()->ExecuteSet(
-	                       wxT("SELECT pr.oid, pr.xmin, pr.*, pg_get_function_result(pr.oid) AS typname, typns.nspname AS typnsp, lanname, ") +
-	                       argNamesCol  + argDefsCol + proConfigCol + proType +
-	                       wxT("       pg_get_userbyid(proowner) as funcowner, description") + seclab + wxT("\n")
-	                       wxT("  FROM pg_proc pr\n")
-	                       wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
-	                       wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
-	                       wxT("  JOIN pg_language lng ON lng.oid=prolang\n")
-	                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=pr.oid AND des.classoid='pg_proc'::regclass)\n")
-	                       + restriction +
-	                       wxT(" ORDER BY proname"));
+	pgSet *functions;
+	if (obj->GetConnection()->GetIsGreenplum())
+	{
+		// the Open Source version of Greenplum already has the pg_get_function_result() function,
+		// however the 4.3 stable release does not have this function
+		functions = obj->GetDatabase()->ExecuteSet(
+		                       wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
+		                       argNamesCol  + argDefsCol + proConfigCol + proType +
+		                       wxT("       pg_get_userbyid(proowner) as funcowner, description") + seclab + wxT("\n")
+		                       wxT("  FROM pg_proc pr\n")
+		                       wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
+		                       wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
+		                       wxT("  JOIN pg_language lng ON lng.oid=prolang\n")
+		                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=pr.oid AND des.classoid='pg_proc'::regclass)\n")
+		                       + restriction +
+		                       wxT(" ORDER BY proname"));
+	}
+	else
+	{
+		// new code for !Greenplum
+		functions = obj->GetDatabase()->ExecuteSet(
+		                       wxT("SELECT pr.oid, pr.xmin, pr.*, pg_get_function_result(pr.oid) AS typname, typns.nspname AS typnsp, lanname, ") +
+		                       argNamesCol  + argDefsCol + proConfigCol + proType +
+		                       wxT("       pg_get_userbyid(proowner) as funcowner, description") + seclab + wxT("\n")
+		                       wxT("  FROM pg_proc pr\n")
+		                       wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
+		                       wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
+		                       wxT("  JOIN pg_language lng ON lng.oid=prolang\n")
+		                       wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=pr.oid AND des.classoid='pg_proc'::regclass)\n")
+		                       + restriction +
+		                       wxT(" ORDER BY proname"));
+	}
 
 	pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
 	                   "SELECT oid, format_type(oid, NULL) AS typname FROM pg_type"));
