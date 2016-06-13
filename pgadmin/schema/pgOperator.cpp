@@ -121,6 +121,7 @@ wxString pgOperator::GetSql(ctlTree *browser)
 		AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtTypeIdent(GetLeftType()));
 		AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtTypeIdent(GetRightType()));
 		AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
+		AppendIfFilled(sql, wxT(",\n  NEGATOR = "), GetNegator());
 		AppendIfFilled(sql, wxT(",\n  RESTRICT = "), GetRestrictFunction());
 		AppendIfFilled(sql, wxT(",\n  JOIN = "), GetJoinFunction());
 		if (GetHashJoins()) sql += wxT(",\n  HASHES");
